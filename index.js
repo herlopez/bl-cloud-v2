@@ -1,0 +1,17 @@
+let loki = require('lokijs');
+let databaseFunctions = require('./app/server/database.js');
+databaseFunctions.setDatabase(new loki('database.json'));
+console.log("Brilliant Labs Cloud 2.0");
+console.log("Licence GPL v3.0");
+
+let httpServer = require('./app/server/http-server.js');
+
+// Start http server
+httpServer.startHttpServer(3000);
+
+
+
+
+// setInterval(() => {
+//     db.saveDatabase();
+// }, 1000);
