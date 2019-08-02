@@ -5,6 +5,9 @@
     *  [Overview](#head_http_overview)
     *  [Headers](#head_http_headers)
     *  [Examples](#head_http_examples)
+*  [WS Communication](#head_ws_communication)
+    *  [Overview](#head_ws_overview)
+    *  [Examples](#head_ws_examples)
 *  [Variables](#head_variables)
     *  [Overview](#head_overview)
     *  [Create Variable](#head_create_variable)
@@ -47,6 +50,21 @@ response
 If you don't have cURL installed, you can check how to do so <a href="https://www.luminanetworks.com/docs-lsc-610/Topics/SDN_Controller_Software_Installation_Guide/Appendix/Installing_cURL_for_Ubuntu_1.html">here</a>
 
 You can also use an API development tool like <a href="https://www.getpostman.com">Postman</a> or <a href="https://insomnia.rest/">Insomnia</a>
+
+## <a name="head_ws_communication"></a> WS Communication
+#### <a name="head_ws_overview"></a> Overview
+Communicating to the Brilliant Labs Cloud can be done threw a **Websocket Connection**, whereas the message content is a json string with a given command. The primary use case for communicating threw a websocket on a device is to have improved communication speeds for real time applications. The server only accepts websocket connections over wss.
+
+> Please note that the API described in this document also works with the websocket server. Use the same commands and format described later in the document as you would with the https requests body.
+
+**The URL for websocket connections is: **: wss://cloud.brilliantlabs.ca/wsapi
+#### <a name="head_ws_examples"></a> Examples
+If you visit <a href="https://www.websocket.org/echo.html">https://www.websocket.org/echo.html</a>,  you can test out the websocket API.
+
+The image bellow demonstrates an example using **WebSocket.org** to communicate with the server.
+
+![alt text](https://github.com/Brilliant-Labs/cloud/blob/master/ws_exmple.png?raw=true "ws example")
+
 ## <a name="head_variables"></a> Variables
 
 #### <a name="head_overview"></a> Overview
@@ -55,7 +73,7 @@ You can also use an API development tool like <a href="https://www.getpostman.co
 |-------------------|----------|---------|--------------------------------------|
 |**CREATE_VARIABLE**|name      |String   |Name of the variable to create.       |
 |                   |value     |Any      |Value to initialize the variable to.  |
-|**DELETE_VARIABLE** |name      |String   |Name of the variable to erase.        |
+|**DELETE_VARIABLE**|name      |String   |Name of the variable to erase.        |
 |**SET_VARIABLE**   |name      |String   |Name of the variable to erase.        |
 |                   |value     |Any      |Value to set the variable to.         |
 |**GET_VARIABLE**   |name      |String   |Name of the variable to read.         |
