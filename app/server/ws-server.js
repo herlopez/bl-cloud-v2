@@ -7,7 +7,13 @@ function startWebsocketServer(port){
     const wss = new WebSocket.Server({ port: port });
     wss.on('connection', function connection(ws) {
         ws.on('message', function incoming(message) {
-            processor.messageProcessor(JSON.parse(message), ws, 'ws');
+            let msg;
+            try{
+                msg = JSON.parse(message);
+                processor.messageProcessor(msg, ws, 'ws');
+            }catch (e) {
+                ws.send(`{"error":"Unable to parse JSON: ${e}"}`);
+            }
         });
     });
     console.log(`Websocket server is up on port ${port}`);
