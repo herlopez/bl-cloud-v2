@@ -1,7 +1,3 @@
-
-
-
-
 # Brilliant Labs Cloud API
 
 
@@ -12,14 +8,14 @@
 *  [Variables](#head_variables)
     *  [Overview](#head_overview)
     *  [Create Variable](#head_create_variable)
-    *  [Erase Variable](#head_erase_variable)
+    *  [Delete Variable](#head_erase_variable)
     *  [Set Variable](#head_set_variable)
     *  [Get Variable](#head_get_variable)
 *  [Charts](#head_charts)
     *  [Overview](#head_charts_overview)
     *  [Create Chart](#head_create_chart)
-    *  [Erase Chart](#head_erase_chart)
-    *  [Erase Chart Data](#head_erase_chart_data)
+    *  [Delete Chart](#head_erase_chart)
+    *  [Delete Chart Data](#head_erase_chart_data)
     *  [Add Chart Point](#head_add_chart_point)
     
  
@@ -41,7 +37,7 @@ The required headers:
 
 **Command Line cURL**
 ```terminal
-curl -d '{"cmd":"CREATE_VARIABLE", "key":"123","value":5, "name":"TestVariable"}' -H "Content-Type: application/json" -X GET  https://cloud.brilliantlabs.ca/api
+curl -d '{"cmd":"CREATE_VARIABLE", "key":"gsqfr6DsDWfGhn4og5RHNQTA3hFE","value":5, "name":"TestVariable"}' -H "Content-Type: application/json" -X GET  https://cloud.brilliantlabs.ca/api
 ```
 response
 ```terminal
@@ -59,7 +55,7 @@ You can also use an API development tool like <a href="https://www.getpostman.co
 |-------------------|----------|---------|--------------------------------------|
 |**CREATE_VARIABLE**|name      |String   |Name of the variable to create.       |
 |                   |value     |Any      |Value to initialize the variable to.  |
-|**ERASE_VARIABLE** |name      |String   |Name of the variable to erase.        |
+|**DELETE_VARIABLE** |name      |String   |Name of the variable to erase.        |
 |**SET_VARIABLE**   |name      |String   |Name of the variable to erase.        |
 |                   |value     |Any      |Value to set the variable to.         |
 |**GET_VARIABLE**   |name      |String   |Name of the variable to read.         |
@@ -120,13 +116,13 @@ Command that creates a variable that can be set and read.
 ```
 
 
-#### <a name="head_erase_variable"> Erase Variable
+#### <a name="head_erase_variable"> Delete Variable
 
 Command that erases a stored variable. 
 
 |Command            |Parameters|Type     |Description                           |
 |-------------------|----------|---------|--------------------------------------|
-|**ERASE_VARIABLE** |name      |String   |Name of the variable to erase.        |
+|**DELETE_VARIABLE** |name      |String   |Name of the variable to erase.        |
 
 ##### Example
 
@@ -134,7 +130,7 @@ Command that erases a stored variable.
 ```json
 {
   "key": "XXXXXXXXXXXXXX",
-  "cmd": "ERASE_VARIABLE",
+  "cmd": "DELETE_VARIABLE",
   "name": "Test"
 }
 ```
@@ -225,7 +221,7 @@ Command that gets the value of a variable.
 |**CREATE_CHART**          |name      |String   |Name of the chart to create.             |
 |                          |type      |String   |Type of chart to create. ['BAR', 'PIE', 'SCATTER', 'LINE', 'HISTOGRAM']        |
 |                          |start     |Number   |Start range of the histogram chart.  (Histogram)   |
-|                          |stop      |Number   |Stop range of the histogram chart.   (Histogram)   |
+|                          |end      |Number   |Stop range of the histogram chart.   (Histogram)   |
 
 
 ##### Example 1 (Line Chart, Bar, Pie, Scatter)
@@ -262,9 +258,9 @@ Command that gets the value of a variable.
   "key": "XXXXXXXXXXXXXXXX",
   "cmd": "CREATE_CHART",
   "name": "Age Distribution",
-  "type": "HISTOGRAM"
+  "type": "HISTOGRAM",
   "start": 0,
-  "stop": 120
+  "end": 120
 }
 ```
 *Response*
@@ -275,9 +271,9 @@ Command that gets the value of a variable.
     "created": 1563162485390,
     "entries": 0,
     "name": "Age Distribution",
-    "type": "HISTOGRAM"
+    "type": "HISTOGRAM",
     "start": 0,
-    "stop": 120
+    "end": 120
   },
   "meta": {
     "revision": 0,
@@ -288,19 +284,19 @@ Command that gets the value of a variable.
 ```
 
 
-#### <a name="head_erase_chart"> Erase Chart
+#### <a name="head_erase_chart"> Delete Chart
 ##### This function erases a chart. 
 |Command                    |Parameters|Type     |Description                   |
 |-------------------------- |----------|---------|------------------------------|
-|**ERASE_CHART**            |name      |String   |Name or ID of the chart to erase.   |
+|**DELETE_CHART**            |name      |String   |Name or ID of the chart to erase.   |
 
 ##### Example 1 (Name) 
 *Request*
 ```json
 {
   "key": "XXXXXXXXXXXXXXXX",
-  "cmd": "ERASE_CHART",
-  "name": "Temperature Chart",
+  "cmd": "DELETE_CHART",
+  "name": "Temperature Chart"
 }
 ```
 *Response*
@@ -319,7 +315,7 @@ Command that gets the value of a variable.
 ```json
 {
   "key": "XXXXXXXXXXXXXXXX",
-  "cmd": "ERASE_CHART",
+  "cmd": "DELETE_CHART",
   "name": "cu2495n20cn20c",
 }
 ```
@@ -338,15 +334,15 @@ Command that gets the value of a variable.
 
 
 
-#### <a name="head_erase_chart_data"> Erase Chart Data
+#### <a name="head_erase_chart_data"> Delete Chart Data
 ##### This command erases the data associated with a chart. 
 |Command                    |Parameters|Type     |Description                   |
 |-------------------------- |----------|---------|------------------------------|
-|**ERASE_CHART_DATA**       |name      |String   |Name or ID of the chart to erase data from.|
+|**DELETE_CHART_DATA**       |name      |String   |Name or ID of the chart to erase data from.|
 |                           |range     |Any      |Entry range to erase.  "ALL", "{0,100}", 5 |
 
 
-##### Example 1 (Line Chart Erase 1 Entry 5 Entries)
+##### Example 1 (Line Chart Delete 1 Entry 5 Entries)
 Example Data: 
 ```json
 {
@@ -371,7 +367,7 @@ Example Data:
 ```json
 {
   "key": "XXXXXXXXXXXXXXXX",
-  "cmd": "ERASE_CHART_DATA",
+  "cmd": "DELETE_CHART_DATA",
   "name": "Temperature Chart"
   "range": 3
 }
@@ -410,7 +406,7 @@ Result Data:
   }
 }
 ```
-##### Example 2 (Line Chart Erase All 5 Entries)
+##### Example 2 (Line Chart Delete All 5 Entries)
 Example Data: 
 ```json
 {
@@ -435,7 +431,7 @@ Example Data:
 ```json
 {
   "key":"XXXXXXXXXXXXXXXX",
-  "cmd":"ERASE_CHART_DATA",
+  "cmd":"DELETE_CHART_DATA",
   "name": "Temperature Chart"
   "range": "all"
 }
@@ -463,7 +459,7 @@ RESULT DATA:
   
 }
 ```
-##### Example 3 Line Chart Erase Range (5 Entries)
+##### Example 3 Line Chart Delete Range (5 Entries)
 DATA: 
 ```json
 {
@@ -488,7 +484,7 @@ DATA:
 ```json
 {
   "key": "XXXXXXXXXXXXXXXX",
-  "cmd": "ERASE_CHART_DATA",
+  "cmd": "DELETE_CHART_DATA",
   "name": "Temperature Chart"
   "range": {
     "start": 1,

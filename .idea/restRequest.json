@@ -1,0 +1,8 @@
+{
+  "uri": "http://localhost:3000/api",
+  "method": "GET",
+  "body": "{\"cmd\":\"CREATE_VARIABLE\", \"key\":\"gsqfr6DsDWfGhn4og5RHNQTA3hFE\", \"value\":5, \"name\":\"TestVariable\"}",
+  "headers": {
+    "Content-Type": "application/json"
+  }
+}

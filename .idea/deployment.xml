@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" serverName="Brilliant Labs">
+    <serverData>
+      <paths name="Brilliant Labs">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/new/Cloud" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
+</project>

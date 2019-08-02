@@ -1,4 +1,5 @@
 let db, USERS;
+let uniqid = require('uniqid');
 
 /**
  * Create a variable.
@@ -9,24 +10,21 @@ let db, USERS;
  * @returns {string} Returns response.
  */
 function createVariable(key, name, value) {
-    let results = USERS.findOne({key: key});
+    let userKey = USERS.findOne({key: key});
     if (name === "default") {
         return (JSON.stringify({error: "Variable name can't be default."}));
     }
-    if (results['Variables'].hasOwnProperty(name)) {
+    if (userKey['variables'].hasOwnProperty(name)) {
         return (JSON.stringify({error: "Variable name already taken"}));
     }
-    results['Variables'][name] = value;
-    console.log(USERS);
-    USERS.data[1].insert([{
-        Variables: results['Variables']
-    }]);
-    db.saveDatabase();
+    userKey['variables'][name] = value;
+    USERS.update(userKey);
     return JSON.stringify({
-        "meta": results['meta'],
-        "results":{[name]: value}
+        "meta": userKey['meta'],
+        "results": {[name]: value}
     });
 }
+
 /**
  * Get the value of a stored variable.s
  * @function getVariable
@@ -34,19 +32,20 @@ function createVariable(key, name, value) {
  * @param {string} name - Name of the variable to get the value from.
  * @returns {string} Value of the variable.
  */
-function getVariable(key, name){
-    if(name === "default"){
-        return(JSON.stringify({error:"Variable name can't be default."}));
+function getVariable(key, name) {
+    if (name === "default") {
+        return (JSON.stringify({error: "Variable name can't be default."}));
     }
-    let results = USERS.findOne({ key: key });
-    if(results['Variables'].hasOwnProperty(name)){
+    let results = USERS.findOne({key: key});
+    if (results['variables'].hasOwnProperty(name)) {
         return JSON.stringify({
             "meta": results['meta'],
-            "results":{[name]: results['Variables'][name]}
+            "results": {[name]: results['variables'][name]}
         });
     }
-    return(JSON.stringify({error:"Variable does not exist."}));
+    return (JSON.stringify({error: "Variable does not exist."}));
 }
+
 /**
  * Set the value of a variable.
  * @function setVariable
@@ -55,66 +54,438 @@ function getVariable(key, name){
  * @param {string} value - Value to store in the variable.
  * @returns {string} Value of the variable.
  */
-function setVariable(key, name, value){
-    if(name === "default"){
-        return(JSON.stringify({error:"Variable name can't be default."}));
+function setVariable(key, name, value) {
+    if (name === "default") {
+        return (JSON.stringify({error: "Variable name can't be default."}));
     }
-    let results = USERS.findOne({ key: key });
-    if(results['Variables'].hasOwnProperty(name)){
-        results['Variables'][name] = value;
-        USERS.insert([{
-            key: key,
-            Variables:  results['Variables']
-        }]);
-        db.saveDatabase();
-        results[name] = results['Variables'][name];
-        delete results['key'];
-        delete results['$loki'];
-        return JSON.stringify(results);
+    let userKey = USERS.findOne({key: key});
+    if (userKey['variables'].hasOwnProperty(name)) {
+        userKey['variables'][name] = value;
+        return JSON.stringify({
+            "meta": userKey['meta'],
+            "results": {[name]: userKey['variables'][name]}
+        });
     }
-    return(JSON.stringify({error:"Variable not found, create it first."}));
+    return (JSON.stringify({error: "Variable not found, create it first."}));
 }
+
 /**
  * Erase a variable.
- * @function eraseVariable
+ * @function deleteVariable
  * @param {string} key - API key of user.
  * @param {string} name - Name of the variable to erase.
  * @returns {string} Value of the variable erased.
  */
-function eraseVariable(key, name){
-    if(name === "default"){
-        return(JSON.stringify({error:"Variable name can't be default."}));
+function deleteVariable(key, name) {
+    if (name === "default") {
+        return (JSON.stringify({error: "Variable name can't be default."}));
     }
-    console.log('eraseVariable');
-    let results = USERS.findOne({ key: key });
-    if(results['Variables'].hasOwnProperty(name)){
-        delete results['Variables'][name];
-        USERS.insert([{
-            key: key,
-            Variables:  results['Variables']
-        }]);
-        db.saveDatabase();
-        results[name] = results['Variables'][name];
-        delete results['key'];
-        delete results['$loki'];
-        return JSON.stringify(results);
+    let userKey = USERS.findOne({key: key});
+    if (userKey['variables'].hasOwnProperty(name)) {
+        delete userKey['variables'][name];
+        userKey[name] = userKey['variables'][name];
+        return JSON.stringify({
+            "meta": userKey['meta'],
+            "results": true
+        });
     }
-    return(JSON.stringify({error:"Variable not found."}));
+    return (JSON.stringify({error: "Variable not found."}));
+}
+
+/**
+ * Create a chart.
+ * @function createChart
+ * @param {string} key - API key of user.
+ * @param {string} chart_name - Name of the chart to create.
+ * @param {string} type - Type of chart to create.
+ * @param {number} start - Start range of a histogram chart.
+ * @param {number} end - End range of a histogram chart.
+ * @returns {string} Value of the variable erased.
+ */
+function createChart(key, chart_name, type, start, end) {
+    let userKey = USERS.findOne({key: key});
+    if (chart_name === "default") {
+        return (JSON.stringify({error: "Chart name can't be default."}));
+    }
+    if (userKey['charts'].some(e => e.name === chart_name)) {
+        return (JSON.stringify({error: "Chart name already taken"}));
+    } else {
+        let chartEntry = {};
+        let time = new Date().getTime();
+        if (type === "PIE" || type === "LINE" || type === "SCATTER" || type === "BAR") {
+            chartEntry = {
+                "name": chart_name,
+                "type": type,
+                "entries": 0,
+                "created": time,
+                "id": uniqid(time)
+            };
+        } else if (type === "HISTOGRAM" || type === "HISTO") {
+            chartEntry = {
+                "name": chart_name,
+                "type": type,
+                "entries": 0,
+                "created": time,
+                "start": start,
+                "end": end,
+                "id": uniqid(time)
+            };
+        }
+        userKey['charts'].push(chartEntry);
+        return JSON.stringify({
+            "meta": {
+                "version": 0,
+                "revision": 0,
+                "created": time
+            },
+            "results": chartEntry
+        });
+    }
+
+
+}
+
+/**
+ * Delete a chart.
+ * @function deleteChart
+ * @param {string} key - API key of user.
+ * @param {string} chart_name - Name of the chart to erase.
+ * @returns {string} Value of the chart erased.
+ */
+function deleteChart(key, chart_name) {
+    let userKey = USERS.findOne({key: key});
+    if (userKey['charts'].some(e => e.name === chart_name)) {
+        userKey['charts'] = userKey['charts'].filter(({name}) => !name.includes(chart_name));
+        return (JSON.stringify({
+            "meta": {
+                "version": 0,
+                "revision": 0,
+                "created": new Date().getTime()
+            },
+            "results": true
+        }));
+    }
+    // Delete using ID.
+    else if (userKey['charts'].some(e => e.id === chart_name)) {
+        userKey['charts'] = userKey['charts'].filter(({id}) => !(id === chart_name));
+        return (JSON.stringify({
+            "meta": {
+                "version": 0,
+                "revision": 0,
+                "created": new Date().getTime()
+            },
+            "results": true
+        }));
+    }
+    return (JSON.stringify({error: "Chart not found."}));
+}
+
+/**
+ * Add data point.
+ * @function addDataPoint
+ * @param {string} key - API key of user.
+ * @param {string} chart_name - Name of the chart to add a data point too.
+ * @param {string} point - Point name to add.
+ * @param {string} value - Point value to add.
+ * @returns {string} Value of the chart df.
+ */
+function addDataPoint(key, chart_name, point, value) {
+    let userKey = USERS.findOne({key: key});
+    let index = null;
+    if (userKey['charts'].some(e => e.name === chart_name)) {
+        index = userKey['charts'].findIndex(e => e.name === chart_name);
+    } else if (userKey['charts'].some(e => e.id === chart_name)) {
+        index = userKey['charts'].findIndex(e => e.name === chart_name);
+    } else {
+        return (JSON.stringify({error: "Chart not found."}));
+    }
+    if (index === null) {
+        return (JSON.stringify({error: "Chart indexing error."}));
+    } else {
+        if (userKey['charts'][index] !== undefined) {
+            if (userKey['charts'][index].hasOwnProperty('type')) {
+                let chart_type = userKey['charts'][index].type;
+                let time = new Date().getTime();
+                let id = uniqid(time);
+                if (['LINE'].includes(chart_type)) {
+                    if (typeof value === 'number' || value instanceof Number) {
+                        if (userKey['charts'][index]['data'] === undefined) {
+                            userKey['charts'][index]['data'] = [{
+                                entry: (userKey['charts'][index]['entries'] + 1),
+                                value: value,
+                                timestamp: time,
+                                id: id
+                            }];
+                            userKey['charts'][index]['entries'] = userKey['charts'][index]['entries'] + 1;
+                            return (JSON.stringify({
+                                "result": {
+                                    "id": id,
+                                    "created": time,
+                                    "value": value,
+                                    "entries": userKey['charts'][index]['entries'],
+                                    "name": chart_name,
+                                    "type": chart_type
+                                },
+                                "meta": {
+                                    "revision": 0,
+                                    "created": time,
+                                    "version": 0
+                                }
+                            }));
+                        } else {
+                            userKey['charts'][index]['data'].push({
+                                entry: (userKey['charts'][index]['entries'] + 1),
+                                value: value,
+                                timestamp: time,
+                                id: id,
+                            });
+                            userKey['charts'][index]['entries'] = userKey['charts'][index]['entries'] + 1;
+                            return (JSON.stringify({
+                                "result": {
+                                    "id": id,
+                                    "created": time,
+                                    "value": value,
+                                    "entries": userKey['charts'][index]['entries'],
+                                    "name": chart_name,
+                                    "type": chart_type
+                                },
+                                "meta": {
+                                    "revision": 0,
+                                    "created": time,
+                                    "version": 0
+                                }
+                            }));
+                        }
+                    } else {
+                        return (JSON.stringify({error: "Value must be a number."}));
+                    }
+                } else if (['BAR', 'PIE'].includes(chart_type)) {
+                    if (typeof value === 'number' || value instanceof Number) {
+                        if (typeof point === 'string' || point instanceof String) {
+                            if (point.length < 200) {
+                                if (userKey['charts'][index]['data'] === undefined) {
+                                    userKey['charts'][index]['data'] = [{
+                                        entry: (userKey['charts'][index]['entries'] + 1),
+                                        value: value,
+                                        point: point,
+                                        timestamp: time,
+                                        id: id
+                                    }];
+                                    userKey['charts'][index]['entries'] = userKey['charts'][index]['entries'] + 1;
+                                    return (JSON.stringify({
+                                        "result": {
+                                            "id": id,
+                                            "created": time,
+                                            "value": value,
+                                            "point": point,
+                                            "entries": userKey['charts'][index]['entries'],
+                                            "name": chart_name,
+                                            "type": chart_type
+                                        },
+                                        "meta": {
+                                            "revision": 0,
+                                            "created": time,
+                                            "version": 0
+                                        }
+                                    }));
+                                } else {
+                                    userKey['charts'][index]['data'].push({
+                                        entry: (userKey['charts'][index]['entries'] + 1),
+                                        value: value,
+                                        point: point,
+                                        timestamp: time,
+                                        id: id,
+                                    });
+                                    userKey['charts'][index]['entries'] = userKey['charts'][index]['entries'] + 1;
+                                    return (JSON.stringify({
+                                        "result": {
+                                            "id": id,
+                                            "created": time,
+                                            "value": value,
+                                            "point": point,
+                                            "entries": userKey['charts'][index]['entries'],
+                                            "name": chart_name,
+                                            "type": chart_type
+                                        },
+                                        "meta": {
+                                            "revision": 0,
+                                            "created": time,
+                                            "version": 0
+                                        }
+                                    }));
+                                }
+                            } else {
+                                return (JSON.stringify({error: "Name must less than 200 characters."}));
+                            }
+                        } else {
+                            return (JSON.stringify({error: "Name must be a string."}));
+                        }
+                    } else {
+                        return (JSON.stringify({error: "Value must be a number."}));
+                    }
+                } else if (['SCATTER'].includes(chart_type)) {
+                    if (typeof value === 'number' || value instanceof Number) {
+                        if (typeof point === 'number' || point instanceof Number) {
+                            if (userKey['charts'][index]['data'] === undefined) {
+                                userKey['charts'][index]['data'] = [{
+                                    entry: (userKey['charts'][index]['entries'] + 1),
+                                    y: value,
+                                    x: point,
+                                    timestamp: time,
+                                    id: id
+                                }];
+                                userKey['charts'][index]['entries'] = userKey['charts'][index]['entries'] + 1;
+                                return (JSON.stringify({
+                                    "result": {
+                                        "id": id,
+                                        "created": time,
+                                        "y": value,
+                                        "x": point,
+                                        "entries": userKey['charts'][index]['entries'],
+                                        "name": chart_name,
+                                        "type": chart_type
+                                    },
+                                    "meta": {
+                                        "revision": 0,
+                                        "created": time,
+                                        "version": 0
+                                    }
+                                }));
+                            } else {
+                                userKey['charts'][index]['data'].push({
+                                    entry: (userKey['charts'][index]['entries'] + 1),
+                                    y: value,
+                                    x: point,
+                                    timestamp: time,
+                                    id: id,
+                                });
+                                userKey['charts'][index]['entries'] = userKey['charts'][index]['entries'] + 1;
+                                return (JSON.stringify({
+                                    "result": {
+                                        "id": id,
+                                        "created": time,
+                                        "y": value,
+                                        "x": point,
+                                        "entries": userKey['charts'][index]['entries'],
+                                        "name": chart_name,
+                                        "type": chart_type
+                                    },
+                                    "meta": {
+                                        "revision": 0,
+                                        "created": time,
+                                        "version": 0
+                                    }
+                                }));
+                            }
+
+                        } else {
+                            return (JSON.stringify({error: "X must be a number."}));
+                        }
+                    } else {
+                        return (JSON.stringify({error: "Y must be a number."}));
+                    }
+                } else if (['HISTO', 'HISTOGRAM'].includes(chart_type)) {
+                    if (typeof value === 'number' || value instanceof Number) {
+                        if(value < userKey['charts'][index]['start'] || value > userKey['charts'][index]['end']){
+                            return (JSON.stringify({error: `Value is out of range, [${userKey['charts'][index]['start']}, ${userKey['charts'][index]['end']}]`}));
+                        }
+                        if (userKey['charts'][index]['data'] === undefined) {
+                            userKey['charts'][index]['data'] = [{
+                                entry: (userKey['charts'][index]['entries'] + 1),
+                                value: value,
+                                timestamp: time,
+                                id: id
+                            }];
+                            userKey['charts'][index]['entries'] = userKey['charts'][index]['entries'] + 1;
+                            return (JSON.stringify({
+                                "result": {
+                                    "id": id,
+                                    "created": time,
+                                    "value": value,
+                                    "entries": userKey['charts'][index]['entries'],
+                                    "name": chart_name,
+                                    "type": chart_type
+                                },
+                                "meta": {
+                                    "revision": 0,
+                                    "created": time,
+                                    "version": 0
+                                }
+                            }));
+                        } else {
+                            userKey['charts'][index]['data'].push({
+                                entry: (userKey['charts'][index]['entries'] + 1),
+                                value: value,
+                                timestamp: time,
+                                id: id,
+                            });
+                            userKey['charts'][index]['entries'] = userKey['charts'][index]['entries'] + 1;
+                            return (JSON.stringify({
+                                "result": {
+                                    "id": id,
+                                    "created": time,
+                                    "value": value,
+                                    "entries": userKey['charts'][index]['entries'],
+                                    "name": chart_name,
+                                    "type": chart_type
+                                },
+                                "meta": {
+                                    "revision": 0,
+                                    "created": time,
+                                    "version": 0
+                                }
+                            }));
+                        }
+
+                    } else {
+                        return (JSON.stringify({error: "Value must be a number."}));
+                    }
+                } else {
+                    return (JSON.stringify({error: "Invalid type property error."}));
+                }
+            } else {
+                return (JSON.stringify({error: "Chart type property error."}));
+            }
+        } else {
+            return (JSON.stringify({error: "Chart indexing error."}));
+        }
+    }
+}
+
+function getChartData(key, name, range_start, range_end){
+
 }
 
 
 
-function setDatabase(database){
+function getChartType(key, chart_name) {
+    let userKey = USERS.findOne({key: key});
+    if (userKey['charts'].some(e => e.name === chart_name)) {
+        return (userKey['charts'][userKey['charts'].findIndex(e => e.name === chart_name)].type);
+    } else if (userKey['charts'].some(e => e.id === chart_name)) {
+        return (userKey['charts'][userKey['charts'].findIndex(e => e.name === chart_name)].type);
+    }
+    return (JSON.stringify({error: "Chart not found."}));
+}
+
+function setDatabase(database) {
     db = database;
     db.loadDatabase({}, function () {
         USERS = db.getCollection('users');
     });
+    setInterval(() => {
+        db.saveDatabase();
+    }, 10000);
 }
 
 module.exports = {
     setDatabase,
-    eraseVariable,
+    deleteVariable,
     setVariable,
     getVariable,
-    createVariable
+    createChart,
+    addDataPoint,
+    deleteChart,
+    createVariable,
+    getChartType
 };

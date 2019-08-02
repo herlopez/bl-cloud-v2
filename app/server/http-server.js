@@ -3,9 +3,6 @@ let path = require('path');
 let app = express();
 let pug = require('pug');
 let fs = require('fs');
-let https = require('https');
-
-
 
 let processor = require('./message-processor.js');
 let bodyParser = require('body-parser');
@@ -19,13 +16,13 @@ app.use(bodyParser.json());
 
 function startHttpServer(port){
     app.get('/documentation', (req, res) => {
-        res.redirect('https://github.com/Brilliant-Labs/bboard-cloud/blob/master/cloudAPI.md');
+        res.redirect('https://github.com/Brilliant-Labs/cloud/blob/master/README.md');
     });
     app.get('/api', (req, res) => {
         processor.messageProcessor(req.body, res, 'http');
     });
     app.listen(port, () => {
-        console.log(`Http server is up on port 3000`);
+        console.log(`Http server is up on port ${port}`);
     });
 
 }
