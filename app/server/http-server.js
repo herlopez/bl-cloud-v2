@@ -15,14 +15,27 @@ app.enable('trust proxy');
 app.use(bodyParser.json());
 
 function startHttpServer(port){
+    app.get('/', (req, res)=> {
+        res.render('index');
+    });
+    app.get('/app', (req, res)=> {
+        res.render('app');
+    });
     app.get('/documentation', (req, res) => {
         res.redirect('https://github.com/Brilliant-Labs/cloud/blob/master/README.md');
     });
+
     app.get('/api', (req, res) => {
         processor.messageProcessor(req.body, res, 'http');
     });
     app.listen(port, () => {
         console.log(`Http server is up on port ${port}`);
+    });
+    app.use((req, res, next) => {
+        let err = new Error('Not Found');
+        res.render('404');
+        err.status = 404;
+        next(err);
     });
 
 }

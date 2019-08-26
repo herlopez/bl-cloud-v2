@@ -1,5 +1,50 @@
-let db, USERS;
+let db, USERS, REGISTERED_USERS;
 let uniqid = require('uniqid');
+
+/**
+ * Create a user.
+ * @function createUser
+ * @param {string} email email address.
+ * @param {string} password email address.
+ * @returns {string} Returns response.
+ */
+function createUser(email, password, firstName, lastName) {
+    let userList = REGISTERED_USERS.findOne({email: email});
+    if(userList === null){
+        let time = new Date().getTime();
+        let userEntry = {
+            "cmd": "CREATE_USER",
+            "email": email,
+            "firsName": firstName,
+            "lastName": lastName,
+            "password": password,
+            "validated": false,
+            "type": 0,
+            "keys": 0,
+            "created": time,
+            "id": uniqid(time)
+        };
+        REGISTERED_USERS.insert(userEntry);
+        delete userEntry['password'];
+        return true;
+        // return JSON.stringify({
+        //     "meta": {
+        //         "version": 0,
+        //         "revision": 0,
+        //         "created": time
+        //     },
+        //     //im here
+        //     "results": userEntry
+        // });
+
+    }else{
+        return false;
+    }
+
+
+}
+
+
 
 /**
  * Create a variable.
@@ -467,18 +512,29 @@ function getChartType(key, chart_name) {
     }
     return (JSON.stringify({error: "Chart not found."}));
 }
-
 function setDatabase(database) {
     db = database;
     db.loadDatabase({}, function () {
         USERS = db.getCollection('users');
+        REGISTERED_USERS = db.getCollection('registered_users');
+        return (JSON.stringify({error: "REGISTERED_USERS"}));
+
     });
     setInterval(() => {
         db.saveDatabase();
-    }, 10000);
+    }, 240000);
 }
 
+function sendFunction(f, n = 0){
+    if(n !== 0){
+        n = n+1;
+    }
+    return`${f.toString().substring(10+n)}`
+}
+
+
 module.exports = {
+    createUser,
     setDatabase,
     deleteVariable,
     setVariable,
@@ -487,5 +543,6 @@ module.exports = {
     addDataPoint,
     deleteChart,
     createVariable,
-    getChartType
+    getChartType,
+    sendFunction
 };
