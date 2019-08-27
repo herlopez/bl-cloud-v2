@@ -36,6 +36,23 @@ mixin head(title, options)
         meta(property="twitter:description" content="Open-source IoT cloud service for b.Board")
         meta(property="twitter:image" content="https://cloud.brilliantlabs.ca/images/brilliant-labs-logo.png")
 
+        // Firebase
+        script(src="https://www.gstatic.com/firebasejs/6.4.2/firebase-app.js")
+        script(src='https://www.gstatic.com/firebasejs/6.4.2/firebase-auth.js')
+        script(src='https://www.gstatic.com/firebasejs/6.4.2/firebase-database.js')
+
+        script.
+            var firebaseConfig = {
+                apiKey: "AIzaSyCIX-wwImQjJfPTuMzEnKxDNgPf6pE3m-E",
+                authDomain: "bl-cloud.firebaseapp.com",
+                databaseURL: "https://bl-cloud.firebaseio.com",
+                projectId: "bl-cloud",
+                storageBucket: "",
+                messagingSenderId: "224734135327",
+                appId: "1:224734135327:web:fa2c5a75e2c89059"
+            };
+            firebase.initializeApp(firebaseConfig);
+
         // Stylesheets
         link(rel='stylesheet', href='/css/main.css')
 
@@ -43,4 +60,5 @@ mixin head(title, options)
         script(src='/js/main.js')
         if options = 'app'
             script(src='/js/app.js')
+
 

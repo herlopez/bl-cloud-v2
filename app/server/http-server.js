@@ -24,7 +24,11 @@ function startHttpServer(port){
     app.get('/documentation', (req, res) => {
         res.redirect('https://github.com/Brilliant-Labs/cloud/blob/master/README.md');
     });
-
+    app.get('/verification', (req, res) => {
+        const search_params = new URLSearchParams(req.url);
+        console.log(search_params.get('confirmation'));
+        res.render('app');
+    });
     app.get('/api', (req, res) => {
         processor.messageProcessor(req.body, res, 'http');
     });

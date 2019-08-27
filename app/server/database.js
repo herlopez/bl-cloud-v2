@@ -19,6 +19,7 @@ function createUser(email, password, firstName, lastName) {
             "lastName": lastName,
             "password": password,
             "validated": false,
+            "email_token": uniqid(),
             "type": 0,
             "keys": 0,
             "created": time,
@@ -26,7 +27,7 @@ function createUser(email, password, firstName, lastName) {
         };
         REGISTERED_USERS.insert(userEntry);
         delete userEntry['password'];
-        return true;
+        return userEntry;
         // return JSON.stringify({
         //     "meta": {
         //         "version": 0,

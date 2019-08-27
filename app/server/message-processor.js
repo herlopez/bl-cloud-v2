@@ -80,13 +80,13 @@ function messageProcessor(message, callback, type) {
                 if (loginError(verifyString(message, 'password', 200, 6), callback)) return;
                 if (!validateEmail(message['email'])){loginError({error:'Invalid Email Address'}, callback); return}
                 let res = databaseFunctions.createUser(message['email'], message['password'], message['name']);
-                if(res){
+                if(res.hasOwnProperty('email_token')){
                     callback.send(JSON.stringify({"fn": databaseFunctions.sendFunction(signUpSuccess, 'signUpSuccess'.length)}));
                     var mailOptions = {
                         from: 'blcloudmailer@gmail.com',
                         to: message['email'],
                         subject: 'Brilliant Labs Cloud: Confirm your account.',
-                        text: 'Thanks for registering! Please click here to confirm your account: '
+                        text: `Thanks for registering! Please click here to confirm your account: https://cloud.brilliantlabs.ca/verification?confirmation=${res['email_token']}`
                     };
 
                     transporter.sendMail(mailOptions, function(error, info){
@@ -709,7 +709,19 @@ function loginScreen() {
     loginForm.addEventListener("submit", function (e) {
         var email = document.getElementById(`${loginForm.id}_email`);
         var password = document.getElementById(`${loginForm.id}_password`);
-        ws.send(`{"cmd":"CREATE_USER", "key":"mv0w9g4j0mada0dfm43a0vmq0vimvf0mcq", "email":"${email.value}","password":"${password.value}"}`);
+        // ws.send(`{"cmd":"CREATE_USER", "key":"mv0w9g4j0mada0dfm43a0vmq0vimvf0mcq", "email":"${email.value}","password":"${password.value}"}`);
+        firebase.auth().signInWithEmailAndPassword(email.value, password.value)
+            .catch(function(error) {
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                if (errorCode === 'auth/wrong-password') {
+                    alert('Wrong password.');
+                } else {
+                    alert(errorMessage);
+                }
+                console.log(error);
+            });
         e.preventDefault();    //stop form from submitting
     });
     appContainer.appendChild(loginForm);
