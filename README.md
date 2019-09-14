@@ -26,7 +26,7 @@
 ## <a name="head_http_communication"></a> HTTP Communication
 #### <a name="head_http_overview"></a> Overview
 
-Communicating to the Brilliant Labs Cloud can be done threw a **GET** https request, whereas the content of the body is a json string with a given command. The primary use case for communicating threw https is for devices that do not have the capabilities of communicating threw a websocket connection. The server only accepts connections over SSL.
+Communicating to the Brilliant Labs Cloud can be done through a **GET** https request, whereas the content of the body is a json string with a given command. The primary use case for communicating through https is for devices that do not have the capabilities of communicating through a websocket connection. The server only accepts connections over SSL.
 
 **The URL for https requests: **: https://cloud.brilliantlabs.ca/api
 
@@ -53,7 +53,7 @@ You can also use an API development tool like <a href="https://www.getpostman.co
 
 ## <a name="head_ws_communication"></a> WS Communication
 #### <a name="head_ws_overview"></a> Overview
-Communicating to the Brilliant Labs Cloud can be done threw a **Websocket Connection**, whereas the message content is a json string with a given command. The primary use case for communicating threw a websocket on a device is to have improved communication speeds for real time applications. The server only accepts websocket connections over wss.
+Communicating to the Brilliant Labs Cloud can be done through a **Websocket Connection**, whereas the message content is a json string with a given command. The primary use case for communicating through a websocket on a device is to have improved communication speeds for real time applications. The server only accepts websocket connections over wss.
 
 > Please note that the API described in this document also works with the websocket server. Use the same commands and format described later in the document as you would with the https requests body.
 
@@ -167,7 +167,7 @@ Command that creates a variable that can be set and read.
 ## <a name="head_http_communication"></a> HTTP Communication
 #### <a name="head_http_overview"></a> Overview
 
-Communicating to the Brilliant Labs Cloud can be done threw a **GET** https request, whereas the content of the body is a json string with a given command. The primary use case for communicating threw https is for devices that do not have the capabilities of communicating threw a websocket connection. The server only accepts connections over SSL.
+Communicating to the Brilliant Labs Cloud can be done through a **GET** https request, whereas the content of the body is a json string with a given command. The primary use case for communicating through https is for devices that do not have the capabilities of communicating through a websocket connection. The server only accepts connections over SSL.
 
 **The URL for https requests: **: https://cloud.brilliantlabs.ca/api
 
@@ -194,7 +194,7 @@ You can also use an API development tool like <a href="https://www.getpostman.co
 
 ## <a name="head_ws_communication"></a> WS Communication
 #### <a name="head_ws_overview"></a> Overview
-Communicating to the Brilliant Labs Cloud can be done threw a **Websocket Connection**, whereas the message content is a json string with a given command. The primary use case for communicating threw a websocket on a device is to have improved communication speeds for real time applications. The server only accepts websocket connections over wss.
+Communicating to the Brilliant Labs Cloud can be done through a **Websocket Connection**, whereas the message content is a json string with a given command. The primary use case for communicating through a websocket on a device is to have improved communication speeds for real time applications. The server only accepts websocket connections over wss.
 
 > Please note that the API described in this document also works with the websocket server. Use the same commands and format described later in the document as you would with the https requests body.
 
