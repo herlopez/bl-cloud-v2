@@ -1,52 +1,48 @@
-let db, USERS, REGISTERED_USERS;
+let db, USERS, REGISTERED_USERS, PROJECTS;
 let uniqid = require('uniqid');
 
-/**
- * Create a user.
- * @function createUser
- * @param {string} email email address.
- * @param {string} password email address.
- * @returns {string} Returns response.
- */
-function createUser(email, password, firstName, lastName) {
-    let userList = REGISTERED_USERS.findOne({email: email});
-    if(userList === null){
-        let time = new Date().getTime();
-        let userEntry = {
-            "cmd": "CREATE_USER",
-            "email": email,
-            "firsName": firstName,
-            "lastName": lastName,
-            "password": password,
-            "validated": false,
-            "email_token": uniqid(),
-            "type": 0,
-            "keys": 0,
-            "created": time,
-            "id": uniqid(time)
-        };
-        REGISTERED_USERS.insert(userEntry);
-        delete userEntry['password'];
-        return userEntry;
-        // return JSON.stringify({
-        //     "meta": {
-        //         "version": 0,
-        //         "revision": 0,
-        //         "created": time
-        //     },
-        //     //im here
-        //     "results": userEntry
-        // });
-
-    }else{
-        return false;
+function getProjects(uid){
+    try{
+        let results = USERS.find({owner: uid});
+        console.log(results);
+        return JSON.stringify({
+            "meta": results['meta'],
+            "results": results,
+            "cmd": "PROJECTS"
+        });
     }
-
-
+   catch (e) {
+       return (JSON.stringify({error: "User does not exist."}));
+   }
+}
+function createProject(name, description, access, color, uid){
+    let time = new Date().getTime();
+    let project = {
+        "name": name,
+        "owner": uid,
+        "shared": null,
+        "description": description,
+        "access": access,
+        "created": time,
+        "key": uniqid(),
+        "id": uniqid(time),
+        "color": color,
+        "variables": {
+            "default": 0
+        },
+        "charts":{
+            "default": 0
+        }
+    };
+    console.log(project);
+    USERS.insert(project);
+    db.saveDatabase();
+    return true;
 }
 
 
 
+// API
 /**
  * Create a variable.
  * @function createVariable
@@ -98,21 +94,21 @@ function getVariable(key, name) {
  * @param {string} key - API key of user.
  * @param {string} name - Name of the variable set.
  * @param {string} value - Value to store in the variable.
- * @returns {string} Value of the variable.
+ * @returns {object} Value of the variable.
  */
 function setVariable(key, name, value) {
     if (name === "default") {
-        return (JSON.stringify({error: "Variable name can't be default."}));
+        return ({error: "Variable name can't be default."});
     }
     let userKey = USERS.findOne({key: key});
     if (userKey['variables'].hasOwnProperty(name)) {
         userKey['variables'][name] = value;
-        return JSON.stringify({
+        return {
             "meta": userKey['meta'],
             "results": {[name]: userKey['variables'][name]}
-        });
+        };
     }
-    return (JSON.stringify({error: "Variable not found, create it first."}));
+    return ({error: "Variable not found, create it first."});
 }
 
 /**
@@ -502,8 +498,6 @@ function getChartData(key, name, range_start, range_end){
 
 }
 
-
-
 function getChartType(key, chart_name) {
     let userKey = USERS.findOne({key: key});
     if (userKey['charts'].some(e => e.name === chart_name)) {
@@ -526,16 +520,9 @@ function setDatabase(database) {
     }, 240000);
 }
 
-function sendFunction(f, n = 0){
-    if(n !== 0){
-        n = n+1;
-    }
-    return`${f.toString().substring(10+n)}`
-}
-
-
 module.exports = {
-    createUser,
+    getProjects,
+    createProject,
     setDatabase,
     deleteVariable,
     setVariable,
@@ -545,5 +532,4 @@ module.exports = {
     deleteChart,
     createVariable,
     getChartType,
-    sendFunction
 };

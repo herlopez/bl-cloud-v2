@@ -1,0 +1,38 @@
+#page_front{
+    h1, h2{
+        color: white;
+    }
+
+    #f1{
+        background-size: contain;
+        height:30vw;
+        background-repeat: no-repeat;
+        background-image: url('../images/BrilliantLabs_address_v3.png');
+        div{
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 2rem;
+            text-align: center;
+            padding: 1rem;
+            button{
+                height:34px;
+                a{
+                    text-decoration: none;
+                    color: white;
+                    padding: 8px 30px !important;
+                }
+            }
+
+
+        }
+    }
+}
+
+@media only screen and (max-width: 947px) {
+    #f1{
+        height: 500px !important;
+        background-size: cover !important;
+        div{
+            max-width: 90% !important;
+        }
+    }
+}

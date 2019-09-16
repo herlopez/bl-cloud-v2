@@ -1,38 +1,29 @@
 let databaseFunctions = require('./database.js');
-var nodemailer = require('nodemailer');
 
-var transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
-    tls: true,
-    auth: {
-        user: 'blcloudmailer@gmail.com',
-        pass: 'bykrix-tAkwu4-joqrog'
-    }
-});
-function messageProcessor(message, callback, type) {
+function messageProcessor(message, callback, type, other) {
     console.log(message);
+
+    // Try to parse the json string sent.
     try {
         message = JSON.parse(JSON.stringify(message));
         console.log(message);
     } catch (e) {
         console.log(e);
-        if (type === "http") {
+        if(type === 'mqtt'){
             callback.send(`{"error":"Unable to parse JSON: ${e}"}`);
-            return;
-        } else if (type === "ws") {
-            callback.send(`{"error":"Unable to parse JSON: ${e}"}`);
-            return;
         }
+        else{
+            callback.send(`{"error":"Unable to parse JSON: ${e}"}`);
+        }
+        return;
     }
-    // Check if the API key exist.
+
+    // Request from device api. Check if the API key exist.
     if (message.hasOwnProperty('key')) {
-        if (message['key'] === 'gsqfr6DsDWfGhn4og5RHNQTA3hFE') {
+        if (message.hasOwnProperty('key')) {
             console.log("KeyGood");
-        } else if (message['key'] === 'mv0w9g4j0mada0dfm43a0vmq0vimvf0mcq') {
-            console.log('Admin Create')
-        } else {
+        }
+        else {
             console.log(`Invalid API key given.`);
             if (type === "http") {
                 callback.send('{"error":"Invalid API key given."}');
@@ -42,7 +33,13 @@ function messageProcessor(message, callback, type) {
                 return;
             }
         }
-    } else {
+    }
+
+    // Request from ui.
+    else if(type === 'ws-ui'){
+
+
+    }else {
         console.log(`No API key given.`);
         if (type === "http") {
             callback.send('{"error":"No API key given."}');
@@ -55,63 +52,38 @@ function messageProcessor(message, callback, type) {
 
     // Filter the command.
     // Check if the command field exist.
+
     if (message.hasOwnProperty('cmd')) {
 
         console.log(`Received Command: ${message['cmd']}`);
+        if(type === 'ws-ui'){
+            switch (message['cmd']) {
+                case 'CREATE_PROJECT':
+                    console.log('Create Project');
+                    if (formError("create_project",verifyString(message, 'name', 200, 8), callback)){
+                        console.log('here')
+                        return;
+                    }
+                    if (formError("create_project",verifyString(message, 'description', 200, 1), callback)) return;
+                    if (formError("create_project",verifyString(message, 'access', 200, 1), callback)) return;
+                    if (message['access'] !== 'Private' &&  message['access'] !== 'Public'){
+                        formError("create_project",{error: 'Invalid Access Type'}, callback);
+                        return;
+                    }
+                    databaseFunctions.createProject(message['name'], message['description'], message['access'], message['color'], callback.uid);
+                    callback.send(JSON.stringify({"fn": "windowSwitcher('none')"}));
+                    return;
+                break;
+                case 'GET_PROJECTS':
+                    console.log('GET_PROJEXET');
+                    callback.send(databaseFunctions.getProjects(callback.uid));
+                    return;
+                break;
+            }
+
+        }
 
         switch (message['cmd']) {
-
-            case 'WS_SIGN_UP':
-                callback.send(JSON.stringify({"fn": databaseFunctions.sendFunction(signUpScreen, 'signUpScreen'.length)}));
-            break;
-
-            case 'WS_LOGIN':
-                callback.send(JSON.stringify({"fn": databaseFunctions.sendFunction(loginScreen, 'loginScreen'.length)}));
-            break;
-
-            case 'WS_OPEN':
-                callback.send(JSON.stringify({"fn": databaseFunctions.sendFunction(loginScreen, 'loginScreen'.length)}));
-            break;
-
-            case 'CREATE_USER':
-                if (loginError(verifyString(message, 'first_name', 200, 1), callback)) return;
-                if (loginError(verifyString(message, 'last_name', 200, 1), callback)) return;
-                if (loginError(verifyString(message, 'email', 200, 1), callback)) return;
-                if (loginError(verifyString(message, 'password', 200, 6), callback)) return;
-                if (!validateEmail(message['email'])){loginError({error:'Invalid Email Address'}, callback); return}
-                let res = databaseFunctions.createUser(message['email'], message['password'], message['name']);
-                if(res.hasOwnProperty('email_token')){
-                    callback.send(JSON.stringify({"fn": databaseFunctions.sendFunction(signUpSuccess, 'signUpSuccess'.length)}));
-                    var mailOptions = {
-                        from: 'blcloudmailer@gmail.com',
-                        to: message['email'],
-                        subject: 'Brilliant Labs Cloud: Confirm your account.',
-                        text: `Thanks for registering! Please click here to confirm your account: https://cloud.brilliantlabs.ca/verification?confirmation=${res['email_token']}`
-                    };
-
-                    transporter.sendMail(mailOptions, function(error, info){
-                        if (error) {
-                            console.log(error);
-                        } else {
-                            console.log('Email sent: ' + info.response);
-                        }
-                    });
-
-                }else{
-                    loginError({error:'Email address already registered.'}, callback)
-
-                }
-                callback.send(res);
-            break;
-
-
-
-
-
-
-
-
-
 
             // Variables
             case 'CREATE_VARIABLE':
@@ -181,13 +153,16 @@ function messageProcessor(message, callback, type) {
 
                         if (message.hasOwnProperty('value')) {
                             let res = databaseFunctions.setVariable(message['key'], message['name'], message['value']);
-                            if (type === "http") {
-                                callback.send(res);
-                                return;
-                            } else if (type === "ws") {
-                                callback.send(res);
-                                return;
+                            if(res.hasOwnProperty('error') && message.hasOwnProperty('onError')){
+                                res['fn'] = `var errorMessage = "${res['error']}";` + message['onError'];
                             }
+                            if(!res.hasOwnProperty('error') && message.hasOwnProperty('onSuccess')){
+                                console.log('Success');
+                                res['fn'] =  message['onSuccess'];
+                            }
+                            console.log(res);
+                            callback.send(JSON.stringify(res));
+                            return;
                         } else {
                             console.log(`Please specify a value to set.`);
                             if (type === "http") {
@@ -653,170 +628,8 @@ function validateEmail(email) {
     return re.test(String(email).toLowerCase());
 }
 
-
-function signUpSuccess(){
-    var appContainer = document.getElementById('app_container');
-    appContainer.innerHTML = '';
-    appContainer.style.userSelect = 'none';
-    var logo = document.createElement('img');
-    logo.src = "/images/logo.png";
-    logo.width = '300';
-    logo.style.marginBottom = "1rem";
-    appContainer.appendChild(logo);
-    var message = document.createElement('h2');
-    message.innerText = 'Thanks for Signing up! And email has been sent to you please confirm your email before logging in.';
-    message.style.padding = "0rem 5rem";
-    message.style.textAlign = "center";
-    message.style.fontWeight = "400";
-    appContainer.appendChild(message);
-    var signUp = document.createElement('button');
-    signUp.innerText = "Click Here to Sign In!";
-    signUp.addEventListener("click", function (e) {
-        ws.send('{"cmd":"WS_LOGIN", "key":"mv0w9g4j0mada0dfm43a0vmq0vimvf0mcq"}');
-        e.preventDefault();    //stop form from submitting
-    });
-    appContainer.appendChild(signUp);
-
-}
-function loginScreen() {
-    var appContainer = document.getElementById('app_container');
-    appContainer.innerHTML = '';
-    appContainer.style.userSelect = 'none';
-    var logo = document.createElement('img');
-    logo.src = "/images/logo.png";
-    logo.width = '300';
-    logo.style.marginBottom = "1rem";
-    appContainer.appendChild(logo);
-    var loginForm = document.createElement('form');
-    loginForm.id = "main_login";
-    loginForm.classList = 'cc';
-    var emailInput = document.createElement('input');
-    emailInput.required = 'required';
-    emailInput.type = 'email';
-    emailInput.placeholder = 'Email';
-    emailInput.id = `${loginForm.id}_email`;
-    var passwordInput = document.createElement('input');
-    passwordInput.required = 'required';
-    passwordInput.type = 'password';
-    passwordInput.placeholder = 'Password';
-    passwordInput.id = `${loginForm.id}_password`;
-    var submitButton = document.createElement('button');
-    submitButton.innerHTML = "Submit";
-    submitButton.id = `${loginForm.id}_submit`;
-    loginForm.appendChild(emailInput);
-    loginForm.appendChild(passwordInput);
-    loginForm.appendChild(submitButton);
-    loginForm.addEventListener("submit", function (e) {
-        var email = document.getElementById(`${loginForm.id}_email`);
-        var password = document.getElementById(`${loginForm.id}_password`);
-        // ws.send(`{"cmd":"CREATE_USER", "key":"mv0w9g4j0mada0dfm43a0vmq0vimvf0mcq", "email":"${email.value}","password":"${password.value}"}`);
-        firebase.auth().signInWithEmailAndPassword(email.value, password.value)
-            .catch(function(error) {
-                // Handle Errors here.
-                var errorCode = error.code;
-                var errorMessage = error.message;
-                if (errorCode === 'auth/wrong-password') {
-                    alert('Wrong password.');
-                } else {
-                    alert(errorMessage);
-                }
-                console.log(error);
-            });
-        e.preventDefault();    //stop form from submitting
-    });
-    appContainer.appendChild(loginForm);
-    var signUp = document.createElement('a');
-    signUp.innerText = "Dont Have an Account? Click Here to Sign Up!";
-    signUp.addEventListener("mouseenter", function () {
-        signUp.style.color = "rgb(155, 85, 163)";
-        signUp.style.cursor = "pointer";
-    });
-    signUp.addEventListener("mouseleave", function () {
-        signUp.style.color = "#000000";
-        signUp.style.cursor = "default";
-    });
-    signUp.addEventListener("click", function (e) {
-        ws.send('{"cmd":"WS_SIGN_UP", "key":"mv0w9g4j0mada0dfm43a0vmq0vimvf0mcq"}');
-        e.preventDefault();    //stop form from submitting
-    });
-    appContainer.appendChild(signUp);
-}
-function signUpScreen() {
-    var appContainer = document.getElementById('app_container');
-    appContainer.innerHTML = '';
-    appContainer.style.userSelect = 'none';
-    var logo = document.createElement('img');
-    logo.src = "/images/logo.png";
-    logo.width = '300';
-    logo.style.marginBottom = "1rem";
-    appContainer.appendChild(logo);
-    var signUpForm = document.createElement('form');
-    signUpForm.id = "main_sign_up";
-    signUpForm.classList = 'cc';
-    var userFirstName = document.createElement('input');
-    userFirstName.required = 'required';
-    userFirstName.type = 'name';
-    userFirstName.placeholder = 'First Name';
-    userFirstName.id = `${signUpForm.id}_first_name`;
-    var userLastName = document.createElement('input');
-    userLastName.required = 'required';
-    userLastName.type = 'name';
-    userLastName.placeholder = 'Last Name';
-    userLastName.id = `${signUpForm.id}_last_name`;
-    var emailInput = document.createElement('input');
-    emailInput.required = 'required';
-    emailInput.type = 'email';
-    emailInput.placeholder = 'Email Address';
-    emailInput.id = `${signUpForm.id}_email`;
-    var passwordInput = document.createElement('input');
-    passwordInput.required = 'required';
-    passwordInput.type = 'password';
-    passwordInput.placeholder = 'Password';
-    passwordInput.id = `${signUpForm.id}_password`;
-    var passwordInput2 = document.createElement('input');
-    passwordInput2.required = 'required';
-    passwordInput2.type = 'password';
-    passwordInput2.placeholder = 'Confirm Password';
-    passwordInput2.id = `${signUpForm.id}_password2`;
-    var submitButton = document.createElement('button');
-    submitButton.innerHTML = "Sign Up!";
-    submitButton.id = `${signUpForm.id}_submit`;
-    signUpForm.appendChild(userFirstName);
-    signUpForm.appendChild(userLastName);
-    signUpForm.appendChild(emailInput);
-    signUpForm.appendChild(passwordInput);
-    signUpForm.appendChild(passwordInput2);
-    signUpForm.appendChild(submitButton);
-    signUpForm.addEventListener("submit", function (e) {
-        var firstName = document.getElementById(`${signUpForm.id}_first_name`);
-        var lastName = document.getElementById(`${signUpForm.id}_last_name`);
-        var email = document.getElementById(`${signUpForm.id}_email`);
-        var password = document.getElementById(`${signUpForm.id}_password`);
-        var password2 = document.getElementById(`${signUpForm.id}_password2`);
-        ws.send(`{"cmd":"CREATE_USER", "key":"mv0w9g4j0mada0dfm43a0vmq0vimvf0mcq", "first_name":"${firstName.value}", "last_name":"${lastName.value}", "email":"${email.value}","password":"${password.value}", "password_2":"${password2.value}"}`);
-        e.preventDefault();    //stop form from submitting
-    });
-    appContainer.appendChild(signUpForm);
-    var signUp = document.createElement('a');
-    signUp.innerText = "Already have an Account? Click Here to Sign In!";
-    signUp.addEventListener("mouseenter", function () {
-        signUp.style.color = "rgb(155, 85, 163)";
-        signUp.style.cursor = "pointer";
-    });
-    signUp.addEventListener("mouseleave", function () {
-        signUp.style.color = "#000000";
-        signUp.style.cursor = "default";
-    });
-    signUp.addEventListener("click", function (e) {
-        ws.send('{"cmd":"WS_LOGIN", "key":"mv0w9g4j0mada0dfm43a0vmq0vimvf0mcq"}');
-        e.preventDefault();    //stop form from submitting
-    });
-    appContainer.appendChild(signUp);
-}
-
 function verifyString(obj, string, maxLen = 200, minLen = 0) {
-    console.log("1234f23f", obj[string], string);
-    if (obj.hasOwnProperty(string)) {
+        if (obj.hasOwnProperty(string)) {
         if (typeof obj[string] === 'string' || obj[string] instanceof String) {
             if (obj[string].length > minLen) {
                 if (obj[string].length < maxLen) {
@@ -834,32 +647,40 @@ function verifyString(obj, string, maxLen = 200, minLen = 0) {
         return ({error:`No ${titleCase(string)} was provided.`});
     }
 }
-try {
 
-}catch (e) {
-
-}
-function loginError(message, cb) {
+function formError(element, message, cb) {
+    console.log(message);
     if (message.hasOwnProperty('error')) {
-        console.log('login error: ', message['error']);
+        console.log('Error: ', message['error']);
         message['error'] = titleCase(message['error']);
         cb.send(JSON.stringify({
-            "fn": `{console.log('login error');var appContainer=document.getElementById('app_container');try{document.getElementById('error_message').remove();}catch(e){}var errorMessage=document.createElement('div');errorMessage['innerText']="${message['error']}";errorMessage.style.color='red';errorMessage.style.margin='1rem';errorMessage.id='error_message';appContainer.appendChild(errorMessage);}`
+            "fn": `{
+            console.log('Form error');
+            var targetContainer=document.getElementById('${element}');
+            try{
+                document.getElementById('error_message').remove();
+            }
+            catch(e){
+            }
+            var errorMessage=document.createElement('div');
+            errorMessage['innerText']="${message['error']}";
+            errorMessage.style.color='red';
+            errorMessage.style.margin='1rem';
+            errorMessage.style.textAlign = 'center';
+            errorMessage.id='error_message';
+            targetContainer.appendChild(errorMessage);}`
         }));
         return true;
     }
     return false;
 }
+
 function titleCase(str){
     str = str.split('_').join(' ');
     str = str.toLowerCase().split(' ');
-
     let final = [ ];
-
     for(let  word of str){
         final.push(word.charAt(0).toUpperCase()+ word.slice(1));
     }
-
     return final.join(' ')
-
 }

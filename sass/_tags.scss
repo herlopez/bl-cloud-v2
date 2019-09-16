@@ -1,0 +1,38 @@
+body {
+    margin: 0;
+    font-family: Roboto, Helvetica Neue, Helvetica, Arial, sans-serif;
+    overflow-x: hidden;
+
+    header {
+        background: transparent;
+        overflow-x: hidden;
+    }
+
+    button{
+        background: rgb(155, 85, 163);
+        border: none;
+        border-radius: 25px;
+        color: white;
+        padding: 8px 30px;
+        transition: all 0.15s ease;
+        font-size: 16px;
+        margin: 1rem;
+        &:hover{
+            cursor: pointer !important;
+            transform: translateY(-3px);
+            box-shadow: 0 13px 27px -5px rgba(50,50,93,.25),0 8px 16px -8px rgba(0,0,0,.3);
+        }
+    }
+    input:focus, textarea:focus, select:focus, button:focus{
+        outline: none;
+    }
+    input, input[type="search"]{
+        border: solid 1px rgb(155, 85, 163);
+        border-radius: 20px;
+        width: 200px;
+        padding: 10px 20px;
+        font-size: 16px;
+        margin-bottom: 5px;
+
+    }
+}
