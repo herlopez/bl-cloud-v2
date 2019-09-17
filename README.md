@@ -8,6 +8,9 @@
 *  [WS Communication](#head_ws_communication)
     *  [Overview](#head_ws_overview)
     *  [Examples](#head_ws_examples)
+* [MQTT Communication](#head_mqtt_communication)
+    *  [Overview](#head_mqtt_overview)
+    *  [Examples](#head_mqtt_examples)
 *  [Variables](#head_variables)
     *  [Overview](#head_overview)
     *  [Create Variable](#head_create_variable)
@@ -65,149 +68,17 @@ The image bellow demonstrates an example using **WebSocket.org** to communicate 
 
 ![alt text](https://github.com/Brilliant-Labs/cloud/blob/master/ws_exmple.png?raw=true "ws example")
 
-## <a name="head_variables"></a> Variables
+## <a name="head_mqtt_communication"></a>MQTT Communication
+#### <a name="head_mqtt_overview"></a> Overview
+Communicating to the Brilliant Labs Cloud can be done through a **MQTT Connection**. Messages are published to a target topic whereas the message content is a json string with a given command, and the topic is the project API key. Server responses can be received by subscribing to the topic of your projects API key with the appending of '-rsp'. Publish to -> `XXXXXX_API_KEY_XXXXXX`, Subscribe to -> `XXXXXX_API_KEY_XXXXXX-rsp`. 
 
-#### <a name="head_overview"></a> Overview
-Variables are meant to be used to store simple values and flags to a given API key, like one would do while coding *let myVariable = 23*. Variables are not intended to be used for large data sets, however variables can hold objects and all data types. Variables must all have unique names. Variables can be created, deleted, set and read from a device using the API key. Please read carefully throughout this section to catch all the details needed while implementing this API in your application or embedded
-system.
- 
-|Command            |Parameters|Type     |Description                           |
-|-------------------|----------|---------|--------------------------------------|
-|**CREATE_VARIABLE**|name      |String   |Name of the variable to create.       |
-|                   |value     |Any      |Value to initialize the variable to.  |
-|**DELETE_VARIABLE**|name      |String   |Name of the variable to erase.        |
-|**SET_VARIABLE**   |name      |String   |Name of the variable to erase.        |
-|                   |value     |Any      |Value to set the variable to.         |
-|**GET_VARIABLE**   |name      |String   |Name of the variable to read.         |
+Currently the MQTT broker only accepts tcp connections on port **1883**.
 
-#### <a name="head_create_variable">Create Variable
+#### <a name="head_mqtt_examples"></a> Examples
+You can test the MQTT communication using a chrome application called <a href="https://chrome.google.com/webstore/detail/mqttlens/hemojaaeigabkbcookmlgmdigohjobjm?hl=en">MQTTLens.</a>
 
-Command that creates a variable that can be set and read.
-
-|Command            |Parameters|Type     |Description                           |
-|-------------------|----------|---------|--------------------------------------|
-|**CREATE_VARIABLE**|name      |String   |Name of the variable to create.       |
-|                   |value*     |Any      |Value to initialize the variable with.|
-
-*\*Paramate 'value' is not required, will be initialized as **null** if not specified.*
-
-##### Example 1 (No Value)
-*Request:*
-```json
-{
-  "key": "XXXXXXXXXXXXXX",
-  "cmd": "CREATE_VARIABLE",
-  "name": "Test"
-}
-```
-*Response:*
-```json
-{
-  "meta":{
-    "revision": 0,
-    "created": 1563162485390,
-    "version": 0
-  },
-  "result": {
-    "Test": null
-  }
-}
-```
-##### Example 2 (Value Provided)
-*Request:*
-```json
-{
-  "key": "XXXXXXXXXXXXXX",
-  "cmd": "CREATE_VARIABLE",
-  "name": "Test",
-  "value": 12345678
-}
-```
-*Response:*
-```json
-{
-  "meta":{
-    "revision": 0,
-    "created": 1563162485390,
-    "version": 0
-  },
-  "result": {
-    "Test": 12345678
-  }
-}
-```
-
-
-#### <a name="head_erase_variable"> Delete Variable
-# Brilliant Labs Cloud API
-
-
-*  [HTTP Communication](#head_http_communication)
-    *  [Overview](#head_http_overview)
-    *  [Headers](#head_http_headers)
-    *  [Examples](#head_http_examples)
-*  [WS Communication](#head_ws_communication)
-    *  [Overview](#head_ws_overview)
-    *  [Examples](#head_ws_examples)
-*  [Variables](#head_variables)
-    *  [Overview](#head_overview)
-    *  [Create Variable](#head_create_variable)
-    *  [Delete Variable](#head_erase_variable)
-    *  [Set Variable](#head_set_variable)
-    *  [Get Variable](#head_get_variable)
-*  [Charts](#head_charts)
-    *  [Overview](#head_charts_overview)
-    *  [Create Chart](#head_create_chart)
-    *  [Delete Chart](#head_erase_chart)
-    *  [Delete Chart Data](#head_erase_chart_data)
-    *  [Add Chart Point](#head_add_chart_point)
-    
- 
-
-## <a name="head_http_communication"></a> HTTP Communication
-#### <a name="head_http_overview"></a> Overview
-
-Communicating to the Brilliant Labs Cloud can be done through a **GET** https request, whereas the content of the body is a json string with a given command. The primary use case for communicating through https is for devices that do not have the capabilities of communicating through a websocket connection. The server only accepts connections over SSL.
-
-**The URL for https requests: **: https://cloud.brilliantlabs.ca/api
-
-#### <a name="head_http_headers"></a> Headers
-The required headers:
-
-| Header | Value |
-| ------ | ------ |
-| Content-Type | application/json |
-#### <a name="head_http_examples"></a> Examples
-
-**Command Line cURL**
-```terminal
-curl -d '{"cmd":"CREATE_VARIABLE", "key":"gsqfr6DsDWfGhn4og5RHNQTA3hFE","value":5, "name":"TestVariable"}' -H "Content-Type: application/json" -X GET  https://cloud.brilliantlabs.ca/api
-```
-response
-```terminal
-{"meta":{"revision":0,"created":1563162485390,"version":0},"results":{"TestVariable":5}} 
-```
-
-If you don't have cURL installed, you can check how to do so <a href="https://www.luminanetworks.com/docs-lsc-610/Topics/SDN_Controller_Software_Installation_Guide/Appendix/Installing_cURL_for_Ubuntu_1.html">here</a>
-
-You can also use an API development tool like <a href="https://www.getpostman.com">Postman</a> or <a href="https://insomnia.rest/">Insomnia</a>
-
-## <a name="head_ws_communication"></a> WS Communication
-#### <a name="head_ws_overview"></a> Overview
-Communicating to the Brilliant Labs Cloud can be done through a **Websocket Connection**, whereas the message content is a json string with a given command. The primary use case for communicating through a websocket on a device is to have improved communication speeds for real time applications. The server only accepts websocket connections over wss.
-
-> Please note that the API described in this document also works with the websocket server. Use the same commands and format described later in the document as you would with the https requests body.
-
-**The URL for websocket connections is: **: wss://cloud.brilliantlabs.ca/wsapi
-#### <a name="head_ws_examples"></a> Examples
-If you visit <a href="https://www.websocket.org/echo.html">https://www.websocket.org/echo.html</a>,  you can test out the websocket API.
-
-The image bellow demonstrates an example using **WebSocket.org** to communicate with the server.
-
-![alt text](https://github.com/Brilliant-Labs/cloud/blob/master/ws_exmple.png?raw=true "ws example")
 
 ## <a name="head_variables"></a> Variables
-
 #### <a name="head_overview"></a> Overview
 Variables are meant to be used to store simple values and flags to a given API key, like one would do while coding *let myVariable = 23*. Variables are not intended to be used for large data sets, however variables can hold objects and all data types. Variables must all have unique names. Variables can be created, deleted, set and read from a device using the API key. Please read carefully throughout this section to catch all the details needed while implementing this API in your application or embedded
 system.
