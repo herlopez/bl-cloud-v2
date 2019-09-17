@@ -77,7 +77,17 @@ Currently the MQTT broker only accepts tcp connections on port **1883**.
 #### <a name="head_mqtt_examples"></a> Examples
 You can test the MQTT communication using a chrome application called <a href="https://chrome.google.com/webstore/detail/mqttlens/hemojaaeigabkbcookmlgmdigohjobjm?hl=en">MQTTLens.</a>
 
+Here is an example using MQTT Lens to set the value of a variable over MQTT:
 
+First we create the connection:
+
+![alt text](https://github.com/Brilliant-Labs/cloud/blob/master/mqtt-example-1.png?raw=true "MQTT Example")
+
+Second, we subscribe to the API key + '-rsp', and publish the command to the API key.
+
+![alt text](https://github.com/Brilliant-Labs/cloud/blob/master/mqtt-example-2.png?raw=true "MQTT Example 2")
+
+We can see that we received the confirmation that the command was successful.
 ## <a name="head_variables"></a> Variables
 #### <a name="head_overview"></a> Overview
 Variables are meant to be used to store simple values and flags to a given API key, like one would do while coding *let myVariable = 23*. Variables are not intended to be used for large data sets, however variables can hold objects and all data types. Variables must all have unique names. Variables can be created, deleted, set and read from a device using the API key. Please read carefully throughout this section to catch all the details needed while implementing this API in your application or embedded
