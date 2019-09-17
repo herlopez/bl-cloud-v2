@@ -81,11 +81,11 @@ Here is an example using MQTT Lens to set the value of a variable over MQTT:
 
 First we create the connection:
 
-![alt text](https://github.com/Brilliant-Labs/cloud/blob/master/mqtt-example-1.png?raw=true "MQTT Example")
+![alt text](https://github.com/Brilliant-Labs/cloud/blob/master/mqtt-example-2.png?raw=true "MQTT Example")
 
 Second, we subscribe to the API key + '-rsp', and publish the command to the API key.
 
-![alt text](https://github.com/Brilliant-Labs/cloud/blob/master/mqtt-example-2.png?raw=true "MQTT Example 2")
+![alt text](https://github.com/Brilliant-Labs/cloud/blob/master/mqtt-example-1.png?raw=true "MQTT Example 2")
 
 We can see that we received the confirmation that the command was successful.
 ## <a name="head_variables"></a> Variables
