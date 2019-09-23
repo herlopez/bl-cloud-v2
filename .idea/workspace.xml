@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f8dc789a-0ee8-4036-b494-978e5ba3fd15" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+    <list default="true" id="f8dc789a-0ee8-4036-b494-978e5ba3fd15" name="Default Changelist" comment="=MQTT Implementation">
+      <change afterPath="$PROJECT_DIR$/app/server/command_processors/http-commands.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/server/command_processors/websocket-commands.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/server/command_processors/websocket-ui-commands.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/server/tools.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/UI/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/server/database.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/server/database.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/server/message-processor.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/server/message-processor.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database.json" beforeDir="false" afterPath="$PROJECT_DIR$/database.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -25,12 +34,27 @@
     <select />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+    <leaf>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/index.js">
+        <entry file="file://$PROJECT_DIR$/app/server/database.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="15" column="33" selection-start-line="15" selection-start-column="33" selection-end-line="15" selection-end-column="33" />
+            <state relative-caret-position="-118">
+              <caret line="6" selection-start-line="6" selection-end-line="6" />
+              <folding>
+                <element signature="n#!!doc;n#createVariable#0" />
+                <element signature="n#!!doc;n#getVariable#0" />
+                <element signature="n#!!block;n#getVariable#0" />
+                <element signature="n#!!doc;n#deleteVariable#0" />
+                <element signature="n#!!doc;n#createChart#0" />
+                <element signature="n#!!doc;n#deleteChart#0" />
+                <element signature="n#!!doc;n#addDataPoint#0" />
+                <element signature="n#!!block;n#addDataPoint#0" />
+                <element signature="n#!!doc;n#getChartData#0" />
+                <element signature="n#!!block;n#getChartData#0" />
+                <element signature="n#!!block;n#getChartType#0" />
+                <element signature="n#!!block;n#setDatabase#0" />
+                <element signature="e#16773#17012#0" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -39,8 +63,8 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="434">
-                <caret line="85" column="42" lean-forward="true" selection-start-line="85" selection-start-column="42" selection-end-line="85" selection-end-column="42" />
+              <first_editor relative-caret-position="303">
+                <caret line="19" column="51" selection-start-line="19" selection-start-column="51" selection-end-line="19" selection-end-column="51" />
               </first_editor>
               <second_editor />
             </state>
@@ -48,35 +72,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/server/database.js">
+        <entry file="file://$PROJECT_DIR$/app/server/command_processors/http-commands.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2576">
-              <caret line="529" column="16" selection-start-line="529" selection-start-column="16" selection-end-line="529" selection-end-column="16" />
-              <folding>
-                <element signature="n#!!doc;n#createVariable#0" />
-                <element signature="n#!!doc;n#getVariable#0" />
-                <element signature="n#!!block;n#getVariable#0" />
-                <element signature="n#!!doc;n#deleteVariable#0" />
-                <element signature="n#!!block;n#deleteVariable#0" />
-                <element signature="n#!!doc;n#createChart#0" />
-                <element signature="n#!!block;n#createChart#0" />
-                <element signature="n#!!doc;n#deleteChart#0" />
-                <element signature="n#!!block;n#deleteChart#0" />
-                <element signature="n#!!doc;n#addDataPoint#0" />
-                <element signature="n#!!block;n#addDataPoint#0" />
-                <element signature="n#!!block;n#getChartData#0" />
-                <element signature="n#!!block;n#getChartType#0" />
-                <element signature="n#!!block;n#setDatabase#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sass/_app.scss">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4324">
-              <caret line="188" column="14" selection-start-line="188" selection-start-column="14" selection-end-line="188" selection-end-column="14" />
+            <state relative-caret-position="1218">
+              <caret line="81" column="2" selection-start-line="81" selection-start-column="2" selection-end-line="81" selection-end-column="2" />
             </state>
           </provider>
         </entry>
@@ -115,6 +114,9 @@
       <find>button</find>
       <find>mous</find>
       <find>desc</find>
+      <find>Varia</find>
+      <find>console</find>
+      <find>interv</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -136,7 +138,6 @@
         <option value="$PROJECT_DIR$/test.js" />
         <option value="$PROJECT_DIR$/views/verification.pug" />
         <option value="$PROJECT_DIR$/views/parts/head.pug" />
-        <option value="$PROJECT_DIR$/app/server/http-server.js" />
         <option value="$PROJECT_DIR$/.idea/jsLinters/jshint.xml" />
         <option value="$PROJECT_DIR$/app/server/firebase.js" />
         <option value="$PROJECT_DIR$/sass/page-front.scss" />
@@ -150,12 +151,17 @@
         <option value="$PROJECT_DIR$/app/server/ws-server.js" />
         <option value="$PROJECT_DIR$/sass/_tags.scss" />
         <option value="$PROJECT_DIR$/sass/_layout.scss" />
-        <option value="$PROJECT_DIR$/app/server/database.js" />
         <option value="$PROJECT_DIR$/sass/_app.scss" />
-        <option value="$PROJECT_DIR$/app/UI/app.js" />
-        <option value="$PROJECT_DIR$/app/server/message-processor.js" />
         <option value="$PROJECT_DIR$/app/server/mqtt-server.js" />
         <option value="$PROJECT_DIR$/index.js" />
+        <option value="$PROJECT_DIR$/app/UI/app.js" />
+        <option value="$PROJECT_DIR$/app/server/command_processors/websocket-commands.js" />
+        <option value="$PROJECT_DIR$/app/server/http-server.js" />
+        <option value="$PROJECT_DIR$/app/server/message-processor.js" />
+        <option value="$PROJECT_DIR$/app/server/tools.js" />
+        <option value="$PROJECT_DIR$/app/server/command_processors/websocket-ui-commands.js" />
+        <option value="$PROJECT_DIR$/app/server/command_processors/http-commands.js" />
+        <option value="$PROJECT_DIR$/app/server/database.js" />
         <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
@@ -171,10 +177,9 @@
     <other-services-enabled>true</other-services-enabled>
     <auto-save>true</auto-save>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="y" value="23" />
+  <component name="ProjectFrameBounds" extendedState="6" fullScreen="true">
     <option name="width" value="1680" />
-    <option name="height" value="1027" />
+    <option name="height" value="1050" />
   </component>
   <component name="ProjectLevelVcsManager">
     <OptionsSetting value="false" id="Update" />
@@ -184,8 +189,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -208,18 +213,14 @@
               <item name="cloud" type="b2602c69:ProjectViewProjectNode" />
               <item name="cloud" type="462c0819:PsiDirectoryNode" />
               <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="command_processors" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cloud" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cloud" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
               <item name="UI" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cloud" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cloud" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cloud" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cloud" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="cloud" type="b2602c69:ProjectViewProjectNode" />
@@ -246,7 +247,7 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1568726873582" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1569251940784" />
     <property name="jsx.switch.disabled" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
@@ -335,7 +336,9 @@
       <workItem from="1568247207973" duration="660000" />
       <workItem from="1568284270065" duration="761000" />
       <workItem from="1568598448296" duration="12220000" />
-      <workItem from="1568726458111" duration="401000" />
+      <workItem from="1568726458111" duration="605000" />
+      <workItem from="1568984207674" duration="15907000" />
+      <workItem from="1569019943332" duration="24805000" />
     </task>
     <task id="LOCAL-00001" summary="=MQTT Implementation">
       <created>1568726588352</created>
@@ -348,28 +351,28 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="276931000" />
+    <option name="totallyTimeSpent" value="317847000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1680" height="1027" extended-state="6" />
+    <frame x="0" y="0" width="1680" height="1050" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Designer" order="0" />
       <window_info id="Capture Tool" order="1" />
       <window_info id="UI Designer" order="2" />
       <window_info id="Favorites" order="3" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="4" visible="true" weight="0.15567766" />
+      <window_info active="true" content_ui="combo" id="Project" order="4" visible="true" weight="0.18070818" />
       <window_info id="Image Layers" order="5" />
       <window_info id="Structure" order="6" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="SimpleHttpClient" order="0" weight="0.32987553" />
       <window_info anchor="bottom" id="Messages" order="1" />
       <window_info anchor="bottom" id="Docker" order="2" show_stripe_button="false" />
-      <window_info anchor="bottom" id="File Transfer" order="3" sideWeight="0.4932845" visible="true" weight="0.1995685" />
+      <window_info anchor="bottom" id="File Transfer" order="3" sideWeight="0.4908425" visible="true" weight="0.2695473" />
       <window_info anchor="bottom" id="Database Changes" order="4" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="5" />
       <window_info anchor="bottom" id="Message" order="6" />
       <window_info anchor="bottom" id="Find" order="7" sideWeight="0.4993895" weight="0.3281893" />
-      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.50671554" side_tool="true" visible="true" weight="0.1995685" />
+      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.50915754" side_tool="true" visible="true" weight="0.2695473" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Run" order="10" />
       <window_info anchor="bottom" id="Debug" order="11" weight="0.4" />
@@ -391,44 +394,6 @@
       <window_info anchor="right" id="RestServices" order="11" weight="0.32954547" />
       <window_info anchor="right" id="JSON Viewer" order="12" weight="0.32967034" />
     </layout>
-    <layout-to-restore>
-      <window_info id="Designer" order="0" />
-      <window_info id="Capture Tool" order="1" />
-      <window_info id="UI Designer" order="2" />
-      <window_info id="Favorites" order="3" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="4" visible="true" weight="0.15567766" />
-      <window_info id="Image Layers" order="5" />
-      <window_info id="Structure" order="6" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="SimpleHttpClient" order="0" weight="0.32987553" />
-      <window_info anchor="bottom" id="Messages" order="1" />
-      <window_info anchor="bottom" id="Docker" order="2" show_stripe_button="false" />
-      <window_info anchor="bottom" id="File Transfer" order="3" sideWeight="0.493895" weight="0.19958848" />
-      <window_info anchor="bottom" id="Database Changes" order="4" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="5" />
-      <window_info anchor="bottom" id="Message" order="6" />
-      <window_info anchor="bottom" id="Find" order="7" sideWeight="0.4993895" weight="0.3281893" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" sideWeight="0.506105" side_tool="true" visible="true" weight="0.34843582" />
-      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Run" order="10" />
-      <window_info anchor="bottom" id="Debug" order="11" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="12" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="13" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="14" />
-      <window_info anchor="bottom" id="REST Client" order="15" weight="0.40560165" />
-      <window_info anchor="right" id="ReST Console" order="0" weight="0.55128205" />
-      <window_info anchor="right" id="Palette" order="1" />
-      <window_info anchor="right" id="Remote Host" order="2" visible="true" weight="0.32967034" />
-      <window_info anchor="right" id="Capture Analysis" order="3" />
-      <window_info anchor="right" id="Database" order="4" weight="0.17521368" />
-      <window_info anchor="right" id="Palette&#9;" order="5" />
-      <window_info anchor="right" id="Theme Preview" order="6" />
-      <window_info anchor="right" id="Maven" order="7" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="8" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="9" weight="0.24908425" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="10" weight="0.25" />
-      <window_info anchor="right" id="RestServices" order="11" weight="0.32954547" />
-      <window_info anchor="right" id="JSON Viewer" order="12" weight="0.32967034" />
-    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -510,23 +475,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test.js" />
     <entry file="file://$PROJECT_DIR$/views/verification.pug" />
-    <entry file="file://$USER_HOME$/Library/Mobile Documents/com~apple~CloudDocs/vinvox-can9-47b197266116/source_server/src/server/typescript/firebase.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$USER_HOME$/Library/Mobile Documents/com~apple~CloudDocs/vinvox-can9-47b197266116/source_server/server.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="753">
-          <caret line="86" column="16" selection-start-line="86" selection-start-column="4" selection-end-line="86" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/server/http-server.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="10" column="62" lean-forward="true" selection-start-line="10" selection-start-column="62" selection-end-line="10" selection-end-column="62" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/Library/Mobile Documents/com~apple~CloudDocs/vinvox-can9-47b197266116/source_server/src/server/typescript/firebase.js" />
+    <entry file="file://$USER_HOME$/Library/Mobile Documents/com~apple~CloudDocs/vinvox-can9-47b197266116/source_server/server.js" />
     <entry file="file://$PROJECT_DIR$/.idea/jsLinters/jshint.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="439">
@@ -646,42 +596,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/UI/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="791">
-          <caret line="161" column="56" selection-start-line="161" selection-start-column="56" selection-end-line="161" selection-end-column="56" />
-          <folding>
-            <element signature="n#!!block;n#windowSwitcher#0" />
-            <element signature="n#!!doc;n#formError#0" />
-            <element signature="n#!!block;n#formError#0" />
-            <element signature="n#!!block;n#createProject#0" />
-            <element signature="n#!!block;n#variableEdit#0" />
-            <element signature="n#!!block;n#variableSave#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/server/ws-server.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1104">
-          <caret line="48" column="58" lean-forward="true" selection-start-line="48" selection-start-column="58" selection-end-line="48" selection-end-column="58" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/server/message-processor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-579">
-          <caret line="18" column="5" lean-forward="true" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
-          <folding>
-            <element signature="n#!!block;n#validateEmail#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/server/mqtt-server.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1288">
           <caret line="56" column="61" lean-forward="true" selection-start-line="56" selection-start-column="61" selection-end-line="56" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sass/_app.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="636">
+          <caret line="188" column="14" selection-start-line="188" selection-start-column="14" selection-end-line="188" selection-end-column="14" />
         </state>
       </provider>
     </entry>
@@ -692,41 +617,120 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/server/http-server.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="441">
+          <caret line="37" column="33" lean-forward="true" selection-start-line="37" selection-start-column="33" selection-end-line="37" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/server/ws-server.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="20" column="54" selection-start-line="20" selection-start-column="54" selection-end-line="20" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/UI/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="922">
+          <caret line="635" column="24" selection-start-line="635" selection-start-column="24" selection-end-line="635" selection-end-column="24" />
+          <folding>
+            <element signature="n#!!block;n#viewSwitcher#0" />
+            <element signature="n#!!block;n#windowSwitcher#0" />
+            <element signature="n#!!doc;n#formError#0" />
+            <element signature="n#!!block;n#formError#0" />
+            <element signature="n#!!block;n#createProject#0" />
+            <element signature="n#!!block;n#getProjects#0" />
+            <element signature="n#!!block;n#paintProjects#0" />
+            <element signature="n#!!block;n#paintProject#0" />
+            <element signature="n#!!block;n#updateProject#0" />
+            <element signature="n#!!block;n#variableEdit#0" />
+            <element signature="n#!!block;n#variableSave#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/body-parser/lib/read.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="826">
+          <caret line="134" column="35" selection-start-line="134" selection-start-column="35" selection-end-line="134" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/raw-body/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="212" column="6" selection-start-line="212" selection-start-column="6" selection-end-line="212" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/server/tools.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="794">
+          <caret line="46" column="5" lean-forward="true" selection-start-line="46" selection-start-column="5" selection-end-line="46" selection-end-column="5" />
+          <folding>
+            <element signature="n#!!block;n#validateEmail#0" />
+            <element signature="n#!!block;n#titleCase#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/server/message-processor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="223">
+          <caret line="15" column="46" selection-start-line="15" selection-start-column="46" selection-end-line="15" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/server/command_processors/websocket-ui-commands.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="427">
+          <caret line="25" column="54" lean-forward="true" selection-start-line="25" selection-start-column="54" selection-end-line="25" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/server/command_processors/websocket-commands.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="115">
+          <caret line="5" column="29" lean-forward="true" selection-start-line="5" selection-start-column="29" selection-end-line="5" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/server/command_processors/http-commands.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1218">
+          <caret line="81" column="2" selection-start-line="81" selection-start-column="2" selection-end-line="81" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/server/database.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2576">
-          <caret line="529" column="16" selection-start-line="529" selection-start-column="16" selection-end-line="529" selection-end-column="16" />
+        <state relative-caret-position="-118">
+          <caret line="6" selection-start-line="6" selection-end-line="6" />
           <folding>
             <element signature="n#!!doc;n#createVariable#0" />
             <element signature="n#!!doc;n#getVariable#0" />
             <element signature="n#!!block;n#getVariable#0" />
             <element signature="n#!!doc;n#deleteVariable#0" />
-            <element signature="n#!!block;n#deleteVariable#0" />
             <element signature="n#!!doc;n#createChart#0" />
-            <element signature="n#!!block;n#createChart#0" />
             <element signature="n#!!doc;n#deleteChart#0" />
-            <element signature="n#!!block;n#deleteChart#0" />
             <element signature="n#!!doc;n#addDataPoint#0" />
             <element signature="n#!!block;n#addDataPoint#0" />
+            <element signature="n#!!doc;n#getChartData#0" />
             <element signature="n#!!block;n#getChartData#0" />
             <element signature="n#!!block;n#getChartType#0" />
             <element signature="n#!!block;n#setDatabase#0" />
+            <element signature="e#16773#17012#0" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sass/_app.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4324">
-          <caret line="188" column="14" selection-start-line="188" selection-start-column="14" selection-end-line="188" selection-end-column="14" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="434">
-            <caret line="85" column="42" lean-forward="true" selection-start-line="85" selection-start-column="42" selection-end-line="85" selection-end-column="42" />
+          <first_editor relative-caret-position="303">
+            <caret line="19" column="51" selection-start-line="19" selection-start-column="51" selection-end-line="19" selection-end-column="51" />
           </first_editor>
           <second_editor />
         </state>

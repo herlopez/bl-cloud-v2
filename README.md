@@ -17,6 +17,7 @@
     *  [Delete Variable](#head_erase_variable)
     *  [Set Variable](#head_set_variable)
     *  [Get Variable](#head_get_variable)
+    *  [Get All Variables](#head_get_all_variables)
 *  [Charts](#head_charts)
     *  [Overview](#head_charts_overview)
     *  [Create Chart](#head_create_chart)
@@ -101,6 +102,8 @@ system.
 |**SET_VARIABLE**   |name      |String   |Name of the variable to erase.        |
 |                   |value     |Any      |Value to set the variable to.         |
 |**GET_VARIABLE**   |name      |String   |Name of the variable to read.         |
+|**GET_ALL_VARIABLES**   |      |   ||
+
 
 #### <a name="head_create_variable">Create Variable
 
@@ -253,6 +256,39 @@ Command that gets the value of a variable.
     "Test": 87654321
   }
 }
+```
+#### <a name="head_get_all_variables"> Get All Variable
+
+Command that retrieve all variables.
+
+|Command            |Parameters|Type     |Description                           |
+|-------------------|----------|---------|--------------------------------------|
+|**GET_ALL_VARIABLE**   |      |   |         |
+
+##### Example
+*Request*
+```json
+{
+  "key": "XXXXXXXXXXXXXX",
+  "cmd": "GET_ALL_VARIABLE"
+}
+```
+*Response*
+```json
+{
+    "meta": {
+        "revision": 0,
+        "created": 1567996872756,
+        "version": 0,
+        "updated": 1569251454138
+    },
+    "results": {
+        "Humidity": 43,
+        "Temperature": 26,
+        "Test Name": "Heat"
+    }
+}
+
 ```
 
 ## <a name="head_charts">Charts

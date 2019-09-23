@@ -90,8 +90,8 @@ docReady(function () {
 
 
               ws.onopen = function open() {
-                serverStatus = true;
-                console.log('connected');
+                serverStatus = true; // console.log('connected');
+
                 getProjects(currentUid);
                 setInterval(function () {
                   getProjects(currentUid);
@@ -100,24 +100,22 @@ docReady(function () {
 
 
               ws.onclose = function close() {
-                serverStatus = false;
-                console.log('disconnected');
+                serverStatus = false; // console.log('disconnected');
               };
 
               ws.onmessage = function incoming(data) {
-                console.log(data);
+                // console.log(data);
                 messageProcessor(data, ws);
               };
 
-              ws.error = function incoming(data) {
-                console.log(data);
+              ws.error = function incoming(data) {// console.log(data);
               };
             })["catch"](function (e) {
-              console.log(e);
+              // console.log(e);
               serverStatus = false;
             });
           } catch (e) {
-            console.log(e);
+            // console.log(e);
             serverStatus = false;
           }
         }
@@ -131,14 +129,12 @@ docReady(function () {
 });
 
 function messageProcessor(message, callback) {
-  console.log('Message Received: ', message);
-
+  // console.log('Message Received: ', message);
   try {
-    console.log(message);
-    message = JSON.parse(message.data);
-    console.log(message.results);
+    // console.log(message);
+    message = JSON.parse(message.data); // console.log(message.results);
   } catch (e) {
-    console.log(e);
+    // console.log(e);
     callback.send("{\"error\":\"Unable to parse JSON: ".concat(e, "\"}"));
     return;
   }
@@ -147,8 +143,7 @@ function messageProcessor(message, callback) {
     {
       switch (message.cmd) {
         case 'PROJECTS':
-          console.log("Project");
-
+          // console.log("Project");
           try {
             var projects = message['results'];
 
@@ -161,8 +156,7 @@ function messageProcessor(message, callback) {
             } else {
               paintProjects(projects);
             }
-          } catch (e) {
-            console.log(e);
+          } catch (e) {// console.log(e);
           }
 
           break;
@@ -174,6 +168,7 @@ function messageProcessor(message, callback) {
   }
 
   if (message.hasOwnProperty('fn')) {
+    console.log('Function!!!');
     var fn = message['fn'];
 
     try {
@@ -215,7 +210,7 @@ function viewSwitcher(targetView, options) {
       var project = document.createElement('div');
       currentProject = options.id;
       project.classList = 'w100 c ac jc';
-      project.innerHTML = "\n                <div style=\"\" class=\"w100 c ac\">\n                    <h1 style=\"\" class=\"m0\">".concat(options.name, "</h1>\n                    <h3 style=\"\">").concat(options.description, "</h3>\n                    <div class=\"r js ac\">\n                        <h4>Project Key: </h4>\n                         <input class=\"ml2\" value=\"").concat(options.key, "\" disabled>\n                    </div>\n                   \n                    <div class=\"w100 rxl ac jc\">\n                        <div id=\"variables\" class=\"m1 variables c jfs ac w100xl\"> \n                            <h3 class=\"mb0\">Variables</h3>\n                            <!--<div class=\"r jc ac\">-->\n                                <!--<i class=\"mr1 fa fa-search\"></i>-->\n                                <!--<input type=\"search\" id=\"variable-search\">-->\n                            <!--</div>-->\n                        </div>\n                        <div id=\"charts\" class=\"m1 charts c jfs ac w100xl\">\n                            <h3 class=\"mb0\">Charts</h3>\n                            <p style=\"background: #9b55a3; color: white; border-radius: 20px; padding: 5px 40px;\">No Charts \uD83D\uDE41</p>\n                            <!--<div class=\"r jc ac\">-->\n                                <!--<i class=\"mr1 fa fa-search\"></i>-->\n                                <!--<input type=\"search\" id=\"variable-search\">-->\n                            <!--</div>-->\n                        </div>\n                    </div>\n                </div>");
+      project.innerHTML = "\n                <div style=\"\" class=\"w100 c ac\">\n                    <h1 style=\"\" class=\"m0\">".concat(options.name, "</h1>\n                    <h3 style=\"\">").concat(options.description, "</h3>\n                    <div class=\"r js ac\">\n                        <h4>Project Key: </h4>\n                         <input class=\"ml2\" id=\"project_key\" value=\"").concat(options.key, "\" disabled>\n                    </div>\n                   \n                    <div class=\"w100 rxl ac jc\">\n                        <div id=\"variables\" class=\"m1 variables c jfs ac w100xl\"> \n                            <h3 class=\"mb0\">Variables <button class=\"fa fa-plus\" onclick=\"windowSwitcher('new_variable')\"></button><button class=\"m0 p0 fa fa-pencil-alt\" id = \"var_button\" onclick=\"\"></button></h3>\n                            <!--<div class=\"r jc ac\">-->\n                                <!--<i class=\"mr1 fa fa-search\"></i>-->\n                                <!--<input type=\"search\" id=\"variable-search\">-->\n                            <!--</div>-->\n                        </div>\n                        <div id=\"charts\" class=\"m1 charts c jfs ac w100xl\">\n                            <h3 class=\"mb0\">Charts</h3>\n                            <p style=\"background: #9b55a3; color: white; border-radius: 20px; padding: 5px 40px;\">No Charts \uD83D\uDE41</p>\n                            <!--<div class=\"r jc ac\">-->\n                                <!--<i class=\"mr1 fa fa-search\"></i>-->\n                                <!--<input type=\"search\" id=\"variable-search\">-->\n                            <!--</div>-->\n                        </div>\n                    </div>\n                </div>");
       appContainer.appendChild(project);
       var variables = document.getElementById('variables');
       var vars = options.variables;
@@ -239,9 +234,9 @@ function viewSwitcher(targetView, options) {
         noVars.innerHTML = "<p style=\"background: #9b55a3; color: white; border-radius: 20px; padding: 5px 40px;\">No Variables \uD83D\uDE41</p>";
         variables.appendChild(noVars);
         return;
-      }
+      } // console.log('Project Options: ', options);
 
-      console.log('Project Options: ', options);
+
       break;
     // Forgot Password View
 
@@ -364,9 +359,8 @@ function viewSwitcher(targetView, options) {
             formError('The password is too weak.');
           } else {
             formError(errorMessage);
-          }
+          } // console.log(error);
 
-          console.log(error);
         });
         e.preventDefault(); //stop form from submitting
       });
@@ -490,9 +484,8 @@ function viewSwitcher(targetView, options) {
             formError('Wrong password.');
           } else {
             formError(errorMessage);
-          }
+          } // console.log(error);
 
-          console.log(error);
         });
         e.preventDefault(); //stop form from submitting
       });
@@ -539,7 +532,7 @@ function viewSwitcher(targetView, options) {
   }
 }
 
-function windowSwitcher(targetWindow) {
+function windowSwitcher(targetWindow, options) {
   var window = document.getElementById('window');
 
   switch (targetWindow) {
@@ -563,6 +556,24 @@ function windowSwitcher(targetWindow) {
       window.appendChild(contentBlock);
       document.getElementById('create_project').addEventListener('submit', function (e) {
         createProject(document.getElementById('project').value, document.getElementById('desc').value, document.querySelector('input[name="access"]:checked').value, document.getElementById('color').value, currentUid);
+        getProjects(currentUid);
+        e.preventDefault(); //stop form from submitting
+      });
+      break;
+
+    case 'new_variable':
+      window.classList.add('cr');
+      window.classList.add('ac');
+      window.classList.add('jc');
+      window.classList.remove('dn');
+      window.innerHTML = '';
+      var newVariableContentBlock = document.createElement('div');
+      newVariableContentBlock.id = 'window_content_block';
+      newVariableContentBlock.innerHTML = '<form id="new_variable"> ' + '<h2>Create a New Variable</h2>' + '<p>Variable Name:</p>' + '<input class="" required type="text" id="project" placeholder="My Variable Name...">' + '<div class="r jc"><button >Create</button>' + "<button onclick=\"windowSwitcher('none')\">Cancel</button></div>" + '</form>';
+      window.appendChild(newVariableContentBlock);
+      document.getElementById('new_variable').addEventListener('submit', function (e) {
+        console.log(currentProject.key);
+        createVariable(document.getElementById('project').value, currentUid);
         getProjects(currentUid);
         e.preventDefault(); //stop form from submitting
       });
@@ -593,7 +604,7 @@ function formError(msg) {
 }
 
 function createProject(name, desc, access, color, uid) {
-  console.log('Creating Project: ', name, desc, access, uid);
+  // console.log('Creating Project: ', name, desc, access, uid);
   var project = {
     "uid": uid,
     "cmd": 'CREATE_PROJECT',
@@ -603,6 +614,12 @@ function createProject(name, desc, access, color, uid) {
     "access": access
   };
   ws.send(JSON.stringify(project));
+}
+
+function createVariable(name, uid) {
+  console.log('Creating Var: ', name, uid);
+  var ele = document.getElementById('project_key');
+  ws.send("{\"cmd\":\"CREATE_VARIABLE\", \"key\":\"".concat(ele.value, "\", \"name\":\"").concat(name, "\", \"onSuccess\":\"console.log('Success!'); windowSwitcher('none'); getProjects(currentUid);\", \"onError\":\"\"}"));
 }
 
 function getProjects(uid) {
@@ -648,8 +665,8 @@ function paintProjects(projects) {
 }
 
 function paintProject(project, id) {
-  console.log('PROJECT ID:  ', id);
-  console.log('PROJECT:  ', project);
+  // console.log('PROJECT ID:  ', id);
+  // console.log('PROJECT:  ', project);
   viewSwitcher('projectSingle', project);
 }
 
@@ -666,9 +683,9 @@ function updateProject(project, id) {
   for (var variable in vars) {
     if (variable === 'default') {
       continue;
-    }
+    } // console.log(variables.querySelector('variable'));
 
-    console.log(variables.querySelector('variable'));
+
     var newVar = document.getElementById("var_" + variable);
     newVar.setAttribute('onmouseover', "document.getElementById('variables').classList.add('hold');");
     newVar.setAttribute('onmouseleave', "document.getElementById('variables').classList.remove('hold');");
@@ -680,7 +697,7 @@ function updateProject(project, id) {
 
 function variableEdit(id) {
   var key = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-  console.log('key: ', id);
+  // console.log('key: ', id);
   edit = true;
   var error = document.getElementById("var_error_".concat(id.substring('var_button_'.length)));
   error.classList.add('dn'); // Get the input element.
