@@ -24,7 +24,8 @@
     *  [Delete Chart](#head_erase_chart)
     *  [Delete Chart Data](#head_erase_chart_data)
     *  [Add Chart Point](#head_add_chart_point)
-    
+    *  [Get All Charts](#head_get_all_charts)
+
  
 
 ## <a name="head_http_communication"></a> HTTP Communication
@@ -99,7 +100,7 @@ system.
 |**CREATE_VARIABLE**|name      |String   |Name of the variable to create.       |
 |                   |value     |Any      |Value to initialize the variable to.  |
 |**DELETE_VARIABLE**|name      |String   |Name of the variable to erase.        |
-|**SET_VARIABLE**   |name      |String   |Name of the variable to erase.        |
+|**SET_VARIABLE**   |name      |String   |Name of the variable to save.        |
 |                   |value     |Any      |Value to set the variable to.         |
 |**GET_VARIABLE**   |name      |String   |Name of the variable to read.         |
 |**GET_ALL_VARIABLES**   |      |   ||
@@ -1563,7 +1564,56 @@ RESULT DATA:
 }
 ```
 
+#### <a name="head_get_all_charts> Get All Charts
 
+Command that retrieves all chaarts.
+
+|Command            |Parameters|Type     |Description                           |
+|-------------------|----------|---------|--------------------------------------|
+|**GET_ALL_CHARTS**   |      |   |         |
+
+##### Example
+*Request*
+```json
+{
+  "key": "XXXXXXXXXXXXXX",
+  "cmd": "GET_ALL_CHARTS"
+}
+```
+*Response*
+```json
+{
+    "meta": {
+        "revision": 0,
+        "created": 1567996872756,
+        "version": 0,
+        "updated": 1569251454138
+    },
+     "results": [
+            {
+                "name": "Temperature Logging",
+                "type": "LINE",
+                "entries": 23
+            },
+            {
+                "name": "Budget",
+                "type": "PIE",
+                "entries": 12
+            },
+            {
+                "name": "Age Spread",
+                "type": "HISTO",
+                "entries": 44
+            },
+            {
+                "name": "Test Results",
+                "type": "SCATTER",
+                "entries": 123
+            }
+    ]
+}
+
+```
 
 
 

@@ -507,6 +507,34 @@ function getChartData(msg) {
 
 }
 
+/**
+ * Get all charts.
+ * @function getAllCharts
+ * @param {object} msg - Message object received.
+ * @returns {object} Chart Data.
+ */
+function getAllCharts(msg){
+
+    // Find the project matching the Project Key.
+    let project = PROJECTS.findOne({key: msg.key});
+    if (project === null) return {error: `Unknown Project Key`};
+
+    let data = [];
+    let charts = project['charts'];
+    for(let chart in charts){
+        if(charts.hasOwnProperty(chart)){
+        data.push({
+            name: charts[chart].name,
+            type: charts[chart].type,
+            entries: charts[chart].entries,
+        });
+        }
+    }
+    return {
+        "meta": project['meta'],
+        "results": data
+    };
+}
 function getChartType(key, chart_name) {
     let userKey = PROJECTS.findOne({key: key});
     if (userKey['charts'].some(e => e.name === chart_name)) {
@@ -541,6 +569,7 @@ module.exports = {
     addDataPoint,
     getAllVariables,
     deleteChart,
+    getAllCharts,
     getChartData,
     createVariable,
     getChartType,

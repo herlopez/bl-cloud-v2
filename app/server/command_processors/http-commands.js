@@ -66,6 +66,11 @@ function commandProcessor(message, callback) {
             callback.send(databaseFunctions.addDataPoint(message));
             break;
 
+        case 'GET_ALL_CHARTS':
+        case 'READ_ALL_CHARTS':
+            callback.send(databaseFunctions.getAllCharts(message));
+            break;
+
         case 'READ_CHART':
         case 'GET_CHART':
             callback.send(databaseFunctions.getChartData(message));

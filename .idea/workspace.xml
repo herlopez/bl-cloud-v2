@@ -38,22 +38,23 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/server/database.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-118">
-              <caret line="6" selection-start-line="6" selection-end-line="6" />
+            <state relative-caret-position="117">
+              <caret line="521" column="16" selection-start-line="521" selection-start-column="16" selection-end-line="521" selection-end-column="16" />
               <folding>
                 <element signature="n#!!doc;n#createVariable#0" />
                 <element signature="n#!!doc;n#getVariable#0" />
                 <element signature="n#!!block;n#getVariable#0" />
-                <element signature="n#!!doc;n#deleteVariable#0" />
+                <element signature="n#!!block;n#deleteVariable#0" />
+                <element signature="n#!!block;n#getAllVariables#0" />
                 <element signature="n#!!doc;n#createChart#0" />
                 <element signature="n#!!doc;n#deleteChart#0" />
+                <element signature="n#!!block;n#deleteChart#0" />
                 <element signature="n#!!doc;n#addDataPoint#0" />
                 <element signature="n#!!block;n#addDataPoint#0" />
-                <element signature="n#!!doc;n#getChartData#0" />
                 <element signature="n#!!block;n#getChartData#0" />
+                <element signature="n#!!doc;n#getAllCharts#0" />
                 <element signature="n#!!block;n#getChartType#0" />
                 <element signature="n#!!block;n#setDatabase#0" />
-                <element signature="e#16773#17012#0" />
               </folding>
             </state>
           </provider>
@@ -63,19 +64,10 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="303">
-                <caret line="19" column="51" selection-start-line="19" selection-start-column="51" selection-end-line="19" selection-end-column="51" />
+              <first_editor relative-caret-position="471">
+                <caret line="104" column="81" lean-forward="true" selection-start-line="104" selection-start-column="81" selection-end-line="104" selection-end-column="81" />
               </first_editor>
               <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/server/command_processors/http-commands.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1218">
-              <caret line="81" column="2" selection-start-line="81" selection-start-column="2" selection-end-line="81" selection-end-column="2" />
             </state>
           </provider>
         </entry>
@@ -198,40 +190,6 @@
               <item name="cloud" type="b2602c69:ProjectViewProjectNode" />
               <item name="cloud" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="cloud" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cloud" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cloud" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cloud" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cloud" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cloud" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="command_processors" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cloud" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cloud" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="UI" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cloud" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cloud" type="462c0819:PsiDirectoryNode" />
-              <item name="sass" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cloud" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cloud" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -247,7 +205,7 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1569251940784" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1569253219119" />
     <property name="jsx.switch.disabled" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
@@ -338,7 +296,7 @@
       <workItem from="1568598448296" duration="12220000" />
       <workItem from="1568726458111" duration="605000" />
       <workItem from="1568984207674" duration="15907000" />
-      <workItem from="1569019943332" duration="24805000" />
+      <workItem from="1569019943332" duration="26045000" />
     </task>
     <task id="LOCAL-00001" summary="=MQTT Implementation">
       <created>1568726588352</created>
@@ -351,7 +309,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="317847000" />
+    <option name="totallyTimeSpent" value="319087000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="6" />
@@ -361,7 +319,7 @@
       <window_info id="Capture Tool" order="1" />
       <window_info id="UI Designer" order="2" />
       <window_info id="Favorites" order="3" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="4" visible="true" weight="0.18070818" />
+      <window_info content_ui="combo" id="Project" order="4" visible="true" weight="0.12087912" />
       <window_info id="Image Layers" order="5" />
       <window_info id="Structure" order="6" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="SimpleHttpClient" order="0" weight="0.32987553" />
@@ -372,7 +330,7 @@
       <window_info anchor="bottom" id="Version Control" order="5" />
       <window_info anchor="bottom" id="Message" order="6" />
       <window_info anchor="bottom" id="Find" order="7" sideWeight="0.4993895" weight="0.3281893" />
-      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.50915754" side_tool="true" visible="true" weight="0.2695473" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" sideWeight="0.50915754" side_tool="true" visible="true" weight="0.2695473" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Run" order="10" />
       <window_info anchor="bottom" id="Debug" order="11" weight="0.4" />
@@ -699,29 +657,30 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/server/command_processors/http-commands.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1218">
-          <caret line="81" column="2" selection-start-line="81" selection-start-column="2" selection-end-line="81" selection-end-column="2" />
+        <state relative-caret-position="409">
+          <caret line="72" lean-forward="true" selection-start-line="72" selection-end-line="72" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/server/database.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-118">
-          <caret line="6" selection-start-line="6" selection-end-line="6" />
+        <state relative-caret-position="117">
+          <caret line="521" column="16" selection-start-line="521" selection-start-column="16" selection-end-line="521" selection-end-column="16" />
           <folding>
             <element signature="n#!!doc;n#createVariable#0" />
             <element signature="n#!!doc;n#getVariable#0" />
             <element signature="n#!!block;n#getVariable#0" />
-            <element signature="n#!!doc;n#deleteVariable#0" />
+            <element signature="n#!!block;n#deleteVariable#0" />
+            <element signature="n#!!block;n#getAllVariables#0" />
             <element signature="n#!!doc;n#createChart#0" />
             <element signature="n#!!doc;n#deleteChart#0" />
+            <element signature="n#!!block;n#deleteChart#0" />
             <element signature="n#!!doc;n#addDataPoint#0" />
             <element signature="n#!!block;n#addDataPoint#0" />
-            <element signature="n#!!doc;n#getChartData#0" />
             <element signature="n#!!block;n#getChartData#0" />
+            <element signature="n#!!doc;n#getAllCharts#0" />
             <element signature="n#!!block;n#getChartType#0" />
             <element signature="n#!!block;n#setDatabase#0" />
-            <element signature="e#16773#17012#0" />
           </folding>
         </state>
       </provider>
@@ -729,8 +688,8 @@
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="303">
-            <caret line="19" column="51" selection-start-line="19" selection-start-column="51" selection-end-line="19" selection-end-column="51" />
+          <first_editor relative-caret-position="471">
+            <caret line="104" column="81" lean-forward="true" selection-start-line="104" selection-start-column="81" selection-end-line="104" selection-end-column="81" />
           </first_editor>
           <second_editor />
         </state>
