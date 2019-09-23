@@ -259,18 +259,18 @@ Command that gets the value of a variable.
 ```
 #### <a name="head_get_all_variables"> Get All Variable
 
-Command that retrieve all variables.
+Command that retrieves all variables.
 
 |Command            |Parameters|Type     |Description                           |
 |-------------------|----------|---------|--------------------------------------|
-|**GET_ALL_VARIABLE**   |      |   |         |
+|**GET_ALL_VARIABLES**   |      |   |         |
 
 ##### Example
 *Request*
 ```json
 {
   "key": "XXXXXXXXXXXXXX",
-  "cmd": "GET_ALL_VARIABLE"
+  "cmd": "GET_ALL_VARIABLES"
 }
 ```
 *Response*
