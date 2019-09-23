@@ -1566,7 +1566,7 @@ RESULT DATA:
 
 #### <a name="head_get_all_charts"> Get All Charts
 
-Command that retrieves all chaarts.
+Command that retrieves all charts.
 
 |Command            |Parameters|Type     |Description                           |
 |-------------------|----------|---------|--------------------------------------|
