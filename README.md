@@ -1564,7 +1564,7 @@ RESULT DATA:
 }
 ```
 
-#### <a name="head_get_all_charts> Get All Charts
+#### <a name="head_get_all_charts"> Get All Charts
 
 Command that retrieves all chaarts.
 
