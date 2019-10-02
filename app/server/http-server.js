@@ -14,7 +14,7 @@ app.set('view engine', 'pug');
 app.enable('trust proxy');
 app.use(bodyParser.json());
 
-function startHttpServer(port){
+function startHttpServer(port, wss){
     app.get('/', (req, res)=> {
         res.render('index');
     });
@@ -30,7 +30,7 @@ function startHttpServer(port){
         res.render('app');
     });
     app.get('/api', (req, res) => {
-        processor.messageProcessor(req.body, res, 'http');
+        processor.msgProcessor(req.body, res, 'http', wss);
     });
     app.listen(port, () => {
         console.log(`Http server is up on port ${port}`);

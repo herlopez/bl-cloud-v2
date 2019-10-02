@@ -1,45 +1,119 @@
-let db, REGISTERED_USERS, PROJECTS;
+let db, PROJECTS;
 let uniqid = require('uniqid');
 let tools = require('./tools');
 
 
 // -----> PROJECTS <----------------------------------------
+function notifyClients(server, key, cmd, data){
+    server.clients.forEach(function each(client) {
+        let results = PROJECTS.find({owner: client.uid});
+        for(let result in results){
+            if(results.hasOwnProperty(result)){
+                if(results[result]['key'] === key){
+                    client.send(JSON.stringify({
+                        cmd: cmd,
+                        key: key,
+                        data: data
+                    }));
+                }
+            }
+        }
+    });
+}
 
+function getProject(msg){
+    if(msg.hasOwnProperty('id')){
+        let results = PROJECTS.find({id: msg.id});
+        console.log("res:", results);
+        return {
+            results: results,
+            cmd: "GET_PROJECT"
+        }
+    }
+    return{error: 'Project Not Found.', cmd: 'GET_PROJECT'};
+
+}
 function getProjects(uid) {
     try {
         let results = PROJECTS.find({owner: uid});
-        return JSON.stringify({
-            "meta": results['meta'],
-            "results": results,
-            "cmd": "PROJECTS"
-        });
+        let response = [];
+
+        for(let result in results){
+            if(results.hasOwnProperty(result)){
+                response.push({
+                    name: results[result]['name'],
+                    color: results[result]['color'],
+                    description: results[result]['description'],
+                    chartCount: results[result]['charts'].length,
+                    variableCount: Object.keys(results[result]['variables']).length - 1,
+                    id: results[result]['id'],
+                    key: results[result]['key']
+                })
+            }
+        }
+        return {
+            meta: results['meta'],
+            results: response,
+            cmd: "GET_PROJECTS"
+        };
     } catch (e) {
-        return (JSON.stringify({error: "User does not exist."}));
+        return {error: "User does not exist."};
     }
 }
 
-function createProject(name, description, access, color, uid) {
+function createProject(msg, uid) {
+
+    // Make sure the variable name is in proper format.
+    let nameCheck = tools.verifyString(msg, 'name', 200, 4);
+    if (tools.hasError(nameCheck)){
+        nameCheck['cmd'] = 'CREATE_PROJECT';
+        return nameCheck;
+    }
+
+    // Make sure the description is in proper format.
+    let descCheck = tools.verifyString(msg, 'description', 200, 1);
+    if (tools.hasError(descCheck)){
+        descCheck['cmd'] = 'CREATE_PROJECT';
+        return descCheck;
+    }
+    // Make sure the description is in proper format.
+    let accessCheck = tools.verifyString(msg, 'access', 200, 1);
+    if (tools.hasError(accessCheck)){
+        accessCheck['cmd'] = 'CREATE_PROJECT';
+        return accessCheck;
+    }
+
+
+    if (msg['access'] !== 'Private' &&  msg['access'] !== 'Public'){
+        return {error: 'Invalid Access Type', cmd: 'CREATE_PROJECT'};
+    }
+
     let time = new Date().getTime();
     let project = {
-        "name": name,
-        "owner": uid,
-        "shared": null,
-        "description": description,
-        "access": access,
-        "created": time,
-        "key": uniqid(),
-        "id": uniqid(time),
-        "color": color,
-        "variables": {
+        name: msg.name,
+        owner: uid,
+        shared: null,
+        description: msg.description,
+        access: msg.access,
+        created: time,
+        key: uniqid(),
+        id: uniqid(time),
+        color: msg.color,
+        variables: {
             "default": 0
         },
-        "charts": []
+        charts: []
     };
-    console.log(project);
+
     PROJECTS.insert(project);
     db.saveDatabase();
-    return true;
+    return {cmd:"CREATE_PROJECT", result:project};
 }
+
+
+
+
+
 
 // -----> VARIABLES <----------------------------------------
 
@@ -549,9 +623,6 @@ function setDatabase(database) {
     db = database;
     db.loadDatabase({}, function () {
         PROJECTS = db.getCollection('users');
-        REGISTERED_USERS = db.getCollection('registered_users');
-        return (JSON.stringify({error: "REGISTERED_USERS"}));
-
     });
     setInterval(() => {
         db.saveDatabase();
@@ -566,11 +637,13 @@ module.exports = {
     setVariable,
     getVariable,
     createChart,
+    getProject,
     addDataPoint,
     getAllVariables,
     deleteChart,
     getAllCharts,
     getChartData,
+    notifyClients,
     createVariable,
     getChartType,
 };

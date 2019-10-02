@@ -1,31 +1,38 @@
 let databaseFunctions = require('./../database.js');
-let tools = require('./../tools');
 
-function commandProcessor(message, callback){
-
+function commandProcessor(message, callback, server){
+    console.log('Command: ',message['cmd']);
     switch (message['cmd']) {
 
         case 'CREATE_PROJECT':
-            if (tools.formError("create_project",tools.verifyString(message, 'name', 200, 8), callback)) return;
-            if (tools.formError("create_project",tools.verifyString(message, 'description', 200, 1), callback)) return;
-            if (tools.formError("create_project",tools.verifyString(message, 'access', 200, 1), callback)) return;
-            if (message['access'] !== 'Private' &&  message['access'] !== 'Public'){
-                tools.formError("create_project",{error: 'Invalid Access Type'}, callback);
-                return;
-            }
-            databaseFunctions.createProject(message['name'], message['description'], message['access'], message['color'], callback.uid);
-            callback.send(JSON.stringify({"fn": "windowSwitcher('none')"}));
+            callback.send(JSON.stringify(databaseFunctions.createProject(message, callback.uid)));
             return;
 
         case 'GET_PROJECTS':
-            databaseFunctions.createProject(message['name'], message['description'], message['access'], message['color'], callback.uid);
-            callback.send(databaseFunctions.getProjects(callback.uid));
+            callback.send(JSON.stringify(databaseFunctions.getProjects(callback.uid)));
             return;
 
+        case 'GET_PROJECT':
+            callback.send(JSON.stringify(databaseFunctions.getProject(message)));
+            break;
         case 'CREATE_VARIABLE':
-            databaseFunctions.createVariable(message);
-            callback.send(JSON.stringify({"fn": "getProjects(currentProject); windowSwitcher('none');"}));
-            return;
+            let createVariableData = databaseFunctions.createVariable(message);
+            createVariableData['cmd'] = 'NEW_VARIABLE_CB';
+            callback.send(JSON.stringify(createVariableData));
+            if(!createVariableData.hasOwnProperty('error')) databaseFunctions.notifyClients(server, message.key, 'NEW_VARIABLE_CB', createVariableData);
+            break;
+        case 'SET_VARIABLE':
+            console.log(message);
+            let setVariableData = databaseFunctions.setVariable(message);
+            if(setVariableData.hasOwnProperty('error')){
+                setVariableData['fn'] = message.onError;
+            }
+           else{
+                setVariableData['fn'] = message.onSuccess;
+            }
+            callback.send(JSON.stringify(setVariableData));
+            if(!setVariableData.hasOwnProperty('error')) databaseFunctions.notifyClients(server, message.key, 'SET_VARIABLE_CB', setVariableData);
+            break;
     }
 }
 

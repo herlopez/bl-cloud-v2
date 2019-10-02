@@ -2,13 +2,12 @@ let webSocketUI = require('./command_processors/websocket-ui-commands.js');
 let webSocket = require('./command_processors/websocket-commands.js');
 let http = require('./command_processors/http-commands.js');
 
-function messageProcessor(message, callback, type, other) {
+function msgProcessor(message, callback, type, server) {
 
     // Try to parse the JSON string sent.
     try {
         message = JSON.parse(JSON.stringify(message));
     } catch (e) {
-        console.log(e);
         callback.send({error:`Unable to parse JSON: ${e}`});
         return;
     }
@@ -22,20 +21,21 @@ function messageProcessor(message, callback, type, other) {
 
     switch (type) {
         case 'ws-ui':
-            webSocketUI.commandProcessor(message, callback);
+            webSocketUI.commandProcessor(message, callback, server);
             break;
         case 'ws':
-            http.commandProcessor(message, callback);
+            http.commandProcessor(message, callback, server);
             break;
         case 'http':
-            http.commandProcessor(message, callback);
+            http.commandProcessor(message, callback, server);
             break;
         default:
             callback.send({error:`Unsupported Type.`});
             break;
     }
+
 }
 
 module.exports = {
-    messageProcessor
+    msgProcessor,
 };

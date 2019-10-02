@@ -1,10 +1,10 @@
 header{
     height: 100px;
     width: 100%;
-    background: rgb(155, 85, 163);
+    background: transparent;
 }
 #mobile_dropdown {
-    background: rgb(18, 205, 160);
+    background: #1C1C25;
     box-shadow: 0 13px 27px -5px rgba(50, 50, 93, .25), 0 8px 16px -8px rgba(0, 0, 0, .3);
     color: white;
     position: fixed;
@@ -20,7 +20,7 @@ header{
             transition: all 0.25s ease;
             a{
                 text-decoration: none;
-                color: rgb(155, 85, 163);
+                color: #fff;
                 width: 100%;
                 padding-left: 8%;
             }
@@ -40,11 +40,10 @@ header{
 #site_header {
     height: 4rem;
     width: 100%;
-    background: rgb(155, 85, 163);
+    background: transparent;
     color: white;
-    box-shadow: 0 13px 27px -5px rgba(50, 50, 93, .25), 0 8px 16px -8px rgba(0, 0, 0, .3);
     justify-content: stretch;
-
+    z-index: 10;
     img {
         display: flex;
         margin-left: 2rem;
@@ -61,12 +60,12 @@ header{
 
             label {
                 &:hover {
-                    background: rgba(0, 0, 0, 0.1);
+                    color: #e31534;
                     cursor: pointer !important;
                 }
             }
             &:hover {
-                background: rgba(0, 0, 0, 0.1);
+                color: #e31534;
                 cursor: pointer !important;
             }
             a, label {
@@ -74,7 +73,10 @@ header{
                 color: white;
                 padding: 0 1rem;
                 height: 4rem;
-
+                &:hover {
+                    color: #e31534;
+                    cursor: pointer !important;
+                }
                 &:visited {
                     color: white;
                 }

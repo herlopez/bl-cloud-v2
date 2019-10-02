@@ -1,5 +1,5 @@
-let WebSocket = require("ws");
 let processor = require('./message-processor.js');
+let WebSocket = require("ws");
 let admin = require('./firebase.js').admin;
 
 
@@ -18,10 +18,9 @@ function startWebsocketServer(port){
                         wss.getUid = () =>{
                             return uid;
                         };
-                        console.log("Token: ", token);
                         cb(true);
                     }else{
-                        console.log("yo   ",uid_sent, uid);
+                        console.log("Rejected: ",uid_sent, uid);
                         cb(false);
                     }
                 }).catch(function(e) {
@@ -39,14 +38,15 @@ function startWebsocketServer(port){
             let msg;
             try{
                 msg = JSON.parse(message);
-                processor.messageProcessor(msg, ws, 'ws-ui');
+                processor.msgProcessor(msg, ws, 'ws-ui', wss);
             }catch (e) {
-                ws.send(`{"error":"Unable to parse JSON: ${e}"}`);
+                console.log({error:`Unable to parse JSON2: ${e}`});
+                ws.send(`{"error":"Unable to parse JSON2: ${e}"}`);
             }
         });
     });
-
     console.log(`Websocket server is up on port ${port}`);
+    return wss;
 }
 
 module.exports = {

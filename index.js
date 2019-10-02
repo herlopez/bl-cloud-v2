@@ -11,7 +11,7 @@ let wsServer = require('./app/server/ws-server.js');
 let MQTTBroker = require('./app/server/mqtt-server.js');
 
 // Start http server
-httpServer.startHttpServer(3000);
-wsServer.startWebsocketServer(8080);
-MQTTBroker.startMQTTBroker(1883);
+let wss = wsServer.startWebsocketServer(8080);
+httpServer.startHttpServer(3000, wss);
+MQTTBroker.startMQTTBroker(1883, wss);
 

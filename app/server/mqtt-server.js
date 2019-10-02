@@ -4,7 +4,7 @@ let processor = require('./message-processor.js');
 
 
 
-function startMQTTBroker(port) {
+function startMQTTBroker(port, wss) {
     let settings = {
         port: port,
     };
@@ -34,7 +34,7 @@ function startMQTTBroker(port) {
         let msg;
         try{
             msg = JSON.parse(packet.payload);
-            processor.messageProcessor(msg, broker, 'mqtt', packet.topic);
+            processor.msgProcessor(msg, broker, 'mqtt', wss,  packet.topic);
         }catch (e) {
             let message = {
                 topic: packet.topic+'-rsp',

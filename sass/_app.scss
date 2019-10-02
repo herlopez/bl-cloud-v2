@@ -1,8 +1,22 @@
+#app{
+    header{
+        background: #1C1C25;
+        a{
+          &:hover{
+              box-shadow: 0 13px 27px -5px rgba(50, 50, 93, .25), 0 8px 16px -8px rgba(0, 0, 0, .3);
+              background: rgba(0, 0, 0, 0.8);
+              color: white !important;
+          }
+        }
+    }
+}
 #app_root{
     margin: 0;
     padding: 10px;
     background: rgb(18, 205, 160);
-    height: calc(100vh - 84px);
+    height: 100%;
+    min-height: calc(100vh - 84px);
+
     font-family: 'Lucida Grande', 'Lucida Sans Unicode', arial, sans-serif;
     input[type="color"]{
         border: none;
@@ -56,6 +70,7 @@
 #app_container{
     background-image: linear-gradient(to bottom right, #f7f7fc, #dbe9ee);
     height: calc(100%);
+    min-height: calc(100vh - 84px);
     width: 100%;
     user-select: none;
     border-radius: 10px;

@@ -1,25 +1,44 @@
-// Function copied pasted from Stack Overflow that makes sure the dom is fully loaded before proceeding
-(function (funcName, baseObj) {funcName = funcName || "docReady";baseObj = baseObj || window;let readyList = [];let readyFired = false;let readyEventHandlersInstalled = false;function ready() {if (!readyFired) {readyFired = true;for (let i = 0; i < readyList.length; i++) {readyList[i].fn.call(window, readyList[i].ctx);}readyList = [];}}function readyStateChange() {if (document.readyState === "complete") {ready();}}baseObj[funcName] = function (callback, context) {if (typeof callback !== "function") {throw new TypeError("callback for docReady(fn) must be a function");}if (readyFired) {setTimeout(function () {callback(context);}, 1);return;} else {readyList.push({fn: callback, ctx: context});}if (document.readyState === "complete") {setTimeout(ready, 1);} else if (!readyEventHandlersInstalled) {if (document.addEventListener) {document.addEventListener("DOMContentLoaded", ready, false);window.addEventListener("load", ready, false);} else {document.attachEvent("onreadystatechange", readyStateChange);window.attachEvent("onload", ready);}readyEventHandlersInstalled = true;}}})("docReady", window);
+
 let ws, wsHandler;
 let currentView, currentProject;
 let currentUid = null;
+let currentId = null;
 let edit = false;
-// When the dom is loaded (Document Ready)
+
+
 docReady(function () {
 
-    let serverStatus = false;
-    viewSwitcher('sign_in');
-    var database = firebase.database();
 
+    var data = {
+        // A labels array that can contain any sort of values
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+        // Our series array that contains series objects or in this case series data arrays
+        series: [
+            [5, 2, 4, 2, 0]
+        ]
+    };
+
+// Create a new line chart object where as first parameter we pass in a selector
+// that is resolving to our chart container element. The Second parameter
+// is the actual data object.
+    new Chartist.Line('.ct-chart', data);
+
+    let serverStatus = false;
+
+    // Set the view to the login screen.
+    viewSwitcher('sign_in');
 
     // When an authentication state has changed.
     firebase.auth().onAuthStateChanged(function (user) {
 
         // If the user is authenticated.
         if (user) {
+
+            // Store a global value of the current user ID.
             currentUid = user.uid;
+
             // Show that users project view.
-            viewSwitcher('project');
+            viewSwitcher('dashboard');
 
             // Start the websocket connection interval with the server.
             wsHandler = setInterval(() => {
@@ -35,43 +54,44 @@ docReady(function () {
                             // If in development environment. Initialize websocket.
                             if(window.location.href.toUpperCase().includes('LOCALHOST')){
                                 ws = new WebSocket(`ws://localhost:8080/?token=${idToken}&uid=${user.uid}`);
-                            }else{
+                            }
+                            else{
                                 ws = new WebSocket(`wss://cloud.brilliantlabs.ca/wsapi/?token=${idToken}&uid=${user.uid}`);
                             }
 
                             // Triggered when the ws is opened.
                             ws.onopen = function open() {
                                 serverStatus = true;
-                                // console.log('connected');
                                 getProjects(currentUid);
-                                setInterval(()=>{
-                                    getProjects(currentUid);
-                                }, 100);
                             };
 
                             // Triggered when the ws is closed.
                             ws.onclose = function close() {
                                 serverStatus = false;
-                                // console.log('disconnected');
                             };
+
                             ws.onmessage = function incoming(data) {
-                                // console.log(data);
                                 messageProcessor(data, ws);
                             };
+
                             ws.error = function incoming(data) {
-                                // console.log(data);
+                                console.log(data);
                             }
+
                         }).catch(function(e) {
-                            // console.log(e);
+                            console.log(e);
                             serverStatus = false;
                         });
                     } catch (e) {
-                        // console.log(e);
+                        console.log(e);
                         serverStatus = false;
                     }
                 }
             }, 1000)
-        } else {
+
+        }
+
+        else {
             currentUid = null;
             viewSwitcher('sign_in');
             clearInterval(wsHandler);
@@ -81,56 +101,33 @@ docReady(function () {
 });
 
 
-function messageProcessor(message, callback) {
-    // console.log('Message Received: ', message);
-    try {
-        // console.log(message);
-        message = JSON.parse(message.data);
-        // console.log(message.results);
-    } catch (e) {
-        // console.log(e);
-        callback.send(`{"error":"Unable to parse JSON: ${e}"}`);
-        return;
-    }
-    if(message.hasOwnProperty('cmd')){{
-        switch (message.cmd) {
-            case 'PROJECTS':
-                // console.log("Project");
-                try{
-                    let projects =message['results'];
-
-                    if(currentView === 'projectSingle' && !edit){
-                        function findProject(p){
-                            return p.id === currentProject;
-                        }
-                        updateProject(projects.find(findProject), currentProject);
-                    }else{
-
-                        paintProjects(projects);
-
-                    }
 
 
-                }catch (e) {
-                    // console.log(e);
-                }
-                break;
-            default:
-                break;
-        }
-    }}
 
-    if (message.hasOwnProperty('fn')) {
-        console.log('Function!!!');
-        let fn = message['fn'];
-        try {
-            let iFn = new Function(fn);
-            iFn();
-        } catch (e) {
-            callback.send(`{"error":"Unable to execute function: ${e}"}`);
-        }
-    }
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function viewSwitcher(targetView, options) {
     let appContainer = document.getElementById('app_container');
@@ -138,16 +135,19 @@ function viewSwitcher(targetView, options) {
     switch (targetView) {
 
         case 'projectSingle':
+
             appContainer.innerHTML = '';
             appContainer.style.userSelect = 'none';
             appContainer.classList.remove('project-dash');
             appContainer.classList.add('project-single');
+
+            // Top bar stuff.
             let singleHeader = document.createElement('header');
             let backButton = document.createElement('button');
             backButton.innerHTML = "<i class=\"fas fa-arrow-left\"></i>";
             backButton.addEventListener('click', ()=>{
                 currentProject = null;
-                viewSwitcher('project');
+                viewSwitcher('dashboard');
             });
             singleHeader.appendChild(backButton);
             let singleLogout = document.createElement('button');
@@ -159,67 +159,17 @@ function viewSwitcher(targetView, options) {
             });
             singleHeader.appendChild(singleLogout);
             appContainer.appendChild(singleHeader);
-            let project = document.createElement('div');
-            currentProject = options.id;
-            project.classList = 'w100 c ac jc';
-            project.innerHTML = `
-                <div style="" class="w100 c ac">
-                    <h1 style="" class="m0">${options.name}</h1>
-                    <h3 style="">${options.description}</h3>
-                    <div class="r js ac">
-                        <h4>Project Key: </h4>
-                         <input class="ml2" id="project_key" value="${options.key}" disabled>
-                    </div>
-                   
-                    <div class="w100 rxl ac jc">
-                        <div id="variables" class="m1 variables c jfs ac w100xl"> 
-                            <h3 class="mb0">Variables <button class="fa fa-plus" onclick="windowSwitcher('new_variable')"></button><button class="m0 p0 fa fa-pencil-alt" id = "var_button" onclick=""></button></h3>
-                            <!--<div class="r jc ac">-->
-                                <!--<i class="mr1 fa fa-search"></i>-->
-                                <!--<input type="search" id="variable-search">-->
-                            <!--</div>-->
-                        </div>
-                        <div id="charts" class="m1 charts c jfs ac w100xl">
-                            <h3 class="mb0">Charts</h3>
-                            <p style="background: #9b55a3; color: white; border-radius: 20px; padding: 5px 40px;">No Charts 🙁</p>
-                            <!--<div class="r jc ac">-->
-                                <!--<i class="mr1 fa fa-search"></i>-->
-                                <!--<input type="search" id="variable-search">-->
-                            <!--</div>-->
-                        </div>
-                    </div>
-                </div>`;
 
-            appContainer.appendChild(project);
-            let variables = document.getElementById('variables');
-            let vars = options.variables;
-            let count = 0;
-            for(var variable in vars){
-                if(variable === 'default'){
-                    continue;
-                }
-                let newVar = document.createElement('div');
-                newVar.id = "var_" + variable;
-                newVar.setAttribute('onmouseleave', "document.getElementById('variables').classList.remove('hold');");
-                newVar.innerHTML = `
-
-                <div class="variable r mt4" id = "${variable}">
-                    <input disabled class="name-input" style ="min-width: 100px; max-width: 100px;"id = "var_name_${variable}" value ="${variable}">
-                    <input id = "var_input_${variable}" disabled class="m0 p0 w100 pl2" value="${vars[variable]}">
-                    <button class="m0 p0 fa fa-pencil-alt" id = "var_button_${variable}" onclick="variableEdit(id, '${options.key}')"></button>
-                    <button class="m0 p0 fa fa-times dn" id = "var_button_2_${variable}" ></button>
-                    <p style = 'position: absolute; padding-top: 18px; padding-left: 20px; background: transparent; font-size: 14px; color: red;' id = "var_error_${variable}" class="dn">Error: Unable To Set Variable.</p>
-                </div>`;
-                variables.appendChild(newVar);
-                count ++;
-            }
-            if(!count){
-                let noVars = document.createElement('div');
-                noVars.innerHTML = `<p style="background: #9b55a3; color: white; border-radius: 20px; padding: 5px 40px;">No Variables 🙁</p>`;
-                variables.appendChild(noVars);
-                return;
-            }
-            // console.log('Project Options: ', options);
+            let projectSection = document.createElement('section');
+            projectSection.id = "project_projectSection";
+            projectSection.innerHTML = "<div class=\"loader\"></div>";
+            projectSection.style.overflow = "scroll";
+            projectSection.classList.add('r');
+            projectSection.classList.add('jc');
+            projectSection.classList.add('ac');
+            appContainer.appendChild(projectSection);
+            getProject(currentUid, options);
+            return;
 
         break;
 
@@ -369,8 +319,8 @@ function viewSwitcher(targetView, options) {
             appContainer.appendChild(signInButton);
             break;
 
-        // Project View
-        case 'project':
+        // dashboard View
+        case 'dashboard':
             appContainer.innerHTML = '';
             appContainer.style.userSelect = 'none';
             appContainer.classList.add('project-dash');
@@ -397,9 +347,6 @@ function viewSwitcher(targetView, options) {
             section.classList.add('r');
             section.classList.add('jc');
             section.classList.add('ac');
-
-
-
 
             // each project here
             let myPrj = document.createElement('h2');
@@ -528,82 +475,23 @@ function viewSwitcher(targetView, options) {
 }
 
 
-function windowSwitcher(targetWindow, options){
-    let window = document.getElementById('window');
 
-    switch (targetWindow) {
-        case 'none':
-            window.classList.remove('cr');
-            window.classList.remove('ac');
-            window.classList.remove('jc');
-            window.classList.add('dn');
-            window.innerHTML = '';
-        break;
-        case 'new_project':
-            window.classList.add('cr');
-            window.classList.add('ac');
-            window.classList.add('jc');
-            window.classList.remove('dn');
-            window.innerHTML = '';
-            let contentBlock = document.createElement('div');
-            contentBlock.id = 'window_content_block';
-            contentBlock.innerHTML =
-                '<form id="create_project"> ' +
-                    '<h2>Create a New Project</h2>' +
-                    '<p>Project Name:</p>' +
-                    '<input required type="text" id="project" placeholder="My Project Name...">' +
-                    '<p>Project Description:</p>' +
-                    '<textarea id="desc" placeholder="Project Description..." required> </textarea> ' +
-                    '<p>Make this project Private or Public:</p>' +
-                    '<input class="input-radio" type="radio" checked="checked" name="access"  id="private" value="Private">' +
-                    '<label for="private">Private</label><br>' +
-                    '<input class="input-radio" type="radio" name="access" id="public" value="Public">'+
-                    '<label for="public">Public</label><br>' +
-                    '<div class="r ac"> <p>Project Color: </p>'+
-                    '<input id="color" style="margin-left: 4px; margin-top: 4px;" value="#9b55a3" type="color"></div> '+
-                    '<div class="r jc"><button >Create</button>' +
-                    `<button onclick="windowSwitcher('none')">Cancel</button></div>` +
-                '</form>';
-            window.appendChild(contentBlock);
-            document.getElementById('create_project').addEventListener('submit',(e) => {
-                createProject(document.getElementById('project').value, document.getElementById('desc').value, document.querySelector('input[name="access"]:checked').value,document.getElementById('color').value, currentUid);
-                getProjects(currentUid);
-                e.preventDefault();    //stop form from submitting
-            });
-        break;
-        case 'new_variable':
-            window.classList.add('cr');
-            window.classList.add('ac');
-            window.classList.add('jc');
-            window.classList.remove('dn');
-            window.innerHTML = '';
-            let newVariableContentBlock = document.createElement('div');
-            newVariableContentBlock.id = 'window_content_block';
-            newVariableContentBlock.innerHTML =
-                '<form id="new_variable"> ' +
-                '<h2>Create a New Variable</h2>' +
-                '<p>Variable Name:</p>' +
-                '<input class="" required type="text" id="project" placeholder="My Variable Name...">' +
-                '<div class="r jc"><button >Create</button>' +
-                `<button onclick="windowSwitcher('none')">Cancel</button></div>` +
-                '</form>';
-            window.appendChild(newVariableContentBlock);
-            document.getElementById('new_variable').addEventListener('submit',(e) => {
-                console.log(currentProject.key)
-                createVariable(document.getElementById('project').value, currentUid);
-                getProjects(currentUid);
-                e.preventDefault();    //stop form from submitting
-            });
-        break;
+
+function windowError(window, msg){
+    let appContainer = document.getElementById(window);
+    // Try to remove the previous error message.
+    try {
+        document.getElementById('error_message').remove();
+    } catch (e) {
     }
+    let errorMessage = document.createElement('div');
+    errorMessage['innerText'] = msg;
+    errorMessage.style.color = 'red';
+    errorMessage.style.margin = '1rem';
+    errorMessage.id = 'error_message';
+    errorMessage.style.textAlign = 'center';
+    appContainer.appendChild(errorMessage);
 }
-
-/**
- * Form Error
- * @function formError
- * @description Adds a error message to the app container.
- * @param {string} msg Message.response
- */
 function formError(msg) {
     let appContainer = document.getElementById('app_container');
     // Try to remove the previous error message.
@@ -619,14 +507,14 @@ function formError(msg) {
     appContainer.appendChild(errorMessage);
 }
 function createProject(name, desc, access, color, uid){
-    // console.log('Creating Project: ', name, desc, access, uid);
+    console.log('Creating Project: ', name, desc, access, uid);
     let project = {
-        "uid": uid,
-        "cmd" : 'CREATE_PROJECT',
-        "name" : name,
-        "color": color,
-        "description" : desc,
-        "access": access
+        uid: uid,
+        cmd : "CREATE_PROJECT",
+        name : name,
+        color: color,
+        description : desc,
+        access: access
     };
     ws.send(JSON.stringify(project));
 }
@@ -644,39 +532,56 @@ function getProjects(uid){
     };
     ws.send(JSON.stringify(project));
 }
+function getProject(uid, id){
+    let project = {
+        "uid": uid,
+        "id": id,
+        "cmd": "GET_PROJECT"
+    };
+    ws.send(JSON.stringify(project));
+}
+
+
+
 function paintProjects(projects){
     let projectSection = document.getElementById('project_section');
     if(projectSection.classList.contains('hold')){
         return;
     }
-    projectSection.classList.remove('jc');
+    projectSection.classList.add('jc');
     projectSection.classList.remove('ac');
-
+    projectSection.style.flexWrap = 'wrap';
+    projectSection.style.overflow = 'visible';
+    projectSection.style.maxWidth ="1500px";
+    projectSection.style.minHeight = "100vh";
+    projectSection.style.height = "100%";
     projectSection.innerHTML = "";
 
-    for(var project in projects){
-        let div = document.createElement('button');
-        div.setAttribute('onmouseleave', "document.getElementById('project_section').classList.remove('hold');");
-        div.setAttribute('onmouseover', "document.getElementById('project_section').classList.add('hold');");
-
-        div.style.height = "200px";
-        div.style.minWidth = "300px";
-        div.style.maxWidth = "300px";
-        div.style.background = projects[project]['color'];
-        div.id = projects[project]['id'];
-        div.borderRadius = "20px";
-        let data = projects[project];
-        div.innerHTML = `<h3>${projects[project]['name']}</h3><p>${projects[project]['description']}</p><i class="fa fa-code"</i> ${Object.keys(projects[project]['variables']).length -1} <i class="fa fa-chart-bar"</i> ${Object.keys(projects[project]['charts']).length-1} `;
-        div.addEventListener('click', (e) => {
-            paintProject(data, div.id);
-        });
-        projectSection.appendChild(div);
+    for(let project in projects){
+        if(projects.hasOwnProperty(project)) {
+            let div = document.createElement('button');
+            div.style.height = "200px";
+            div.style.minWidth = "300px";
+            div.style.maxWidth = "300px";
+            div.style.background = projects[project]['color'];
+            div.id = projects[project]['id'];
+            div.borderRadius = "10px";
+            let data = projects[project];
+            div.innerHTML = `<h3>${projects[project]['name']}</h3><p>${projects[project]['description']}</p><i class="fa fa-code"</i> ${projects[project]['variableCount']} <i class="fa fa-chart-bar"</i> ${projects[project]['chartCount']} `;
+            div.addEventListener('click', () => {
+                paintProject(data, div.id);
+            });
+            projectSection.appendChild(div);
+        }
     }
 }
+
+
+
 function paintProject(project, id){
     // console.log('PROJECT ID:  ', id);
     // console.log('PROJECT:  ', project);
-    viewSwitcher('projectSingle', project)
+    viewSwitcher('projectSingle', id)
 
 }
 function updateProject(project, id){
@@ -711,7 +616,13 @@ function updateProject(project, id){
 
 
 
+function editVariables(){
+    if(currentView === 'projectSingle'){
+        let variables = document.getElementById('variables');
+        console.log(document.getElementById('variables'));
 
+    }
+}
 // Handles the events of editing a variable value in the UI.
 function variableEdit(id, key = null){
     // console.log('key: ', id);

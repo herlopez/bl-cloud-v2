@@ -4,6 +4,7 @@ let prefix = require('gulp-autoprefixer');
 let notify = require("gulp-notify");
 let babel = require('gulp-babel');
 let plumber = require('gulp-plumber');
+let concat = require('gulp-concat');
 
 gulp.task('autoprefixer', () =>
     gulp.src('public/css/main.css')
@@ -23,9 +24,13 @@ gulp.task('sass', function() {
         })
         .pipe(gulp.dest('public/css'))
 });
-
+gulp.task('concat', function() {
+    return gulp.src(['app/UI/tools.js','app/UI/app.js', 'app/UI/window-switcher.js', "app/UI/message-processor.js"])
+        .pipe(concat('app.js'))
+        .pipe(gulp.dest('public/js'));
+});
 gulp.task('babel', () =>
-    gulp.src('app/UI/app.js')
+    gulp.src(['app/UI/tools.js','app/UI/app.js', 'app/UI/window-switcher.js', "app/UI/message-processor.js"])
         .pipe(plumber())
         .pipe(babel({
             presets: [
@@ -37,7 +42,7 @@ gulp.task('babel', () =>
         .pipe(gulp.dest('public/js'))
 );
 
-gulp.task('default',  gulp.series(['sass', 'autoprefixer', 'babel'], function () {
+gulp.task('default',  gulp.series(['sass', 'autoprefixer', 'babel', 'concat'], function () {
     gulp.watch('sass/**/*.scss',  gulp.series(['sass', 'autoprefixer']));
-    gulp.watch('app/UI/**/*.js',  gulp.series(['babel']));
+    gulp.watch('app/UI/**/*.js',  gulp.series(['babel', 'concat']));
 }));

@@ -42,7 +42,7 @@ function verifyString(obj, string, maxLen = 200, minLen = 0, type = 'string') {
 }
 function error(obj, callback){
     if (obj.hasOwnProperty('error')) {
-        callback.send({"error": obj['error']});
+        callback.send(JSON.stringify({"error": obj['error']}));
         return true;
     }
     else{
