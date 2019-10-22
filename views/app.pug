@@ -2,56 +2,15 @@ include main
 doctype html
 html
     +head("Brilliant Labs Cloud App", 'app')
+
     body#app
-        header.r.jc.ac#site_header
-            .r.jsb.ac.w100
-                .r.jfs(style="width:25%;")
-                    a(href="https://brilliantlabs.ca" target="_blank")
-                        img(src = "/images/brilliant-labs-logo-white.svg")
-                ul.navigation.r.jfe.ac(style="width:75%;")
-                    li
-                        a.fa.fa-home.r.jc.ac(href="/") &nbspHome
-                    li
-                        a.fa.fa-code.r.jc.ac(target="_blank" href="https://code.brilliantlabs.app/") &nbspCode
-                    li
-                        a.fa.fa-edit.r.jc.ac(target="_blank" href="https://brilliantlabs.app/") &nbspProject Portal
-                    li
-                        a.fa.fa-question.r.jc.ac &nbspHelp
-                ul.hamburger.r.jc.ac.dn
-                    li
-                        input#ham.dn(name="ham" type="checkbox")
-                        label#ham_label.fa.fa-bars.r.jc.ac(for="ham" style="width: 4rem;")
-        #mobile_dropdown.dn
-            ul.c.jc.ac.m0.p0
-                li
-                    a.fa.fa-home.r.jfs.ac(href="/") &nbspHome
-                li
-                    a.fa.fa-code.r.jfs.ac(target="_blank" href="https://code.brilliantlabs.app/") &nbspCode
-                li
-                    a.fa.fa-edit.r.jfs.ac(target="_blank" href="https://brilliantlabs.app/") &nbspProject Portal
-                li
-                    a.fa.fa-door-open.r.jfs.ac(href="/app/") &nbspLog In
-        script.
-            var checkbox = document.getElementById("ham");
-            var label = document.getElementById("ham_label");
-            var dropdownMenu = document.getElementById('mobile_dropdown');
-            checkbox.addEventListener('change', function () {
-                if (this.checked) {
-                    label.classList.remove('fa-bars');
-                    label.classList.add('fa-times');
-                    dropdownMenu.classList.remove('dn');
-                } else {
-                    label.classList.remove('fa-times');
-                    label.classList.add('fa-bars');
-                    dropdownMenu.classList.add('dn');
-                }
-            });
-            window.addEventListener('resize', function () {
-                checkbox.checked = false;
-                dropdownMenu.classList.add('dn');
-                label.classList.remove('fa-times');
-                label.classList.add('fa-bars');
-            })
+        +header()
+        #profile_window.dn.c
+            img#profile_image_sidebar.profile-image.m2(src="/images/empty-avatar.png")
+            .name#user_name
+            .email#user_email
+            button.fas.fa-user(onclick="windowSwitcher('profile_settings')") &nbsp;&nbsp;Profile Settings
+            button.fas.fa-door-open(onclick="ws.close();firebase.auth().signOut(); document.getElementById('profile_window').classList.add('dn');document.getElementById('window').classList.add('dn');") &nbsp;&nbsp;Sign Out
         #app_root
             #app_container.m0.c.ac.jc
             #window.dn

@@ -8,20 +8,8 @@ let edit = false;
 
 docReady(function () {
 
-
-    var data = {
-        // A labels array that can contain any sort of values
-        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-        // Our series array that contains series objects or in this case series data arrays
-        series: [
-            [5, 2, 4, 2, 0]
-        ]
-    };
-
-// Create a new line chart object where as first parameter we pass in a selector
-// that is resolving to our chart container element. The Second parameter
-// is the actual data object.
-    new Chartist.Line('.ct-chart', data);
+    // Set up some
+    initializeProfile(); // --> profile.js
 
     let serverStatus = false;
 
@@ -33,6 +21,9 @@ docReady(function () {
 
         // If the user is authenticated.
         if (user) {
+
+            // Set the users profile image and information.
+            setProfileInformation(user); // --> profile.js
 
             // Store a global value of the current user ID.
             currentUid = user.uid;
@@ -48,6 +39,7 @@ docReady(function () {
 
                     // Try to connect.
                     try {
+
                         // Get the user id Token from firebase.
                         user.getIdToken(true).then(function(idToken) {
 
@@ -71,18 +63,24 @@ docReady(function () {
                             };
 
                             ws.onmessage = function incoming(data) {
-                                messageProcessor(data, ws);
+                                // Process incoming messages.
+                                messageProcessor(data, ws); // --> message-processor.js
                             };
 
+                            //  WebSocket Error
                             ws.error = function incoming(data) {
-                                console.log(data);
+                                console.log("Error: ", data);
                             }
 
                         }).catch(function(e) {
+                            //  WebSocket Error
                             console.log(e);
                             serverStatus = false;
                         });
+
+
                     } catch (e) {
+                        //  WebSocket Error
                         console.log(e);
                         serverStatus = false;
                     }
@@ -94,6 +92,9 @@ docReady(function () {
         else {
             currentUid = null;
             viewSwitcher('sign_in');
+
+            // Set profile to default settings.
+            setDefaultProfile(); // --> profile.js
             clearInterval(wsHandler);
         }
     });
@@ -102,377 +103,6 @@ docReady(function () {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function viewSwitcher(targetView, options) {
-    let appContainer = document.getElementById('app_container');
-    currentView= targetView;
-    switch (targetView) {
-
-        case 'projectSingle':
-
-            appContainer.innerHTML = '';
-            appContainer.style.userSelect = 'none';
-            appContainer.classList.remove('project-dash');
-            appContainer.classList.add('project-single');
-
-            // Top bar stuff.
-            let singleHeader = document.createElement('header');
-            let backButton = document.createElement('button');
-            backButton.innerHTML = "<i class=\"fas fa-arrow-left\"></i>";
-            backButton.addEventListener('click', ()=>{
-                currentProject = null;
-                viewSwitcher('dashboard');
-            });
-            singleHeader.appendChild(backButton);
-            let singleLogout = document.createElement('button');
-            singleLogout.id = 'logout';
-            singleLogout.innerHTML = 'Sign Out  <i style="margin-left: 4px;" class="fas fa-door-open"></i>';
-            singleLogout.addEventListener('click', () => {
-                ws.close();
-                firebase.auth().signOut();
-            });
-            singleHeader.appendChild(singleLogout);
-            appContainer.appendChild(singleHeader);
-
-            let projectSection = document.createElement('section');
-            projectSection.id = "project_projectSection";
-            projectSection.innerHTML = "<div class=\"loader\"></div>";
-            projectSection.style.overflow = "scroll";
-            projectSection.classList.add('r');
-            projectSection.classList.add('jc');
-            projectSection.classList.add('ac');
-            appContainer.appendChild(projectSection);
-            getProject(currentUid, options);
-            return;
-
-        break;
-
-        // Forgot Password View
-        case 'forgot_password':
-            appContainer.innerHTML = '';
-            appContainer.style.userSelect = 'none';
-            appContainer.classList.remove('project-dash');
-            appContainer.classList.remove('project-single');
-            let forgotPasswordLogo = document.createElement('img');
-            forgotPasswordLogo.src = "/images/logo.png";
-            forgotPasswordLogo.width = '300';
-            forgotPasswordLogo.style.marginBottom = "1rem";
-            let message = document.createElement('h2');
-            message.innerText = 'Enter your account email address.';
-            appContainer.appendChild(forgotPasswordLogo);
-            appContainer.appendChild(message);
-            let forgotPasswordForm = document.createElement('form');
-            forgotPasswordForm.id = "main_forgot_password";
-            forgotPasswordForm.classList = 'c jc ac';
-            let forgotPasswordEmail = document.createElement('input');
-            forgotPasswordEmail.required = 'required';
-            forgotPasswordEmail.type = 'email';
-            forgotPasswordEmail.placeholder = 'Email Address';
-            forgotPasswordEmail.id = `${forgotPasswordForm.id}_email`;
-            forgotPasswordForm.appendChild(forgotPasswordEmail);
-            let forgotPasswordSubmitButton = document.createElement('button');
-            forgotPasswordSubmitButton.innerHTML = "Send Recovery Email";
-            forgotPasswordSubmitButton.id = `${forgotPasswordForm.id}_submit`;
-            forgotPasswordForm.appendChild(forgotPasswordSubmitButton);
-            forgotPasswordForm.addEventListener("submit", function (e) {
-                let email = document.getElementById(`${forgotPasswordForm.id}_email`);
-                firebase.auth().sendPasswordResetEmail(email.value)
-                    .then(function () {
-                        // Password reset email sent.
-                        viewSwitcher('pw_reset_success');
-                    })
-                    .catch(function (error) {
-                        formError(error);
-                    });
-                e.preventDefault();    //stop form from submitting
-            });
-            appContainer.appendChild(forgotPasswordForm);
-            let forgotPasswordSignInButton = document.createElement('a');
-            forgotPasswordSignInButton.innerText = "Din't forget your password? Click Here to Sign In!";
-            forgotPasswordSignInButton.addEventListener("mouseenter", function () {
-                forgotPasswordSignInButton.style.color = "rgb(155, 85, 163)";
-                forgotPasswordSignInButton.style.cursor = "pointer";
-            });
-            forgotPasswordSignInButton.addEventListener("mouseleave", function () {
-                forgotPasswordSignInButton.style.color = "#000000";
-                forgotPasswordSignInButton.style.cursor = "default";
-            });
-            forgotPasswordSignInButton.addEventListener("click", function (e) {
-                viewSwitcher('sign_in');
-                e.preventDefault();    //stop form from submitting
-            });
-
-            appContainer.appendChild(forgotPasswordSignInButton);
-            break;
-
-        // Sign Up View
-        case 'sign_up':
-            appContainer.innerHTML = '';
-            appContainer.style.userSelect = 'none';
-            appContainer.classList.remove('project-dash');
-            appContainer.classList.remove('project-single');
-            let signUpLogo = document.createElement('img');
-            signUpLogo.src = "/images/logo.png";
-            signUpLogo.width = '300';
-            signUpLogo.style.marginBottom = "1rem";
-            appContainer.appendChild(signUpLogo);
-            let signUpForm = document.createElement('form');
-            signUpForm.id = "main_sign_up";
-            signUpForm.classList = 'c jc ac';
-            let userFirstName = document.createElement('input');
-            userFirstName.required = 'required';
-            userFirstName.type = 'name';
-            userFirstName.placeholder = 'First Name';
-            userFirstName.id = `${signUpForm.id}_first_name`;
-            let userLastName = document.createElement('input');
-            userLastName.required = 'required';
-            userLastName.type = 'name';
-            userLastName.placeholder = 'Last Name';
-            userLastName.id = `${signUpForm.id}_last_name`;
-            let signUpEmail = document.createElement('input');
-            signUpEmail.required = 'required';
-            signUpEmail.type = 'email';
-            signUpEmail.placeholder = 'Email Address';
-            signUpEmail.id = `${signUpForm.id}_email`;
-            let signUpPasswordInput = document.createElement('input');
-            signUpPasswordInput.required = 'required';
-            signUpPasswordInput.type = 'password';
-            signUpPasswordInput.placeholder = 'Password';
-            signUpPasswordInput.id = `${signUpForm.id}_password`;
-            let signUpPasswordInput2 = document.createElement('input');
-            signUpPasswordInput2.required = 'required';
-            signUpPasswordInput2.type = 'password';
-            signUpPasswordInput2.placeholder = 'Confirm Password';
-            signUpPasswordInput2.id = `${signUpForm.id}_password2`;
-            let signUpSubmitButton = document.createElement('button');
-            signUpSubmitButton.innerHTML = "Sign Up!";
-            signUpSubmitButton.id = `${signUpForm.id}_submit`;
-            signUpForm.appendChild(userFirstName);
-            signUpForm.appendChild(userLastName);
-            signUpForm.appendChild(signUpEmail);
-            signUpForm.appendChild(signUpPasswordInput);
-            signUpForm.appendChild(signUpPasswordInput2);
-            signUpForm.appendChild(signUpSubmitButton);
-            signUpForm.addEventListener("submit", function (e) {
-                let firstName = document.getElementById(`${signUpForm.id}_first_name`);
-                let lastName = document.getElementById(`${signUpForm.id}_last_name`);
-                let email = document.getElementById(`${signUpForm.id}_email`);
-                let password = document.getElementById(`${signUpForm.id}_password`);
-                let password2 = document.getElementById(`${signUpForm.id}_password2`);
-                // ws.send(`{"cmd":"CREATE_USER", "key":"mv0w9g4j0mada0dfm43a0vmq0vimvf0mcq", "first_name":"${firstName.value}", "last_name":"${lastName.value}", "email":"${email.value}","password":"${password.value}", "password_2":"${password2.value}"}`);
-                firebase.auth().createUserWithEmailAndPassword(email.value, password.value)
-                    .catch(function (error) {
-                        // Handle Errors here.
-                        let errorCode = error.code;
-                        let errorMessage = error.message;
-                        if (errorCode === 'auth/weak-password') {
-                            alert('The password is too weak.');
-                            formError('The password is too weak.');
-                        } else {
-                            formError(errorMessage);
-                        }
-                        // console.log(error);
-                    });
-                e.preventDefault();    //stop form from submitting
-            });
-            appContainer.appendChild(signUpForm);
-            let signInButton = document.createElement('a');
-            signInButton.innerText = "Already have an Account? Click Here to Sign In!";
-            signInButton.addEventListener("mouseenter", function () {
-                signInButton.style.color = "rgb(155, 85, 163)";
-                signInButton.style.cursor = "pointer";
-            });
-            signInButton.addEventListener("mouseleave", function () {
-                signInButton.style.color = "#000000";
-                signInButton.style.cursor = "default";
-            });
-            signInButton.addEventListener("click", function (e) {
-                viewSwitcher('sign_in');
-                e.preventDefault();    //stop form from submitting
-            });
-            appContainer.appendChild(signInButton);
-            break;
-
-        // dashboard View
-        case 'dashboard':
-            appContainer.innerHTML = '';
-            appContainer.style.userSelect = 'none';
-            appContainer.classList.add('project-dash');
-            appContainer.classList.remove('project-single');
-            let header = document.createElement('header');
-            let newButton = document.createElement('button');
-            newButton.innerHTML = "<i class=\"fas fa-plus\"></i>";
-            newButton.addEventListener('click', ()=>{
-                windowSwitcher('new_project');
-            });
-            header.appendChild(newButton);
-            let logout = document.createElement('button');
-            logout.id = 'logout';
-            logout.innerHTML = 'Sign Out  <i style="margin-left: 4px;" class="fas fa-door-open"></i>';
-            logout.addEventListener('click', () => {
-                ws.close();
-                firebase.auth().signOut();
-            });
-            header.appendChild(logout);
-            let section = document.createElement('section');
-            section.id = "project_section";
-            section.innerHTML = "<div class=\"loader\"></div>";
-            section.style.overflow = "scroll";
-            section.classList.add('r');
-            section.classList.add('jc');
-            section.classList.add('ac');
-
-            // each project here
-            let myPrj = document.createElement('h2');
-            myPrj.innerHTML = "My Projects<br><hr>";
-
-            let footer = document.createElement('footer');
-            appContainer.appendChild(header);
-            appContainer.appendChild(myPrj);
-            appContainer.appendChild(section);
-            appContainer.appendChild(footer);
-            if(ws) getProjects(currentUid);
-            break;
-
-        // Password Reset View
-        case 'pw_reset_success':
-            appContainer.classList.remove('project-dash');
-            appContainer.innerHTML = '';
-            appContainer.style.userSelect = 'none';
-            let pwResetLogo = document.createElement('img');
-            pwResetLogo.src = "/images/logo.png";
-            pwResetLogo.width = '300';
-            pwResetLogo.style.marginBottom = "1rem";
-            appContainer.appendChild(pwResetLogo);
-            let pwResetMsg = document.createElement('h2');
-            pwResetMsg.innerText = "An email has been sent with a password reset link.";
-            appContainer.appendChild(pwResetMsg);
-            let pwResetLogoSignIn = document.createElement('button');
-            pwResetLogoSignIn.id = 'logout';
-            pwResetLogoSignIn.innerText = 'Sign In';
-            pwResetLogoSignIn.addEventListener('click', () => {
-                viewSwitcher('sign_in');
-            });
-            appContainer.appendChild(pwResetLogoSignIn);
-            break;
-
-        // Login View
-        case 'sign_in':
-            appContainer.innerHTML = '';
-            appContainer.classList.remove('project-dash');
-            appContainer.style.userSelect = 'none';
-            let signInLogo = document.createElement('img');
-            signInLogo.src = "/images/logo.png";
-            signInLogo.width = '300';
-            signInLogo.style.marginBottom = "1rem";
-            appContainer.appendChild(signInLogo);
-            let signInForm = document.createElement('form');
-            signInForm.id = "main_sign_in";
-            signInForm.classList = 'c jc ac';
-            let emailInput = document.createElement('input');
-            emailInput.required = 'required';
-            emailInput.type = 'email';
-            emailInput.placeholder = 'Email';
-            emailInput.id = `${signInForm.id}_email`;
-            let passwordInput = document.createElement('input');
-            passwordInput.required = 'required';
-            passwordInput.type = 'password';
-            passwordInput.placeholder = 'Password';
-            passwordInput.id = `${signInForm.id}_password`;
-            let submitButton = document.createElement('button');
-            submitButton.innerHTML = "Submit";
-            submitButton.id = `${signInForm.id}_submit`;
-            signInForm.appendChild(emailInput);
-            signInForm.appendChild(passwordInput);
-            signInForm.appendChild(submitButton);
-            signInForm.addEventListener("submit", function (e) {
-                let email = document.getElementById(`${signInForm.id}_email`);
-                let password = document.getElementById(`${signInForm.id}_password`);
-                firebase.auth().signInWithEmailAndPassword(email.value, password.value)
-                    .catch(function (error) {
-                        // Handle Errors here.
-                        let errorCode = error.code;
-                        let errorMessage = error.message;
-                        if (errorCode === 'auth/wrong-password') {
-                            formError('Wrong password.');
-
-                        } else {
-                            formError(errorMessage);
-                        }
-                        // console.log(error);
-                    });
-                e.preventDefault();    //stop form from submitting
-            });
-            appContainer.appendChild(signInForm);
-            let signUp = document.createElement('a');
-            signUp.innerText = "Dont Have an Account? Click Here to Sign Up!";
-            signUp.addEventListener("mouseenter", function () {
-                signUp.style.color = "rgb(155, 85, 163)";
-                signUp.style.cursor = "pointer";
-            });
-            signUp.addEventListener("mouseleave", function () {
-                signUp.style.color = "#000000";
-                signUp.style.cursor = "default";
-            });
-            signUp.addEventListener("click", function (e) {
-                viewSwitcher('sign_up');
-                e.preventDefault();    //stop form from submitting
-            });
-            let forgot = document.createElement('a');
-            forgot.innerText = "Forgot password?";
-            forgot.style.fontSize = "12px";
-            forgot.style.margin = "8px";
-            forgot.style.color = "#1a478e";
-
-            forgot.addEventListener("mouseenter", function () {
-                forgot.style.color = "rgb(155, 85, 163)";
-                forgot.style.cursor = "pointer";
-            });
-            forgot.addEventListener("mouseleave", function () {
-                forgot.style.color = "#000000";
-                forgot.style.cursor = "default";
-            });
-            forgot.addEventListener("click", function (e) {
-                viewSwitcher('forgot_password');
-                e.preventDefault();    //stop form from submitting
-            });
-            appContainer.appendChild(signUp);
-            appContainer.appendChild(forgot);
-
-            break;
-
-        // Default
-        default:
-            viewSwitcher('sign_in');
-        break;
-    }
-}
 
 
 
@@ -506,6 +136,7 @@ function formError(msg) {
     errorMessage.id = 'error_message';
     appContainer.appendChild(errorMessage);
 }
+
 function createProject(name, desc, access, color, uid){
     console.log('Creating Project: ', name, desc, access, uid);
     let project = {
@@ -556,14 +187,26 @@ function paintProjects(projects){
     projectSection.style.minHeight = "100vh";
     projectSection.style.height = "100%";
     projectSection.innerHTML = "";
-
+    let newButton = document.createElement('button');
+    newButton.innerHTML = "<i class=\"fas fa-plus\"></br></br>Add Project</i>";
+    newButton.style.height = "200px";
+    newButton.style.minWidth = "300px";
+    newButton.style.maxWidth = "300px";
+    newButton.style.color = "#9b55a3";
+    newButton.style.background = "rgba(3, 4, 8, 0.46)";
+    newButton.addEventListener('click', ()=>{
+        windowSwitcher('new_project');
+    });
+    projectSection.appendChild(newButton);
     for(let project in projects){
         if(projects.hasOwnProperty(project)) {
             let div = document.createElement('button');
             div.style.height = "200px";
             div.style.minWidth = "300px";
             div.style.maxWidth = "300px";
-            div.style.background = projects[project]['color'];
+            // div.style.background = projects[project]['color'];
+            div.style.background = "rgba(3, 4, 8, 0.46)";
+
             div.id = projects[project]['id'];
             div.borderRadius = "10px";
             let data = projects[project];
@@ -580,7 +223,7 @@ function paintProjects(projects){
 
 function paintProject(project, id){
     // console.log('PROJECT ID:  ', id);
-    // console.log('PROJECT:  ', project);
+    //     // console.log('PROJECT:  ', project);
     viewSwitcher('projectSingle', id)
 
 }
@@ -689,6 +332,8 @@ function variableEdit(id, key = null){
 
 
 }
+
+
 function variableSave(id, old, key){
     let editButton = document.getElementById(id);
     editButton.classList.remove('fa-check');
@@ -718,3 +363,42 @@ function variableSave(id, old, key){
     }, 3000);
 }
 
+
+
+function projectSearch() {
+    var input, filter, ul, li, a, i, txtValue;
+    input = document.getElementById("project_search");
+    filter = input.value.toUpperCase();
+    var clearButton = document.getElementById("project_search_clear");
+    clearButton.addEventListener('click', ()=>{
+        input.value = '';
+        document.getElementById("project_search_clear").style.color = 'transparent';
+        ul = document.getElementById("project_section");
+        li = ul.getElementsByTagName("button");
+        for (i = 1; i < li.length; i++) {
+            a = li[i].getElementsByTagName("h3")[0];
+            txtValue = a.textContent || a.innerText;
+            if (txtValue.toUpperCase().indexOf("") > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+            }
+        }
+    });
+    if(filter.length > 0){
+        clearButton.style.color = '#9b55a3';
+    }else{
+        clearButton.style.color = 'transparent';
+    }
+    ul = document.getElementById("project_section");
+    li = ul.getElementsByTagName("button");
+    for (i = 1; i < li.length; i++) {
+        a = li[i].getElementsByTagName("h3")[0];
+        txtValue = a.textContent || a.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+        } else {
+            li[i].style.display = "none";
+        }
+    }
+}

@@ -15,6 +15,7 @@ app.enable('trust proxy');
 app.use(bodyParser.json());
 
 function startHttpServer(port, wss){
+
     app.get('/', (req, res)=> {
         res.render('index');
     });

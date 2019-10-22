@@ -1,0 +1,14 @@
+.component-input{
+    input{
+    }
+    .fa-pencil-alt{
+        position: absolute;
+        transform: translate(-28px, 15px);
+        color: #9b55a3;
+        &:hover{
+            cursor: pointer;
+            transform: translate(-28px, 11px);
+            transition: all 0.15s ease;
+        }
+    }
+}

@@ -82,6 +82,9 @@ $xsScreen : 360px;
     }
 }
 @media only screen and (max-width: $mdScreen) {
+    .prmd22{
+        padding-right: 2.2rem !important;
+    }
     .w100md{
         width: 100% !important;
     }
@@ -138,6 +141,10 @@ $xsScreen : 360px;
         flex-direction: row-reverse !important;
     }
 }
+.dn{
+    display: none;
+}
+
 //Flex Direction
 .r, .rxs, .rsm, .rmd, .rml, .rlg, .rxl, .rxxl {
     display: flex;
@@ -183,6 +190,7 @@ $xsScreen : 360px;
     justify-content: space-around;
 }
 
+
 // Align Items
 .afe {
     align-items: flex-end;
@@ -204,6 +212,28 @@ $xsScreen : 360px;
     align-items: baseline;
 }
 
+// Align Content
+.acfe {
+    align-content: flex-end;
+}
+
+.acfs {
+    align-content: flex-start;
+}
+
+.acc {
+    align-content: center;
+}
+
+.acs {
+    align-content: stretch;
+}
+.acsa {
+    align-content: space-around;
+}
+.acsb {
+    align-content: space-between;
+}
 
 .m0 {
     margin: 0;
