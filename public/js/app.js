@@ -771,6 +771,33 @@ function forgotPasswordView(){
 
     appContainer.appendChild(forgotPasswordSignInButton);
 }
+function h1(parentElement, options) {
+    let h1 = document.createElement('h1');
+    if(options.hasOwnProperty('innerText')) h1.innerText = options.innerText;
+    if(!options.hasOwnProperty('id')) options.id = "";
+    if(!options.hasOwnProperty('classList')) options.classList = "";
+    h1.classList = options.classList;
+    h1.id = options.id;
+    parentElement.appendChild(h1);
+}
+function h2(parentElement, options) {
+    let h2 = document.createElement('h2');
+    if(options.hasOwnProperty('innerText')) h2.innerText = options.innerText;
+    if(!options.hasOwnProperty('id')) options.id = "";
+    if(!options.hasOwnProperty('classList')) options.classList = "";
+    h2.classList = options.classList;
+    h2.id = options.id;
+    parentElement.appendChild(h2);
+}
+function p(parentElement, options) {
+    let p = document.createElement('p');
+    if(options.hasOwnProperty('innerText')) p.innerText = options.innerText;
+    if(!options.hasOwnProperty('id')) options.id = "";
+    if(!options.hasOwnProperty('classList')) options.classList = "";
+    p.classList = options.classList;
+    p.id = options.id;
+    parentElement.appendChild(p);
+}
 function input(parentElement, options = {}){
     if(!options.hasOwnProperty('type')) options.type = 'text';
     if(!options.hasOwnProperty('placeholder')) options.placeholder = '';
@@ -780,40 +807,129 @@ function input(parentElement, options = {}){
     if(!options.hasOwnProperty('id')) options.id = "";
     if(!options.hasOwnProperty('class')) options.class = "";
     if(!options.hasOwnProperty('autofocus')) options.autofocus = false;
+    if(!options.hasOwnProperty('onSaveMessage')) options.onSaveMessage = "";
     if(!options.hasOwnProperty('disabled')) options.disabled = false;
     if(!options.hasOwnProperty('required')) options.required = false;
+    if(!options.hasOwnProperty('onCancel')) options.onCancel = {};
+    if(!options.hasOwnProperty('onSave')) options.onSave = {};
 
 
     let disabled = "";
     let required = "";
     let autofocus = "off";
 
-    if(options.disabled === true) disabled = "disabled";
+    if(options.disabled === true || options.edit === true) disabled = "disabled";
     if(options.required === true) required = "required";
     if(options.autofocus  === true || options.autofocus === "on")autofocus = "on";
 
     let inputContainer = document.createElement('div');
     inputContainer.classList.add('component-input');
-    inputContainer.innerHTML = `<input ${required} ${disabled} autofocus = "${autofocus}"  class = "${options.class}" id = "${options.id}" name = "${options.name}" value = "${options.value}" type = "${options.type}" placeholder= "${options.placeholder}" >`;
+    inputContainer.innerHTML = `<input max="30" ${required} ${disabled} autofocus = "${autofocus}"  class = "${options.class}" id = "${options.id}" name = "${options.name}" value = "${options.value}" type = "${options.type}" placeholder= "${options.placeholder}" >`;
+    let inputTag = inputContainer.querySelector('input');
 
     if(options.edit === true){
+
         let editButton = document.createElement('i');
+        let closeButton = document.createElement('i');
+
+        closeButton.classList = 'fa fa-times dn';
         editButton.classList = 'fa fa-pencil-alt';
+        let errorPopup = document.createElement('div');
+        errorPopup.classList = "r ac jc dn error-popup px3 py1";
+        errorPopup.innerHTML = '<i class="pr3 fa fa-exclamation"></i> <p></p><i class="fa fa-times-circle">';
+        inputContainer.appendChild(errorPopup);
 
-        editButton.addEventListener('click', ()=>{
-            if(editButton.ha)
+
+        inputTag.disabled = true;
+        let oldInputValue = inputTag.value;
+        function loaderMode(){
+            editButton.classList.remove('fa-pencil-alt');
+            editButton.classList.remove('fa-check');
+            editButton.classList.add('fa-loader');
+            closeButton.classList.add('dn');
+            inputTag.disabled = true;
+        }
+        function editMode(){
+            editButton.classList.remove('fa-pencil-alt');
+            editButton.classList.add('fa-check');
+            editButton.classList.remove('fa-loader');
+            closeButton.classList.remove('dn');
+            inputTag.disabled = false;
+            errorPopup.classList.add('dn');
+        }
+        function pencilMode(){
+            editButton.classList.add('fa-pencil-alt');
+            editButton.classList.remove('fa-check');
+            editButton.classList.remove('fa-loader');
+            closeButton.classList.add('dn');
+            inputTag.disabled = true;
+        }
+
+
+
+        editButton.addEventListener('click', async () => {
+            if (editButton.classList.contains('fa-pencil-alt')) {
+                oldInputValue = inputTag.value;
+                editMode();
+            } else {
+
+                if (options.hasOwnProperty('onSave')) {
+                    let timeout = setTimeout(() => {
+                        inputTag.value = oldInputValue;
+                        pencilMode();
+                    }, 4000);
+                    try {
+                        loaderMode();
+                        console.log('on save: ', await options.onSave());
+                        let popupError = inputContainer.querySelector('.error-popup');
+                        popupError.innerHTML = '<i class="pr3 fa fa-check"></i> <p></p>';
+                        popupError.classList.remove('dn');
+                        setTimeout(()=>{
+                            popupError.classList.add('dn');
+
+                        }, 3000);
+                        popupError.classList.add('error-popup-success');
+                        inputContainer.querySelector('p').innerText = 'Success. ' + options.onSaveMessage;
+                        pencilMode();
+                        clearInterval(timeout);
+
+                    } catch (e) {
+                        inputTag.value = oldInputValue;
+                        pencilMode();
+                        if(e.message !== 'none'){
+                        inputContainer.querySelector('p').innerText = e.message;
+                        let popupError = inputContainer.querySelector('.error-popup');
+                        popupError.classList.remove('dn');
+                        popupError.querySelector('.fa-times-circle').addEventListener('click', ()=>{
+                            popupError.classList.add('dn');
+                        });
+                        }
+                        clearInterval(timeout);
+                    }
+
+
+                } else {
+                    pencilMode();
+                }
+            }
         });
+
+        closeButton.addEventListener('click', ()=>{
+            pencilMode();
+            inputTag.value = oldInputValue;
+            if(options.hasOwnProperty('onCancel')) {
+                options.onCancel();
+            }
+        });
+
         inputContainer.appendChild(editButton);
+        inputContainer.appendChild(closeButton);
 
-        if(options.hasOwnProperty('onSave')) {
-
-        }
-        if(options.hasOwnProperty('onCancel')) {
-
-        }
     }
     parentElement.appendChild(inputContainer);
+    return inputTag;
 }
+
 function initializeProfile(){
     document.getElementById('profile_image').addEventListener('click', ()=>{
         document.getElementById('profile_window').classList.toggle('dn');
@@ -889,7 +1005,7 @@ function windowSwitcher(targetWindow, options){
         // No window Shown.
         case 'none':
             windowHide();
-            break;
+        break;
 
         case 'profile_settings':
             document.getElementById('profile_window').classList.add('dn');
@@ -898,45 +1014,102 @@ function windowSwitcher(targetWindow, options){
             let profileSettings = document.createElement('div');
             profileSettings.id = 'window_content_block';
             profileSettings.classList.add('update-profile');
-            var user = firebase.auth().currentUser;
-            profileSettings.innerHTML =
-                '<form id="update_profile">   ' +
-                '    <h2>Profile Settings</h2>' +
-                '    <p>Display Name:</p>' +
-                `    <div id="display_mame" class="r ac jc">
-                        <input required type="text" value="${user.displayName}" disabled>
-                        <div class="fa fa-pencil-alt">
-                        </div>
-                    </div>` +
-                '    <p>Email Address:</p>' +
-                `    <div class="r ac jc"><input type = "email"  value="${user.email}" required disabled ><div class="fa fa-pencil-alt"></div></div>` +
-                '    <p class="white-link r ac jc"><a href="https://en.gravatar.com" target="_blank">Change your profile Image<br> on Gravatar</a></p>' +
-                `    <button onclick="windowSwitcher('none')">Close</button></div>` +
-                '</form>';
-            input(window, {
+            let user = firebase.auth().currentUser;
+            let profileSettingsForm = document.createElement('form');
+            profileSettingsForm.id = 'update_profile';
+            h2(profileSettings, {
+                innerText: "Profile Settings"
+            });
+
+            p(profileSettings, {
+                innerText: "Display Name"
+            });
+
+            let displayNameInput = input(profileSettings, {
                 type: 'test',
-                placeholder: 'Display Name',
                 edit: true,
+                onSaveMessage: "Display name has been changed.",
                 value: user.displayName,
                 required: true,
-                disabled: false
+                disabled: true,
+                onSave : async () =>{
+                    console.log("Save");
+                    if( user.displayName === displayNameInput.value){
+                        throw new Error('none');
+                    }
+                    user.updateProfile({
+                        displayName: displayNameInput.value
+                    }).then(function() {
+                        displayNameInput.value = user.displayName;
+                        setProfileInformation(user);
+                    }).catch(function(error) {
+                        throw error;
+                    });
+                }
             });
+
+            p(profileSettings, {
+                innerText: "Email Address"
+            });
+            let emailInput = input(profileSettings, {
+                    type: 'test',
+                    edit: true,
+                    onSaveMessage: "A verification email was sent to your new email address.",
+                    value: user.email,
+                    required: true,
+                    onSave : async function () {
+                        console.log("Save: ", emailInput.value);
+                        if( user.email === emailInput.value){
+                            throw new Error('none');
+                        }
+                        await user.updateEmail(emailInput.value).then(async function () {
+                            await user.sendEmailVerification().then(function () {
+                            }).catch(function (error) {
+                                throw error;
+                            });
+                        }).catch(function (error) {
+                            throw error;
+                        }).then(()=>{
+                            setProfileInformation(user);
+                        });
+
+                    },
+                disabled: true
+            });
+
+            p(profileSettings, {
+                innerText: "Password"
+            });
+            let passwordInput = input(profileSettings, {
+                type: 'password',
+                edit: true,
+                onSaveMessage: "Your password has been changed.",
+                value: "******",
+                required: true,
+                onSave : async function () {
+
+                    if(passwordInput.value !== "******"){
+                        await user.updatePassword(passwordInput.value).then(function() {
+                            // Update successful.
+                        }).catch(function(error) {
+                            throw error;
+                        });
+                    }else {
+                        throw new Error('none');
+                    }
+
+                },
+                disabled: true
+            });
+
+            let closeContent = document.createElement('div');
+            closeContent.classList = "c ac jc w100";
+            closeContent.innerHTML ='    <p class="white-link r ac jc"><a href="https://en.gravatar.com" target="_blank">Change your profile Image<br> on Gravatar</a></p>' +
+                `    <button onclick="windowSwitcher('none')">Close</button></div>`;
+            profileSettings.appendChild(closeContent);
             window.appendChild(profileSettings);
-            let displayName =  document.getElementById('display_mame');
-            let nameButtonEdit = displayName.querySelector('.fa-pencil-alt');
+        break;
 
-            nameButtonEdit.addEventListener('click', ()=>{
-                nameButtonEdit.classList.remove('fa-pencil-alt');
-                // nameButtonEdit.classList.add('double-button');
-                nameButtonEdit.style.color = 'green';
-                nameButtonEdit.classList.add('fa-check');
-
-                let cancelButton = document.createElement('div');
-                cancelButton.classList = 'fa fa-times';
-                cancelButton.style.color = 'red';
-                displayName.appendChild(cancelButton);
-            });
-            break;
         // Creating a new project window.
         case 'new_project':
             windowShow();
@@ -986,7 +1159,7 @@ function windowSwitcher(targetWindow, options){
                 getProjects(currentUid);
                 e.preventDefault();    //stop form from submitting
             });
-            break;
+        break;
     }
 }
 

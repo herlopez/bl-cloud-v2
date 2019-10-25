@@ -1,14 +1,95 @@
 .component-input{
     input{
+        padding-right: 60px;
     }
     .fa-pencil-alt{
-        position: absolute;
-        transform: translate(-28px, 15px);
         color: #9b55a3;
+        transform: translate(-28px, 13px);
         &:hover{
-            cursor: pointer;
-            transform: translate(-28px, 11px);
-            transition: all 0.15s ease;
+            transform: translate(-28px, 9px);
         }
     }
+    .fa-loader{
+        border: 2px solid #f3f3f3;
+        transform: translate(-28px, 13px);
+        animation: spin 1s linear infinite;
+        border-top: 2px solid #9b55a3;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        position: absolute;
+
+        margin: 0 !important;
+        margin-top: 11px !important;
+        margin-left: -34px !important;
+
+    }
+    .fa-times{
+        color: red;
+        transform: translate(-28px, 13px);
+        &:hover{
+            transform: translate(-28px, 9px);
+        }
+    }
+    .fa-check{
+         color: green;
+         transform: translate(-52px, 13px);
+         &:hover{
+             transform: translate(-52px, 9px);
+         }
+     }
+    .fa-pencil-alt, .fa-check, .fa-times{
+        font-size: 18px;
+        position: absolute;
+        &:hover{
+            cursor: pointer;
+            transition: all 0.15s ease-in-out;
+        }
+    }
+    .error-popup{
+
+        .fa-check{
+            position: relative !important;
+            transform: none;
+        }
+        .fa-times-circle{
+            color: black !important;
+            background: white;
+            border-radius: 50%;
+            position: relative;
+            padding-left: 10px;
+            &:hover{
+                cursor: pointer;
+            }
+        }
+        position: absolute;
+        background: white;
+        border: 1px solid red;
+        border-radius: 8px;
+        max-width: 246px;
+        i, p{
+            color: red;
+            margin: 0;
+            font-size: 14px;
+        }
+        span{
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 14px solid red;
+            position: relative;
+            top: 20px;
+            right: 88px;
+        }
+    }
+
+
+    .error-popup-success{
+        border: 1px solid green;
+        i, p{
+            color: green;
+        }
+    }
+
 }

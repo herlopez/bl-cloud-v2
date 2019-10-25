@@ -94,8 +94,6 @@
   -ms-flex-align: center;
   align-items: center;
   background: rgba(41, 43, 54, 0.59); }
-  #window #window_content_block.update-profile {
-    padding-right: 14px !important; }
   #window #window_content_block {
     background: #0c0c15;
     border: none;
@@ -103,7 +101,7 @@
     color: white;
     -webkit-box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3);
     box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3);
-    padding: 8px 30px;
+    padding: 1rem 2rem;
     -webkit-transition: all 0.15s ease;
     transition: all 0.15s ease;
     font-size: 16px;
@@ -120,18 +118,6 @@
         color: white; }
       #window #window_content_block .white-link a:hover {
         color: #9b55a3; }
-    #window #window_content_block input {
-      padding-right: 30px; }
-    #window #window_content_block .fa-pencil-alt {
-      color: #9b55a3;
-      -webkit-transform: translateX(-30px);
-      transform: translateX(-30px);
-      -webkit-transition: all 0.15s ease;
-      transition: all 0.15s ease; }
-      #window #window_content_block .fa-pencil-alt:hover {
-        -webkit-transform: translate(-30px, -4px);
-        transform: translate(-30px, -4px);
-        cursor: pointer; }
     #window #window_content_block h2 {
       color: white; }
 
@@ -1346,14 +1332,89 @@ body {
   footer .c, footer #app #profile_window, #app footer #profile_window, footer #window #window_content_block #update_profile, #window #window_content_block footer #update_profile {
     width: 80%; } }
 
+.component-input input {
+  padding-right: 60px; }
+
 .component-input .fa-pencil-alt {
-  position: absolute;
-  -webkit-transform: translate(-28px, 15px);
-  transform: translate(-28px, 15px);
-  color: #9b55a3; }
+  color: #9b55a3;
+  -webkit-transform: translate(-28px, 13px);
+  transform: translate(-28px, 13px); }
   .component-input .fa-pencil-alt:hover {
+    -webkit-transform: translate(-28px, 9px);
+    transform: translate(-28px, 9px); }
+
+.component-input .fa-loader {
+  border: 2px solid #f3f3f3;
+  -webkit-transform: translate(-28px, 13px);
+  transform: translate(-28px, 13px);
+  -webkit-animation: spin 1s linear infinite;
+  animation: spin 1s linear infinite;
+  border-top: 2px solid #9b55a3;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  margin: 0 !important;
+  margin-top: 11px !important;
+  margin-left: -34px !important; }
+
+.component-input .fa-times {
+  color: red;
+  -webkit-transform: translate(-28px, 13px);
+  transform: translate(-28px, 13px); }
+  .component-input .fa-times:hover {
+    -webkit-transform: translate(-28px, 9px);
+    transform: translate(-28px, 9px); }
+
+.component-input .fa-check {
+  color: green;
+  -webkit-transform: translate(-52px, 13px);
+  transform: translate(-52px, 13px); }
+  .component-input .fa-check:hover {
+    -webkit-transform: translate(-52px, 9px);
+    transform: translate(-52px, 9px); }
+
+.component-input .fa-pencil-alt, .component-input .fa-check, .component-input .fa-times {
+  font-size: 18px;
+  position: absolute; }
+  .component-input .fa-pencil-alt:hover, .component-input .fa-check:hover, .component-input .fa-times:hover {
     cursor: pointer;
-    -webkit-transform: translate(-28px, 11px);
-    transform: translate(-28px, 11px);
-    -webkit-transition: all 0.15s ease;
-    transition: all 0.15s ease; }
+    -webkit-transition: all 0.15s ease-in-out;
+    transition: all 0.15s ease-in-out; }
+
+.component-input .error-popup {
+  position: absolute;
+  background: white;
+  border: 1px solid red;
+  border-radius: 8px;
+  max-width: 246px; }
+  .component-input .error-popup .fa-check {
+    position: relative !important;
+    -webkit-transform: none;
+    transform: none; }
+  .component-input .error-popup .fa-times-circle {
+    color: black !important;
+    background: white;
+    border-radius: 50%;
+    position: relative;
+    padding-left: 10px; }
+    .component-input .error-popup .fa-times-circle:hover {
+      cursor: pointer; }
+  .component-input .error-popup i, .component-input .error-popup p {
+    color: red;
+    margin: 0;
+    font-size: 14px; }
+  .component-input .error-popup span {
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 14px solid red;
+    position: relative;
+    top: 20px;
+    right: 88px; }
+
+.component-input .error-popup-success {
+  border: 1px solid green; }
+  .component-input .error-popup-success i, .component-input .error-popup-success p {
+    color: green; }

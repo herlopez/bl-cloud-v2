@@ -25,7 +25,7 @@ function windowSwitcher(targetWindow, options){
         // No window Shown.
         case 'none':
             windowHide();
-            break;
+        break;
 
         case 'profile_settings':
             document.getElementById('profile_window').classList.add('dn');
@@ -34,45 +34,102 @@ function windowSwitcher(targetWindow, options){
             let profileSettings = document.createElement('div');
             profileSettings.id = 'window_content_block';
             profileSettings.classList.add('update-profile');
-            var user = firebase.auth().currentUser;
-            profileSettings.innerHTML =
-                '<form id="update_profile">   ' +
-                '    <h2>Profile Settings</h2>' +
-                '    <p>Display Name:</p>' +
-                `    <div id="display_mame" class="r ac jc">
-                        <input required type="text" value="${user.displayName}" disabled>
-                        <div class="fa fa-pencil-alt">
-                        </div>
-                    </div>` +
-                '    <p>Email Address:</p>' +
-                `    <div class="r ac jc"><input type = "email"  value="${user.email}" required disabled ><div class="fa fa-pencil-alt"></div></div>` +
-                '    <p class="white-link r ac jc"><a href="https://en.gravatar.com" target="_blank">Change your profile Image<br> on Gravatar</a></p>' +
-                `    <button onclick="windowSwitcher('none')">Close</button></div>` +
-                '</form>';
-            input(window, {
+            let user = firebase.auth().currentUser;
+            let profileSettingsForm = document.createElement('form');
+            profileSettingsForm.id = 'update_profile';
+            h2(profileSettings, {
+                innerText: "Profile Settings"
+            });
+
+            p(profileSettings, {
+                innerText: "Display Name"
+            });
+
+            let displayNameInput = input(profileSettings, {
                 type: 'test',
-                placeholder: 'Display Name',
                 edit: true,
+                onSaveMessage: "Display name has been changed.",
                 value: user.displayName,
                 required: true,
-                disabled: false
+                disabled: true,
+                onSave : async () =>{
+                    console.log("Save");
+                    if( user.displayName === displayNameInput.value){
+                        throw new Error('none');
+                    }
+                    user.updateProfile({
+                        displayName: displayNameInput.value
+                    }).then(function() {
+                        displayNameInput.value = user.displayName;
+                        setProfileInformation(user);
+                    }).catch(function(error) {
+                        throw error;
+                    });
+                }
             });
+
+            p(profileSettings, {
+                innerText: "Email Address"
+            });
+            let emailInput = input(profileSettings, {
+                    type: 'test',
+                    edit: true,
+                    onSaveMessage: "A verification email was sent to your new email address.",
+                    value: user.email,
+                    required: true,
+                    onSave : async function () {
+                        console.log("Save: ", emailInput.value);
+                        if( user.email === emailInput.value){
+                            throw new Error('none');
+                        }
+                        await user.updateEmail(emailInput.value).then(async function () {
+                            await user.sendEmailVerification().then(function () {
+                            }).catch(function (error) {
+                                throw error;
+                            });
+                        }).catch(function (error) {
+                            throw error;
+                        }).then(()=>{
+                            setProfileInformation(user);
+                        });
+
+                    },
+                disabled: true
+            });
+
+            p(profileSettings, {
+                innerText: "Password"
+            });
+            let passwordInput = input(profileSettings, {
+                type: 'password',
+                edit: true,
+                onSaveMessage: "Your password has been changed.",
+                value: "******",
+                required: true,
+                onSave : async function () {
+
+                    if(passwordInput.value !== "******"){
+                        await user.updatePassword(passwordInput.value).then(function() {
+                            // Update successful.
+                        }).catch(function(error) {
+                            throw error;
+                        });
+                    }else {
+                        throw new Error('none');
+                    }
+
+                },
+                disabled: true
+            });
+
+            let closeContent = document.createElement('div');
+            closeContent.classList = "c ac jc w100";
+            closeContent.innerHTML ='    <p class="white-link r ac jc"><a href="https://en.gravatar.com" target="_blank">Change your profile Image<br> on Gravatar</a></p>' +
+                `    <button onclick="windowSwitcher('none')">Close</button></div>`;
+            profileSettings.appendChild(closeContent);
             window.appendChild(profileSettings);
-            let displayName =  document.getElementById('display_mame');
-            let nameButtonEdit = displayName.querySelector('.fa-pencil-alt');
+        break;
 
-            nameButtonEdit.addEventListener('click', ()=>{
-                nameButtonEdit.classList.remove('fa-pencil-alt');
-                // nameButtonEdit.classList.add('double-button');
-                nameButtonEdit.style.color = 'green';
-                nameButtonEdit.classList.add('fa-check');
-
-                let cancelButton = document.createElement('div');
-                cancelButton.classList = 'fa fa-times';
-                cancelButton.style.color = 'red';
-                displayName.appendChild(cancelButton);
-            });
-            break;
         // Creating a new project window.
         case 'new_project':
             windowShow();
@@ -122,6 +179,6 @@ function windowSwitcher(targetWindow, options){
                 getProjects(currentUid);
                 e.preventDefault();    //stop form from submitting
             });
-            break;
+        break;
     }
 }
