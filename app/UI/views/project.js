@@ -1,5 +1,6 @@
 
-function projectView(options){
+function projectView(id){
+
     let appContainer = document.getElementById('app_container');
     appContainer.innerHTML = '';
     appContainer.style.userSelect = 'none';
@@ -8,22 +9,36 @@ function projectView(options){
 
     // Top bar stuff.
     let singleHeader = document.createElement('header');
+    singleHeader.style.padding = 0;
     let backButton = document.createElement('button');
+    backButton.style.marginTop = 0;
     backButton.innerHTML = "<i class=\"fas fa-arrow-left\"></i>";
     backButton.addEventListener('click', ()=>{
         currentProject = null;
         viewSwitcher('dashboard');
     });
     singleHeader.appendChild(backButton);
-    let singleLogout = document.createElement('button');
-    singleLogout.id = 'logout';
-    singleLogout.innerHTML = 'Sign Out  <i style="margin-left: 4px;" class="fas fa-door-open"></i>';
-    singleLogout.addEventListener('click', () => {
-        ws.close();
-        firebase.auth().signOut();
-    });
-    singleHeader.appendChild(singleLogout);
-    appContainer.appendChild(singleHeader);
+    let menu = document.createElement('div');
+    menu.id = "menu_box";
+
+    let dashboard = document.createElement('div');
+
+    dashboard.classList = "dashboar-button";
+    dashboard.inneinneeHTML = "<i class='fa fa-chart'></i>Dashboard"
+    menu.appendChild(dashboard);
+
+
+
+
+    appContainer.appendChild(menu);
+
+
+
+
+    menu.appendChild(singleHeader);
+    let content = document.createElement('div');
+    content.id = "content_box";
+    appContainer.appendChild(content);
 
     let projectSection = document.createElement('section');
     projectSection.id = "project_projectSection";
@@ -32,6 +47,6 @@ function projectView(options){
     projectSection.classList.add('r');
     projectSection.classList.add('jc');
     projectSection.classList.add('ac');
-    appContainer.appendChild(projectSection);
-    getProject(currentUid, options);
+    content.appendChild(projectSection);
+    getProject(currentUid, id);
 }

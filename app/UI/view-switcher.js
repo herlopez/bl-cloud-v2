@@ -1,7 +1,7 @@
 function viewSwitcher(targetView, options) {
     currentView = targetView;
     switch (targetView) {
-
+        case 'project':
         case 'projectSingle':
             projectView(options);
             break;
@@ -14,8 +14,9 @@ function viewSwitcher(targetView, options) {
             signUpView();
             break;
 
+        case 'projects':
         case 'dashboard':
-            dashboardView();
+            projectsView();
             break;
 
         case 'pw_reset_success':

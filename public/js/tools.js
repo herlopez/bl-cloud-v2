@@ -132,3 +132,34 @@ function safe_add(d, _) {
 function bit_rol(d, _) {
   return d << _ | d >>> 32 - _;
 }
+
+function windowError(window, msg) {
+  var appContainer = document.getElementById(window); // Try to remove the previous error message.
+
+  try {
+    document.getElementById('error_message').remove();
+  } catch (e) {}
+
+  var errorMessage = document.createElement('div');
+  errorMessage['innerText'] = msg;
+  errorMessage.style.color = 'red';
+  errorMessage.style.margin = '1rem';
+  errorMessage.id = 'error_message';
+  errorMessage.style.textAlign = 'center';
+  appContainer.appendChild(errorMessage);
+}
+
+function formError(msg) {
+  var appContainer = document.getElementById('app_container'); // Try to remove the previous error message.
+
+  try {
+    document.getElementById('error_message').remove();
+  } catch (e) {}
+
+  var errorMessage = document.createElement('div');
+  errorMessage['innerText'] = msg;
+  errorMessage.style.color = 'red';
+  errorMessage.style.margin = '1rem';
+  errorMessage.id = 'error_message';
+  appContainer.appendChild(errorMessage);
+}

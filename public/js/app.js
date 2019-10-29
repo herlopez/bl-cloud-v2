@@ -2,6 +2,36 @@
 (function (funcName, baseObj) {funcName = funcName || "docReady";baseObj = baseObj || window;let readyList = [];let readyFired = false;let readyEventHandlersInstalled = false;function ready() {if (!readyFired) {readyFired = true;for (let i = 0; i < readyList.length; i++) {readyList[i].fn.call(window, readyList[i].ctx);}readyList = [];}}function readyStateChange() {if (document.readyState === "complete") {ready();}}baseObj[funcName] = function (callback, context) {if (typeof callback !== "function") {throw new TypeError("callback for docReady(fn) must be a function");}if (readyFired) {setTimeout(function () {callback(context);}, 1);return;} else {readyList.push({fn: callback, ctx: context});}if (document.readyState === "complete") {setTimeout(ready, 1);} else if (!readyEventHandlersInstalled) {if (document.addEventListener) {document.addEventListener("DOMContentLoaded", ready, false);window.addEventListener("load", ready, false);} else {document.attachEvent("onreadystatechange", readyStateChange);window.attachEvent("onload", ready);}readyEventHandlersInstalled = true;}}})("docReady", window);
 var MD5 = function(d){result = M(V(Y(X(d),8*d.length)));return result.toLowerCase()};function M(d){for(var _,m="0123456789ABCDEF",f="",r=0;r<d.length;r++)_=d.charCodeAt(r),f+=m.charAt(_>>>4&15)+m.charAt(15&_);return f}function X(d){for(var _=Array(d.length>>2),m=0;m<_.length;m++)_[m]=0;for(m=0;m<8*d.length;m+=8)_[m>>5]|=(255&d.charCodeAt(m/8))<<m%32;return _}function V(d){for(var _="",m=0;m<32*d.length;m+=8)_+=String.fromCharCode(d[m>>5]>>>m%32&255);return _}function Y(d,_){d[_>>5]|=128<<_%32,d[14+(_+64>>>9<<4)]=_;for(var m=1732584193,f=-271733879,r=-1732584194,i=271733878,n=0;n<d.length;n+=16){var h=m,t=f,g=r,e=i;f=md5_ii(f=md5_ii(f=md5_ii(f=md5_ii(f=md5_hh(f=md5_hh(f=md5_hh(f=md5_hh(f=md5_gg(f=md5_gg(f=md5_gg(f=md5_gg(f=md5_ff(f=md5_ff(f=md5_ff(f=md5_ff(f,r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+0],7,-680876936),f,r,d[n+1],12,-389564586),m,f,d[n+2],17,606105819),i,m,d[n+3],22,-1044525330),r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+4],7,-176418897),f,r,d[n+5],12,1200080426),m,f,d[n+6],17,-1473231341),i,m,d[n+7],22,-45705983),r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+8],7,1770035416),f,r,d[n+9],12,-1958414417),m,f,d[n+10],17,-42063),i,m,d[n+11],22,-1990404162),r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+12],7,1804603682),f,r,d[n+13],12,-40341101),m,f,d[n+14],17,-1502002290),i,m,d[n+15],22,1236535329),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+1],5,-165796510),f,r,d[n+6],9,-1069501632),m,f,d[n+11],14,643717713),i,m,d[n+0],20,-373897302),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+5],5,-701558691),f,r,d[n+10],9,38016083),m,f,d[n+15],14,-660478335),i,m,d[n+4],20,-405537848),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+9],5,568446438),f,r,d[n+14],9,-1019803690),m,f,d[n+3],14,-187363961),i,m,d[n+8],20,1163531501),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+13],5,-1444681467),f,r,d[n+2],9,-51403784),m,f,d[n+7],14,1735328473),i,m,d[n+12],20,-1926607734),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+5],4,-378558),f,r,d[n+8],11,-2022574463),m,f,d[n+11],16,1839030562),i,m,d[n+14],23,-35309556),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+1],4,-1530992060),f,r,d[n+4],11,1272893353),m,f,d[n+7],16,-155497632),i,m,d[n+10],23,-1094730640),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+13],4,681279174),f,r,d[n+0],11,-358537222),m,f,d[n+3],16,-722521979),i,m,d[n+6],23,76029189),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+9],4,-640364487),f,r,d[n+12],11,-421815835),m,f,d[n+15],16,530742520),i,m,d[n+2],23,-995338651),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+0],6,-198630844),f,r,d[n+7],10,1126891415),m,f,d[n+14],15,-1416354905),i,m,d[n+5],21,-57434055),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+12],6,1700485571),f,r,d[n+3],10,-1894986606),m,f,d[n+10],15,-1051523),i,m,d[n+1],21,-2054922799),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+8],6,1873313359),f,r,d[n+15],10,-30611744),m,f,d[n+6],15,-1560198380),i,m,d[n+13],21,1309151649),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+4],6,-145523070),f,r,d[n+11],10,-1120210379),m,f,d[n+2],15,718787259),i,m,d[n+9],21,-343485551),m=safe_add(m,h),f=safe_add(f,t),r=safe_add(r,g),i=safe_add(i,e)}return Array(m,f,r,i)}function md5_cmn(d,_,m,f,r,i){return safe_add(bit_rol(safe_add(safe_add(_,d),safe_add(f,i)),r),m)}function md5_ff(d,_,m,f,r,i,n){return md5_cmn(_&m|~_&f,d,_,r,i,n)}function md5_gg(d,_,m,f,r,i,n){return md5_cmn(_&f|m&~f,d,_,r,i,n)}function md5_hh(d,_,m,f,r,i,n){return md5_cmn(_^m^f,d,_,r,i,n)}function md5_ii(d,_,m,f,r,i,n){return md5_cmn(m^(_|~f),d,_,r,i,n)}function safe_add(d,_){var m=(65535&d)+(65535&_);return(d>>16)+(_>>16)+(m>>16)<<16|65535&m}function bit_rol(d,_){return d<<_|d>>>32-_}
 
+function windowError(window, msg){
+    let appContainer = document.getElementById(window);
+    // Try to remove the previous error message.
+    try {
+        document.getElementById('error_message').remove();
+    } catch (e) {
+    }
+    let errorMessage = document.createElement('div');
+    errorMessage['innerText'] = msg;
+    errorMessage.style.color = 'red';
+    errorMessage.style.margin = '1rem';
+    errorMessage.id = 'error_message';
+    errorMessage.style.textAlign = 'center';
+    appContainer.appendChild(errorMessage);
+}
+function formError(msg) {
+    let appContainer = document.getElementById('app_container');
+    // Try to remove the previous error message.
+    try {
+        document.getElementById('error_message').remove();
+    } catch (e) {
+    }
+    let errorMessage = document.createElement('div');
+    errorMessage['innerText'] = msg;
+    errorMessage.style.color = 'red';
+    errorMessage.style.margin = '1rem';
+    errorMessage.id = 'error_message';
+    appContainer.appendChild(errorMessage);
+}
+
 
 let ws, wsHandler;
 let currentView, currentProject;
@@ -33,7 +63,7 @@ docReady(function () {
             currentUid = user.uid;
 
             // Show that users project view.
-            viewSwitcher('dashboard');
+            viewSwitcher('projects');
 
             // Start the websocket connection interval with the server.
             wsHandler = setInterval(() => {
@@ -111,305 +141,11 @@ docReady(function () {
 
 
 
-function windowError(window, msg){
-    let appContainer = document.getElementById(window);
-    // Try to remove the previous error message.
-    try {
-        document.getElementById('error_message').remove();
-    } catch (e) {
-    }
-    let errorMessage = document.createElement('div');
-    errorMessage['innerText'] = msg;
-    errorMessage.style.color = 'red';
-    errorMessage.style.margin = '1rem';
-    errorMessage.id = 'error_message';
-    errorMessage.style.textAlign = 'center';
-    appContainer.appendChild(errorMessage);
-}
-function formError(msg) {
-    let appContainer = document.getElementById('app_container');
-    // Try to remove the previous error message.
-    try {
-        document.getElementById('error_message').remove();
-    } catch (e) {
-    }
-    let errorMessage = document.createElement('div');
-    errorMessage['innerText'] = msg;
-    errorMessage.style.color = 'red';
-    errorMessage.style.margin = '1rem';
-    errorMessage.id = 'error_message';
-    appContainer.appendChild(errorMessage);
-}
 
-function createProject(name, desc, access, color, uid){
-    console.log('Creating Project: ', name, desc, access, uid);
-    let project = {
-        uid: uid,
-        cmd : "CREATE_PROJECT",
-        name : name,
-        color: color,
-        description : desc,
-        access: access
-    };
-    ws.send(JSON.stringify(project));
-}
-function createVariable(name, uid){
-    console.log('Creating Var: ', name, uid);
-    let ele = document.getElementById('project_key');
-    ws.send(`{"cmd":"CREATE_VARIABLE", "key":"${ele.value}", "name":"${name}", "onSuccess":"console.log('Success!'); windowSwitcher('none'); getProjects(currentUid);", "onError":""}`);
-}
-
-
-function getProjects(uid){
-    let project = {
-        "uid": uid,
-        "cmd" : 'GET_PROJECTS',
-    };
-    ws.send(JSON.stringify(project));
-}
-function getProject(uid, id){
-    let project = {
-        "uid": uid,
-        "id": id,
-        "cmd": "GET_PROJECT"
-    };
-    ws.send(JSON.stringify(project));
-}
-
-
-
-function paintProjects(projects){
-    let projectSection = document.getElementById('project_section');
-    if(projectSection.classList.contains('hold')){
-        return;
-    }
-    projectSection.classList.add('jc');
-    projectSection.classList.remove('ac');
-    projectSection.style.flexWrap = 'wrap';
-    projectSection.style.overflow = 'visible';
-    projectSection.style.maxWidth ="1500px";
-    projectSection.style.minHeight = "100vh";
-    projectSection.style.height = "100%";
-    projectSection.innerHTML = "";
-    let newButton = document.createElement('button');
-    newButton.innerHTML = "<i class=\"fas fa-plus\"></br></br>Add Project</i>";
-    newButton.style.height = "200px";
-    newButton.style.minWidth = "300px";
-    newButton.style.maxWidth = "300px";
-    newButton.style.color = "#9b55a3";
-    newButton.style.background = "rgba(3, 4, 8, 0.46)";
-    newButton.addEventListener('click', ()=>{
-        windowSwitcher('new_project');
-    });
-    projectSection.appendChild(newButton);
-    for(let project in projects){
-        if(projects.hasOwnProperty(project)) {
-            let div = document.createElement('button');
-            div.style.height = "200px";
-            div.style.minWidth = "300px";
-            div.style.maxWidth = "300px";
-            // div.style.background = projects[project]['color'];
-            div.style.background = "rgba(3, 4, 8, 0.46)";
-
-            div.id = projects[project]['id'];
-            div.borderRadius = "10px";
-            let data = projects[project];
-            div.innerHTML = `<h3>${projects[project]['name']}</h3><p>${projects[project]['description']}</p><i class="fa fa-code"</i> ${projects[project]['variableCount']} <i class="fa fa-chart-bar"</i> ${projects[project]['chartCount']} `;
-            div.addEventListener('click', () => {
-                paintProject(data, div.id);
-            });
-            projectSection.appendChild(div);
-        }
-    }
-}
-
-
-
-function paintProject(project, id){
-    // console.log('PROJECT ID:  ', id);
-    //     // console.log('PROJECT:  ', project);
-    viewSwitcher('projectSingle', id)
-
-}
-function updateProject(project, id){
-    let variables = document.getElementById('variables');
-    if(variables.classList.contains('hold')){
-        return;
-    }
-    let vars = project.variables;
-    let count = 0;
-    for(var variable in vars){
-        if(variable === 'default'){
-            continue;
-        }
-        // console.log(variables.querySelector('variable'));
-        let newVar = document.getElementById( "var_" + variable);
-            newVar.setAttribute('onmouseover', "document.getElementById('variables').classList.add('hold');");
-            newVar.setAttribute('onmouseleave', "document.getElementById('variables').classList.remove('hold');");
-            newVar.innerHTML = `
-                <div class="variable r mt4" id = "${variable}">
-                    <input disabled class="name-input" style ="min-width: 100px; max-width: 100px;"id = "var_name_${variable}" value ="${variable}">
-                    <input id = "var_input_${variable}" disabled class="m0 p0 w100 pl2" value="${vars[variable]}">
-                    <button class="m0 p0 fa fa-pencil-alt" id = "var_button_${variable}" onclick="variableEdit(id, '${project.key}')"></button>
-                    <button class="m0 p0 fa fa-times dn" id = "var_button_2_${variable}" ></button>
-                    <p style = 'position: absolute; padding-top: 18px; padding-left: 20px; background: transparent; font-size: 14px; color: red;' id = "var_error_${variable}" class="dn">Error: Unable To Set Variable.</p>
-                </div>`;
-            variables.appendChild(newVar);
-
-
-    }
-
-}
-
-
-
-function editVariables(){
-    if(currentView === 'projectSingle'){
-        let variables = document.getElementById('variables');
-        console.log(document.getElementById('variables'));
-
-    }
-}
-// Handles the events of editing a variable value in the UI.
-function variableEdit(id, key = null){
-    // console.log('key: ', id);
-    edit = true;
-    let error = document.getElementById(`var_error_${id.substring('var_button_'.length)}`);
-    error.classList.add('dn');
-    // Get the input element.
-    let inputString =`var_input_${id.substring('var_button_'.length)}`;
-    let input = document.getElementById(inputString);
-
-    // Make the input editable by removing the disabled attribute.
-    input.removeAttribute('disabled');
-
-    // Store the current value, so that if someone decides to cancel instead of editing the variable, it will set the input back to the original value (oldValue).
-    let oldValue = input.value;
-
-    // Get the edit button and switch it to the check mark styling, also remove the onClick attribute.
-    let button = document.getElementById(id);
-    button.classList.remove('fa-pencil-alt');
-    button.classList.add('fa-check');
-    button.classList.add('double-button');
-    button.style.color = 'green';
-    button.removeAttribute('onClick');
-
-    // Add a click listener in the event that the save (check mark) button is clicked.
-    button.setAttribute('onclick', `variableSave(id, "${oldValue}","${key}")`);
-    // Get the second close button element. "Currently Hidden".
-    let button2 = document.getElementById(`var_button_2_${id.substring('var_button_'.length)}`);
-
-    // Remove the dn class which is hiding it. So it is now visible.
-    button2.classList.remove('dn');
-
-    // Add this class to translate it into position inside the input element.
-    button2.classList.add('double-button2');
-
-    // Set the color to red.
-    button2.style.color = 'red';
-
-    // When someone clicks the red cross to cancel the variable edit.
-    button2.addEventListener('click', ()=>{
-        edit = false;
-
-        // Get the input ele.
-        let input2 = document.getElementById(inputString);
-
-        // Set it back to the original value.
-        input2.value = oldValue;
-
-        // Disabled it again.
-        input2.setAttribute('disabled', true);
-
-        // Remove the check mark and add the pencil and styling again to the edit button.
-        button.classList.add('fa-pencil-alt');
-        button.classList.remove('fa-check', 'loader-small');
-        button.style.color = '#9b55a3';
-        button.classList.remove('double-button'); // Translation to give room to the cross button.
-
-        // Set the on click function back to this.
-        button.setAttribute('onClick', `variableEdit(id, '${key}')`);
-
-        // Hide the close button.
-        button2.classList.add('dn');
-    });
-
-
-}
-
-
-function variableSave(id, old, key){
-    let editButton = document.getElementById(id);
-    editButton.classList.remove('fa-check');
-    editButton.classList.remove('fa-pencil-alt');
-    editButton.classList.add('loader-small', 'double-button-load');
-    let button2 = document.getElementById(`var_button_2_${id.substring('var_button_'.length)}`);
-    button2.classList.add('dn');
-    let inputString =`var_input_${id.substring('var_button_'.length)}`;
-    let input = document.getElementById(inputString);
-    input.setAttribute('disabled', true);
-    let name = document.getElementById(`var_name_${id.substring('var_button_'.length)}`);
-    let errorElement = `var_error_${id.substring('var_button_'.length)}`;
-    ws.send(`{"cmd":"SET_VARIABLE", "key":"${key}", "name":"${name.value}", "value":"${input.value}", "onSuccess":"console.log('Success!'); var editButton = document.getElementById('${id}'); editButton.classList.add('fa-pencil-alt', 'done'); editButton.setAttribute('onClick', \`variableEdit(id, '${key}')\`); edit=false; editButton.classList.remove('fa-check', 'loader-small', 'double-button-load'); editButton.style.color = '#9b55a3'; editButton.classList.remove('double-button'); ", "onError":"var editButton = document.getElementById('${id}'); editButton.classList.add('fa-pencil-alt'); editButton.classList.remove('fa-check', 'loader-small', 'double-button-load'); editButton.style.color = '#9b55a3'; editButton.classList.remove('double-button'); let error = document.getElementById('${errorElement}'); error.classList.remove('dn'); error.innerText = 'Error: ' + errorMessage;"}`);
-    setTimeout(()=>{
-        if(!editButton.classList.contains('done')) {
-            editButton.classList.add('fa-pencil-alt');
-            edit = false;
-            editButton.classList.remove('fa-check', 'loader-small', 'double-button-load');
-            editButton.style.color = '#9b55a3';
-            editButton.classList.remove('double-button'); // Translation to give room to the cross button.
-            let error = document.getElementById(`var_error_${id.substring('var_button_'.length)}`);
-            error.classList.remove('dn');
-            input.value = old;
-            // Set the on click function back to this.
-            editButton.setAttribute('onClick', `variableEdit(id, '${key}')`);
-        }
-    }, 3000);
-}
-
-
-
-function projectSearch() {
-    var input, filter, ul, li, a, i, txtValue;
-    input = document.getElementById("project_search");
-    filter = input.value.toUpperCase();
-    var clearButton = document.getElementById("project_search_clear");
-    clearButton.addEventListener('click', ()=>{
-        input.value = '';
-        document.getElementById("project_search_clear").style.color = 'transparent';
-        ul = document.getElementById("project_section");
-        li = ul.getElementsByTagName("button");
-        for (i = 1; i < li.length; i++) {
-            a = li[i].getElementsByTagName("h3")[0];
-            txtValue = a.textContent || a.innerText;
-            if (txtValue.toUpperCase().indexOf("") > -1) {
-                li[i].style.display = "";
-            } else {
-                li[i].style.display = "none";
-            }
-        }
-    });
-    if(filter.length > 0){
-        clearButton.style.color = '#9b55a3';
-    }else{
-        clearButton.style.color = 'transparent';
-    }
-    ul = document.getElementById("project_section");
-    li = ul.getElementsByTagName("button");
-    for (i = 1; i < li.length; i++) {
-        a = li[i].getElementsByTagName("h3")[0];
-        txtValue = a.textContent || a.innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            li[i].style.display = "";
-        } else {
-            li[i].style.display = "none";
-        }
-    }
-}
 function viewSwitcher(targetView, options) {
     currentView = targetView;
     switch (targetView) {
-
+        case 'project':
         case 'projectSingle':
             projectView(options);
             break;
@@ -422,8 +158,9 @@ function viewSwitcher(targetView, options) {
             signUpView();
             break;
 
+        case 'projects':
         case 'dashboard':
-            dashboardView();
+            projectsView();
             break;
 
         case 'pw_reset_success':
@@ -640,7 +377,8 @@ function signUpView(){
     appContainer.appendChild(signInButton);
 }
 
-function projectView(options){
+function projectView(id){
+
     let appContainer = document.getElementById('app_container');
     appContainer.innerHTML = '';
     appContainer.style.userSelect = 'none';
@@ -649,22 +387,36 @@ function projectView(options){
 
     // Top bar stuff.
     let singleHeader = document.createElement('header');
+    singleHeader.style.padding = 0;
     let backButton = document.createElement('button');
+    backButton.style.marginTop = 0;
     backButton.innerHTML = "<i class=\"fas fa-arrow-left\"></i>";
     backButton.addEventListener('click', ()=>{
         currentProject = null;
         viewSwitcher('dashboard');
     });
     singleHeader.appendChild(backButton);
-    let singleLogout = document.createElement('button');
-    singleLogout.id = 'logout';
-    singleLogout.innerHTML = 'Sign Out  <i style="margin-left: 4px;" class="fas fa-door-open"></i>';
-    singleLogout.addEventListener('click', () => {
-        ws.close();
-        firebase.auth().signOut();
-    });
-    singleHeader.appendChild(singleLogout);
-    appContainer.appendChild(singleHeader);
+    let menu = document.createElement('div');
+    menu.id = "menu_box";
+
+    let dashboard = document.createElement('div');
+
+    dashboard.classList = "dashboar-button";
+    dashboard.inneinneeHTML = "<i class='fa fa-chart'></i>Dashboard"
+    menu.appendChild(dashboard);
+
+
+
+
+    appContainer.appendChild(menu);
+
+
+
+
+    menu.appendChild(singleHeader);
+    let content = document.createElement('div');
+    content.id = "content_box";
+    appContainer.appendChild(content);
 
     let projectSection = document.createElement('section');
     projectSection.id = "project_projectSection";
@@ -673,47 +425,44 @@ function projectView(options){
     projectSection.classList.add('r');
     projectSection.classList.add('jc');
     projectSection.classList.add('ac');
-    appContainer.appendChild(projectSection);
-    getProject(currentUid, options);
+    content.appendChild(projectSection);
+    getProject(currentUid, id);
 }
-function dashboardView(){
+/*
+    Projects View
+    Description: Shows all the users projects.
+*/
+function projectsView(){
+
+    // Empty the app container
     let appContainer = document.getElementById('app_container');
     appContainer.innerHTML = '';
     appContainer.style.userSelect = 'none';
     appContainer.classList.add('project-dash');
     appContainer.classList.remove('project-single');
-    let header = document.createElement('header');
 
-    let logout = document.createElement('button');
-    logout.id = 'logout';
-    logout.innerHTML = 'Sign Out  <i style="margin-left: 4px;" class="fas fa-door-open"></i>';
-    logout.addEventListener('click', () => {
-        ws.close();
-        firebase.auth().signOut();
-    });
-    header.appendChild(logout);
+    // Add a loader until the projects get populated.
     let section = document.createElement('section');
     section.id = "project_section";
     section.innerHTML = "<div  class=\"loader\"></div>";
     section.style.overflow = "scroll";
-    section.classList.add('r');
-    section.classList.add('jc');
-    section.classList.add('ac');
-    section.classList.add('acfs');
+    section.classList = 'r jc ac acfs';
 
 
-    // each project here
-    let myPrj = document.createElement('div');
-    myPrj.classList = "rmd jfs w100 pl5";
-    myPrj.innerHTML = "<h2 class='w100'>Your Cloud Projects</h2><br><div style='' class='r jc prmd22 ac'><i class='m2 r jc ac fas fa-search'></i> <input id = 'project_search'  onkeyup=\"projectSearch()\" placeholder='Search'><button id='project_search_clear'class='m2 r jc ac fas fa-times-circle'></button></div>";
+    // Add a search bar to search threw all a users projects.
+    let search = document.createElement('div');
+    search.classList = "rmd jfs w100 pl5";
+    search.innerHTML = "<h2 class='w100'>Your Cloud Projects</h2><br><div style='' class='r jc prmd22 ac'><i class='m2 r jc ac fas fa-search'></i> <input id = 'project_search'  onkeyup=\"projectSearch()\" placeholder='Search'><button id='project_search_clear'class='m2 r jc ac fas fa-times-circle'></button></div>";
 
-    let footer = document.createElement('footer');
-    // appContainer.appendChild(header);
-    appContainer.appendChild(myPrj);
+    // Add the elements to the app.
+    appContainer.appendChild(search);
     appContainer.appendChild(section);
-    appContainer.appendChild(footer);
+
+    // Send the request to the server to send the users projects.
     if(ws) getProjects(currentUid);
 }
+
+
 function forgotPasswordView(){
     let appContainer = document.getElementById('app_container');
     appContainer.innerHTML = '';
@@ -1163,6 +912,54 @@ function windowSwitcher(targetWindow, options){
     }
 }
 
+/*
+    Get Projects
+    @Desc: Tell the server to send over the list of all the projects of a specific user.
+    @param: uid - User ID
+*/
+function getProjects(uid){
+    let project = {
+        "uid": uid,
+        "cmd" : 'GET_PROJECTS',
+    };
+    ws.send(JSON.stringify(project));
+}
+
+/*
+    Get Project
+    @Desc: Tell the server to send over the information for a specific project.
+    @param: uid - User ID
+    @param id - Project ID
+*/
+function getProject(uid, id){
+    let project = {
+        "uid": uid,
+        "id": id,
+        "cmd": "GET_PROJECT"
+    };
+    ws.send(JSON.stringify(project));
+}
+
+/*
+    Create Project
+    @Desc: Tell the server create a new project for a given user.
+    @param: name - Name 0f project.
+    @param desc - Project description.
+    @param access - Project access.
+    @param color - Project color.
+    @param uid - User id of the user.
+*/
+function createProject(name, desc, access, color, uid){
+    let project = {
+        uid: uid,
+        cmd : "CREATE_PROJECT",
+        name : name,
+        color: color,
+        description : desc,
+        access: access
+    };
+    ws.send(JSON.stringify(project));
+}
 
 
 function messageProcessor(message, callback) {
@@ -1186,6 +983,7 @@ function messageProcessor(message, callback) {
 
         switch (message.cmd) {
 
+            // Server sends back a list of all a users projects.
             case 'GET_PROJECTS':
                 try{
                     let projects = message['results'];
@@ -1196,11 +994,19 @@ function messageProcessor(message, callback) {
                         }
                         updateProject(projects.find(findProject), currentProject);
                     }else{
-
                         paintProjects(projects);
-
                     }
 
+                }catch (e) {
+                    console.log(e);
+                }
+            break;
+
+            // Server sends back a the data foa a users project.
+            case 'GET_PROJECT':
+                try{
+                    message = message['results'][0];
+                    paintProject(message);
                 }catch (e) {
                     console.log(e);
                 }
@@ -1249,22 +1055,123 @@ function messageProcessor(message, callback) {
 
                 break;
 
-            case 'GET_PROJECT':
-                message = message['results'][0];
-                let project = document.getElementById('project_projectSection');
-                currentProject = message.id;
-                project.classList = 'w100 c ac jc';
-                project.style = {
-                    height: "100%",
-                    overflow: "visible"
-                };
-                project.innerHTML = `
+
+
+            default:
+                break;
+        }
+    }}
+
+    if (message.hasOwnProperty('fn')) {
+        let fn = message['fn'];
+        try {
+            let iFn = new Function(fn);
+            iFn();
+        } catch (e) {
+            callback.send(`{"error":"Unable to execute function: ${e}"}`);
+        }
+    }
+}
+
+function paintProjects(projects){
+    let projectSection = document.getElementById('project_section');
+    if(projectSection.classList.contains('hold')){
+        return;
+    }
+    projectSection.classList.add('jc');
+    projectSection.classList.remove('ac');
+    projectSection.style.flexWrap = 'wrap';
+    projectSection.style.overflow = 'visible';
+    projectSection.style.maxWidth ="1500px";
+    projectSection.style.minHeight = "100vh";
+    projectSection.style.height = "100%";
+    projectSection.innerHTML = "";
+    let newButton = document.createElement('button');
+    newButton.innerHTML = "<i class=\"fas fa-plus\"></br></br>Add Project</i>";
+    newButton.style.height = "200px";
+    newButton.style.minWidth = "300px";
+    newButton.style.maxWidth = "300px";
+    newButton.style.color = "#9b55a3";
+    newButton.style.background = "rgba(3, 4, 8, 0.46)";
+    newButton.addEventListener('click', ()=>{
+        windowSwitcher('new_project');
+    });
+    projectSection.appendChild(newButton);
+    for(let project in projects){
+        if(projects.hasOwnProperty(project)) {
+            let div = document.createElement('button');
+            div.style.height = "200px";
+            div.style.minWidth = "300px";
+            div.style.maxWidth = "300px";
+            // div.style.background = projects[project]['color'];
+            div.style.background = "rgba(3, 4, 8, 0.46)";
+            div.id = projects[project]['id'];
+            div.borderRadius = "10px";
+            div.innerHTML = `<h3>${projects[project]['name']}</h3><p>${projects[project]['description']}</p><i class="fa fa-code"</i> ${projects[project]['variableCount']} <i class="fa fa-chart-bar"</i> ${projects[project]['chartCount']} `;
+            div.addEventListener('click', () => {
+                viewSwitcher('project', div.id)
+
+            });
+            projectSection.appendChild(div);
+        }
+    }
+}
+
+function projectSearch() {
+    var input, filter, ul, li, a, i, txtValue;
+    input = document.getElementById("project_search");
+    filter = input.value.toUpperCase();
+    var clearButton = document.getElementById("project_search_clear");
+    clearButton.addEventListener('click', ()=>{
+        input.value = '';
+        document.getElementById("project_search_clear").style.color = 'transparent';
+        ul = document.getElementById("project_section");
+        li = ul.getElementsByTagName("button");
+        for (i = 1; i < li.length; i++) {
+            a = li[i].getElementsByTagName("h3")[0];
+            txtValue = a.textContent || a.innerText;
+            if (txtValue.toUpperCase().indexOf("") > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+            }
+        }
+    });
+    if(filter.length > 0){
+        clearButton.style.color = '#9b55a3';
+    }else{
+        clearButton.style.color = 'transparent';
+    }
+    ul = document.getElementById("project_section");
+    li = ul.getElementsByTagName("button");
+    for (i = 1; i < li.length; i++) {
+        a = li[i].getElementsByTagName("h3")[0];
+        txtValue = a.textContent || a.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+        } else {
+            li[i].style.display = "none";
+        }
+    }
+}
+
+
+function paintProject(data){
+
+    let project = document.getElementById('project_projectSection');
+    currentProject = data.id;
+    project.classList = 'w100 c ac jc';
+    project.style = {
+        height: "100%",
+        overflow: "visible"
+    };
+    project.innerHTML = `
                     <div style="" class="w100 c ac">
-                    <h1 style="" class="m0">${message.name}</h1>
-                    <h3 style="">${message.description}</h3>
+                    <h1 style="" class="m0">${data.name}</h1>
+                    <h3 style="">${data.description}</h3>
                     <div class="r js ac">
                         <h4>Project Key: </h4>
-                         <input class="ml2" id="project_key" value="${message.key}" disabled>
+                         <input class="ml2" id="project_key" value="${data.key}" disabled>
                     </div>
                    
                     <div style="height: 100%; overflow: visible;" class="w100 rxl ac jc">
@@ -1286,49 +1193,184 @@ function messageProcessor(message, callback) {
                     </div>
                 </div>`;
 
-                document.getElementById('app_container').appendChild(project);
-                let variables = document.getElementById('variables');
-                let vars = message.variables;
-                let count = 0;
-                for(var variable in vars){
-                    if(variable === 'default'){
-                        continue;
-                    }
-                    let newVar = document.createElement('div');
-                    newVar.id = "var_" + variable;
-                    newVar.innerHTML = `
+    document.getElementById('content_box').appendChild(project);
+    let variables = document.getElementById('variables');
+    let vars = data.variables;
+    let count = 0;
+    for(var variable in vars){
+        if(variable === 'default'){
+            continue;
+        }
+        let newVar = document.createElement('div');
+        newVar.id = "var_" + variable;
+        newVar.innerHTML = `
 
                 <div class="variable r mt4" id = "${variable}">
                     <input disabled class="name-input" style ="min-width: 100px; max-width: 100px;"id = "var_name_${variable}" value ="${variable}">
                     <input id = "var_input_${variable}" disabled class="m0 p0 w100 pl2" value="${vars[variable]}">
-                    <button class="m0 p0 fa fa-pencil-alt" id = "var_button_${variable}" onclick="variableEdit(id, '${message.key}')"></button>
+                    <button class="m0 p0 fa fa-pencil-alt" id = "var_button_${variable}" onclick="variableEdit(id, '${data.key}')"></button>
                     <button class="m0 p0 fa fa-times dn" id = "var_button_2_${variable}" ></button>
                     <p style = 'position: absolute; padding-top: 18px; padding-left: 20px; background: transparent; font-size: 14px; color: red;' id = "var_error_${variable}" class="dn">Error: Unable To Set Variable.</p>
                 </div>`;
-                    variables.appendChild(newVar);
-                    count ++;
-                }
-                if(!count){
-                    let noVars = document.createElement('div');
-                    noVars.innerHTML = `<p style="background: #9b55a3; color: white; border-radius: 20px; padding: 5px 40px;">No Variables 🙁</p>`;
-                    variables.appendChild(noVars);
-                    return;
-                }
-                // console.log('Project Options: ', message);
-                break;
+        variables.appendChild(newVar);
+        count ++;
+    }
+    if(!count){
+        let noVars = document.createElement('div');
+        noVars.innerHTML = `<p style="background: #9b55a3; color: white; border-radius: 20px; padding: 5px 40px;">No Variables 🙁</p>`;
+        variables.appendChild(noVars);
+        return;
+    }
+    // console.log('Project Options: ', message);
+}
 
-            default:
-                break;
-        }
-    }}
+function createVariable(name, uid){
+    console.log('Creating Var: ', name, uid);
+    let ele = document.getElementById('project_key');
+    ws.send(`{"cmd":"CREATE_VARIABLE", "key":"${ele.value}", "name":"${name}", "onSuccess":"console.log('Success!'); windowSwitcher('none'); getProjects(currentUid);", "onError":""}`);
+}
 
-    if (message.hasOwnProperty('fn')) {
-        let fn = message['fn'];
-        try {
-            let iFn = new Function(fn);
-            iFn();
-        } catch (e) {
-            callback.send(`{"error":"Unable to execute function: ${e}"}`);
+
+
+
+function updateProject(project, id){
+    let variables = document.getElementById('variables');
+    if(variables.classList.contains('hold')){
+        return;
+    }
+    let vars = project.variables;
+    let count = 0;
+    for(var variable in vars){
+        if(variable === 'default'){
+            continue;
         }
+        // console.log(variables.querySelector('variable'));
+        let newVar = document.getElementById( "var_" + variable);
+        newVar.setAttribute('onmouseover', "document.getElementById('variables').classList.add('hold');");
+        newVar.setAttribute('onmouseleave', "document.getElementById('variables').classList.remove('hold');");
+        newVar.innerHTML = `
+                <div class="variable r mt4" id = "${variable}">
+                    <input disabled class="name-input" style ="min-width: 100px; max-width: 100px;"id = "var_name_${variable}" value ="${variable}">
+                    <input id = "var_input_${variable}" disabled class="m0 p0 w100 pl2" value="${vars[variable]}">
+                    <button class="m0 p0 fa fa-pencil-alt" id = "var_button_${variable}" onclick="variableEdit(id, '${project.key}')"></button>
+                    <button class="m0 p0 fa fa-times dn" id = "var_button_2_${variable}" ></button>
+                    <p style = 'position: absolute; padding-top: 18px; padding-left: 20px; background: transparent; font-size: 14px; color: red;' id = "var_error_${variable}" class="dn">Error: Unable To Set Variable.</p>
+                </div>`;
+        variables.appendChild(newVar);
+
+
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+function editVariables(){
+    if(currentView === 'projectSingle'){
+        let variables = document.getElementById('variables');
+        console.log(document.getElementById('variables'));
+
     }
 }
+// Handles the events of editing a variable value in the UI.
+function variableEdit(id, key = null){
+    // console.log('key: ', id);
+    edit = true;
+    let error = document.getElementById(`var_error_${id.substring('var_button_'.length)}`);
+    error.classList.add('dn');
+    // Get the input element.
+    let inputString =`var_input_${id.substring('var_button_'.length)}`;
+    let input = document.getElementById(inputString);
+
+    // Make the input editable by removing the disabled attribute.
+    input.removeAttribute('disabled');
+
+    // Store the current value, so that if someone decides to cancel instead of editing the variable, it will set the input back to the original value (oldValue).
+    let oldValue = input.value;
+
+    // Get the edit button and switch it to the check mark styling, also remove the onClick attribute.
+    let button = document.getElementById(id);
+    button.classList.remove('fa-pencil-alt');
+    button.classList.add('fa-check');
+    button.classList.add('double-button');
+    button.style.color = 'green';
+    button.removeAttribute('onClick');
+
+    // Add a click listener in the event that the save (check mark) button is clicked.
+    button.setAttribute('onclick', `variableSave(id, "${oldValue}","${key}")`);
+    // Get the second close button element. "Currently Hidden".
+    let button2 = document.getElementById(`var_button_2_${id.substring('var_button_'.length)}`);
+
+    // Remove the dn class which is hiding it. So it is now visible.
+    button2.classList.remove('dn');
+
+    // Add this class to translate it into position inside the input element.
+    button2.classList.add('double-button2');
+
+    // Set the color to red.
+    button2.style.color = 'red';
+
+    // When someone clicks the red cross to cancel the variable edit.
+    button2.addEventListener('click', ()=>{
+        edit = false;
+
+        // Get the input ele.
+        let input2 = document.getElementById(inputString);
+
+        // Set it back to the original value.
+        input2.value = oldValue;
+
+        // Disabled it again.
+        input2.setAttribute('disabled', true);
+
+        // Remove the check mark and add the pencil and styling again to the edit button.
+        button.classList.add('fa-pencil-alt');
+        button.classList.remove('fa-check', 'loader-small');
+        button.style.color = '#9b55a3';
+        button.classList.remove('double-button'); // Translation to give room to the cross button.
+
+        // Set the on click function back to this.
+        button.setAttribute('onClick', `variableEdit(id, '${key}')`);
+
+        // Hide the close button.
+        button2.classList.add('dn');
+    });
+
+
+}
+function variableSave(id, old, key){
+    let editButton = document.getElementById(id);
+    editButton.classList.remove('fa-check');
+    editButton.classList.remove('fa-pencil-alt');
+    editButton.classList.add('loader-small', 'double-button-load');
+    let button2 = document.getElementById(`var_button_2_${id.substring('var_button_'.length)}`);
+    button2.classList.add('dn');
+    let inputString =`var_input_${id.substring('var_button_'.length)}`;
+    let input = document.getElementById(inputString);
+    input.setAttribute('disabled', true);
+    let name = document.getElementById(`var_name_${id.substring('var_button_'.length)}`);
+    let errorElement = `var_error_${id.substring('var_button_'.length)}`;
+    ws.send(`{"cmd":"SET_VARIABLE", "key":"${key}", "name":"${name.value}", "value":"${input.value}", "onSuccess":"console.log('Success!'); var editButton = document.getElementById('${id}'); editButton.classList.add('fa-pencil-alt', 'done'); editButton.setAttribute('onClick', \`variableEdit(id, '${key}')\`); edit=false; editButton.classList.remove('fa-check', 'loader-small', 'double-button-load'); editButton.style.color = '#9b55a3'; editButton.classList.remove('double-button'); ", "onError":"var editButton = document.getElementById('${id}'); editButton.classList.add('fa-pencil-alt'); editButton.classList.remove('fa-check', 'loader-small', 'double-button-load'); editButton.style.color = '#9b55a3'; editButton.classList.remove('double-button'); let error = document.getElementById('${errorElement}'); error.classList.remove('dn'); error.innerText = 'Error: ' + errorMessage;"}`);
+    setTimeout(()=>{
+        if(!editButton.classList.contains('done')) {
+            editButton.classList.add('fa-pencil-alt');
+            edit = false;
+            editButton.classList.remove('fa-check', 'loader-small', 'double-button-load');
+            editButton.style.color = '#9b55a3';
+            editButton.classList.remove('double-button'); // Translation to give room to the cross button.
+            let error = document.getElementById(`var_error_${id.substring('var_button_'.length)}`);
+            error.classList.remove('dn');
+            input.value = old;
+            // Set the on click function back to this.
+            editButton.setAttribute('onClick', `variableEdit(id, '${key}')`);
+        }
+    }, 3000);
+}
+

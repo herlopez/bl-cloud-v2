@@ -81,6 +81,33 @@
       width: -moz-fit-content !important;
       width: fit-content !important; }
 
+#menu_box {
+  width: 25%;
+  -ms-flex-item-align: start;
+  align-self: flex-start;
+  height: 100vh;
+  top: 0;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  position: -webkit-sticky;
+  position: sticky;
+  background: rgba(28, 28, 37, 0.85);
+  max-width: 300px; }
+
+#content_box {
+  width: 75%;
+  -ms-flex-item-align: end;
+  align-self: flex-end;
+  height: 100vh;
+  position: relative;
+  top: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  background: red; }
+
 #window {
   position: fixed;
   top: 0;
@@ -188,10 +215,10 @@
     height: 8vh; }
 
 #app_container.project-single {
-  -webkit-box-orient: vertical !important;
+  -webkit-box-orient: horizontal !important;
   -webkit-box-direction: normal !important;
-  -ms-flex-direction: column !important;
-  flex-direction: column !important;
+  -ms-flex-direction: row !important;
+  flex-direction: row !important;
   -webkit-box-pack: start !important;
   -ms-flex-pack: start !important;
   justify-content: flex-start !important;

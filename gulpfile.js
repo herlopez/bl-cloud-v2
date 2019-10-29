@@ -25,12 +25,12 @@ gulp.task('sass', function() {
         .pipe(gulp.dest('public/css'))
 });
 gulp.task('concat', function() {
-    return gulp.src(['app/UI/tools.js','app/UI/app.js', 'app/UI/view-switcher.js', 'app/UI/views/sign-in.js', 'app/UI/views/password-reset-success.js', 'app/UI/views/sign-up.js', 'app/UI/views/project.js',  'app/UI/views/dashboard.js', 'app/UI/views/forgot-password.js', 'app/UI/components/input.js', 'app/UI/profile.js', 'app/UI/window-switcher.js', "app/UI/message-processor.js"])
+    return gulp.src(['app/UI/tools.js','app/UI/app.js', 'app/UI/view-switcher.js', 'app/UI/views/sign-in.js', 'app/UI/views/password-reset-success.js', 'app/UI/views/sign-up.js', 'app/UI/views/project.js',  'app/UI/views/projects.js', 'app/UI/views/forgot-password.js', 'app/UI/components/input.js', 'app/UI/profile.js', 'app/UI/window-switcher.js', "app/UI/commands.js", "app/UI/message-processor.js", "app/UI/functions/projects.js",  "app/UI/functions/project.js"])
         .pipe(concat('app.js'))
         .pipe(gulp.dest('public/js'));
 });
 gulp.task('babel', () =>
-    gulp.src(['app/UI/tools.js','app/UI/app.js', 'app/UI/view-switcher.js', 'app/UI/views/sign-in.js', 'app/UI/views/password-reset-success.js', 'app/UI/views/sign-up.js', 'app/UI/views/project.js',  'app/UI/views/dashboard.js', 'app/UI/views/forgot-password.js', 'app/UI/components/input.js', 'app/UI/profile.js', 'app/UI/window-switcher.js', "app/UI/message-processor.js"])
+    gulp.src(['app/UI/tools.js','app/UI/app.js', 'app/UI/view-switcher.js', 'app/UI/views/sign-in.js', 'app/UI/views/password-reset-success.js', 'app/UI/views/sign-up.js', 'app/UI/views/project.js',  'app/UI/views/projects.js', 'app/UI/views/forgot-password.js', 'app/UI/components/input.js', 'app/UI/profile.js', 'app/UI/window-switcher.js', "app/UI/commands.js", "app/UI/message-processor.js", "app/UI/functions/projects.js",  "app/UI/functions/project.js"])
         .pipe(plumber())
         .pipe(babel({
             presets: [
