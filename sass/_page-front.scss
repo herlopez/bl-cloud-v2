@@ -1,6 +1,7 @@
 #page_front {
     //transform: translateY(-4rem);
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "Futura", sans-serif;
+    
     h1 {
         color: white;
         font-size: 3.5rem;
@@ -16,7 +17,7 @@
     }
     button {
         height: 44px;
-        background: #e31534;
+        background: #97509E;
         font-size: 1.5rem ;
 
         a {
@@ -30,9 +31,12 @@
         width: 100%;
         height: 700px;
         background-repeat: no-repeat;
-        background-image: url('../images/Space-Background-lg.jpg');
+        background-image: url('../images/Space-Background-sm.jpg');
         box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3);
-
+        .rxl{
+            max-width: 80%;
+            padding: 0 20%;
+        }
     }
     #f2, #f4{
         box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3);
@@ -42,7 +46,7 @@
             font-size: 3rem;
         }
         h3{
-            font-size: 3rem;
+            font-size: 2.5rem;
             text-align: left;
         }
         p{
@@ -56,6 +60,18 @@
             margin-top: 20px;
         }
     }
+    #f2 {
+        .rxl{
+            max-width: 80%;
+            padding: 0 10%;
+        }
+    }
+    #f3 {
+        .rxl{
+            max-width: 80%;
+            padding: 0 10%;
+        }
+    }
     #f3{
         box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3);
         background: #1C1C25;
@@ -65,11 +81,11 @@
         }
         h3{
             color: white;
-            font-size: 3rem;
+            font-size: 3em;
             text-align: left;
         }
         a{
-            color: #e31534;
+            color: #97509E;
             text-decoration: none;
         }
         p{
@@ -94,6 +110,11 @@
         img{
             max-width: 200px;
         }
+        .rxl{
+            max-width: 80%;
+            padding: 0 10%;
+        }
+    
     }
     footer{
         //height: 400px;

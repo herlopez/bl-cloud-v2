@@ -1048,6 +1048,9 @@
 .mt5 {
   margin-top: 3em; }
 
+.mt6 {
+  margin-top: 4em; }
+
 .mba {
   margin-bottom: auto; }
 
@@ -1210,14 +1213,15 @@ body {
         color: white; }
 
 #site_header {
-  height: 4rem;
+  height: 6rem;
   width: 100%;
   background: transparent;
   color: white;
   -webkit-box-pack: stretch;
   -ms-flex-pack: stretch;
   justify-content: stretch;
-  z-index: 10; }
+  z-index: 10;
+  overflow: hidden; }
   #site_header img {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -1229,14 +1233,16 @@ body {
     display: flex;
     list-style: none;
     height: 100%;
-    margin: 0; }
+    margin: 0;
+    overflow: hidden;
+    padding-right: 2rem; }
     #site_header ul li {
       height: 100%; }
       #site_header ul li label:hover {
-        color: #e31534;
+        color: #97509E;
         cursor: pointer !important; }
       #site_header ul li:hover {
-        color: #e31534;
+        color: #97509E;
         cursor: pointer !important; }
       #site_header ul li a, #site_header ul li label {
         text-decoration: none;
@@ -1244,7 +1250,7 @@ body {
         padding: 0 1rem;
         height: 4rem; }
         #site_header ul li a:hover, #site_header ul li label:hover {
-          color: #e31534 !important;
+          color: #97509E !important;
           cursor: pointer !important; }
         #site_header ul li a:visited, #site_header ul li label:visited {
           color: #fff; }
@@ -1266,7 +1272,7 @@ body {
       display: flex !important; } }
 
 #page_front {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  font-family: "Futura", sans-serif; }
   #page_front h1 {
     color: white;
     font-size: 3.5rem;
@@ -1277,7 +1283,7 @@ body {
     font-size: 2rem; }
   #page_front button {
     height: 44px;
-    background: #e31534;
+    background: #97509E;
     font-size: 1.5rem; }
     #page_front button a {
       text-decoration: none;
@@ -1288,9 +1294,12 @@ body {
     width: 100%;
     height: 700px;
     background-repeat: no-repeat;
-    background-image: url("../images/Space-Background-lg.jpg");
+    background-image: url("../images/Space-Background-sm.jpg");
     -webkit-box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3);
     box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3); }
+    #page_front #f1 .rxl {
+      max-width: 80%;
+      padding: 0 20%; }
   #page_front #f2, #page_front #f4 {
     -webkit-box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3);
     box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3); }
@@ -1298,7 +1307,7 @@ body {
       color: black;
       font-size: 3rem; }
     #page_front #f2 h3, #page_front #f4 h3 {
-      font-size: 3rem;
+      font-size: 2.5rem;
       text-align: left; }
     #page_front #f2 p, #page_front #f4 p {
       text-align: left;
@@ -1310,6 +1319,12 @@ body {
       height: 50px;
       font-size: 1.7rem;
       margin-top: 20px; }
+  #page_front #f2 .rxl {
+    max-width: 80%;
+    padding: 0 10%; }
+  #page_front #f3 .rxl {
+    max-width: 80%;
+    padding: 0 10%; }
   #page_front #f3 {
     -webkit-box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3);
     box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3);
@@ -1319,10 +1334,10 @@ body {
       font-size: 3rem; }
     #page_front #f3 h3 {
       color: white;
-      font-size: 3rem;
+      font-size: 3em;
       text-align: left; }
     #page_front #f3 a {
-      color: #e31534;
+      color: #97509E;
       text-decoration: none; }
     #page_front #f3 p {
       color: white;
@@ -1341,6 +1356,9 @@ body {
     font-size: 1.6rem; }
   #page_front #f4 img {
     max-width: 200px; }
+  #page_front #f4 .rxl {
+    max-width: 80%;
+    padding: 0 10%; }
   #page_front footer {
     background: #1C1C25; }
     #page_front footer h2, #page_front footer h3, #page_front footer h4, #page_front footer p {
@@ -1445,3 +1463,7 @@ body {
   border: 1px solid green; }
   .component-input .error-popup-success i, .component-input .error-popup-success p {
     color: green; }
+
+@font-face {
+  font-family: "Futura";
+  src: url("/fonts/FUTURAM.TTF") format("truetype"); }

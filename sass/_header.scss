@@ -33,12 +33,13 @@
 }
 
 #site_header {
-    height: 4rem;
+    height: 6rem;
     width: 100%;
     background: transparent;
     color: white;
     justify-content: stretch;
     z-index: 10;
+    overflow: hidden;
 
     img {
         display: flex;
@@ -50,18 +51,20 @@
         list-style: none;
         height: 100%;
         margin: 0;
+        overflow: hidden;
+        padding-right: 2rem;
 
         li {
             height: 100%;
 
             label {
                 &:hover {
-                    color: #e31534;
+                    color: #97509E;
                     cursor: pointer !important;
                 }
             }
             &:hover {
-                color: #e31534;
+                color: #97509E;
                 cursor: pointer !important;
             }
             a, label {
@@ -70,7 +73,7 @@
                 padding: 0 1rem;
                 height: 4rem;
                 &:hover {
-                    color: #e31534 !important;
+                    color: #97509E !important;
                     cursor: pointer !important;
                 }
                 &:visited {
