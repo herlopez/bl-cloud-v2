@@ -36,6 +36,7 @@ function startWebsocketServer(port){
         ws['uid']= wss.getUid();
         ws.on('message', function incoming(message) {
             let msg;
+            console.log(message)
             try{
                 msg = JSON.parse(message);
                 processor.msgProcessor(msg, ws, 'ws-ui', wss);

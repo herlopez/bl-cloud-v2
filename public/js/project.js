@@ -1,12 +1,126 @@
+var currentProjectData; // Populate the content of a project.
+
 function paintProject(data) {
-  var project = document.getElementById('project_projectSection');
+  currentProjectData = data;
+
+  switch (projectTab) {
+    case 'dashboard':
+      paintDashboardTab(data);
+      break;
+
+    case 'variables':
+      paintVariableTab(data);
+      break;
+
+    case 'charts':
+      paintChartsTab(data);
+      break;
+
+    case 'settings':
+      paintSettingsTab(data);
+      break;
+
+    default:
+      paintDashboardTab(data);
+      break;
+  }
+} // Dashboard Tab.
+
+
+function paintDashboardTab(data) {
+  var dashboard = document.getElementById('project_section_dashboard');
   currentProject = data.id;
+  currentKey = data.key;
+  dashboard.classList = 'w100 r ac jc';
+  dashboard.style = {
+    height: "100%",
+    overflow: "visible",
+    flexWrap: 'wrap'
+  };
+  dashboard.style.flexWrap = "wrap";
+  dashboard.innerHTML = '';
+
+  if (data.hasOwnProperty('widgets')) {
+    var widgets = data['widgets'];
+
+    for (var widget in widgets) {
+      if (widgets.hasOwnProperty(widget)) {
+        console.log(widgets[widget]);
+        var div = document.createElement('button');
+        div.style.height = "275px";
+        div.style.minWidth = "300px";
+        div.style.maxWidth = "300px"; // div.style.background = projects[project]['color'];
+
+        div.style.background = "rgba(3, 4, 8, 0.46)"; // div.id = projects[project]['id'];
+
+        div.borderRadius = "10px";
+        var mod = 0.7;
+        console.log('DATA        ', data);
+
+        if (widgets[widget].type === 'gauge') {
+          var display = "inherit";
+          var mb = 'margin-bottom: 5px; margin-top: 8px;';
+          console.log(widgets[widget]['hide']);
+
+          if (widgets[widget]['hide'] === 'true') {
+            display = "none";
+            mb = '';
+          }
+
+          var range = Math.abs(widgets[widget].min) + Math.abs(widgets[widget].max);
+          var tic = 270 / range;
+          console.log(tic);
+          var angle = Math.floor(tic * data['variables'][widgets[widget].variable]);
+          console.log(angle);
+          if (angle > 135) angle = 135;
+          if (angle < -135) angle = -135;
+          div.innerHTML = "<h2 style=\"".concat(mb, "\" id=\"h2Widget\">").concat(widgets[widget].title, "</h2>") + "<h3 style=\"font-size:14px; display:".concat(display, ";\" class=\"m0 mb3 p0\" id=\"widgetVariable\">").concat(widgets[widget].variable, "</h3>") + "<svg height=\"".concat(200 * mod, "\" width=\"").concat(200 * mod, "\">") + "<circle cx= \"".concat(100 * mod, "\" cy= \"").concat(100 * mod, "\" r=\"").concat(5 * mod, "\" fill=\"#ffffff\"/>") + "<path fill=\"".concat(widgets[widget].color1, "\" d=\"M").concat(29.29 * mod, ",").concat(170.71 * mod, "           A ").concat(100 * mod, " ").concat(100 * mod, " 0 0 1 ").concat(0 * mod, " ").concat(102.5 * mod, "                 L ").concat(20 * mod, " ").concat(102.5 * mod, "               A ").concat(80 * mod, " ").concat(80 * mod, " 0 0 0 ").concat(43.432 * mod, " ").concat(156.568 * mod, "\"/>") + "<path fill=\"".concat(widgets[widget].color2, "\" d=\"M").concat(0 * mod, ",").concat(97.5 * mod, "                 A ").concat(100 * mod, " ").concat(100 * mod, " 0 0 1 ").concat(27.592735 * mod, " ").concat(31.12827 * mod, "      L ").concat(41.6915 * mod, " ").concat(45.227 * mod, "         A ").concat(80 * mod, " ").concat(80 * mod, " 0 0 0 ").concat(20 * mod, " ").concat(97.5 * mod, " \"/>") + "<path fill=\"".concat(widgets[widget].color3, "\" d=\"M").concat(31.05709 * mod, ", ").concat(27.521555 * mod, "    A ").concat(100 * mod, " ").concat(100 * mod, " 0 0 1 ").concat(97.5 * mod, " ").concat(0 * mod, "                  L ").concat(97.5 * mod, " ").concat(20 * mod, "                A ").concat(80 * mod, " ").concat(80 * mod, " 0 0 0 ").concat(45.226855 * mod, " ").concat(41.6915 * mod, "\"/>") + "<path fill=\"".concat(widgets[widget].color4, "\" d=\"M").concat(102.5 * mod, ",").concat(0 * mod, "                A ").concat(100 * mod, " ").concat(100 * mod, " 0 0 1 ").concat(168.94291 * mod, " ").concat(27.521555 * mod, "     L ").concat(154.773145 * mod, " ").concat(41.6915 * mod, "     A ").concat(80 * mod, " ").concat(80 * mod, " 0 0 0 ").concat(102.5 * mod, " ").concat(20 * mod, "\"/>") + "<path fill=\"".concat(widgets[widget].color5, "\" d=\"M").concat(172.407265 * mod, ",").concat(31.12827 * mod, "    A ").concat(100 * mod, " ").concat(100 * mod, " 0 0 1 ").concat(200 * mod, " ").concat(97.5 * mod, "                L ").concat(180 * mod, " ").concat(97.5 * mod, "               A ").concat(80 * mod, " ").concat(80 * mod, " 0 0 0 ").concat(158.3085 * mod, " ").concat(45.227 * mod, "\"/>") + "<path fill=\"".concat(widgets[widget].color6, "\" d=\"M").concat(200 * mod, ",").concat(102.5 * mod, "              A ").concat(100 * mod, " ").concat(100 * mod, " 0 0 1 ").concat(170.71 * mod, " ").concat(170.71 * mod, "           L ").concat(156.568 * mod, " ").concat(156.568 * mod, "        A ").concat(80 * mod, " ").concat(80 * mod, " 0 0 0 ").concat(180 * mod, " ").concat(102.5 * mod, "\"/>") + "<path style=\"transform: rotate(".concat(angle, "deg); transform-origin: ").concat(100 * mod, "px ").concat(100 * mod, "px;\" fill=\"#707070\" d=\"M").concat(95 * mod, ",").concat(110 * mod, " L ").concat(105 * mod, " ").concat(110 * mod, " L ").concat(102 * mod, " ").concat(95 * mod, " L ").concat(100 * mod, " ").concat(3 * mod, " L ").concat(98 * mod, " ").concat(95 * mod, "\"/>") + '</svg>' + '<div style="transform: translateY(-25px);" class="r ac jc">' + "<h2 id=\"gauge_min_value\" style=\"width: 140px; font-size: 16px;\" class=\"m0 mr5 r ac jc\" >".concat(widgets[widget].min, "</h2>") + "<h2 id=\"gauge_max_value\" style=\"width: 140px; font-size: 16px;\" class=\"m0 ml5 r ac jc\" >".concat(widgets[widget].max, "</h2>") + '</div>' + '<div style="transform: translateY(-40px);" class="r ac jc">' + "<h1>".concat(data['variables'][widgets[widget].variable]).concat(widgets[widget].units, "</h1>") + '</div>';
+        }
+
+        dashboard.appendChild(div);
+      }
+    }
+  }
+} // Variables Tab.
+
+
+function paintVariableTab(data) {
+  var project = document.getElementById('project_section_variables');
+  currentProject = data.id;
+  currentKey = data.key;
   project.classList = 'w100 c ac jc';
   project.style = {
     height: "100%",
     overflow: "visible"
   };
-  project.innerHTML = "\n                    <div style=\"\" class=\"w100 c ac\">\n                    <h1 style=\"\" class=\"m0\">".concat(data.name, "</h1>\n                    <h3 style=\"\">").concat(data.description, "</h3>\n                    <div class=\"r js ac\">\n                        <h4>Project Key: </h4>\n                         <input class=\"ml2\" id=\"project_key\" value=\"").concat(data.key, "\" disabled>\n                    </div>\n                   \n                    <div style=\"height: 100%; overflow: visible;\" class=\"w100 rxl ac jc\">\n                        <div id=\"variables\" class=\"m1 variables c jfs ac w100xl\"> \n                            <h3 class=\"mb0\">Variables <button class=\"fa fa-plus\" onclick=\"windowSwitcher('new_variable')\"></button><button onclick=\"editVariables()\" style=\"padding: 8px 30px;\" class=\"m0 p0 fa fa-pencil-alt\" id = \"var_button\" onclick=\"\"></button></h3>\n                            <!--<div class=\"r jc ac\">-->\n                                <!--<i class=\"mr1 fa fa-search\"></i>-->\n                                <!--<input type=\"search\" id=\"variable-search\">-->\n                            <!--</div>-->\n                        </div>\n                        <div id=\"charts\" class=\"m1 charts c jfs ac w100xl\">\n                            <h3 class=\"mb0\">Charts</h3>\n                            <p style=\"background: #9b55a3; color: white; border-radius: 20px; padding: 5px 40px;\">No Charts \uD83D\uDE41</p>\n                            <!--<div class=\"r jc ac\">-->\n                                <!--<i class=\"mr1 fa fa-search\"></i>-->\n                                <!--<input type=\"search\" id=\"variable-search\">-->\n                            <!--</div>-->\n                        </div>\n                    </div>\n                </div>");
+  project.innerHTML = "\n        <div style=\"\" class=\"w100 c ac\">\n \n            <div style=\"height: 100%; overflow: visible;\" class=\"w100 rxl ac jc\">\n                        <div id=\"variables\" class=\"m1 variables c jfs ac w100xl\"> \n                            <h3 class=\"mb2 w100\" style=\"text-align: center;\">Variables </h3>\n                            <div class=\"r afe jfs\">\n                                <button class=\"fa fa-plus\" onclick=\"windowSwitcher('new_variable')\"></button>\n                                <button onclick=\"editVariables()\" style=\"padding: 8px 30px;\" class=\"m0 p0 fa fa-pencil-alt\" id = \"var_button\" onclick=\"\"></button>\n                             </div>\n                            <!--<div class=\"r jc ac\">-->\n                                <!--<i class=\"mr1 fa fa-search\"></i>-->\n                                <!--<input type=\"search\" id=\"variable-search\">-->\n                            <!--</div>-->\n                        </div>\n                      \n                    </div>\n                </div>"; // project.innerHTML = `
+  //                 <div style="" class="w100 c ac">
+  //                 <h1 style="" class="m0">${data.name}</h1>
+  //                 <h3 style="">${data.description}</h3>
+  //                 <div class="r js ac">
+  //                     <h4>Project Key: </h4>
+  //                      <input class="ml2" id="project_key" value="${data.key}" disabled>
+  //                 </div>
+  //
+  //                 <div style="height: 100%; overflow: visible;" class="w100 rxl ac jc">
+  //                     <div id="variables" class="m1 variables c jfs ac w100xl">
+  //                         <h3 class="mb0">Variables <button class="fa fa-plus" onclick="windowSwitcher('new_variable')"></button><button onclick="editVariables()" style="padding: 8px 30px;" class="m0 p0 fa fa-pencil-alt" id = "var_button" onclick=""></button></h3>
+  //                         <!--<div class="r jc ac">-->
+  //                             <!--<i class="mr1 fa fa-search"></i>-->
+  //                             <!--<input type="search" id="variable-search">-->
+  //                         <!--</div>-->
+  //                     </div>
+  //                     <div id="charts" class="m1 charts c jfs ac w100xl">
+  //                         <h3 class="mb0">Charts</h3>
+  //                         <p style="background: #9b55a3; color: white; border-radius: 20px; padding: 5px 40px;">No Charts 🙁</p>
+  //                         <!--<div class="r jc ac">-->
+  //                             <!--<i class="mr1 fa fa-search"></i>-->
+  //                             <!--<input type="search" id="variable-search">-->
+  //                         <!--</div>-->
+  //                     </div>
+  //                 </div>
+  //             </div>`;
+
   document.getElementById('content_box').appendChild(project);
   var variables = document.getElementById('variables');
   var vars = data.variables;
@@ -29,14 +143,18 @@ function paintProject(data) {
     noVars.innerHTML = "<p style=\"background: #9b55a3; color: white; border-radius: 20px; padding: 5px 40px;\">No Variables \uD83D\uDE41</p>";
     variables.appendChild(noVars);
     return;
-  } // console.log('Project Options: ', message);
+  }
+} // Charts Tab.
 
-}
+
+function paintChartsTab(data) {} // Settings Tab.
+
+
+function paintSettingsTab(data) {}
 
 function createVariable(name, uid) {
   console.log('Creating Var: ', name, uid);
-  var ele = document.getElementById('project_key');
-  ws.send("{\"cmd\":\"CREATE_VARIABLE\", \"key\":\"".concat(ele.value, "\", \"name\":\"").concat(name, "\", \"onSuccess\":\"console.log('Success!'); windowSwitcher('none'); getProjects(currentUid);\", \"onError\":\"\"}"));
+  ws.send("{\"cmd\":\"CREATE_VARIABLE\", \"key\":\"".concat(currentKey, "\", \"name\":\"").concat(name, "\", \"onSuccess\":\"console.log('Success!'); windowSwitcher('none'); getProject(currentUid, currentId);\", \"onError\":\"\"}"));
 }
 
 function updateProject(project, id) {
@@ -135,7 +253,30 @@ function variableSave(id, old, key) {
   input.setAttribute('disabled', true);
   var name = document.getElementById("var_name_".concat(id.substring('var_button_'.length)));
   var errorElement = "var_error_".concat(id.substring('var_button_'.length));
-  ws.send("{\"cmd\":\"SET_VARIABLE\", \"key\":\"".concat(key, "\", \"name\":\"").concat(name.value, "\", \"value\":\"").concat(input.value, "\", \"onSuccess\":\"console.log('Success!'); var editButton = document.getElementById('").concat(id, "'); editButton.classList.add('fa-pencil-alt', 'done'); editButton.setAttribute('onClick', `variableEdit(id, '").concat(key, "')`); edit=false; editButton.classList.remove('fa-check', 'loader-small', 'double-button-load'); editButton.style.color = '#9b55a3'; editButton.classList.remove('double-button'); \", \"onError\":\"var editButton = document.getElementById('").concat(id, "'); editButton.classList.add('fa-pencil-alt'); editButton.classList.remove('fa-check', 'loader-small', 'double-button-load'); editButton.style.color = '#9b55a3'; editButton.classList.remove('double-button'); let error = document.getElementById('").concat(errorElement, "'); error.classList.remove('dn'); error.innerText = 'Error: ' + errorMessage;\"}"));
+  var value = input.value;
+  console.log("here: ", value.substring(0, 2));
+
+  function filterInt(value) {
+    if (/^[-+]|(\d)|[.]$/.test(value)) {
+      return Number(value);
+    } else {
+      return NaN;
+    }
+  }
+
+  if (value.substring(0, 2) === "@@") {
+    if (!isNaN(filterInt(value.substring(2, value.length)))) {
+      value = "\"".concat(value.substring(2, value.length), "\"");
+    } else {
+      value = "\"".concat(input.value, "\"");
+    }
+  } else {
+    if (isNaN(filterInt(value))) {
+      value = "\"".concat(input.value, "\"");
+    }
+  }
+
+  ws.send("{\"cmd\":\"SET_VARIABLE\", \"key\":\"".concat(key, "\", \"name\":\"").concat(name.value, "\", \"value\":").concat(value, ", \"onSuccess\":\"console.log('Success!'); var editButton = document.getElementById('").concat(id, "'); editButton.classList.add('fa-pencil-alt', 'done'); editButton.setAttribute('onClick', `variableEdit(id, '").concat(key, "')`); edit=false; editButton.classList.remove('fa-check', 'loader-small', 'double-button-load'); editButton.style.color = '#9b55a3'; editButton.classList.remove('double-button'); \", \"onError\":\"var editButton = document.getElementById('").concat(id, "'); editButton.classList.add('fa-pencil-alt'); editButton.classList.remove('fa-check', 'loader-small', 'double-button-load'); editButton.style.color = '#9b55a3'; editButton.classList.remove('double-button'); let error = document.getElementById('").concat(errorElement, "'); error.classList.remove('dn'); error.innerText = 'Error: ' + errorMessage;\"}"));
   setTimeout(function () {
     if (!editButton.classList.contains('done')) {
       editButton.classList.add('fa-pencil-alt');

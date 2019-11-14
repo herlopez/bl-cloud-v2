@@ -3,6 +3,8 @@ let ws, wsHandler;
 let currentView, currentProject;
 let currentUid = null;
 let currentId = null;
+let projectTab =  null;
+let currentKey = null;
 let edit = false;
 
 
@@ -28,7 +30,7 @@ docReady(function () {
             // Store a global value of the current user ID.
             currentUid = user.uid;
 
-            // Show that users project view.
+            // Show that users projects view.
             viewSwitcher('projects');
 
             // Start the websocket connection interval with the server.

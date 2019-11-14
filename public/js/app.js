@@ -37,6 +37,8 @@ let ws, wsHandler;
 let currentView, currentProject;
 let currentUid = null;
 let currentId = null;
+let projectTab =  null;
+let currentKey = null;
 let edit = false;
 
 
@@ -62,7 +64,7 @@ docReady(function () {
             // Store a global value of the current user ID.
             currentUid = user.uid;
 
-            // Show that users project view.
+            // Show that users projects view.
             viewSwitcher('projects');
 
             // Start the websocket connection interval with the server.
@@ -376,16 +378,15 @@ function signUpView(){
     });
     appContainer.appendChild(signInButton);
 }
-
+// Project View
 function projectView(id){
-
     let appContainer = document.getElementById('app_container');
     appContainer.innerHTML = '';
     appContainer.style.userSelect = 'none';
     appContainer.classList.remove('project-dash');
     appContainer.classList.add('project-single');
 
-    // Top bar stuff.
+    // Top of container.
     let singleHeader = document.createElement('header');
     singleHeader.style.padding = 0;
     let backButton = document.createElement('button');
@@ -396,38 +397,130 @@ function projectView(id){
         viewSwitcher('dashboard');
     });
     singleHeader.appendChild(backButton);
+
+    //--  Left Menu in Container   --//
     let menu = document.createElement('div');
     menu.id = "menu_box";
 
+    // Dashboard Tab
     let dashboard = document.createElement('div');
+    dashboard.classList = "dashboard-button";
+    dashboard.classList.add('dashboard-button-select');
+    dashboard.id = "dashboard_trigger";
+    dashboard.innerHTML = "<button><i class='fa fa-chart-bar'></i>Dashboard</button>";
+    dashboard.addEventListener('click', ()=>{
+        projectMenuSwitcher('dashboard', this);
+    });
 
-    dashboard.classList = "dashboar-button";
-    dashboard.inneinneeHTML = "<i class='fa fa-chart'></i>Dashboard"
-    menu.appendChild(dashboard);
+    // Variables Tab
+    let variables = document.createElement('div');
+    variables.classList = "dashboard-button";
+    variables.id = "variables_trigger";
+    variables.innerHTML = "<button><i class='fa fa-code'></i>Variables</button>";
+    variables.addEventListener('click', ()=>{
+        projectMenuSwitcher('variables', this);
+    });
 
+    // Charts Tab
+    let charts = document.createElement('div');
+    charts.classList = "dashboard-button";
+    charts.id = "charts_trigger";
+    charts.innerHTML = "<button><i class='fa fa-chart-pie'></i>Charts</button>";
+    charts.addEventListener('click', ()=>{
+        projectMenuSwitcher('charts', this);
+    });
 
-
-
-    appContainer.appendChild(menu);
-
-
-
+    // Settings Page
+    let settings = document.createElement('div');
+    settings.classList = "dashboard-button";
+    settings.id = "settings_trigger";
+    settings.innerHTML = "<button><i class='fa fa-cogs'></i>Project Settings</button>";
+    settings.addEventListener('click', ()=>{
+        projectMenuSwitcher('settings', this);
+    });
 
     menu.appendChild(singleHeader);
+    menu.appendChild(dashboard);
+    menu.appendChild(variables);
+    menu.appendChild(charts);
+    menu.appendChild(settings);
+    appContainer.appendChild(menu);
+    //--  Left Menu in Container END   --//
+
+    // Main Content
     let content = document.createElement('div');
     content.id = "content_box";
     appContainer.appendChild(content);
 
-    let projectSection = document.createElement('section');
-    projectSection.id = "project_projectSection";
-    projectSection.innerHTML = "<div class=\"loader\"></div>";
-    projectSection.style.overflow = "scroll";
-    projectSection.classList.add('r');
-    projectSection.classList.add('jc');
-    projectSection.classList.add('ac');
-    content.appendChild(projectSection);
+    // Select Dash tab
+    projectMenuSwitcher('dashboard');
     getProject(currentUid, id);
+    currentId = id;
+
 }
+
+
+// Menu Tab Switcher
+function projectMenuSwitcher(target){
+
+    // Highlight the proper tab.
+    document.getElementById('menu_box').querySelectorAll('.dashboard-button').forEach((e)=>{
+        e.classList.remove('dashboard-button-select');
+    });
+    let el = document.getElementById(`${target}_trigger`);
+
+    // Get the content element and empty.
+    let contentBox = document.getElementById('content_box');
+    contentBox.innerHTML = "";
+
+    // Switch to the correct tab.
+    switch (target) {
+
+        case 'dashboard':
+            projectTab = 'dashboard';
+            el.classList.add('dashboard-button-select');
+            let optionBar = document.createElement('div');
+            optionBar.innerHTML =`
+            <button onclick="windowSwitcher('widget_selection')">Add Widget</button>`;
+            contentBox.appendChild(optionBar);
+            contentBox.classList.add('c');
+            let projectSectionDashboard = document.createElement('section');
+            projectSectionDashboard.id = "project_section_dashboard";
+            projectSectionDashboard.innerHTML = "<div class=\"loader\"></div>";
+            projectSectionDashboard.style.overflow = "scroll";
+            projectSectionDashboard.classList.add('r');
+            projectSectionDashboard.classList.add('jc');
+            projectSectionDashboard.classList.add('ac');
+            contentBox.appendChild(projectSectionDashboard);
+            getProject(currentUid, currentId);
+            break;
+
+        case 'variables':
+            projectTab = 'variables';
+            el.classList.add('dashboard-button-select');
+            let projectSection = document.createElement('section');
+            projectSection.id = "project_section_variables";
+            projectSection.innerHTML = "<div class=\"loader\"></div>";
+            projectSection.style.overflow = "scroll";
+            projectSection.classList.add('r');
+            projectSection.classList.add('jc');
+            projectSection.classList.add('ac');
+            contentBox.appendChild(projectSection);
+            getProject(currentUid, currentId);
+            break;
+
+        case 'charts':
+            projectTab = 'charts';
+            el.classList.add('dashboard-button-select');
+            break;
+
+        case 'settings':
+            projectTab = 'settings';
+            el.classList.add('dashboard-button-select');
+            break;
+    }
+}
+
 /*
     Projects View
     Description: Shows all the users projects.
@@ -727,21 +820,20 @@ function setDefaultProfile(){
     document.getElementById('profile_image_sidebar').classList.add('dn');
     document.getElementById('profile_image_sidebar').src = `/images/empty-avatar.png`;
 }
-
-
 // Function that opens a pop up window.
-function windowSwitcher(targetWindow, options){
+function windowSwitcher(targetWindow, options) {
     console.log('targetWindow: ', targetWindow);
     let window = document.getElementById('window');
 
-    function windowHide(){
+    function windowHide() {
         window.classList.remove('cr');
         window.classList.remove('ac');
         window.classList.remove('jc');
         window.classList.add('dn');
         window.innerHTML = '';
     }
-    function windowShow(){
+
+    function windowShow() {
         window.classList.add('cr');
         window.classList.add('ac');
         window.classList.add('jc');
@@ -754,8 +846,395 @@ function windowSwitcher(targetWindow, options){
         // No window Shown.
         case 'none':
             windowHide();
-        break;
+            break;
 
+        case 'data':
+            windowShow();
+
+            let dataSettings = document.createElement('div');
+            dataSettings.id = 'window_content_block';
+            dataSettings.classList.add('widget-data-settings');
+            let dataWidgetContent =
+                `<div class="c ac jc">` +
+                    '<h2 class=" mb1"  id="gauge_title">Data Point</h2>' +
+                    '<h3 class="m0" style="font-size: 0.8rem;" id="variable_title"></h3>' +
+                    '<div style="" class="r ac jc">' +
+                        '<h1 id="value">50</h1>' +
+                        '<h1 class="m0" id="units"></h1>' +
+                    '</div>' +
+                    `<div>${new Date().toLocaleString()}</div>` +
+                    '<div class="r mt4 mb3">Variable:&nbsp;' +
+                    '<select oninput="variableSettings()" id="variable_title_input">';
+                    let validVariablesForData = `<option value="">Select a Variable</option>`;
+                    if (currentProjectData.hasOwnProperty('variables')) {
+                        let variables = currentProjectData['variables'];
+                        for (let variable in variables) {
+                            if(variables.hasOwnProperty(variable)){
+                                if (variable !== 'default') {
+                                    validVariablesForData = validVariablesForData +`<option value="${variable}">${variable}</option>`;
+                                }
+                            }
+                        }
+                    }
+            dataSettings.innerHTML = dataWidgetContent + validVariablesForData + '</select>&nbsp;Hide: <input id="gauge_variable_hide" oninput="gaugeHideVariableName()" style="width: 20px;" type="checkbox">' +
+                '</div>' +
+                '<div class="c jc afe p3 py0">' +
+                '<div class="mb2">Title: <input id="gauge_title_input" onkeyup="gaugeSettingsTitle()" type="text" value="Data Point"></div>' +
+                '</div>' +
+                '<div class="r mb2 mt0">Units:&nbsp;' +
+                '<select oninput="unitSettings(this)" id="">' +
+                '<option value="">-</option>' +
+                '<optgroup label="Temperature">' +
+                '<option value="°C" title="celsius">°C</option>' +
+                '<option value="°F" title="fahrenheit">°F</option>' +
+                '<option value="K" title="kelvin">K</option>' +
+                '<option value="°Ré" title="reaumur">°Ré</option>' +
+                '<option value="°N" title="newton">°N</option>' +
+                '<option value="°Ra" title="rankine">°Ra</option>' +
+                '</optgroup>' +
+                '<optgroup label="Volume">' +
+                ' <option value="m³" title="cubic meter">m³</option>' +
+                ' <option value="dm³" title="cubic decimeter">dm³</option>' +
+                ' <option value="cm³" title="cubic centimeter">cm³</option>' +
+                ' <option value="l" title="liter">l</option>' +
+                ' <option value="dl" title="deciliter">dl</option>' +
+                ' <option value="cl" title="centiliter">cl</option>' +
+                ' <option value="ml" title="milliliter">ml</option>' +
+                ' <option value="oz" title="fluid ounce">oz</option>' +
+                ' <option value="in³" title="cubic inch">in³</option>' +
+                ' <option value="ft³" title="cubic foot">ft³</option>' +
+                ' <option value="yd³" title="cubic yard">yd³</option>' +
+                ' <option value="gal" title="gallon uk">gal</option>' +
+                ' <option value="bbl" title="petroleum barrel">bbl</option>' +
+                ' <option value="pt" title="pint">pt</option>' +
+                '</optgroup>' +
+                '<optgroup label="Distance">' +
+                '<option value="km" title="kilometer">km</option>' +
+                '<option value="m" title="meter">m</option>' +
+                '<option value="dm" title="decimeter">dm</option>' +
+                '<option value="cm" title="centimeter">cm</option>' +
+                '<option value="mm" title="millimeter">mm</option>' +
+                '<option value="mi" title="mile">mi</option>' +
+                '<option value="in" title="inch">in</option>' +
+                '<option value="ft" title="foot">ft</option>' +
+                '<option value="yd" title="yard">yd</option>' +
+                '</optgroup>' +
+                '<optgroup label="Mass">' +
+                '<option value="t" title="tonne">t</option>' +
+                '<option value="kg" title="kilogram">kg</option>' +
+                '<option value="hg" title="hectogram">hg</option>' +
+                '<option value="g" title="gram">g</option>' +
+                '<option value="dg" title="decigram">dg</option>' +
+                '<option value="cg" title="centigram">cg</option>' +
+                '<option value="mg" title="milligram">mg</option>' +
+                '<option value="µg" title="microgram">µg</option>' +
+                '<option value="carat" title="carat">carat</option>' +
+                '<option value="grain" title="grain">grain</option>' +
+                '<option value="oz" title="pounce avoirdupois">oz</option>' +
+                '<option value="lb" title="pound avoirdupois">lb</option>' +
+                '<option value="cwt" title="long hundredweight">cwt</option>' +
+                '<option value="ton" title="ton">ton</option>' +
+                '<option value="st" title="stone">st</option>' +
+                '</optgroup>' +
+                `</select>` +
+                '</div>' +
+
+                `<div class="r">` +
+                `<button onclick="windowSwitcher('widget_selection')">Cancel</button>` +
+                `<button onclick="newDataWidget()"> &nbsp;&nbsp;Add&nbsp;&nbsp;</button>` +
+                `</div>` +
+                '</div>';
+            window.appendChild(dataSettings);
+
+            break;
+
+
+        case 'gauge':
+            windowShow();
+            let gaugeSettings = document.createElement('div');
+            gaugeSettings.id = 'window_content_block';
+            let mod2 = 1;
+            gaugeSettings.classList.add('widget-gauge-settings');
+            let content =
+                `<div class="c ac jc">` +
+                '<h2 class=" mb1"  id="gauge_title">Gauge</h2>' +
+                '<h3 class="m0" style="font-size: 0.8rem;" id="variable_title"></h3>' +
+                `<svg class="mt2" height="${200 * mod2}" width="${200 * mod2}">` +
+                `<circle cx= "${100 * mod2}" cy= "${100 * mod2}" r="${5 * mod2}" fill="#ffffff"/>` +
+                `<path id="gauge_color_1" fill="#0D790A" d="M${29.29 * mod2},${170.71 * mod2}           A ${100 * mod2} ${100 * mod2} 0 0 1 ${0 * mod2} ${102.5 * mod2}                 L ${20 * mod2} ${102.5 * mod2}               A ${80 * mod2} ${80 * mod2} 0 0 0 ${43.432 * mod2} ${156.568 * mod2}"/>` +
+                `<path id="gauge_color_2" fill="#0D790A" d="M${0 * mod2},${97.5 * mod2}                 A ${100 * mod2} ${100 * mod2} 0 0 1 ${27.592735 * mod2} ${31.12827 * mod2}      L ${41.6915 * mod2} ${45.227 * mod2}         A ${80 * mod2} ${80 * mod2} 0 0 0 ${20 * mod2} ${97.5 * mod2} "/>` +
+                `<path id="gauge_color_3" fill="#F3B820" d="M${31.05709 * mod2}, ${27.521555 * mod2}    A ${100 * mod2} ${100 * mod2} 0 0 1 ${97.5 * mod2} ${0 * mod2}                  L ${97.5 * mod2} ${20 * mod2}                A ${80 * mod2} ${80 * mod2} 0 0 0 ${45.226855 * mod2} ${41.6915 * mod2}"/>` +
+                `<path id="gauge_color_4" fill="#F3B820" d="M${102.5 * mod2},${0 * mod2}                A ${100 * mod2} ${100 * mod2} 0 0 1 ${168.94291 * mod2} ${27.521555 * mod2}     L ${154.773145 * mod2} ${41.6915 * mod2}     A ${80 * mod2} ${80 * mod2} 0 0 0 ${102.5 * mod2} ${20 * mod2}"/>` +
+                `<path id="gauge_color_5" fill="#D20303" d="M${172.407265 * mod2},${31.12827 * mod2}    A ${100 * mod2} ${100 * mod2} 0 0 1 ${200 * mod2} ${97.5 * mod2}                L ${180 * mod2} ${97.5 * mod2}               A ${80 * mod2} ${80 * mod2} 0 0 0 ${158.3085 * mod2} ${45.227 * mod2}"/>` +
+                `<path id="gauge_color_6" fill="#D20303" d="M${200 * mod2},${102.5 * mod2}              A ${100 * mod2} ${100 * mod2} 0 0 1 ${170.71 * mod2} ${170.71 * mod2}           L ${156.568 * mod2} ${156.568 * mod2}        A ${80 * mod2} ${80 * mod2} 0 0 0 ${180 * mod2} ${102.5 * mod2}"/>` +
+                `<path style="transform-origin: ${100 * mod2}px ${100 * mod2}px;" fill="#707070" d="M${95 * mod2},${110 * mod2} L ${105 * mod2} ${110 * mod2} L ${102 * mod2} ${95 * mod2} L ${100 * mod2} ${3 * mod2} L ${98 * mod2} ${95 * mod2}"/>` +
+                '</svg>' +
+                '<div style="transform: translateY(-20px);" class="r ac jc">' +
+                '<h2 id="gauge_min_value" class="m0 mr5" >0</h2>' +
+                '<h2 id="gauge_max_value" class="m0 ml5" >100</h2>' +
+                '</div>' +
+                '<div style="transform: translateY(-40px);" class="r ac jc">' +
+                '<h1 id="value">50</h1>' +
+                '<h1 class="m0" id="units"></h1>' +
+                '</div>' +
+                '<div class="r mb3">Variable:&nbsp;';
+            let validVariablesForGauge = `<option value="">Select a Variable</option>`;
+            if (currentProjectData.hasOwnProperty('variables')) {
+                let variables = currentProjectData['variables'];
+                for (let variable in variables) {
+                    if(variables.hasOwnProperty(variable)){
+                        if (typeof variables[variable] === "number" && variable !== 'default') {
+                            validVariablesForGauge = validVariablesForGauge +`<option value="${variable}">${variable}</option>`;
+                        }
+                    }
+                }
+            }
+            gaugeSettings.innerHTML = content + '<select oninput="variableSettings()" id="variable_title_input">' + validVariablesForGauge +
+                '</select>&nbsp;Hide: <input id="gauge_variable_hide" oninput="gaugeHideVariableName()" style="width: 20px;" type="checkbox">' +
+                '</div>' +
+                '<div class="c jc afe p3 pt0">' +
+                '<div class="mb2">Title: <input id="gauge_title_input" onkeyup="gaugeSettingsTitle()" type="text" value="Gauge"></div>' +
+                '<div class="mb2">Min Value: <input type="number" oninput="minSettings(this)"  value="0"></div>' +
+                '<div class="mb2">Max Value: <input type="number" oninput="maxSettings(this)" value="100"></div>' +
+                '</div>' +
+                '<div class="r jc ac">' +
+                '<input id="color1" oninput="gaugeColorSettings(this, 1)"  style="background: transparent;" class="mx3" type="color" value="#0D790A">' +
+                '<input id="color2" oninput="gaugeColorSettings(this, 2)" style="background: transparent;" class="mx3" type="color" value="#0D790A">' +
+                '<input id="color3" oninput="gaugeColorSettings(this, 3)" style="background: transparent;" class="mx3" type="color" value="#F3B820">' +
+                '<input id="color4" oninput="gaugeColorSettings(this, 4)" style="background: transparent;" class="mx3" type="color" value="#F3B820">' +
+                '<input id="color5" oninput="gaugeColorSettings(this, 5)" style="background: transparent;" class="mx3" type="color" value="#D20303">' +
+                '<input id="color6" oninput="gaugeColorSettings(this, 6)" style="background: transparent;" class="mx3" type="color" value="#D20303">' +
+                '</div>' +
+                '<div class="r mb2 mt4">Units:&nbsp;' +
+                '<select oninput="unitSettings(this)" id="">' +
+                '<option value="percent">%</option>' +
+                '<optgroup label="Temperature">' +
+                '<option value="°C" title="celsius">°C</option>' +
+                '<option value="°F" title="fahrenheit">°F</option>' +
+                '<option value="K" title="kelvin">K</option>' +
+                '<option value="°Ré" title="reaumur">°Ré</option>' +
+                '<option value="°N" title="newton">°N</option>' +
+                '<option value="°Ra" title="rankine">°Ra</option>' +
+                '</optgroup>' +
+                '<optgroup label="Volume">' +
+                ' <option value="m³" title="cubic meter">m³</option>' +
+                ' <option value="dm³" title="cubic decimeter">dm³</option>' +
+                ' <option value="cm³" title="cubic centimeter">cm³</option>' +
+                ' <option value="l" title="liter">l</option>' +
+                ' <option value="dl" title="deciliter">dl</option>' +
+                ' <option value="cl" title="centiliter">cl</option>' +
+                ' <option value="ml" title="milliliter">ml</option>' +
+                ' <option value="oz" title="fluid ounce">oz</option>' +
+                ' <option value="in³" title="cubic inch">in³</option>' +
+                ' <option value="ft³" title="cubic foot">ft³</option>' +
+                ' <option value="yd³" title="cubic yard">yd³</option>' +
+                ' <option value="gal" title="gallon uk">gal</option>' +
+                ' <option value="bbl" title="petroleum barrel">bbl</option>' +
+                ' <option value="pt" title="pint">pt</option>' +
+                '</optgroup>' +
+                '<optgroup label="Distance">' +
+                '<option value="km" title="kilometer">km</option>' +
+                '<option value="m" title="meter">m</option>' +
+                '<option value="dm" title="decimeter">dm</option>' +
+                '<option value="cm" title="centimeter">cm</option>' +
+                '<option value="mm" title="millimeter">mm</option>' +
+                '<option value="mi" title="mile">mi</option>' +
+                '<option value="in" title="inch">in</option>' +
+                '<option value="ft" title="foot">ft</option>' +
+                '<option value="yd" title="yard">yd</option>' +
+                '</optgroup>' +
+                '<optgroup label="Mass">' +
+                '<option value="t" title="tonne">t</option>' +
+                '<option value="kg" title="kilogram">kg</option>' +
+                '<option value="hg" title="hectogram">hg</option>' +
+                '<option value="g" title="gram">g</option>' +
+                '<option value="dg" title="decigram">dg</option>' +
+                '<option value="cg" title="centigram">cg</option>' +
+                '<option value="mg" title="milligram">mg</option>' +
+                '<option value="µg" title="microgram">µg</option>' +
+                '<option value="carat" title="carat">carat</option>' +
+                '<option value="grain" title="grain">grain</option>' +
+                '<option value="oz" title="pounce avoirdupois">oz</option>' +
+                '<option value="lb" title="pound avoirdupois">lb</option>' +
+                '<option value="cwt" title="long hundredweight">cwt</option>' +
+                '<option value="ton" title="ton">ton</option>' +
+                '<option value="st" title="stone">st</option>' +
+                '</optgroup>' +
+                `</select>` +
+                '</div>' +
+                `<div class="r">` +
+                `<button onclick="windowSwitcher('widget_selection')">Cancel</button>` +
+                `<button onclick="newGaugeWidget(); "> &nbsp;&nbsp;Add&nbsp;&nbsp;</button>` +
+                `</div>` +
+                '</div>';
+            window.appendChild(gaugeSettings);
+            break;
+
+        case 'widget_selection':
+            windowShow();
+            console.log('Widget Selection');
+            let widgetSelection = document.createElement('div');
+            widgetSelection.id = 'window_content_block';
+            widgetSelection.classList.add('widget-selection');
+            let mod = 0.7;
+            console.log(currentKey);
+            widgetSelection.innerHTML = '<h2 class="mb0"> Add Widget</h2> <hr>' +
+
+                // Gauge
+                '<div class="r ac jc" style="flex-wrap: wrap; max-width: 1345px;">' +
+                '<div class="c ac jc">' +
+                '<button onclick="windowSwitcher(`gauge`)" class="bbutton">' +
+                `<svg height="${200 * mod}" width="${200 * mod}">` +
+                `<circle cx= "${100 * mod}" cy= "${100 * mod}" r="${5 * mod}" fill="#ffffff"/>` +
+                `<path fill="#0D790A" d="M${29.29 * mod},${170.71 * mod}           A ${100 * mod} ${100 * mod} 0 0 1 ${0 * mod} ${102.5 * mod}                 L ${20 * mod} ${102.5 * mod}               A ${80 * mod} ${80 * mod} 0 0 0 ${43.432 * mod} ${156.568 * mod}"/>` +
+                `<path fill="#0D790A" d="M${0 * mod},${97.5 * mod}                 A ${100 * mod} ${100 * mod} 0 0 1 ${27.592735 * mod} ${31.12827 * mod}      L ${41.6915 * mod} ${45.227 * mod}         A ${80 * mod} ${80 * mod} 0 0 0 ${20 * mod} ${97.5 * mod} "/>` +
+                `<path fill="#F3B820" d="M${31.05709 * mod}, ${27.521555 * mod}    A ${100 * mod} ${100 * mod} 0 0 1 ${97.5 * mod} ${0 * mod}                  L ${97.5 * mod} ${20 * mod}                A ${80 * mod} ${80 * mod} 0 0 0 ${45.226855 * mod} ${41.6915 * mod}"/>` +
+                `<path fill="#F3B820" d="M${102.5 * mod},${0 * mod}                A ${100 * mod} ${100 * mod} 0 0 1 ${168.94291 * mod} ${27.521555 * mod}     L ${154.773145 * mod} ${41.6915 * mod}     A ${80 * mod} ${80 * mod} 0 0 0 ${102.5 * mod} ${20 * mod}"/>` +
+                `<path fill="#D20303" d="M${172.407265 * mod},${31.12827 * mod}    A ${100 * mod} ${100 * mod} 0 0 1 ${200 * mod} ${97.5 * mod}                L ${180 * mod} ${97.5 * mod}               A ${80 * mod} ${80 * mod} 0 0 0 ${158.3085 * mod} ${45.227 * mod}"/>` +
+                `<path fill="#D20303" d="M${200 * mod},${102.5 * mod}              A ${100 * mod} ${100 * mod} 0 0 1 ${170.71 * mod} ${170.71 * mod}           L ${156.568 * mod} ${156.568 * mod}        A ${80 * mod} ${80 * mod} 0 0 0 ${180 * mod} ${102.5 * mod}"/>` +
+                `<path style="transform-origin: ${100 * mod}px ${100 * mod}px;" fill="#707070" d="M${95 * mod},${110 * mod} L ${105 * mod} ${110 * mod} L ${102 * mod} ${95 * mod} L ${100 * mod} ${3 * mod} L ${98 * mod} ${95 * mod}"/>` +
+                '</svg>' +
+                '</button>' +
+                '<h2>Gauge</h2>' +
+                '</div>' +
+
+                '  <div class="c ac jc">' +
+                `     <button onclick = "windowSwitcher('data')" class="bbutton"><div class="c"><h3>Temperature</h3><h1>24</h1><p>2019-10-26 12:48:01</p></div></button>` +
+                '     <h2>Data Block</h2>' +
+                '  </div>' +
+                '  <div class="c ac jc">' +
+                '     <button class="bbutton"><input class="slider" type="range"></button>' +
+                '     <h2>Slider</h2>' +
+                '  </div>' +
+                '  <div class="c ac jc">' +
+                '     <button class="bbutton"><div class="ct-chart-pie-widget"></div></button>' +
+                '     <h2>Pie Chart</h2>' +
+                '  </div>' +
+                '  <div class="c ac jc">' +
+                '     <button class="bbutton"><div class="ct-chart-line-chart-widget"></div></button>' +
+                '     <h2>Line Graph</h2>' +
+                '  </div>' +
+                '  <div class="c ac jc">' +
+                '     <button class="bbutton"><div class="ct-chart-scatter-chart-widget"></div></button>' +
+                '     <h2>Scatter Plot</h2>' +
+                '  </div>' +
+                '  <div class="c ac jc">' +
+                '     <button class="bbutton"><div class="mr3 ct-chart-histo-chart-widget"></div></button>' +
+                '     <h2>Bar Graph</h2>' +
+                '  </div>' +
+                '  <div class="c ac jc">' +
+                '     <button class="bbutton"></button>' +
+                '     <h2>Raw Data</h2>' +
+                '  </div>' +
+                `<button onclick="windowSwitcher('none')">Cancel</button>` +
+                '</div>' +
+                '';
+            window.appendChild(widgetSelection);
+            new Chartist.Pie('.ct-chart-pie-widget', {
+                series: [5, 10, 20, 25, 40, 100]
+            }, {
+                donut: true,
+                donutWidth: 15,
+                donutSolid: true,
+                startAngle: 270,
+                showLabel: false
+            });
+            new Chartist.Line('.ct-chart-line-chart-widget', {
+                series: [
+                    [1, 5, 2, 5, 4, 3],
+                    [2, 3, 4, 8, 1, 2],
+                    [5, 4, 3, 2, 1, 0.5]
+                ]
+            }, {
+                fullWidth: true,
+                showPoint: false,
+                axisY: {
+                    showLabel: false,
+                    showGrid: false
+                },
+                axisX: {
+                    showLabel: false,
+                    showGrid: false
+                }
+
+            });
+            var times = function (n) {
+                return Array.apply(null, new Array(n));
+            };
+
+            var data = times(5).map(Math.random).reduce(function (data, rnd, index) {
+                data.labels.push(index + 1);
+                data.series.forEach(function (series) {
+                    series.push(Math.random() * 100)
+                });
+
+                return data;
+            }, {
+                labels: [],
+                series: times(4).map(function () {
+                    return new Array()
+                })
+            });
+
+            var options = {
+                showLine: false,
+
+                axisY: {
+                    showLabel: false,
+                    showGrid: false
+                },
+                axisX: {
+                    showLabel: false,
+                    showGrid: false
+                }
+            };
+
+            var responsiveOptions = [
+                ['screen and (min-width: 640px)', {
+                    axisX: {
+                        labelInterpolationFnc: function (value, index) {
+                            return index % 4 === 0 ? 'W' + value : null;
+                        }
+                    }
+                }]
+            ];
+
+            new Chartist.Line('.ct-chart-scatter-chart-widget', data, options, responsiveOptions);
+
+            var data = {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                series: [
+                    [5, 4, 3, 7, 5, 10, 3, 4, 8, 10, 6, 8],
+                    [3, 2, 9, 5, 4, 6, 4, 6, 7, 8, 7, 4]
+                ]
+            };
+
+            var options = {
+                seriesBarDistance: 3,
+                axisY: {
+                    showLabel: false,
+                    showGrid: false
+                },
+                axisX: {
+                    showLabel: false,
+                    showGrid: false
+                }
+            };
+
+            var responsiveOptions = [
+                ['screen and (max-width: 640px)', {
+                    seriesBarDistance: 5,
+                    axisX: {
+                        labelInterpolationFnc: function (value) {
+                            return value[0];
+                        }
+                    }
+                }]
+            ];
+            new Chartist.Bar('.ct-chart-histo-chart-widget', data, options);
+
+
+            break;
         case 'profile_settings':
             document.getElementById('profile_window').classList.add('dn');
             windowHide();
@@ -781,17 +1260,17 @@ function windowSwitcher(targetWindow, options){
                 value: user.displayName,
                 required: true,
                 disabled: true,
-                onSave : async () =>{
+                onSave: async () => {
                     console.log("Save");
-                    if( user.displayName === displayNameInput.value){
+                    if (user.displayName === displayNameInput.value) {
                         throw new Error('none');
                     }
                     user.updateProfile({
                         displayName: displayNameInput.value
-                    }).then(function() {
+                    }).then(function () {
                         displayNameInput.value = user.displayName;
                         setProfileInformation(user);
-                    }).catch(function(error) {
+                    }).catch(function (error) {
                         throw error;
                     });
                 }
@@ -801,28 +1280,28 @@ function windowSwitcher(targetWindow, options){
                 innerText: "Email Address"
             });
             let emailInput = input(profileSettings, {
-                    type: 'test',
-                    edit: true,
-                    onSaveMessage: "A verification email was sent to your new email address.",
-                    value: user.email,
-                    required: true,
-                    onSave : async function () {
-                        console.log("Save: ", emailInput.value);
-                        if( user.email === emailInput.value){
-                            throw new Error('none');
-                        }
-                        await user.updateEmail(emailInput.value).then(async function () {
-                            await user.sendEmailVerification().then(function () {
-                            }).catch(function (error) {
-                                throw error;
-                            });
+                type: 'test',
+                edit: true,
+                onSaveMessage: "A verification email was sent to your new email address.",
+                value: user.email,
+                required: true,
+                onSave: async function () {
+                    console.log("Save: ", emailInput.value);
+                    if (user.email === emailInput.value) {
+                        throw new Error('none');
+                    }
+                    await user.updateEmail(emailInput.value).then(async function () {
+                        await user.sendEmailVerification().then(function () {
                         }).catch(function (error) {
                             throw error;
-                        }).then(()=>{
-                            setProfileInformation(user);
                         });
+                    }).catch(function (error) {
+                        throw error;
+                    }).then(() => {
+                        setProfileInformation(user);
+                    });
 
-                    },
+                },
                 disabled: true
             });
 
@@ -835,15 +1314,15 @@ function windowSwitcher(targetWindow, options){
                 onSaveMessage: "Your password has been changed.",
                 value: "******",
                 required: true,
-                onSave : async function () {
+                onSave: async function () {
 
-                    if(passwordInput.value !== "******"){
-                        await user.updatePassword(passwordInput.value).then(function() {
+                    if (passwordInput.value !== "******") {
+                        await user.updatePassword(passwordInput.value).then(function () {
                             // Update successful.
-                        }).catch(function(error) {
+                        }).catch(function (error) {
                             throw error;
                         });
-                    }else {
+                    } else {
                         throw new Error('none');
                     }
 
@@ -853,11 +1332,11 @@ function windowSwitcher(targetWindow, options){
 
             let closeContent = document.createElement('div');
             closeContent.classList = "c ac jc w100";
-            closeContent.innerHTML ='    <p class="white-link r ac jc"><a href="https://en.gravatar.com" target="_blank">Change your profile Image<br> on Gravatar</a></p>' +
+            closeContent.innerHTML = '    <p class="white-link r ac jc"><a href="https://en.gravatar.com" target="_blank">Change your profile Image<br> on Gravatar</a></p>' +
                 `    <button onclick="windowSwitcher('none')">Close</button></div>`;
             profileSettings.appendChild(closeContent);
             window.appendChild(profileSettings);
-        break;
+            break;
 
         // Creating a new project window.
         case 'new_project':
@@ -874,16 +1353,16 @@ function windowSwitcher(targetWindow, options){
                 '<p>Make this project Private or Public:</p>' +
                 '<input class="input-radio" type="radio" checked="checked" name="access"  id="private" value="Private">' +
                 '<label for="private">Private</label><br>' +
-                '<input class="input-radio" type="radio" name="access" id="public" value="Public">'+
+                '<input class="input-radio" type="radio" name="access" id="public" value="Public">' +
                 '<label for="public">Public</label><br>' +
                 // '<div class="r ac"> <p>Project Color: </p>'+
-                '<input id="color" style="margin-left: 4px; margin-top: 4px;" value="#9b55a3" type="color" hidden></div> '+
+                '<input id="color" style="margin-left: 4px; margin-top: 4px;" value="#9b55a3" type="color" hidden></div> ' +
                 '<div class="r jc"><button >Create</button>' +
                 `<button onclick="windowSwitcher('none')">Cancel</button></div>` +
                 '</form>';
             window.appendChild(contentBlock);
-            document.getElementById('create_project').addEventListener('submit',(e) => {
-                createProject(document.getElementById('project').value, document.getElementById('desc').value, document.querySelector('input[name="access"]:checked').value,document.getElementById('color').value, currentUid);
+            document.getElementById('create_project').addEventListener('submit', (e) => {
+                createProject(document.getElementById('project').value, document.getElementById('desc').value, document.querySelector('input[name="access"]:checked').value, document.getElementById('color').value, currentUid);
                 getProjects(currentUid);
                 e.preventDefault();    //stop form from submitting
             });
@@ -903,14 +1382,81 @@ function windowSwitcher(targetWindow, options){
                 `<button onclick="windowSwitcher('none')">Cancel</button></div>` +
                 '</form>';
             window.appendChild(newVariableContentBlock);
-            document.getElementById('new_variable').addEventListener('submit',(e) => {
+            document.getElementById('new_variable').addEventListener('submit', (e) => {
                 createVariable(document.getElementById('project').value, currentUid);
                 getProjects(currentUid);
                 e.preventDefault();    //stop form from submitting
             });
-        break;
+            break;
     }
 }
+
+function gaugeHideVariableName() {
+    if (document.getElementById('gauge_variable_hide').checked) {
+        document.getElementById('variable_title').classList.add('dn');
+        document.getElementById('gauge_variable_hide').value = "off";
+    } else {
+        document.getElementById('variable_title').classList.remove('dn');
+        document.getElementById('gauge_variable_hide').value = "on";
+    }
+}
+
+function gaugeSettingsTitle() {
+    document.getElementById('gauge_title').innerText = document.getElementById('gauge_title_input').value;
+}
+
+function variableSettings() {
+    document.getElementById('variable_title').innerText = document.getElementById('variable_title_input').value;
+    console.log('123123', let = newValue = document.getElementById('variable_title_input').value, currentProjectData);
+    document.getElementById('value').innerText = currentProjectData['variables'][newValue];
+
+}
+
+function unitSettings(i) {
+    document.getElementById('units').innerText = i.value;
+}
+
+function minSettings(i) {
+    document.getElementById('gauge_min_value').innerText = i.value;
+}
+
+function maxSettings(i) {
+    document.getElementById('gauge_max_value').innerText = i.value;
+}
+
+function gaugeColorSettings(i, n) {
+    console.log(document.getElementById(`gauge_color_${n}`));
+    document.getElementById(`gauge_color_${n}`).style.fill = i.value;
+}
+
+function newGaugeWidget() {
+    addWidget(currentUid, currentProject, {
+        type: 'gauge',
+        hide: `${document.getElementById('gauge_variable_hide').checked}`,
+        variable: `${document.getElementById('variable_title_input').value}`,
+        units: `${document.getElementById('units').innerText}`,
+        title: `${document.getElementById('gauge_title').innerText}`,
+        color1: `${document.getElementById('color1').value}`,
+        color2: `${document.getElementById('color2').value}`,
+        color3: `${document.getElementById('color3').value}`,
+        color4: `${document.getElementById('color4').value}`,
+        color5: `${document.getElementById('color5').value}`,
+        color6: `${document.getElementById('color6').value}`,
+        min: parseInt(document.getElementById('gauge_min_value').innerText),
+        max: parseInt(document.getElementById('gauge_max_value').innerText)
+    });
+}
+
+function newDataWidget() {
+    addWidget(currentUid, currentProject, {
+        type: 'data',
+        hide: `${document.getElementById('gauge_variable_hide').checked}`,
+        variable: `${document.getElementById('variable_title_input').value}`,
+        units: `${document.getElementById('units').innerText}`,
+        title: `${document.getElementById('gauge_title').innerText}`,
+    });
+}
+
 
 /*
     Get Projects
@@ -961,6 +1507,16 @@ function createProject(name, desc, access, color, uid){
     ws.send(JSON.stringify(project));
 }
 
+function addWidget(uid, project, options){
+    let widget = {
+        uid: uid,
+        project: project,
+        cmd : "ADD_WIDGET",
+        options : options
+    };
+    ws.send(JSON.stringify(widget));
+}
+
 
 function messageProcessor(message, callback) {
 
@@ -987,7 +1543,6 @@ function messageProcessor(message, callback) {
             case 'GET_PROJECTS':
                 try{
                     let projects = message['results'];
-
                     if(currentView === 'projectSingle' && !edit){
                         function findProject(p){
                             return p.id === currentProject;
@@ -1002,7 +1557,7 @@ function messageProcessor(message, callback) {
                 }
             break;
 
-            // Server sends back a the data foa a users project.
+            // Server sends back a the data for a users project.
             case 'GET_PROJECT':
                 try{
                     message = message['results'][0];
@@ -1017,11 +1572,11 @@ function messageProcessor(message, callback) {
             case 'ERASE_CHART_CB':
             case 'NEW_VARIABLE_CB':
             case 'SET_VARIABLE_CB':
-                console.log("Message: ", message);
+                console.log("Message: ", message, currentView);
                 if(currentView === 'dashboard'){
                     getProjects(currentUid);
                 }
-                else if(currentView === 'projectSingle'){
+                else if(currentView === 'project'){
                     if(message.hasOwnProperty('error')){
                         windowError('new_variable', message['error']);
                         return;
@@ -1031,7 +1586,16 @@ function messageProcessor(message, callback) {
                 }
 
                 break;
-            
+
+            case 'ADD_WIDGET':
+                if(message.hasOwnProperty('error')){
+                    windowError('window_content_block',message['error']);
+                    return;
+                }
+                getProject(currentUid, currentId);
+                windowSwitcher('none');
+                break;
+
             case 'SET_VARIABLE':
                 if(message.hasOwnProperty('error')){
                     return;
@@ -1044,7 +1608,7 @@ function messageProcessor(message, callback) {
             case 'CREATE_PROJECT':
                 console.log("Project msg: ", message);
                 if(message.hasOwnProperty('error')){
-                    console.log(message['error'])
+                    console.log(message['error']);
                     windowError('create_project',message['error']);
                     return;
                 }
@@ -1156,54 +1720,175 @@ function projectSearch() {
 }
 
 
+let currentProjectData ;
+// Populate the content of a project.
 function paintProject(data){
+    currentProjectData = data;
+    switch (projectTab) {
+        case 'dashboard':
+            paintDashboardTab(data);
+            break;
+        case 'variables':
+            paintVariableTab(data);
+            break;
+        case 'charts':
+            paintChartsTab(data);
+            break;
+        case 'settings':
+            paintSettingsTab(data);
+            break;
+        default:
+            paintDashboardTab(data);
+            break;
+    }
 
-    let project = document.getElementById('project_projectSection');
+}
+
+
+
+// Dashboard Tab.
+function paintDashboardTab(data){
+    let dashboard = document.getElementById('project_section_dashboard');
     currentProject = data.id;
-    project.classList = 'w100 c ac jc';
-    project.style = {
+    currentKey = data.key;
+    dashboard.classList = 'w100 r ac jc';
+    dashboard.style = {
         height: "100%",
-        overflow: "visible"
+        overflow: "visible",
+        flexWrap: 'wrap'
     };
-    project.innerHTML = `
-                    <div style="" class="w100 c ac">
-                    <h1 style="" class="m0">${data.name}</h1>
-                    <h3 style="">${data.description}</h3>
-                    <div class="r js ac">
-                        <h4>Project Key: </h4>
-                         <input class="ml2" id="project_key" value="${data.key}" disabled>
-                    </div>
-                   
-                    <div style="height: 100%; overflow: visible;" class="w100 rxl ac jc">
+    dashboard.style.flexWrap = "wrap";
+    dashboard.innerHTML = '';
+    if(data.hasOwnProperty('widgets')){
+        let widgets = data['widgets'];
+        for(let widget in widgets){
+            if(widgets.hasOwnProperty(widget)){
+                console.log(widgets[widget]);
+                let div = document.createElement('button');
+                div.style.height = "275px";
+                div.style.minWidth = "300px";
+                div.style.maxWidth = "300px";
+                // div.style.background = projects[project]['color'];
+                div.style.background = "rgba(3, 4, 8, 0.46)";
+                // div.id = projects[project]['id'];
+                div.borderRadius = "10px";
+                let mod = 0.7;
+                console.log('DATA        ', data);
+                if(widgets[widget].type === 'gauge'){
+                    let display= "inherit";
+                    let mb = 'margin-bottom: 5px; margin-top: 8px;';
+                    console.log(widgets[widget]['hide']);
+                    if(widgets[widget]['hide'] === 'true'){
+                        display = "none";
+                        mb = '';
+                    }
+
+                    let range = Math.abs(widgets[widget].min) +  Math.abs(widgets[widget].max);
+                    let tic = 270/range;
+                    console.log(tic);
+                    let angle = Math.floor(tic * data['variables'][widgets[widget].variable]);
+                    console.log(angle);
+                    if(angle >  135) angle = 135;
+                    if(angle <  -135) angle = -135;
+
+                    div.innerHTML =
+                    `<h2 style="${mb}" id="h2Widget">${widgets[widget].title}</h2>` +
+                    `<h3 style="font-size:14px; display:${display};" class="m0 mb3 p0" id="widgetVariable">${widgets[widget].variable}</h3>` +
+                    `<svg height="${200*mod}" width="${200*mod}">` +
+                        `<circle cx= "${100*mod}" cy= "${100*mod}" r="${5*mod}" fill="#ffffff"/>` +
+                        `<path fill="${widgets[widget].color1}" d="M${29.29*mod},${170.71*mod}           A ${100*mod} ${100*mod} 0 0 1 ${0*mod} ${102.5*mod}                 L ${20*mod} ${102.5*mod}               A ${80*mod} ${80*mod} 0 0 0 ${43.432*mod} ${156.568*mod}"/>` +
+                        `<path fill="${widgets[widget].color2}" d="M${0*mod},${97.5*mod}                 A ${100*mod} ${100*mod} 0 0 1 ${27.592735*mod} ${31.12827*mod}      L ${41.6915*mod} ${45.227*mod}         A ${80*mod} ${80*mod} 0 0 0 ${20*mod} ${97.5*mod} "/>`+
+                        `<path fill="${widgets[widget].color3}" d="M${31.05709*mod}, ${27.521555*mod}    A ${100*mod} ${100*mod} 0 0 1 ${97.5*mod} ${0*mod}                  L ${97.5*mod} ${20*mod}                A ${80*mod} ${80*mod} 0 0 0 ${45.226855*mod} ${41.6915*mod}"/>` +
+                        `<path fill="${widgets[widget].color4}" d="M${102.5*mod},${0*mod}                A ${100*mod} ${100*mod} 0 0 1 ${168.94291*mod} ${27.521555*mod}     L ${154.773145*mod} ${41.6915*mod}     A ${80*mod} ${80*mod} 0 0 0 ${102.5*mod} ${20*mod}"/>` +
+                        `<path fill="${widgets[widget].color5}" d="M${172.407265*mod},${31.12827*mod}    A ${100*mod} ${100*mod} 0 0 1 ${200*mod} ${97.5*mod}                L ${180*mod} ${97.5*mod}               A ${80*mod} ${80*mod} 0 0 0 ${158.3085*mod} ${45.227*mod}"/>` +
+                        `<path fill="${widgets[widget].color6}" d="M${200*mod},${102.5*mod}              A ${100*mod} ${100*mod} 0 0 1 ${170.71*mod} ${170.71*mod}           L ${156.568*mod} ${156.568*mod}        A ${80*mod} ${80*mod} 0 0 0 ${180*mod} ${102.5*mod}"/>` +
+                        `<path style="transform: rotate(${angle}deg); transform-origin: ${100*mod}px ${100*mod}px;" fill="#707070" d="M${95*mod},${110*mod} L ${105*mod} ${110*mod} L ${102*mod} ${95*mod} L ${100*mod} ${3*mod} L ${98*mod} ${95*mod}"/>`+
+                    '</svg>' +
+                    '<div style="transform: translateY(-25px);" class="r ac jc">' +
+                        `<h2 id="gauge_min_value" style="width: 140px; font-size: 16px;" class="m0 mr5 r ac jc" >${widgets[widget].min}</h2>` +
+                        `<h2 id="gauge_max_value" style="width: 140px; font-size: 16px;" class="m0 ml5 r ac jc" >${widgets[widget].max}</h2>` +
+                    '</div>'+
+                    '<div style="transform: translateY(-40px);" class="r ac jc">'+
+                        `<h1>${data['variables'][widgets[widget].variable]}${widgets[widget].units}</h1>` +
+                    '</div>';
+                }
+
+                dashboard.appendChild(div);
+
+            }
+
+        }
+    }
+}
+
+// Variables Tab.
+function paintVariableTab(data){
+
+    let project = document.getElementById('project_section_variables');
+        currentProject = data.id;
+        currentKey = data.key;
+        project.classList = 'w100 c ac jc';
+        project.style = {
+            height: "100%",
+            overflow: "visible"
+        };
+        project.innerHTML = `
+        <div style="" class="w100 c ac">
+ 
+            <div style="height: 100%; overflow: visible;" class="w100 rxl ac jc">
                         <div id="variables" class="m1 variables c jfs ac w100xl"> 
-                            <h3 class="mb0">Variables <button class="fa fa-plus" onclick="windowSwitcher('new_variable')"></button><button onclick="editVariables()" style="padding: 8px 30px;" class="m0 p0 fa fa-pencil-alt" id = "var_button" onclick=""></button></h3>
+                            <h3 class="mb2 w100" style="text-align: center;">Variables </h3>
+                            <div class="r afe jfs">
+                                <button class="fa fa-plus" onclick="windowSwitcher('new_variable')"></button>
+                                <button onclick="editVariables()" style="padding: 8px 30px;" class="m0 p0 fa fa-pencil-alt" id = "var_button" onclick=""></button>
+                             </div>
                             <!--<div class="r jc ac">-->
                                 <!--<i class="mr1 fa fa-search"></i>-->
                                 <!--<input type="search" id="variable-search">-->
                             <!--</div>-->
                         </div>
-                        <div id="charts" class="m1 charts c jfs ac w100xl">
-                            <h3 class="mb0">Charts</h3>
-                            <p style="background: #9b55a3; color: white; border-radius: 20px; padding: 5px 40px;">No Charts 🙁</p>
-                            <!--<div class="r jc ac">-->
-                                <!--<i class="mr1 fa fa-search"></i>-->
-                                <!--<input type="search" id="variable-search">-->
-                            <!--</div>-->
-                        </div>
+                      
                     </div>
                 </div>`;
+        // project.innerHTML = `
+        //                 <div style="" class="w100 c ac">
+        //                 <h1 style="" class="m0">${data.name}</h1>
+        //                 <h3 style="">${data.description}</h3>
+        //                 <div class="r js ac">
+        //                     <h4>Project Key: </h4>
+        //                      <input class="ml2" id="project_key" value="${data.key}" disabled>
+        //                 </div>
+        //
+        //                 <div style="height: 100%; overflow: visible;" class="w100 rxl ac jc">
+        //                     <div id="variables" class="m1 variables c jfs ac w100xl">
+        //                         <h3 class="mb0">Variables <button class="fa fa-plus" onclick="windowSwitcher('new_variable')"></button><button onclick="editVariables()" style="padding: 8px 30px;" class="m0 p0 fa fa-pencil-alt" id = "var_button" onclick=""></button></h3>
+        //                         <!--<div class="r jc ac">-->
+        //                             <!--<i class="mr1 fa fa-search"></i>-->
+        //                             <!--<input type="search" id="variable-search">-->
+        //                         <!--</div>-->
+        //                     </div>
+        //                     <div id="charts" class="m1 charts c jfs ac w100xl">
+        //                         <h3 class="mb0">Charts</h3>
+        //                         <p style="background: #9b55a3; color: white; border-radius: 20px; padding: 5px 40px;">No Charts 🙁</p>
+        //                         <!--<div class="r jc ac">-->
+        //                             <!--<i class="mr1 fa fa-search"></i>-->
+        //                             <!--<input type="search" id="variable-search">-->
+        //                         <!--</div>-->
+        //                     </div>
+        //                 </div>
+        //             </div>`;
 
-    document.getElementById('content_box').appendChild(project);
-    let variables = document.getElementById('variables');
-    let vars = data.variables;
-    let count = 0;
-    for(var variable in vars){
-        if(variable === 'default'){
-            continue;
-        }
-        let newVar = document.createElement('div');
-        newVar.id = "var_" + variable;
-        newVar.innerHTML = `
+        document.getElementById('content_box').appendChild(project);
+        let variables = document.getElementById('variables');
+        let vars = data.variables;
+        let count = 0;
+        for(var variable in vars){
+            if(variable === 'default'){
+                continue;
+            }
+            let newVar = document.createElement('div');
+            newVar.id = "var_" + variable;
+            newVar.innerHTML = `
 
                 <div class="variable r mt4" id = "${variable}">
                     <input disabled class="name-input" style ="min-width: 100px; max-width: 100px;"id = "var_name_${variable}" value ="${variable}">
@@ -1212,22 +1897,36 @@ function paintProject(data){
                     <button class="m0 p0 fa fa-times dn" id = "var_button_2_${variable}" ></button>
                     <p style = 'position: absolute; padding-top: 18px; padding-left: 20px; background: transparent; font-size: 14px; color: red;' id = "var_error_${variable}" class="dn">Error: Unable To Set Variable.</p>
                 </div>`;
-        variables.appendChild(newVar);
-        count ++;
-    }
-    if(!count){
-        let noVars = document.createElement('div');
-        noVars.innerHTML = `<p style="background: #9b55a3; color: white; border-radius: 20px; padding: 5px 40px;">No Variables 🙁</p>`;
-        variables.appendChild(noVars);
-        return;
-    }
-    // console.log('Project Options: ', message);
+            variables.appendChild(newVar);
+            count ++;
+        }
+        if(!count){
+            let noVars = document.createElement('div');
+            noVars.innerHTML = `<p style="background: #9b55a3; color: white; border-radius: 20px; padding: 5px 40px;">No Variables 🙁</p>`;
+            variables.appendChild(noVars);
+            return;
+        }
+
+
+
+
+
 }
+
+// Charts Tab.
+function paintChartsTab(data){
+
+}
+
+// Settings Tab.
+function paintSettingsTab(data){
+
+}
+
 
 function createVariable(name, uid){
     console.log('Creating Var: ', name, uid);
-    let ele = document.getElementById('project_key');
-    ws.send(`{"cmd":"CREATE_VARIABLE", "key":"${ele.value}", "name":"${name}", "onSuccess":"console.log('Success!'); windowSwitcher('none'); getProjects(currentUid);", "onError":""}`);
+    ws.send(`{"cmd":"CREATE_VARIABLE", "key":"${currentKey}", "name":"${name}", "onSuccess":"console.log('Success!'); windowSwitcher('none'); getProject(currentUid, currentId);", "onError":""}`);
 }
 
 
@@ -1357,7 +2056,30 @@ function variableSave(id, old, key){
     input.setAttribute('disabled', true);
     let name = document.getElementById(`var_name_${id.substring('var_button_'.length)}`);
     let errorElement = `var_error_${id.substring('var_button_'.length)}`;
-    ws.send(`{"cmd":"SET_VARIABLE", "key":"${key}", "name":"${name.value}", "value":"${input.value}", "onSuccess":"console.log('Success!'); var editButton = document.getElementById('${id}'); editButton.classList.add('fa-pencil-alt', 'done'); editButton.setAttribute('onClick', \`variableEdit(id, '${key}')\`); edit=false; editButton.classList.remove('fa-check', 'loader-small', 'double-button-load'); editButton.style.color = '#9b55a3'; editButton.classList.remove('double-button'); ", "onError":"var editButton = document.getElementById('${id}'); editButton.classList.add('fa-pencil-alt'); editButton.classList.remove('fa-check', 'loader-small', 'double-button-load'); editButton.style.color = '#9b55a3'; editButton.classList.remove('double-button'); let error = document.getElementById('${errorElement}'); error.classList.remove('dn'); error.innerText = 'Error: ' + errorMessage;"}`);
+    let  value = input.value;
+     console.log("here: ", value.substring(0,2));
+    function filterInt(value) {
+        if (/^[-+]|(\d)|[.]$/.test(value)) {
+            return Number(value);
+        } else {
+            return NaN;
+        }
+    }
+    if(value.substring(0,2) === "@@"){
+
+        if(!isNaN(filterInt(value.substring(2, value.length)))){
+            value = `\"${value.substring(2, value.length)}\"`;
+        }
+        else{
+            value = `\"${input.value}\"`;
+        }
+    }else{
+        if(isNaN(filterInt(value))){
+            value = `\"${input.value}\"`;
+        }
+    }
+
+    ws.send(`{"cmd":"SET_VARIABLE", "key":"${key}", "name":"${name.value}", "value":${value}, "onSuccess":"console.log('Success!'); var editButton = document.getElementById('${id}'); editButton.classList.add('fa-pencil-alt', 'done'); editButton.setAttribute('onClick', \`variableEdit(id, '${key}')\`); edit=false; editButton.classList.remove('fa-check', 'loader-small', 'double-button-load'); editButton.style.color = '#9b55a3'; editButton.classList.remove('double-button'); ", "onError":"var editButton = document.getElementById('${id}'); editButton.classList.add('fa-pencil-alt'); editButton.classList.remove('fa-check', 'loader-small', 'double-button-load'); editButton.style.color = '#9b55a3'; editButton.classList.remove('double-button'); let error = document.getElementById('${errorElement}'); error.classList.remove('dn'); error.innerText = 'Error: ' + errorMessage;"}`);
     setTimeout(()=>{
         if(!editButton.classList.contains('done')) {
             editButton.classList.add('fa-pencil-alt');

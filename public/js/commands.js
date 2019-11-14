@@ -48,3 +48,13 @@ function createProject(name, desc, access, color, uid) {
   };
   ws.send(JSON.stringify(project));
 }
+
+function addWidget(uid, project, options) {
+  var widget = {
+    uid: uid,
+    project: project,
+    cmd: "ADD_WIDGET",
+    options: options
+  };
+  ws.send(JSON.stringify(widget));
+}

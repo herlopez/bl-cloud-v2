@@ -25,7 +25,6 @@ function messageProcessor(message, callback) {
             case 'GET_PROJECTS':
                 try{
                     let projects = message['results'];
-
                     if(currentView === 'projectSingle' && !edit){
                         function findProject(p){
                             return p.id === currentProject;
@@ -40,7 +39,7 @@ function messageProcessor(message, callback) {
                 }
             break;
 
-            // Server sends back a the data foa a users project.
+            // Server sends back a the data for a users project.
             case 'GET_PROJECT':
                 try{
                     message = message['results'][0];
@@ -55,11 +54,11 @@ function messageProcessor(message, callback) {
             case 'ERASE_CHART_CB':
             case 'NEW_VARIABLE_CB':
             case 'SET_VARIABLE_CB':
-                console.log("Message: ", message);
+                console.log("Message: ", message, currentView);
                 if(currentView === 'dashboard'){
                     getProjects(currentUid);
                 }
-                else if(currentView === 'projectSingle'){
+                else if(currentView === 'project'){
                     if(message.hasOwnProperty('error')){
                         windowError('new_variable', message['error']);
                         return;
@@ -69,7 +68,16 @@ function messageProcessor(message, callback) {
                 }
 
                 break;
-            
+
+            case 'ADD_WIDGET':
+                if(message.hasOwnProperty('error')){
+                    windowError('window_content_block',message['error']);
+                    return;
+                }
+                getProject(currentUid, currentId);
+                windowSwitcher('none');
+                break;
+
             case 'SET_VARIABLE':
                 if(message.hasOwnProperty('error')){
                     return;
@@ -82,7 +90,7 @@ function messageProcessor(message, callback) {
             case 'CREATE_PROJECT':
                 console.log("Project msg: ", message);
                 if(message.hasOwnProperty('error')){
-                    console.log(message['error'])
+                    console.log(message['error']);
                     windowError('create_project',message['error']);
                     return;
                 }

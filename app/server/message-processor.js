@@ -3,7 +3,6 @@ let webSocket = require('./command_processors/websocket-commands.js');
 let http = require('./command_processors/http-commands.js');
 
 function msgProcessor(message, callback, type, server) {
-
     // Try to parse the JSON string sent.
     try {
         message = JSON.parse(JSON.stringify(message));

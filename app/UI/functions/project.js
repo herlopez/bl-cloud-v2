@@ -1,51 +1,172 @@
+let currentProjectData ;
+// Populate the content of a project.
 function paintProject(data){
+    currentProjectData = data;
+    switch (projectTab) {
+        case 'dashboard':
+            paintDashboardTab(data);
+            break;
+        case 'variables':
+            paintVariableTab(data);
+            break;
+        case 'charts':
+            paintChartsTab(data);
+            break;
+        case 'settings':
+            paintSettingsTab(data);
+            break;
+        default:
+            paintDashboardTab(data);
+            break;
+    }
 
-    let project = document.getElementById('project_projectSection');
+}
+
+
+
+// Dashboard Tab.
+function paintDashboardTab(data){
+    let dashboard = document.getElementById('project_section_dashboard');
     currentProject = data.id;
-    project.classList = 'w100 c ac jc';
-    project.style = {
+    currentKey = data.key;
+    dashboard.classList = 'w100 r ac jc';
+    dashboard.style = {
         height: "100%",
-        overflow: "visible"
+        overflow: "visible",
+        flexWrap: 'wrap'
     };
-    project.innerHTML = `
-                    <div style="" class="w100 c ac">
-                    <h1 style="" class="m0">${data.name}</h1>
-                    <h3 style="">${data.description}</h3>
-                    <div class="r js ac">
-                        <h4>Project Key: </h4>
-                         <input class="ml2" id="project_key" value="${data.key}" disabled>
-                    </div>
-                   
-                    <div style="height: 100%; overflow: visible;" class="w100 rxl ac jc">
+    dashboard.style.flexWrap = "wrap";
+    dashboard.innerHTML = '';
+    if(data.hasOwnProperty('widgets')){
+        let widgets = data['widgets'];
+        for(let widget in widgets){
+            if(widgets.hasOwnProperty(widget)){
+                console.log(widgets[widget]);
+                let div = document.createElement('button');
+                div.style.height = "275px";
+                div.style.minWidth = "300px";
+                div.style.maxWidth = "300px";
+                // div.style.background = projects[project]['color'];
+                div.style.background = "rgba(3, 4, 8, 0.46)";
+                // div.id = projects[project]['id'];
+                div.borderRadius = "10px";
+                let mod = 0.7;
+                console.log('DATA        ', data);
+                if(widgets[widget].type === 'gauge'){
+                    let display= "inherit";
+                    let mb = 'margin-bottom: 5px; margin-top: 8px;';
+                    console.log(widgets[widget]['hide']);
+                    if(widgets[widget]['hide'] === 'true'){
+                        display = "none";
+                        mb = '';
+                    }
+
+                    let range = Math.abs(widgets[widget].min) +  Math.abs(widgets[widget].max);
+                    let tic = 270/range;
+                    console.log(tic);
+                    let angle = Math.floor(tic * data['variables'][widgets[widget].variable]);
+                    console.log(angle);
+                    if(angle >  135) angle = 135;
+                    if(angle <  -135) angle = -135;
+
+                    div.innerHTML =
+                    `<h2 style="${mb}" id="h2Widget">${widgets[widget].title}</h2>` +
+                    `<h3 style="font-size:14px; display:${display};" class="m0 mb3 p0" id="widgetVariable">${widgets[widget].variable}</h3>` +
+                    `<svg height="${200*mod}" width="${200*mod}">` +
+                        `<circle cx= "${100*mod}" cy= "${100*mod}" r="${5*mod}" fill="#ffffff"/>` +
+                        `<path fill="${widgets[widget].color1}" d="M${29.29*mod},${170.71*mod}           A ${100*mod} ${100*mod} 0 0 1 ${0*mod} ${102.5*mod}                 L ${20*mod} ${102.5*mod}               A ${80*mod} ${80*mod} 0 0 0 ${43.432*mod} ${156.568*mod}"/>` +
+                        `<path fill="${widgets[widget].color2}" d="M${0*mod},${97.5*mod}                 A ${100*mod} ${100*mod} 0 0 1 ${27.592735*mod} ${31.12827*mod}      L ${41.6915*mod} ${45.227*mod}         A ${80*mod} ${80*mod} 0 0 0 ${20*mod} ${97.5*mod} "/>`+
+                        `<path fill="${widgets[widget].color3}" d="M${31.05709*mod}, ${27.521555*mod}    A ${100*mod} ${100*mod} 0 0 1 ${97.5*mod} ${0*mod}                  L ${97.5*mod} ${20*mod}                A ${80*mod} ${80*mod} 0 0 0 ${45.226855*mod} ${41.6915*mod}"/>` +
+                        `<path fill="${widgets[widget].color4}" d="M${102.5*mod},${0*mod}                A ${100*mod} ${100*mod} 0 0 1 ${168.94291*mod} ${27.521555*mod}     L ${154.773145*mod} ${41.6915*mod}     A ${80*mod} ${80*mod} 0 0 0 ${102.5*mod} ${20*mod}"/>` +
+                        `<path fill="${widgets[widget].color5}" d="M${172.407265*mod},${31.12827*mod}    A ${100*mod} ${100*mod} 0 0 1 ${200*mod} ${97.5*mod}                L ${180*mod} ${97.5*mod}               A ${80*mod} ${80*mod} 0 0 0 ${158.3085*mod} ${45.227*mod}"/>` +
+                        `<path fill="${widgets[widget].color6}" d="M${200*mod},${102.5*mod}              A ${100*mod} ${100*mod} 0 0 1 ${170.71*mod} ${170.71*mod}           L ${156.568*mod} ${156.568*mod}        A ${80*mod} ${80*mod} 0 0 0 ${180*mod} ${102.5*mod}"/>` +
+                        `<path style="transform: rotate(${angle}deg); transform-origin: ${100*mod}px ${100*mod}px;" fill="#707070" d="M${95*mod},${110*mod} L ${105*mod} ${110*mod} L ${102*mod} ${95*mod} L ${100*mod} ${3*mod} L ${98*mod} ${95*mod}"/>`+
+                    '</svg>' +
+                    '<div style="transform: translateY(-25px);" class="r ac jc">' +
+                        `<h2 id="gauge_min_value" style="width: 140px; font-size: 16px;" class="m0 mr5 r ac jc" >${widgets[widget].min}</h2>` +
+                        `<h2 id="gauge_max_value" style="width: 140px; font-size: 16px;" class="m0 ml5 r ac jc" >${widgets[widget].max}</h2>` +
+                    '</div>'+
+                    '<div style="transform: translateY(-40px);" class="r ac jc">'+
+                        `<h1>${data['variables'][widgets[widget].variable]}${widgets[widget].units}</h1>` +
+                    '</div>';
+                }
+
+                dashboard.appendChild(div);
+
+            }
+
+        }
+    }
+}
+
+// Variables Tab.
+function paintVariableTab(data){
+
+    let project = document.getElementById('project_section_variables');
+        currentProject = data.id;
+        currentKey = data.key;
+        project.classList = 'w100 c ac jc';
+        project.style = {
+            height: "100%",
+            overflow: "visible"
+        };
+        project.innerHTML = `
+        <div style="" class="w100 c ac">
+ 
+            <div style="height: 100%; overflow: visible;" class="w100 rxl ac jc">
                         <div id="variables" class="m1 variables c jfs ac w100xl"> 
-                            <h3 class="mb0">Variables <button class="fa fa-plus" onclick="windowSwitcher('new_variable')"></button><button onclick="editVariables()" style="padding: 8px 30px;" class="m0 p0 fa fa-pencil-alt" id = "var_button" onclick=""></button></h3>
+                            <h3 class="mb2 w100" style="text-align: center;">Variables </h3>
+                            <div class="r afe jfs">
+                                <button class="fa fa-plus" onclick="windowSwitcher('new_variable')"></button>
+                                <button onclick="editVariables()" style="padding: 8px 30px;" class="m0 p0 fa fa-pencil-alt" id = "var_button" onclick=""></button>
+                             </div>
                             <!--<div class="r jc ac">-->
                                 <!--<i class="mr1 fa fa-search"></i>-->
                                 <!--<input type="search" id="variable-search">-->
                             <!--</div>-->
                         </div>
-                        <div id="charts" class="m1 charts c jfs ac w100xl">
-                            <h3 class="mb0">Charts</h3>
-                            <p style="background: #9b55a3; color: white; border-radius: 20px; padding: 5px 40px;">No Charts 🙁</p>
-                            <!--<div class="r jc ac">-->
-                                <!--<i class="mr1 fa fa-search"></i>-->
-                                <!--<input type="search" id="variable-search">-->
-                            <!--</div>-->
-                        </div>
+                      
                     </div>
                 </div>`;
+        // project.innerHTML = `
+        //                 <div style="" class="w100 c ac">
+        //                 <h1 style="" class="m0">${data.name}</h1>
+        //                 <h3 style="">${data.description}</h3>
+        //                 <div class="r js ac">
+        //                     <h4>Project Key: </h4>
+        //                      <input class="ml2" id="project_key" value="${data.key}" disabled>
+        //                 </div>
+        //
+        //                 <div style="height: 100%; overflow: visible;" class="w100 rxl ac jc">
+        //                     <div id="variables" class="m1 variables c jfs ac w100xl">
+        //                         <h3 class="mb0">Variables <button class="fa fa-plus" onclick="windowSwitcher('new_variable')"></button><button onclick="editVariables()" style="padding: 8px 30px;" class="m0 p0 fa fa-pencil-alt" id = "var_button" onclick=""></button></h3>
+        //                         <!--<div class="r jc ac">-->
+        //                             <!--<i class="mr1 fa fa-search"></i>-->
+        //                             <!--<input type="search" id="variable-search">-->
+        //                         <!--</div>-->
+        //                     </div>
+        //                     <div id="charts" class="m1 charts c jfs ac w100xl">
+        //                         <h3 class="mb0">Charts</h3>
+        //                         <p style="background: #9b55a3; color: white; border-radius: 20px; padding: 5px 40px;">No Charts 🙁</p>
+        //                         <!--<div class="r jc ac">-->
+        //                             <!--<i class="mr1 fa fa-search"></i>-->
+        //                             <!--<input type="search" id="variable-search">-->
+        //                         <!--</div>-->
+        //                     </div>
+        //                 </div>
+        //             </div>`;
 
-    document.getElementById('content_box').appendChild(project);
-    let variables = document.getElementById('variables');
-    let vars = data.variables;
-    let count = 0;
-    for(var variable in vars){
-        if(variable === 'default'){
-            continue;
-        }
-        let newVar = document.createElement('div');
-        newVar.id = "var_" + variable;
-        newVar.innerHTML = `
+        document.getElementById('content_box').appendChild(project);
+        let variables = document.getElementById('variables');
+        let vars = data.variables;
+        let count = 0;
+        for(var variable in vars){
+            if(variable === 'default'){
+                continue;
+            }
+            let newVar = document.createElement('div');
+            newVar.id = "var_" + variable;
+            newVar.innerHTML = `
 
                 <div class="variable r mt4" id = "${variable}">
                     <input disabled class="name-input" style ="min-width: 100px; max-width: 100px;"id = "var_name_${variable}" value ="${variable}">
@@ -54,22 +175,36 @@ function paintProject(data){
                     <button class="m0 p0 fa fa-times dn" id = "var_button_2_${variable}" ></button>
                     <p style = 'position: absolute; padding-top: 18px; padding-left: 20px; background: transparent; font-size: 14px; color: red;' id = "var_error_${variable}" class="dn">Error: Unable To Set Variable.</p>
                 </div>`;
-        variables.appendChild(newVar);
-        count ++;
-    }
-    if(!count){
-        let noVars = document.createElement('div');
-        noVars.innerHTML = `<p style="background: #9b55a3; color: white; border-radius: 20px; padding: 5px 40px;">No Variables 🙁</p>`;
-        variables.appendChild(noVars);
-        return;
-    }
-    // console.log('Project Options: ', message);
+            variables.appendChild(newVar);
+            count ++;
+        }
+        if(!count){
+            let noVars = document.createElement('div');
+            noVars.innerHTML = `<p style="background: #9b55a3; color: white; border-radius: 20px; padding: 5px 40px;">No Variables 🙁</p>`;
+            variables.appendChild(noVars);
+            return;
+        }
+
+
+
+
+
 }
+
+// Charts Tab.
+function paintChartsTab(data){
+
+}
+
+// Settings Tab.
+function paintSettingsTab(data){
+
+}
+
 
 function createVariable(name, uid){
     console.log('Creating Var: ', name, uid);
-    let ele = document.getElementById('project_key');
-    ws.send(`{"cmd":"CREATE_VARIABLE", "key":"${ele.value}", "name":"${name}", "onSuccess":"console.log('Success!'); windowSwitcher('none'); getProjects(currentUid);", "onError":""}`);
+    ws.send(`{"cmd":"CREATE_VARIABLE", "key":"${currentKey}", "name":"${name}", "onSuccess":"console.log('Success!'); windowSwitcher('none'); getProject(currentUid, currentId);", "onError":""}`);
 }
 
 
@@ -199,7 +334,30 @@ function variableSave(id, old, key){
     input.setAttribute('disabled', true);
     let name = document.getElementById(`var_name_${id.substring('var_button_'.length)}`);
     let errorElement = `var_error_${id.substring('var_button_'.length)}`;
-    ws.send(`{"cmd":"SET_VARIABLE", "key":"${key}", "name":"${name.value}", "value":"${input.value}", "onSuccess":"console.log('Success!'); var editButton = document.getElementById('${id}'); editButton.classList.add('fa-pencil-alt', 'done'); editButton.setAttribute('onClick', \`variableEdit(id, '${key}')\`); edit=false; editButton.classList.remove('fa-check', 'loader-small', 'double-button-load'); editButton.style.color = '#9b55a3'; editButton.classList.remove('double-button'); ", "onError":"var editButton = document.getElementById('${id}'); editButton.classList.add('fa-pencil-alt'); editButton.classList.remove('fa-check', 'loader-small', 'double-button-load'); editButton.style.color = '#9b55a3'; editButton.classList.remove('double-button'); let error = document.getElementById('${errorElement}'); error.classList.remove('dn'); error.innerText = 'Error: ' + errorMessage;"}`);
+    let  value = input.value;
+     console.log("here: ", value.substring(0,2));
+    function filterInt(value) {
+        if (/^[-+]|(\d)|[.]$/.test(value)) {
+            return Number(value);
+        } else {
+            return NaN;
+        }
+    }
+    if(value.substring(0,2) === "@@"){
+
+        if(!isNaN(filterInt(value.substring(2, value.length)))){
+            value = `\"${value.substring(2, value.length)}\"`;
+        }
+        else{
+            value = `\"${input.value}\"`;
+        }
+    }else{
+        if(isNaN(filterInt(value))){
+            value = `\"${input.value}\"`;
+        }
+    }
+
+    ws.send(`{"cmd":"SET_VARIABLE", "key":"${key}", "name":"${name.value}", "value":${value}, "onSuccess":"console.log('Success!'); var editButton = document.getElementById('${id}'); editButton.classList.add('fa-pencil-alt', 'done'); editButton.setAttribute('onClick', \`variableEdit(id, '${key}')\`); edit=false; editButton.classList.remove('fa-check', 'loader-small', 'double-button-load'); editButton.style.color = '#9b55a3'; editButton.classList.remove('double-button'); ", "onError":"var editButton = document.getElementById('${id}'); editButton.classList.add('fa-pencil-alt'); editButton.classList.remove('fa-check', 'loader-small', 'double-button-load'); editButton.style.color = '#9b55a3'; editButton.classList.remove('double-button'); let error = document.getElementById('${errorElement}'); error.classList.remove('dn'); error.innerText = 'Error: ' + errorMessage;"}`);
     setTimeout(()=>{
         if(!editButton.classList.contains('done')) {
             editButton.classList.add('fa-pencil-alt');
