@@ -1558,7 +1558,7 @@ function newProjectKey(uid, id){
         id: id
     }));
 }
-s
+
 /*
     Get Project
     @Desc: Tell the server to send over the information for a specific project.
