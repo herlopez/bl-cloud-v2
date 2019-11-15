@@ -1,10 +1,19 @@
 #page_front {
+    background-repeat: no-repeat;
+    background-image: url('../images/Space-Background-sm.jpg');
+    background-attachment: fixed;
+    background-size: cover;
     //transform: translateY(-4rem);
     font-family: "Futura", sans-serif;
-    
+    background-color: transparent;
+
+    #bkg{
+        width: 475px;
+    }
     h1 {
-        color: white;
-        font-size: 3.5rem;
+        color: #F3B820;
+        margin:1rem !important;
+        font-size: 5rem;
         text-align: center;
     }
 
@@ -27,36 +36,37 @@
         }
     }
     #f1 {
-        background-size: cover;
+        background-color:transparent;
         width: 100%;
-        height: 700px;
-        background-repeat: no-repeat;
-        background-image: url('../images/Space-Background-sm.jpg');
-        box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3);
+        height: auto;
+        
+        // box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3);
         .rxl{
             max-width: 80%;
             padding: 0 20%;
         }
     }
     #f2, #f4{
-        box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3);
-
+        // box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3);
+        background-color: rgba(0, 0, 0, 0);
         h2 {
-            color: black;
-            font-size: 3rem;
+            color: white;
+            font-size: 2rem;
         }
         h3{
-            font-size: 2.5rem;
+            font-size: 1.5rem;
             text-align: left;
+            color:white;
         }
         p{
             text-align: left;
-            font-size: 2rem
+            font-size: 1rem;
+            color: white;
         }
         button{
             width: fit-content;
-            height: 50px;
-            font-size: 1.7rem ;
+            height: 44px;
+            font-size: 1.5rem ;
             margin-top: 20px;
         }
     }
@@ -73,15 +83,15 @@
         }
     }
     #f3{
-        box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3);
-        background: #1C1C25;
+        // box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3);
+        background: transparent;
         h2 {
             color: white;
-            font-size: 3rem;
+            font-size: 2rem;
         }
         h3{
             color: white;
-            font-size: 3em;
+            font-size: 1.5em;
             text-align: left;
         }
         a{
@@ -91,12 +101,12 @@
         p{
             color: white;
             text-align: left;
-            font-size: 2rem
+            font-size: 1rem
         }
         button{
             width: fit-content;
-            height: 50px;
-            font-size: 1.7rem ;
+            height: 44px;
+            font-size: 1.5rem ;
             margin-top: 20px;
             a{
                 color: #fff;
@@ -105,7 +115,7 @@
     }
     #f4{
         p{
-            font-size: 1.6rem;
+            font-size: 1rem;
         }
         img{
             max-width: 200px;
@@ -118,7 +128,7 @@
     }
     footer{
         //height: 400px;
-        background: #1C1C25;
+        background: rgba(0,0,0,0.4);
         h2, h3, h4, p{
             color: white;
         }
@@ -134,9 +144,9 @@
         background-size: cover !important;
     }
     #f2{
-        h3,h2,p{
-            //text-align: center !important;
-        }
+        // h3,h2,p{
+        //     //text-align: center !important;
+        // }
         img{
             max-width: 100%;
         }
