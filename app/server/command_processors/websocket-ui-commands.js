@@ -4,6 +4,10 @@ function commandProcessor(message, callback, server){
     console.log('Command: ',message['cmd']);
     switch (message['cmd']) {
 
+        case 'NEW_KEY':
+            callback.send(JSON.stringify(databaseFunctions.newProjectKey(message, callback.uid)));
+        break;
+
         case 'ADD_WIDGET':
             let addWidget = databaseFunctions.addWidget(message, callback.uid);
             addWidget['cmd'] = 'ADD_WIDGET';

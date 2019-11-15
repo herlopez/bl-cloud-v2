@@ -517,6 +517,15 @@ function projectMenuSwitcher(target){
         case 'settings':
             projectTab = 'settings';
             el.classList.add('dashboard-button-select');
+            let projectSettings = document.createElement('section');
+            projectSettings.id = "project_section_settings";
+            projectSettings.innerHTML = "<div class=\"loader\"></div>";
+            projectSettings.style.overflow = "scroll";
+            projectSettings.classList.add('r');
+            projectSettings.classList.add('jc');
+            projectSettings.classList.add('ac');
+            contentBox.appendChild(projectSettings);
+            getProject(currentUid, currentId);
             break;
     }
 }
@@ -848,6 +857,20 @@ function windowSwitcher(targetWindow, options) {
             windowHide();
             break;
 
+        case 'newKey':
+            windowShow();
+            let newKeySettings = document.createElement('div');
+            newKeySettings.id = 'window_content_block';
+            newKeySettings.classList.add('c');
+            newKeySettings.classList.add('ac');
+            newKeySettings.classList.add('jc');
+
+            newKeySettings.style.maxWidth = '500px';
+            newKeySettings.innerHTML= "<h2>Are you sure you want to generate a new project key? <u style='color: red;'>All devices</u> using this key will need to have the new key implemented for all the devices connected to this project to continue functioning.</h2>" +
+                `<div class="r ac jc"><button onclick="windowSwitcher('none')">Cancel</button><button onclick ="newProjectKey('${currentUid}', '${currentId}')" style="background: #8c2726;">New Key</button></div>`;
+            window.appendChild(newKeySettings);
+
+            break;
         case 'data':
             windowShow();
 
@@ -1407,7 +1430,7 @@ function gaugeSettingsTitle() {
 
 function variableSettings() {
     document.getElementById('variable_title').innerText = document.getElementById('variable_title_input').value;
-    console.log('123123', let = newValue = document.getElementById('variable_title_input').value, currentProjectData);
+    let newValue = document.getElementById('variable_title_input').value;
     document.getElementById('value').innerText = currentProjectData['variables'][newValue];
 
 }
@@ -1464,26 +1487,10 @@ function newDataWidget() {
     @param: uid - User ID
 */
 function getProjects(uid){
-    let project = {
-        "uid": uid,
-        "cmd" : 'GET_PROJECTS',
-    };
-    ws.send(JSON.stringify(project));
-}
-
-/*
-    Get Project
-    @Desc: Tell the server to send over the information for a specific project.
-    @param: uid - User ID
-    @param id - Project ID
-*/
-function getProject(uid, id){
-    let project = {
-        "uid": uid,
-        "id": id,
-        "cmd": "GET_PROJECT"
-    };
-    ws.send(JSON.stringify(project));
+    ws.send(JSON.stringify({
+        cmd: "GET_PROJECTS",
+        uid: uid,
+    }));
 }
 
 /*
@@ -1496,25 +1503,90 @@ function getProject(uid, id){
     @param uid - User id of the user.
 */
 function createProject(name, desc, access, color, uid){
-    let project = {
+    ws.send(JSON.stringify({
+        cmd: "CREATE_PROJECT",
         uid: uid,
-        cmd : "CREATE_PROJECT",
         name : name,
         color: color,
         description : desc,
         access: access
-    };
-    ws.send(JSON.stringify(project));
+    }));
 }
 
+/*
+    Set Project Title
+    @Desc: Change the title of the project.
+    @param: uid - User ID
+    @param id - Project ID
+    @param title - New titlee.
+*/
+function setProjectTitle(title, uid, id){
+    ws.send(JSON.stringify({
+        cmd: "SET_PROJECT_TITLE",
+        uid: uid,
+        id: id,
+        title: title
+    }));
+}
+
+/*
+    Set Project Description
+    @Desc: Change the description of the project.
+    @param: uid - User ID
+    @param id - Project ID
+    @param title - New Description.
+*/
+function setProjectDesc(desc, uid, id){
+    ws.send(JSON.stringify({
+        cmd: "SET_PROJECT_DESC",
+        uid: uid,
+        id: id,
+        desc: desc
+    }));
+}
+
+/*
+    New Project Key
+    @Desc: Tell the server to send over a new project key.
+    @param: uid - User ID
+    @param id - Project ID
+*/
+function newProjectKey(uid, id){
+    ws.send(JSON.stringify({
+        cmd: "NEW_KEY",
+        uid: uid,
+        id: id
+    }));
+}
+s
+/*
+    Get Project
+    @Desc: Tell the server to send over the information for a specific project.
+    @param: uid - User ID
+    @param id - Project ID
+*/
+function getProject(uid, id){
+    ws.send(JSON.stringify({
+        cmd: "GET_PROJECT",
+        uid: uid,
+        id: id
+    }));
+}
+
+/*
+    Add Widget
+    @Desc: Add a new widget to a project.
+    @param: uid - User ID
+    @param id - Project ID
+    @param options - Widget Options
+*/
 function addWidget(uid, project, options){
-    let widget = {
+    ws.send(JSON.stringify({
+        cmd: "ADD_WIDGET",
         uid: uid,
         project: project,
-        cmd : "ADD_WIDGET",
         options : options
-    };
-    ws.send(JSON.stringify(widget));
+    }));
 }
 
 
@@ -1586,7 +1658,14 @@ function messageProcessor(message, callback) {
                 }
 
                 break;
-
+            case 'NEW_KEY':
+                if(message.hasOwnProperty('error')){
+                    windowError('window_content_block',message['error']);
+                    return;
+                }
+                getProject(currentUid, currentId);
+                windowSwitcher('none');
+                break;
             case 'ADD_WIDGET':
                 if(message.hasOwnProperty('error')){
                     windowError('window_content_block',message['error']);
@@ -1774,9 +1853,9 @@ function paintDashboardTab(data){
                 div.borderRadius = "10px";
                 let mod = 0.7;
                 console.log('DATA        ', data);
+                let display= "inherit";
+                let mb = 'margin-bottom: 5px; margin-top: 8px;';
                 if(widgets[widget].type === 'gauge'){
-                    let display= "inherit";
-                    let mb = 'margin-bottom: 5px; margin-top: 8px;';
                     console.log(widgets[widget]['hide']);
                     if(widgets[widget]['hide'] === 'true'){
                         display = "none";
@@ -1812,7 +1891,22 @@ function paintDashboardTab(data){
                         `<h1>${data['variables'][widgets[widget].variable]}${widgets[widget].units}</h1>` +
                     '</div>';
                 }
+                if(widgets[widget].type === 'data') {
 
+                    if(widgets[widget]['hide'] === 'true'){
+                        display = "none";
+                        mb = '';
+                    }
+
+                    div.innerHTML =
+                    `<h2 style="${mb}" id="h2Widget">${widgets[widget].title}</h2>` +
+                    `<h3 style="font-size:14px; display:${display};" id="widgetVariable" class="m0 mb3 p0">${widgets[widget].variable}</h3>` +
+                    '<div style="" class="r ac jc">' +
+                    `<h1 style = " font-size: 5rem; margin: 0; margin-bottom: 1rem;" >${data['variables'][widgets[widget].variable]}</h1>` +
+                    `<h1 style = " font-size: 5rem; margin: 0; margin-bottom: 1rem;"  class="m0">${widgets[widget].units}</h1>` +
+                    '</div>' +
+                    `<div>${new Date().toLocaleString()}</div>`;
+                }
                 dashboard.appendChild(div);
 
             }
@@ -1920,7 +2014,40 @@ function paintChartsTab(data){
 
 // Settings Tab.
 function paintSettingsTab(data){
-
+    let contentBox = document.getElementById('content_box');
+    console.log(contentBox);
+    contentBox.innerHTML =
+        `<div class="p3 m0 ml1 c">` +
+        `<h2 style='color: White;'>Your Project Key: </h2>` +
+        `<div class="r ac">`+
+                `<input class="m0 ml3"  disabled value=" ${currentProjectData.key}">` +
+                `<button onclick="copyToClip('${currentProjectData.key}')" style="color: white;" class="fa fa-copy mx2"></button>` +
+                `<button onclick="windowSwitcher('newKey')" title= "Generate New Project Key" style="color: white; background: #8c2726;" class="fa fa-redo mx0"></button>` +
+                `<p id="clip_message" style="transition: all 4s ease-in-out; color:orange; transform: translateY(20px); " class="ml3 dn">Copied to Clipboard!</p>` +
+            `</div>`+
+        `<div class="c">` +
+                `<div id="project_settings_project_name"><h2 style='color: White;'>Project Name: </h2></div>` +
+                `<div id="project_settings_project_desc"><h2 style='color: White;'>Project Description: </h2></div>` +
+            "</div>" +
+        `</div>`;
+        let projectTitleInput = input(document.getElementById('project_settings_project_name'), {
+            type: 'text',
+            class: 'ml3',
+            edit: true,
+            value: currentProjectData.name,
+            onSave: async function(){
+                setProjectTitle(projectTitleInput, currentUid, currentId);
+            }
+        });
+    let projectTitleDesc = input(document.getElementById('project_settings_project_desc'), {
+        type: 'text',
+        class: 'ml3',
+        edit: true,
+        value: currentProjectData.description,
+        onSave: async function(){
+            setProjectDesc(projectTitleDesc, currentUid, currentId);
+        }
+    })
 }
 
 
@@ -1968,9 +2095,48 @@ function updateProject(project, id){
 
 
 
+function copyToClip(val){
+    let clipMessage = document.getElementById('clip_message');
+    copyTextToClipboard(val);
+    clipMessage.classList.remove('dn');
+    clipMessage.style.transform = "translateY(0px)";
+    setTimeout(()=>{
+        clipMessage.classList.add('dn');
+        clipMessage.style.transform = "translateY(20px)";
+    }, 2000);
 
+}
 
+function fallbackCopyTextToClipboard(text) {
+    var textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.position="fixed";  //avoid scrolling to bottom
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
 
+    try {
+        var successful = document.execCommand('copy');
+        var msg = successful ? 'successful' : 'unsuccessful';
+        console.log('Fallback: Copying text command was ' + msg);
+    } catch (err) {
+        console.error('Fallback: Oops, unable to copy', err);
+    }
+
+    document.body.removeChild(textArea);
+}
+function copyTextToClipboard(text) {
+
+    if (!navigator.clipboard) {
+        fallbackCopyTextToClipboard(text);
+        return;
+    }
+    navigator.clipboard.writeText(text).then(function() {
+        console.log('Async: Copying to clipboard was successful!');
+    }, function(err) {
+        console.error('Async: Could not copy text: ', err);
+    });
+}
 function editVariables(){
     if(currentView === 'projectSingle'){
         let variables = document.getElementById('variables');

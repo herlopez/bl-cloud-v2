@@ -26,6 +26,20 @@ function windowSwitcher(targetWindow, options) {
             windowHide();
             break;
 
+        case 'newKey':
+            windowShow();
+            let newKeySettings = document.createElement('div');
+            newKeySettings.id = 'window_content_block';
+            newKeySettings.classList.add('c');
+            newKeySettings.classList.add('ac');
+            newKeySettings.classList.add('jc');
+
+            newKeySettings.style.maxWidth = '500px';
+            newKeySettings.innerHTML= "<h2>Are you sure you want to generate a new project key? <u style='color: red;'>All devices</u> using this key will need to have the new key implemented for all the devices connected to this project to continue functioning.</h2>" +
+                `<div class="r ac jc"><button onclick="windowSwitcher('none')">Cancel</button><button onclick ="newProjectKey('${currentUid}', '${currentId}')" style="background: #8c2726;">New Key</button></div>`;
+            window.appendChild(newKeySettings);
+
+            break;
         case 'data':
             windowShow();
 
@@ -585,7 +599,7 @@ function gaugeSettingsTitle() {
 
 function variableSettings() {
     document.getElementById('variable_title').innerText = document.getElementById('variable_title_input').value;
-    console.log('123123', let = newValue = document.getElementById('variable_title_input').value, currentProjectData);
+    let newValue = document.getElementById('variable_title_input').value;
     document.getElementById('value').innerText = currentProjectData['variables'][newValue];
 
 }

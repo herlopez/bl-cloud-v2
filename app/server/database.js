@@ -90,12 +90,23 @@ function addWidget(msg, uid){
     if(!msg['options'].hasOwnProperty('variable') ) return{error: "No variable was provided."};
     if(!project.hasOwnProperty('variables'))  return{error: "Error! Project has no variables."};
     if(msg['options']['variable'] === '') return{error: "Please Select a Variable."};
-
     if(!project['variables'].hasOwnProperty(msg['options']['variable'])) return{error: "Error! Project does not have this variable."};
-    if(typeof project['variables'][msg['options']['variable']] !== 'number') return{error:"Please select a variable that is an integer."};
-    if(!msg['options'].hasOwnProperty('min') || !msg['options'].hasOwnProperty('max')) return{error:"Error! No Min/Max options provided."};
-    if(typeof msg['options']['min'] !== 'number'|| typeof msg['options']['max'] !== 'number') return{error:"Please provide a valid min and max value."};
-    if(msg['options']['min'] >= msg['options']['max']) return{error:"Min value must be inferior to max value."}
+
+
+    if(!msg['options'].hasOwnProperty('type')) return {error: 'Error! Widget Type not Defined.'};
+    switch (msg['options']['type']) {
+        case 'gauge':
+            if(typeof project['variables'][msg['options']['variable']] !== 'number') return{error:"Please select a variable that is an integer."};
+            if(!msg['options'].hasOwnProperty('min') || !msg['options'].hasOwnProperty('max')) return{error:"Error! No Min/Max options provided."};
+            if(typeof msg['options']['min'] !== 'number'|| typeof msg['options']['max'] !== 'number') return{error:"Please provide a valid min and max value."};
+            if(msg['options']['min'] >= msg['options']['max']) return{error:"Min value must be inferior to max value."};
+            break;
+        case 'data':
+            break;
+        default:
+            return {error: 'Error! Invalid Widget Type'}
+    }
+
     let time = new Date().getTime();
     msg['options']['id'] =  uniqid(time);
     // if(!project['options'].hasOwnProperty(msg[''])  return{error: "Error! Project has no variables."};
@@ -116,6 +127,22 @@ function addWidget(msg, uid){
 
 }
 
+
+
+function newProjectKey(msg, uid){
+    if(msg.hasOwnProperty('id')){
+        let results = PROJECTS.findOne({id: msg.id});
+        console.log("res:", results);
+        results.key = uniqid();
+        PROJECTS.update(results);
+        console.log("RESUKLTSL ", results);
+        return {
+            results:  results.key,
+            cmd: "NEW_KEY"
+        }
+    }
+    return{error: 'Project Not Found.', cmd: 'NEW_KEY'};
+}
 function createProject(msg, uid) {
 
     // Make sure the variable name is in proper format.
@@ -701,6 +728,7 @@ module.exports = {
     getChartData,
     notifyClients,
     addWidget,
+    newProjectKey,
     createVariable,
     getChartType,
 };

@@ -68,7 +68,14 @@ function messageProcessor(message, callback) {
                 }
 
                 break;
-
+            case 'NEW_KEY':
+                if(message.hasOwnProperty('error')){
+                    windowError('window_content_block',message['error']);
+                    return;
+                }
+                getProject(currentUid, currentId);
+                windowSwitcher('none');
+                break;
             case 'ADD_WIDGET':
                 if(message.hasOwnProperty('error')){
                     windowError('window_content_block',message['error']);

@@ -137,6 +137,15 @@ function projectMenuSwitcher(target){
         case 'settings':
             projectTab = 'settings';
             el.classList.add('dashboard-button-select');
+            let projectSettings = document.createElement('section');
+            projectSettings.id = "project_section_settings";
+            projectSettings.innerHTML = "<div class=\"loader\"></div>";
+            projectSettings.style.overflow = "scroll";
+            projectSettings.classList.add('r');
+            projectSettings.classList.add('jc');
+            projectSettings.classList.add('ac');
+            contentBox.appendChild(projectSettings);
+            getProject(currentUid, currentId);
             break;
     }
 }

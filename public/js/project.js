@@ -1,3 +1,7 @@
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 var currentProjectData; // Populate the content of a project.
 
 function paintProject(data) {
@@ -56,10 +60,10 @@ function paintDashboardTab(data) {
         div.borderRadius = "10px";
         var mod = 0.7;
         console.log('DATA        ', data);
+        var display = "inherit";
+        var mb = 'margin-bottom: 5px; margin-top: 8px;';
 
         if (widgets[widget].type === 'gauge') {
-          var display = "inherit";
-          var mb = 'margin-bottom: 5px; margin-top: 8px;';
           console.log(widgets[widget]['hide']);
 
           if (widgets[widget]['hide'] === 'true') {
@@ -75,6 +79,15 @@ function paintDashboardTab(data) {
           if (angle > 135) angle = 135;
           if (angle < -135) angle = -135;
           div.innerHTML = "<h2 style=\"".concat(mb, "\" id=\"h2Widget\">").concat(widgets[widget].title, "</h2>") + "<h3 style=\"font-size:14px; display:".concat(display, ";\" class=\"m0 mb3 p0\" id=\"widgetVariable\">").concat(widgets[widget].variable, "</h3>") + "<svg height=\"".concat(200 * mod, "\" width=\"").concat(200 * mod, "\">") + "<circle cx= \"".concat(100 * mod, "\" cy= \"").concat(100 * mod, "\" r=\"").concat(5 * mod, "\" fill=\"#ffffff\"/>") + "<path fill=\"".concat(widgets[widget].color1, "\" d=\"M").concat(29.29 * mod, ",").concat(170.71 * mod, "           A ").concat(100 * mod, " ").concat(100 * mod, " 0 0 1 ").concat(0 * mod, " ").concat(102.5 * mod, "                 L ").concat(20 * mod, " ").concat(102.5 * mod, "               A ").concat(80 * mod, " ").concat(80 * mod, " 0 0 0 ").concat(43.432 * mod, " ").concat(156.568 * mod, "\"/>") + "<path fill=\"".concat(widgets[widget].color2, "\" d=\"M").concat(0 * mod, ",").concat(97.5 * mod, "                 A ").concat(100 * mod, " ").concat(100 * mod, " 0 0 1 ").concat(27.592735 * mod, " ").concat(31.12827 * mod, "      L ").concat(41.6915 * mod, " ").concat(45.227 * mod, "         A ").concat(80 * mod, " ").concat(80 * mod, " 0 0 0 ").concat(20 * mod, " ").concat(97.5 * mod, " \"/>") + "<path fill=\"".concat(widgets[widget].color3, "\" d=\"M").concat(31.05709 * mod, ", ").concat(27.521555 * mod, "    A ").concat(100 * mod, " ").concat(100 * mod, " 0 0 1 ").concat(97.5 * mod, " ").concat(0 * mod, "                  L ").concat(97.5 * mod, " ").concat(20 * mod, "                A ").concat(80 * mod, " ").concat(80 * mod, " 0 0 0 ").concat(45.226855 * mod, " ").concat(41.6915 * mod, "\"/>") + "<path fill=\"".concat(widgets[widget].color4, "\" d=\"M").concat(102.5 * mod, ",").concat(0 * mod, "                A ").concat(100 * mod, " ").concat(100 * mod, " 0 0 1 ").concat(168.94291 * mod, " ").concat(27.521555 * mod, "     L ").concat(154.773145 * mod, " ").concat(41.6915 * mod, "     A ").concat(80 * mod, " ").concat(80 * mod, " 0 0 0 ").concat(102.5 * mod, " ").concat(20 * mod, "\"/>") + "<path fill=\"".concat(widgets[widget].color5, "\" d=\"M").concat(172.407265 * mod, ",").concat(31.12827 * mod, "    A ").concat(100 * mod, " ").concat(100 * mod, " 0 0 1 ").concat(200 * mod, " ").concat(97.5 * mod, "                L ").concat(180 * mod, " ").concat(97.5 * mod, "               A ").concat(80 * mod, " ").concat(80 * mod, " 0 0 0 ").concat(158.3085 * mod, " ").concat(45.227 * mod, "\"/>") + "<path fill=\"".concat(widgets[widget].color6, "\" d=\"M").concat(200 * mod, ",").concat(102.5 * mod, "              A ").concat(100 * mod, " ").concat(100 * mod, " 0 0 1 ").concat(170.71 * mod, " ").concat(170.71 * mod, "           L ").concat(156.568 * mod, " ").concat(156.568 * mod, "        A ").concat(80 * mod, " ").concat(80 * mod, " 0 0 0 ").concat(180 * mod, " ").concat(102.5 * mod, "\"/>") + "<path style=\"transform: rotate(".concat(angle, "deg); transform-origin: ").concat(100 * mod, "px ").concat(100 * mod, "px;\" fill=\"#707070\" d=\"M").concat(95 * mod, ",").concat(110 * mod, " L ").concat(105 * mod, " ").concat(110 * mod, " L ").concat(102 * mod, " ").concat(95 * mod, " L ").concat(100 * mod, " ").concat(3 * mod, " L ").concat(98 * mod, " ").concat(95 * mod, "\"/>") + '</svg>' + '<div style="transform: translateY(-25px);" class="r ac jc">' + "<h2 id=\"gauge_min_value\" style=\"width: 140px; font-size: 16px;\" class=\"m0 mr5 r ac jc\" >".concat(widgets[widget].min, "</h2>") + "<h2 id=\"gauge_max_value\" style=\"width: 140px; font-size: 16px;\" class=\"m0 ml5 r ac jc\" >".concat(widgets[widget].max, "</h2>") + '</div>' + '<div style="transform: translateY(-40px);" class="r ac jc">' + "<h1>".concat(data['variables'][widgets[widget].variable]).concat(widgets[widget].units, "</h1>") + '</div>';
+        }
+
+        if (widgets[widget].type === 'data') {
+          if (widgets[widget]['hide'] === 'true') {
+            display = "none";
+            mb = '';
+          }
+
+          div.innerHTML = "<h2 style=\"".concat(mb, "\" id=\"h2Widget\">").concat(widgets[widget].title, "</h2>") + "<h3 style=\"font-size:14px; display:".concat(display, ";\" id=\"widgetVariable\" class=\"m0 mb3 p0\">").concat(widgets[widget].variable, "</h3>") + '<div style="" class="r ac jc">' + "<h1 style = \" font-size: 5rem; margin: 0; margin-bottom: 1rem;\" >".concat(data['variables'][widgets[widget].variable], "</h1>") + "<h1 style = \" font-size: 5rem; margin: 0; margin-bottom: 1rem;\"  class=\"m0\">".concat(widgets[widget].units, "</h1>") + '</div>' + "<div>".concat(new Date().toLocaleString(), "</div>");
         }
 
         dashboard.appendChild(div);
@@ -150,7 +163,71 @@ function paintVariableTab(data) {
 function paintChartsTab(data) {} // Settings Tab.
 
 
-function paintSettingsTab(data) {}
+function paintSettingsTab(data) {
+  var contentBox = document.getElementById('content_box');
+  console.log(contentBox);
+  contentBox.innerHTML = "<div class=\"p3 m0 ml1 c\">" + "<h2 style='color: White;'>Your Project Key: </h2>" + "<div class=\"r ac\">" + "<input class=\"m0 ml3\"  disabled value=\" ".concat(currentProjectData.key, "\">") + "<button onclick=\"copyToClip('".concat(currentProjectData.key, "')\" style=\"color: white;\" class=\"fa fa-copy mx2\"></button>") + "<button onclick=\"windowSwitcher('newKey')\" title= \"Generate New Project Key\" style=\"color: white; background: #8c2726;\" class=\"fa fa-redo mx0\"></button>" + "<p id=\"clip_message\" style=\"transition: all 4s ease-in-out; color:orange; transform: translateY(20px); \" class=\"ml3 dn\">Copied to Clipboard!</p>" + "</div>" + "<div class=\"c\">" + "<div id=\"project_settings_project_name\"><h2 style='color: White;'>Project Name: </h2></div>" + "<div id=\"project_settings_project_desc\"><h2 style='color: White;'>Project Description: </h2></div>" + "</div>" + "</div>";
+  var projectTitleInput = input(document.getElementById('project_settings_project_name'), {
+    type: 'text',
+    "class": 'ml3',
+    edit: true,
+    value: currentProjectData.name,
+    onSave: function () {
+      var _onSave = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee() {
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                setProjectTitle(projectTitleInput, currentUid, currentId);
+
+              case 1:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      function onSave() {
+        return _onSave.apply(this, arguments);
+      }
+
+      return onSave;
+    }()
+  });
+  var projectTitleDesc = input(document.getElementById('project_settings_project_desc'), {
+    type: 'text',
+    "class": 'ml3',
+    edit: true,
+    value: currentProjectData.description,
+    onSave: function () {
+      var _onSave2 = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee2() {
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                setProjectDesc(projectTitleDesc, currentUid, currentId);
+
+              case 1:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }));
+
+      function onSave() {
+        return _onSave2.apply(this, arguments);
+      }
+
+      return onSave;
+    }()
+  });
+}
 
 function createVariable(name, uid) {
   console.log('Creating Var: ', name, uid);
@@ -179,6 +256,50 @@ function updateProject(project, id) {
     newVar.innerHTML = "\n                <div class=\"variable r mt4\" id = \"".concat(variable, "\">\n                    <input disabled class=\"name-input\" style =\"min-width: 100px; max-width: 100px;\"id = \"var_name_").concat(variable, "\" value =\"").concat(variable, "\">\n                    <input id = \"var_input_").concat(variable, "\" disabled class=\"m0 p0 w100 pl2\" value=\"").concat(vars[variable], "\">\n                    <button class=\"m0 p0 fa fa-pencil-alt\" id = \"var_button_").concat(variable, "\" onclick=\"variableEdit(id, '").concat(project.key, "')\"></button>\n                    <button class=\"m0 p0 fa fa-times dn\" id = \"var_button_2_").concat(variable, "\" ></button>\n                    <p style = 'position: absolute; padding-top: 18px; padding-left: 20px; background: transparent; font-size: 14px; color: red;' id = \"var_error_").concat(variable, "\" class=\"dn\">Error: Unable To Set Variable.</p>\n                </div>");
     variables.appendChild(newVar);
   }
+}
+
+function copyToClip(val) {
+  var clipMessage = document.getElementById('clip_message');
+  copyTextToClipboard(val);
+  clipMessage.classList.remove('dn');
+  clipMessage.style.transform = "translateY(0px)";
+  setTimeout(function () {
+    clipMessage.classList.add('dn');
+    clipMessage.style.transform = "translateY(20px)";
+  }, 2000);
+}
+
+function fallbackCopyTextToClipboard(text) {
+  var textArea = document.createElement("textarea");
+  textArea.value = text;
+  textArea.style.position = "fixed"; //avoid scrolling to bottom
+
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+
+  try {
+    var successful = document.execCommand('copy');
+    var msg = successful ? 'successful' : 'unsuccessful';
+    console.log('Fallback: Copying text command was ' + msg);
+  } catch (err) {
+    console.error('Fallback: Oops, unable to copy', err);
+  }
+
+  document.body.removeChild(textArea);
+}
+
+function copyTextToClipboard(text) {
+  if (!navigator.clipboard) {
+    fallbackCopyTextToClipboard(text);
+    return;
+  }
+
+  navigator.clipboard.writeText(text).then(function () {
+    console.log('Async: Copying to clipboard was successful!');
+  }, function (err) {
+    console.error('Async: Could not copy text: ', err);
+  });
 }
 
 function editVariables() {
