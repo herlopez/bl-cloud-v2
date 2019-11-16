@@ -1353,8 +1353,8 @@ body {
   background-size: cover;
   font-family: "Futura", sans-serif;
   background-color: transparent; }
-  #page_front #bkg {
-    width: 475px; }
+  #page_front #beaker {
+    height: 100px; }
   #page_front h1 {
     color: #F3B820;
     margin: 1rem !important;
@@ -1382,8 +1382,7 @@ body {
   #page_front #f2, #page_front #f4 {
     background-color: rgba(0, 0, 0, 0); }
     #page_front #f2 h2, #page_front #f4 h2 {
-      color: white;
-      font-size: 2rem; }
+      color: white; }
     #page_front #f2 h3, #page_front #f4 h3 {
       font-size: 1.5rem;
       text-align: left;
@@ -1408,8 +1407,7 @@ body {
   #page_front #f3 {
     background: transparent; }
     #page_front #f3 h2 {
-      color: white;
-      font-size: 2rem; }
+      color: white; }
     #page_front #f3 h3 {
       color: white;
       font-size: 1.5em;
@@ -1439,6 +1437,10 @@ body {
     padding: 0 10%; }
   #page_front footer {
     background: rgba(0, 0, 0, 0.5); }
+    #page_front footer h3 {
+      font-size: 1rem; }
+    #page_front footer p {
+      font-size: 0.75rem; }
     #page_front footer h2, #page_front footer h3, #page_front footer h4, #page_front footer p {
       color: white; }
 
@@ -1447,13 +1449,99 @@ body {
     height: 600px !important;
     background-size: cover !important; }
     #f1 h1 {
-      margin-top: 1rem !important; }
-  #f2 img {
-    max-width: 100%; } }
+      font-size: 3rem; }
+    #f1 #beaker {
+      height: 66px; }
+    #f1 button {
+      margin-top: 2rem !important;
+      font-size: 1rem !important;
+      width: 30% !important;
+      height: 40px !important; }
+    #f1 .heart_img {
+      min-width: 300px !important; }
+  #f2 {
+    padding: 0 !important; }
+    #f2 img {
+      max-width: 60% !important; }
+    #f2 #f2_content {
+      -webkit-box-orient: vertical !important;
+      -webkit-box-direction: reverse !important;
+      -ms-flex-direction: column-reverse !important;
+      flex-direction: column-reverse !important;
+      max-width: 80%;
+      margin-top: 2rem; }
+    #f2 button {
+      margin-top: 2rem !important;
+      font-size: 1rem;
+      width: 100% !important;
+      height: 40px !important; }
+  #f3 button {
+    margin-top: 2rem !important;
+    font-size: 1rem;
+    width: 100% !important;
+    height: 40px !important; }
+  #f3 img {
+    width: 240px;
+    height: 350px; }
+  #f4 .rxl {
+    max-width: 100% !important;
+    -webkit-box-orient: horizontal !important;
+    -webkit-box-direction: normal !important;
+    -ms-flex-direction: row !important;
+    flex-direction: row !important; }
+  #f4 .f4_content {
+    max-width: 33% !important; }
+    #f4 .f4_content img {
+      width: 150px;
+      height: 150px; }
+  footer #footer_width {
+    width: 100% !important; }
+  footer .footer_content {
+    padding: 1rem !important; }
+    footer .footer_content img {
+      margin: 0; }
+    footer .footer_content #footer_cta {
+      max-width: 33%;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+      flex-direction: column; }
+  input {
+    width: 50% !important; }
+  button {
+    width: 75% !important;
+    margin: 0 !important; } }
 
-@media only screen and (max-width: 1260px) {
-  footer .c, footer #app #profile_window, #app footer #profile_window, footer #window #window_content_block #update_profile, #window #window_content_block footer #update_profile {
-    width: 80%; } }
+@media only screen and (max-width: 400px) {
+  #front_page img {
+    min-width: 240px; }
+  #front_page button a {
+    font-size: 1rem !important; }
+  #f1 button {
+    width: 80% !important; }
+  #f1 h2 {
+    font-size: 1.5rem !important; }
+  #f4 .rxl {
+    max-width: 100% !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-box-direction: normal !important;
+    -ms-flex-direction: column !important;
+    flex-direction: column !important; }
+  #f4 .f4_content {
+    max-width: 100% !important; }
+    #f4 .f4_content img {
+      width: 150px;
+      height: 150px; }
+  footer #footer_width {
+    max-width: 100% !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-box-direction: normal !important;
+    -ms-flex-direction: column !important;
+    flex-direction: column !important;
+    -ms-flex-line-pack: center !important;
+    align-content: center !important; }
+    footer #footer_width .footer_content {
+      width: 80% !important; } }
 
 .component-input input {
   padding-right: 60px; }
