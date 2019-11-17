@@ -11,7 +11,9 @@ Step 3: npm i (this is a shortcut for npm install)
 
 Step 4: gulp
 
-Step 5: nodemon index.js
+Step 5: In a new terminal: nodemon index.js
+
+Step 6: In your browser: http://localhost:3000/
 
 -------------------------------------
 
