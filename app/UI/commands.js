@@ -37,15 +37,22 @@ function createProject(name, desc, access, color, uid){
     @param id - Project ID
     @param title - New titlee.
 */
-function setProjectTitle(title, uid, id){
+function setProjectName(name, uid, id){
     ws.send(JSON.stringify({
-        cmd: "SET_PROJECT_TITLE",
+        cmd: "SET_PROJECT_NAME",
         uid: uid,
         id: id,
-        title: title
+        name: name
     }));
 }
 
+function deleteProject(uid, id){
+    ws.send(JSON.stringify({
+        cmd: "DELETE_PROJECT",
+        uid: uid,
+        id: id,
+    }));
+}
 /*
     Set Project Description
     @Desc: Change the description of the project.
@@ -53,12 +60,12 @@ function setProjectTitle(title, uid, id){
     @param id - Project ID
     @param title - New Description.
 */
-function setProjectDesc(desc, uid, id){
+function setProjectDescription(description, uid, id){
     ws.send(JSON.stringify({
-        cmd: "SET_PROJECT_DESC",
+        cmd: "SET_PROJECT_DESCRIPTION",
         uid: uid,
         id: id,
-        desc: desc
+        description: description
     }));
 }
 

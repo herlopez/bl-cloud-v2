@@ -127,7 +127,41 @@ function addWidget(msg, uid){
 
 }
 
-
+function setProjectName(msg, uid){
+    console.log('NAME.....', msg);
+    let nameCheck = tools.verifyString(msg, 'name', 200, 4);
+    if (tools.hasError(nameCheck)){
+        nameCheck['cmd'] = 'SET_PROJECT_NAME';
+        return nameCheck;
+    }
+    if(msg.hasOwnProperty('id')){
+        let results = PROJECTS.findOne({id: msg.id});
+        results.name = msg['name'];
+        PROJECTS.update(results);
+        return {
+            results:  results.key,
+            cmd: "SET_PROJECT_NAME"
+        }
+    }
+    return{error: 'Project Not Found.', cmd: 'SET_PROJECT_NAME'};
+}
+function setProjectDescription(msg, uid){
+    let descCheck = tools.verifyString(msg, 'description', 200, 1);
+    if (tools.hasError(descCheck)){
+        descCheck['cmd'] = 'SET_PROJECT_DESCRIPTION';
+        return descCheck;
+    }
+    if(msg.hasOwnProperty('id')){
+        let results = PROJECTS.findOne({id: msg.id});
+        results.description = msg['description'];
+        PROJECTS.update(results);
+        return {
+            results:  results.desc,
+            cmd: "SET_PROJECT_DESCRIPTION"
+        }
+    }
+    return{error: 'Project Not Found.', cmd: 'SET_PROJECT_DESCRIPTION'};
+}
 
 function newProjectKey(msg, uid){
     if(msg.hasOwnProperty('id')){
@@ -193,7 +227,18 @@ function createProject(msg, uid) {
     return {cmd:"CREATE_PROJECT", result:project};
 }
 
+function deleteProject(msg, uid){
+    if(msg.hasOwnProperty('id')){
+        let results = PROJECTS.findOne({id: msg.id});
+        PROJECTS.remove(results);
+        return {
+            results:  results.id,
+            cmd: "DELETE_PROJECT"
+        }
+    }
+    return{error: 'Project Not Found.', cmd: 'DELETE_PROJECT'};
 
+}
 
 
 
@@ -729,6 +774,9 @@ module.exports = {
     notifyClients,
     addWidget,
     newProjectKey,
+    deleteProject,
     createVariable,
+    setProjectName,
+    setProjectDescription,
     getChartType,
 };

@@ -29,6 +29,18 @@ function windowSwitcher(targetWindow, options) {
       windowHide();
       break;
 
+    case 'deleteProject':
+      windowShow();
+      var deleteProjectWindow = document.createElement('div');
+      deleteProjectWindow.id = 'window_content_block';
+      deleteProjectWindow.classList.add('c');
+      deleteProjectWindow.classList.add('ac');
+      deleteProjectWindow.classList.add('jc');
+      deleteProjectWindow.style.maxWidth = '500px';
+      deleteProjectWindow.innerHTML = "<h2 style=\"text-align:center;\">ARE YOU SURE YOU WANT TO <u style='color: red;'>DELETE</u> THIS PROJECT?<br><br> <u style='color: red;'>All data</u> tied to this project will be lost if deleted.</h2>" + "<div class=\"r ac jc\"><button onclick=\"windowSwitcher('none')\">Cancel</button><button onclick =\"deleteProject(currentUid, currentId)\" style=\"background: #8c2726;\">DELETE</button></div>";
+      window.appendChild(deleteProjectWindow);
+      break;
+
     case 'newKey':
       windowShow();
       var newKeySettings = document.createElement('div');
@@ -255,7 +267,7 @@ function windowSwitcher(targetWindow, options) {
         innerText: "Email Address"
       });
       var emailInput = input(profileSettings, {
-        type: 'test',
+        type: 'email',
         edit: true,
         onSaveMessage: "A verification email was sent to your new email address.",
         value: user.email,

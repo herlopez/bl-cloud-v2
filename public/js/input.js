@@ -47,6 +47,8 @@ function input(parentElement) {
   if (!options.hasOwnProperty('required')) options.required = false;
   if (!options.hasOwnProperty('onCancel')) options.onCancel = {};
   if (!options.hasOwnProperty('onSave')) options.onSave = {};
+  if (!options.hasOwnProperty('manualMode')) options.manualMode = false;
+  if (!options.hasOwnProperty('manualClass')) options.manualClass = "none";
   var disabled = "";
   var required = "";
   var autofocus = "off";
@@ -86,6 +88,8 @@ function input(parentElement) {
 
     var editButton = document.createElement('i');
     var closeButton = document.createElement('i');
+    var classWatcher;
+    var popupError;
     closeButton.classList = 'fa fa-times dn';
     editButton.classList = 'fa fa-pencil-alt';
     var errorPopup = document.createElement('div');
@@ -99,8 +103,7 @@ function input(parentElement) {
     _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee() {
-      var timeout, popupError, _popupError;
-
+      var timeout;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
@@ -112,75 +115,122 @@ function input(parentElement) {
 
               oldInputValue = inputTag.value;
               editMode();
-              _context.next = 33;
+              _context.next = 27;
               break;
 
             case 5:
+              console.log("Options", options);
+
               if (!options.hasOwnProperty('onSave')) {
-                _context.next = 32;
+                _context.next = 26;
                 break;
               }
 
               timeout = setTimeout(function () {
                 inputTag.value = oldInputValue;
                 pencilMode();
+                inputContainer.querySelector('p').innerText = "Timeout!";
+                popupError = inputContainer.querySelector('.error-popup');
+                popupError.classList.remove('dn');
+                popupError.querySelector('.fa-times-circle').addEventListener('click', function () {
+                  popupError.classList.add('dn');
+                });
               }, 4000);
-              _context.prev = 7;
+              _context.prev = 8;
               loaderMode();
-              _context.t0 = console;
               _context.next = 12;
               return options.onSave();
 
             case 12:
-              _context.t1 = _context.sent;
+              if (!options.manualClass) {
+                popupError = inputContainer.querySelector('.error-popup');
+                popupError.innerHTML = '<i class="pr3 fa fa-check"></i> <p></p>';
+                popupError.classList.remove('dn');
+                setTimeout(function () {
+                  popupError.innerHTML = '<i class="pr3 fa fa-exclamation"></i> <p></p><i class="fa fa-times-circle">';
+                  popupError.classList.remove('error-popup-success');
+                  popupError.classList.add('dn');
+                }, 3000);
+                popupError.classList.add('error-popup-success');
+                inputContainer.querySelector('p').innerText = 'Success. ' + options.onSaveMessage;
+                pencilMode();
+                clearInterval(timeout);
+                inputTag.classList.remove('done');
+                inputTag.classList.remove('error');
+                clearInterval(classWatcher);
+              } else {
+                classWatcher = setInterval(function () {
+                  console.log(inputTag);
 
-              _context.t0.log.call(_context.t0, 'on save: ', _context.t1);
+                  if (inputTag.classList.contains('done')) {
+                    if (inputTag.classList.contains('error')) {
+                      inputTag.value = oldInputValue;
+                      pencilMode();
+                      inputContainer.querySelector('p').innerText = inputTag.getAttribute('error');
+                      popupError = inputContainer.querySelector('.error-popup');
+                      popupError.classList.remove('dn');
+                      popupError.querySelector('.fa-times-circle').addEventListener('click', function () {
+                        popupError.classList.add('dn');
+                      });
+                      clearInterval(timeout);
+                    } else {
+                      popupError = inputContainer.querySelector('.error-popup');
+                      popupError.innerHTML = '<i class="pr3 fa fa-check"></i> <p></p>';
+                      popupError.classList.remove('dn');
+                      setTimeout(function () {
+                        popupError.innerHTML = '<i class="pr3 fa fa-exclamation"></i> <p></p><i class="fa fa-times-circle">';
+                        popupError.classList.remove('error-popup-success');
+                        popupError.classList.add('dn');
+                      }, 3000);
+                      popupError.classList.add('error-popup-success');
+                      inputContainer.querySelector('p').innerText = 'Success. ' + options.onSaveMessage;
+                      pencilMode();
+                      clearInterval(timeout);
+                    }
 
-              popupError = inputContainer.querySelector('.error-popup');
-              popupError.innerHTML = '<i class="pr3 fa fa-check"></i> <p></p>';
-              popupError.classList.remove('dn');
-              setTimeout(function () {
-                popupError.classList.add('dn');
-              }, 3000);
-              popupError.classList.add('error-popup-success');
-              inputContainer.querySelector('p').innerText = 'Success. ' + options.onSaveMessage;
-              pencilMode();
-              clearInterval(timeout);
-              _context.next = 30;
+                    inputTag.classList.remove('done');
+                    inputTag.classList.remove('error');
+                    clearInterval(classWatcher);
+                  }
+                }, 100);
+              }
+
+              _context.next = 24;
               break;
 
-            case 24:
-              _context.prev = 24;
-              _context.t2 = _context["catch"](7);
+            case 15:
+              _context.prev = 15;
+              _context.t0 = _context["catch"](8);
               inputTag.value = oldInputValue;
               pencilMode();
 
-              if (_context.t2.message !== 'none') {
-                inputContainer.querySelector('p').innerText = _context.t2.message;
-                _popupError = inputContainer.querySelector('.error-popup');
-
-                _popupError.classList.remove('dn');
-
-                _popupError.querySelector('.fa-times-circle').addEventListener('click', function () {
-                  _popupError.classList.add('dn');
+              if (_context.t0.message !== 'none') {
+                inputContainer.querySelector('p').innerText = _context.t0.message;
+                popupError = inputContainer.querySelector('.error-popup');
+                popupError.classList.remove('dn');
+                popupError.querySelector('.fa-times-circle').addEventListener('click', function () {
+                  popupError.classList.add('dn');
                 });
               }
 
               clearInterval(timeout);
+              inputTag.classList.remove('done');
+              inputTag.classList.remove('error');
+              clearInterval(classWatcher);
 
-            case 30:
-              _context.next = 33;
+            case 24:
+              _context.next = 27;
               break;
 
-            case 32:
+            case 26:
               pencilMode();
 
-            case 33:
+            case 27:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee, null, [[7, 24]]);
+      }, _callee, null, [[8, 15]]);
     })));
     closeButton.addEventListener('click', function () {
       pencilMode();

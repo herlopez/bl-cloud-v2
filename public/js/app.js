@@ -33,6 +33,53 @@ function formError(msg) {
 }
 
 
+//
+// class ClassWatcher {
+//
+//     constructor(targetNode, classToWatch, classAddedCallback, classRemovedCallback) {
+//         this.targetNode = targetNode
+//         this.classToWatch = classToWatch
+//         this.classAddedCallback = classAddedCallback
+//         this.classRemovedCallback = classRemovedCallback
+//         this.observer = null
+//         this.lastClassState = targetNode.classList.contains(this.classToWatch)
+//
+//         this.init()
+//     }
+//
+//     init() {
+//         this.observer = new MutationObserver(this.mutationCallback)
+//         this.observe()
+//     }
+//
+//     observe() {
+//         this.observer.observe(this.targetNode, { attributes: true })
+//     }
+//
+//     disconnect() {
+//         this.observer.disconnect()
+//     }
+//
+//     mutationCallback = mutationsList => {
+//         for(let mutation of mutationsList) {
+//             if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+//                 let currentClassState = mutation.target.classList.contains(this.classToWatch)
+//                 if(this.lastClassState !== currentClassState) {
+//                     this.lastClassState = currentClassState
+//                     if(currentClassState) {
+//                         this.classAddedCallback()
+//                     }
+//                     else {
+//                         this.classRemovedCallback()
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
+
+
+
 let ws, wsHandler;
 let currentView, currentProject;
 let currentUid = null;
@@ -663,6 +710,9 @@ function input(parentElement, options = {}){
     if(!options.hasOwnProperty('required')) options.required = false;
     if(!options.hasOwnProperty('onCancel')) options.onCancel = {};
     if(!options.hasOwnProperty('onSave')) options.onSave = {};
+    if(!options.hasOwnProperty('manualMode')) options.manualMode = false;
+    if(!options.hasOwnProperty('manualClass')) options.manualClass = "none";
+
 
 
     let disabled = "";
@@ -682,15 +732,14 @@ function input(parentElement, options = {}){
 
         let editButton = document.createElement('i');
         let closeButton = document.createElement('i');
-
+        let classWatcher;
+        let popupError;
         closeButton.classList = 'fa fa-times dn';
         editButton.classList = 'fa fa-pencil-alt';
         let errorPopup = document.createElement('div');
         errorPopup.classList = "r ac jc dn error-popup px3 py1";
         errorPopup.innerHTML = '<i class="pr3 fa fa-exclamation"></i> <p></p><i class="fa fa-times-circle">';
         inputContainer.appendChild(errorPopup);
-
-
         inputTag.disabled = true;
         let oldInputValue = inputTag.value;
         function loaderMode(){
@@ -723,39 +772,94 @@ function input(parentElement, options = {}){
                 oldInputValue = inputTag.value;
                 editMode();
             } else {
-
+                console.log("Options", options);
                 if (options.hasOwnProperty('onSave')) {
                     let timeout = setTimeout(() => {
                         inputTag.value = oldInputValue;
                         pencilMode();
+                        inputContainer.querySelector('p').innerText = "Timeout!";
+                        popupError = inputContainer.querySelector('.error-popup');
+                        popupError.classList.remove('dn');
+                        popupError.querySelector('.fa-times-circle').addEventListener('click', ()=>{
+                            popupError.classList.add('dn');
+                        });
                     }, 4000);
                     try {
                         loaderMode();
-                        console.log('on save: ', await options.onSave());
-                        let popupError = inputContainer.querySelector('.error-popup');
-                        popupError.innerHTML = '<i class="pr3 fa fa-check"></i> <p></p>';
-                        popupError.classList.remove('dn');
-                        setTimeout(()=>{
-                            popupError.classList.add('dn');
+                        await options.onSave();
 
-                        }, 3000);
-                        popupError.classList.add('error-popup-success');
-                        inputContainer.querySelector('p').innerText = 'Success. ' + options.onSaveMessage;
-                        pencilMode();
-                        clearInterval(timeout);
+                        if(!options.manualClass){
+                            popupError = inputContainer.querySelector('.error-popup');
+                            popupError.innerHTML = '<i class="pr3 fa fa-check"></i> <p></p>';
+                            popupError.classList.remove('dn');
+                            setTimeout(()=>{
+                                popupError.innerHTML = '<i class="pr3 fa fa-exclamation"></i> <p></p><i class="fa fa-times-circle">';
+                                popupError.classList.remove('error-popup-success');
+                                popupError.classList.add('dn');
+                            }, 3000);
+                            popupError.classList.add('error-popup-success');
+                            inputContainer.querySelector('p').innerText = 'Success. ' + options.onSaveMessage;
+                            pencilMode();
+                            clearInterval(timeout);
+                            inputTag.classList.remove('done');
+                            inputTag.classList.remove('error');
+
+                            clearInterval(classWatcher);
+                        }else{
+
+                            classWatcher = setInterval(()=>{
+                                console.log(inputTag);
+                                if(inputTag.classList.contains('done')){
+                                    if(inputTag.classList.contains('error')){
+                                        inputTag.value = oldInputValue;
+                                        pencilMode();
+                                        inputContainer.querySelector('p').innerText = inputTag.getAttribute('error');
+                                        popupError = inputContainer.querySelector('.error-popup');
+                                        popupError.classList.remove('dn');
+                                        popupError.querySelector('.fa-times-circle').addEventListener('click', ()=>{
+                                            popupError.classList.add('dn');
+                                        });
+                                        clearInterval(timeout);
+                                    }
+                                    else{
+                                        popupError = inputContainer.querySelector('.error-popup');
+                                        popupError.innerHTML = '<i class="pr3 fa fa-check"></i> <p></p>';
+                                        popupError.classList.remove('dn');
+                                        setTimeout(()=>{
+                                            popupError.innerHTML = '<i class="pr3 fa fa-exclamation"></i> <p></p><i class="fa fa-times-circle">';
+                                            popupError.classList.remove('error-popup-success');
+                                            popupError.classList.add('dn');
+                                        }, 3000);
+                                        popupError.classList.add('error-popup-success');
+                                        inputContainer.querySelector('p').innerText = 'Success. ' + options.onSaveMessage;
+                                        pencilMode();
+                                        clearInterval(timeout);
+                                    }
+                                    inputTag.classList.remove('done');
+                                    inputTag.classList.remove('error');
+                                    clearInterval(classWatcher);
+                                }
+                            }, 100);
+
+
+                        }
+
 
                     } catch (e) {
                         inputTag.value = oldInputValue;
                         pencilMode();
                         if(e.message !== 'none'){
                         inputContainer.querySelector('p').innerText = e.message;
-                        let popupError = inputContainer.querySelector('.error-popup');
+                        popupError = inputContainer.querySelector('.error-popup');
                         popupError.classList.remove('dn');
                         popupError.querySelector('.fa-times-circle').addEventListener('click', ()=>{
                             popupError.classList.add('dn');
                         });
                         }
                         clearInterval(timeout);
+                        inputTag.classList.remove('done');
+                        inputTag.classList.remove('error');
+                        clearInterval(classWatcher);
                     }
 
 
@@ -856,7 +960,19 @@ function windowSwitcher(targetWindow, options) {
         case 'none':
             windowHide();
             break;
+        case 'deleteProject':
+            windowShow();
+            let deleteProjectWindow = document.createElement('div');
+            deleteProjectWindow.id = 'window_content_block';
+            deleteProjectWindow.classList.add('c');
+            deleteProjectWindow.classList.add('ac');
+            deleteProjectWindow.classList.add('jc');
+            deleteProjectWindow.style.maxWidth = '500px';
+            deleteProjectWindow.innerHTML= "<h2 style=\"text-align:center;\">ARE YOU SURE YOU WANT TO <u style='color: red;'>DELETE</u> THIS PROJECT?<br><br> <u style='color: red;'>All data</u> tied to this project will be lost if deleted.</h2>" +
+                `<div class="r ac jc"><button onclick="windowSwitcher('none')">Cancel</button><button onclick ="deleteProject(currentUid, currentId)" style="background: #8c2726;">DELETE</button></div>`;
+            window.appendChild(deleteProjectWindow);
 
+            break;
         case 'newKey':
             windowShow();
             let newKeySettings = document.createElement('div');
@@ -864,7 +980,6 @@ function windowSwitcher(targetWindow, options) {
             newKeySettings.classList.add('c');
             newKeySettings.classList.add('ac');
             newKeySettings.classList.add('jc');
-
             newKeySettings.style.maxWidth = '500px';
             newKeySettings.innerHTML= "<h2>Are you sure you want to generate a new project key? <u style='color: red;'>All devices</u> using this key will need to have the new key implemented for all the devices connected to this project to continue functioning.</h2>" +
                 `<div class="r ac jc"><button onclick="windowSwitcher('none')">Cancel</button><button onclick ="newProjectKey('${currentUid}', '${currentId}')" style="background: #8c2726;">New Key</button></div>`;
@@ -1303,7 +1418,7 @@ function windowSwitcher(targetWindow, options) {
                 innerText: "Email Address"
             });
             let emailInput = input(profileSettings, {
-                type: 'test',
+                type: 'email',
                 edit: true,
                 onSaveMessage: "A verification email was sent to your new email address.",
                 value: user.email,
@@ -1520,15 +1635,22 @@ function createProject(name, desc, access, color, uid){
     @param id - Project ID
     @param title - New titlee.
 */
-function setProjectTitle(title, uid, id){
+function setProjectName(name, uid, id){
     ws.send(JSON.stringify({
-        cmd: "SET_PROJECT_TITLE",
+        cmd: "SET_PROJECT_NAME",
         uid: uid,
         id: id,
-        title: title
+        name: name
     }));
 }
 
+function deleteProject(uid, id){
+    ws.send(JSON.stringify({
+        cmd: "DELETE_PROJECT",
+        uid: uid,
+        id: id,
+    }));
+}
 /*
     Set Project Description
     @Desc: Change the description of the project.
@@ -1536,12 +1658,12 @@ function setProjectTitle(title, uid, id){
     @param id - Project ID
     @param title - New Description.
 */
-function setProjectDesc(desc, uid, id){
+function setProjectDescription(description, uid, id){
     ws.send(JSON.stringify({
-        cmd: "SET_PROJECT_DESC",
+        cmd: "SET_PROJECT_DESCRIPTION",
         uid: uid,
         id: id,
-        desc: desc
+        description: description
     }));
 }
 
@@ -1606,7 +1728,7 @@ function messageProcessor(message, callback) {
     if(message.hasOwnProperty('cmd')){{
 
         // Print command.
-        console.log("Cmd Received: ", message.cmd);
+        console.log("Cmd Received: ", message.cmd, message);
 
 
         switch (message.cmd) {
@@ -1629,6 +1751,10 @@ function messageProcessor(message, callback) {
                 }
             break;
 
+            case 'DELETE_PROJECT':
+                windowSwitcher('none');
+                viewSwitcher('dashboard');
+            break;
             // Server sends back a the data for a users project.
             case 'GET_PROJECT':
                 try{
@@ -1657,6 +1783,22 @@ function messageProcessor(message, callback) {
                     windowSwitcher('none');
                 }
 
+                break;
+            case 'SET_PROJECT_DESCRIPTION':
+                let targetDesc = document.getElementById('project_settings_project_desc_input');
+                if(message.hasOwnProperty('error')){
+                    targetDesc.classList.add('error');
+                    targetDesc.setAttribute('error', message['error']);
+                }
+                targetDesc.classList.add('done');
+                break;
+            case 'SET_PROJECT_NAME':
+                let targetName = document.getElementById('project_settings_project_name_input');
+                if(message.hasOwnProperty('error')){
+                    targetName.classList.add('error');
+                    targetName.setAttribute('error', message['error']);
+                }
+                targetName.classList.add('done');
                 break;
             case 'NEW_KEY':
                 if(message.hasOwnProperty('error')){
@@ -2017,37 +2159,44 @@ function paintSettingsTab(data){
     let contentBox = document.getElementById('content_box');
     console.log(contentBox);
     contentBox.innerHTML =
-        `<div class="p3 m0 ml1 c">` +
-        `<h2 style='color: White;'>Your Project Key: </h2>` +
-        `<div class="r ac">`+
-                `<input class="m0 ml3"  disabled value=" ${currentProjectData.key}">` +
+        `<div id= "PROJECT_SETTINGS_TAB" class="p3 m0 ml1 c">` +
+            `<h2 style='color: White;'>Your Project Key: </h2>` +
+            `<div class="r ac">`+
+                `<input class="m0"  disabled value=" ${currentProjectData.key}">` +
                 `<button onclick="copyToClip('${currentProjectData.key}')" style="color: white;" class="fa fa-copy mx2"></button>` +
                 `<button onclick="windowSwitcher('newKey')" title= "Generate New Project Key" style="color: white; background: #8c2726;" class="fa fa-redo mx0"></button>` +
                 `<p id="clip_message" style="transition: all 4s ease-in-out; color:orange; transform: translateY(20px); " class="ml3 dn">Copied to Clipboard!</p>` +
             `</div>`+
-        `<div class="c">` +
+            `<div class="c">` +
                 `<div id="project_settings_project_name"><h2 style='color: White;'>Project Name: </h2></div>` +
                 `<div id="project_settings_project_desc"><h2 style='color: White;'>Project Description: </h2></div>` +
             "</div>" +
+            `<div class=\"r ac\">` +
+                `<button onclick="windowSwitcher('deleteProject')" style="background: #8c2726;" class="ml0 mt4">Delete Project</button>` +
+            `</div>` +
         `</div>`;
-        let projectTitleInput = input(document.getElementById('project_settings_project_name'), {
+        let projectName = input(document.getElementById('project_settings_project_name'), {
             type: 'text',
-            class: 'ml3',
             edit: true,
+            id: 'project_settings_project_name_input',
+            onSaveMessage: "The new name has been set.",
             value: currentProjectData.name,
+            manualMode: true,
             onSave: async function(){
-                setProjectTitle(projectTitleInput, currentUid, currentId);
+                setProjectName(projectName.value, currentUid, currentId);
             }
         });
-    let projectTitleDesc = input(document.getElementById('project_settings_project_desc'), {
-        type: 'text',
-        class: 'ml3',
-        edit: true,
-        value: currentProjectData.description,
-        onSave: async function(){
-            setProjectDesc(projectTitleDesc, currentUid, currentId);
-        }
-    })
+        let projectDescription = input(document.getElementById('project_settings_project_desc'), {
+            type: 'text',
+            edit: true,
+            id: 'project_settings_project_desc_input',
+            onSaveMessage: "The new description has been set.",
+            value: currentProjectData.description,
+            manualMode: true,
+            onSave: async function(){
+                setProjectDescription(projectDescription.value, currentUid, currentId);
+            }
+        })
 }
 
 

@@ -2,8 +2,8 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="b3ad5917-b5c7-4d40-b51d-0a35fe54e08e" name="Brilliant Labs" url="http://204.13.51.124">
-        <fileTransfer host="204.13.51.124" port="22" rootFolder="/home/ubuntu" accessType="SFTP" authAgent="true">
+      <webServer id="b3ad5917-b5c7-4d40-b51d-0a35fe54e08e" name="Brilliant Labs" url="http://cloud.brilliantlabs.ca">
+        <fileTransfer host="cloud.brilliantlabs.ca" port="22" rootFolder="/home/ubuntu/new" accessType="SFTP" authAgent="true">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>

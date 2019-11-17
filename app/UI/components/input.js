@@ -39,6 +39,9 @@ function input(parentElement, options = {}){
     if(!options.hasOwnProperty('required')) options.required = false;
     if(!options.hasOwnProperty('onCancel')) options.onCancel = {};
     if(!options.hasOwnProperty('onSave')) options.onSave = {};
+    if(!options.hasOwnProperty('manualMode')) options.manualMode = false;
+    if(!options.hasOwnProperty('manualClass')) options.manualClass = "none";
+
 
 
     let disabled = "";
@@ -58,15 +61,14 @@ function input(parentElement, options = {}){
 
         let editButton = document.createElement('i');
         let closeButton = document.createElement('i');
-
+        let classWatcher;
+        let popupError;
         closeButton.classList = 'fa fa-times dn';
         editButton.classList = 'fa fa-pencil-alt';
         let errorPopup = document.createElement('div');
         errorPopup.classList = "r ac jc dn error-popup px3 py1";
         errorPopup.innerHTML = '<i class="pr3 fa fa-exclamation"></i> <p></p><i class="fa fa-times-circle">';
         inputContainer.appendChild(errorPopup);
-
-
         inputTag.disabled = true;
         let oldInputValue = inputTag.value;
         function loaderMode(){
@@ -99,39 +101,94 @@ function input(parentElement, options = {}){
                 oldInputValue = inputTag.value;
                 editMode();
             } else {
-
+                console.log("Options", options);
                 if (options.hasOwnProperty('onSave')) {
                     let timeout = setTimeout(() => {
                         inputTag.value = oldInputValue;
                         pencilMode();
+                        inputContainer.querySelector('p').innerText = "Timeout!";
+                        popupError = inputContainer.querySelector('.error-popup');
+                        popupError.classList.remove('dn');
+                        popupError.querySelector('.fa-times-circle').addEventListener('click', ()=>{
+                            popupError.classList.add('dn');
+                        });
                     }, 4000);
                     try {
                         loaderMode();
-                        console.log('on save: ', await options.onSave());
-                        let popupError = inputContainer.querySelector('.error-popup');
-                        popupError.innerHTML = '<i class="pr3 fa fa-check"></i> <p></p>';
-                        popupError.classList.remove('dn');
-                        setTimeout(()=>{
-                            popupError.classList.add('dn');
+                        await options.onSave();
 
-                        }, 3000);
-                        popupError.classList.add('error-popup-success');
-                        inputContainer.querySelector('p').innerText = 'Success. ' + options.onSaveMessage;
-                        pencilMode();
-                        clearInterval(timeout);
+                        if(!options.manualClass){
+                            popupError = inputContainer.querySelector('.error-popup');
+                            popupError.innerHTML = '<i class="pr3 fa fa-check"></i> <p></p>';
+                            popupError.classList.remove('dn');
+                            setTimeout(()=>{
+                                popupError.innerHTML = '<i class="pr3 fa fa-exclamation"></i> <p></p><i class="fa fa-times-circle">';
+                                popupError.classList.remove('error-popup-success');
+                                popupError.classList.add('dn');
+                            }, 3000);
+                            popupError.classList.add('error-popup-success');
+                            inputContainer.querySelector('p').innerText = 'Success. ' + options.onSaveMessage;
+                            pencilMode();
+                            clearInterval(timeout);
+                            inputTag.classList.remove('done');
+                            inputTag.classList.remove('error');
+
+                            clearInterval(classWatcher);
+                        }else{
+
+                            classWatcher = setInterval(()=>{
+                                console.log(inputTag);
+                                if(inputTag.classList.contains('done')){
+                                    if(inputTag.classList.contains('error')){
+                                        inputTag.value = oldInputValue;
+                                        pencilMode();
+                                        inputContainer.querySelector('p').innerText = inputTag.getAttribute('error');
+                                        popupError = inputContainer.querySelector('.error-popup');
+                                        popupError.classList.remove('dn');
+                                        popupError.querySelector('.fa-times-circle').addEventListener('click', ()=>{
+                                            popupError.classList.add('dn');
+                                        });
+                                        clearInterval(timeout);
+                                    }
+                                    else{
+                                        popupError = inputContainer.querySelector('.error-popup');
+                                        popupError.innerHTML = '<i class="pr3 fa fa-check"></i> <p></p>';
+                                        popupError.classList.remove('dn');
+                                        setTimeout(()=>{
+                                            popupError.innerHTML = '<i class="pr3 fa fa-exclamation"></i> <p></p><i class="fa fa-times-circle">';
+                                            popupError.classList.remove('error-popup-success');
+                                            popupError.classList.add('dn');
+                                        }, 3000);
+                                        popupError.classList.add('error-popup-success');
+                                        inputContainer.querySelector('p').innerText = 'Success. ' + options.onSaveMessage;
+                                        pencilMode();
+                                        clearInterval(timeout);
+                                    }
+                                    inputTag.classList.remove('done');
+                                    inputTag.classList.remove('error');
+                                    clearInterval(classWatcher);
+                                }
+                            }, 100);
+
+
+                        }
+
 
                     } catch (e) {
                         inputTag.value = oldInputValue;
                         pencilMode();
                         if(e.message !== 'none'){
                         inputContainer.querySelector('p').innerText = e.message;
-                        let popupError = inputContainer.querySelector('.error-popup');
+                        popupError = inputContainer.querySelector('.error-popup');
                         popupError.classList.remove('dn');
                         popupError.querySelector('.fa-times-circle').addEventListener('click', ()=>{
                             popupError.classList.add('dn');
                         });
                         }
                         clearInterval(timeout);
+                        inputTag.classList.remove('done');
+                        inputTag.classList.remove('error');
+                        clearInterval(classWatcher);
                     }
 
 

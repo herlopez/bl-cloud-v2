@@ -1,11 +1,23 @@
 let databaseFunctions = require('./../database.js');
 
 function commandProcessor(message, callback, server){
-    console.log('Command: ',message['cmd']);
+    console.log('Command:',message['cmd']);
     switch (message['cmd']) {
 
         case 'NEW_KEY':
             callback.send(JSON.stringify(databaseFunctions.newProjectKey(message, callback.uid)));
+        break;
+
+        case 'SET_PROJECT_NAME':
+            callback.send(JSON.stringify(databaseFunctions.setProjectName(message, callback.uid)));
+        break;
+
+        case 'DELETE_PROJECT':
+            callback.send(JSON.stringify(databaseFunctions.deleteProject(message, callback.uid)));
+            break;
+
+        case 'SET_PROJECT_DESCRIPTION':
+            callback.send(JSON.stringify(databaseFunctions.setProjectDescription(message, callback.uid)));
         break;
 
         case 'ADD_WIDGET':

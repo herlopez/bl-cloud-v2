@@ -16,7 +16,7 @@ function messageProcessor(message, callback) {
     if(message.hasOwnProperty('cmd')){{
 
         // Print command.
-        console.log("Cmd Received: ", message.cmd);
+        console.log("Cmd Received: ", message.cmd, message);
 
 
         switch (message.cmd) {
@@ -39,6 +39,10 @@ function messageProcessor(message, callback) {
                 }
             break;
 
+            case 'DELETE_PROJECT':
+                windowSwitcher('none');
+                viewSwitcher('dashboard');
+            break;
             // Server sends back a the data for a users project.
             case 'GET_PROJECT':
                 try{
@@ -67,6 +71,22 @@ function messageProcessor(message, callback) {
                     windowSwitcher('none');
                 }
 
+                break;
+            case 'SET_PROJECT_DESCRIPTION':
+                let targetDesc = document.getElementById('project_settings_project_desc_input');
+                if(message.hasOwnProperty('error')){
+                    targetDesc.classList.add('error');
+                    targetDesc.setAttribute('error', message['error']);
+                }
+                targetDesc.classList.add('done');
+                break;
+            case 'SET_PROJECT_NAME':
+                let targetName = document.getElementById('project_settings_project_name_input');
+                if(message.hasOwnProperty('error')){
+                    targetName.classList.add('error');
+                    targetName.setAttribute('error', message['error']);
+                }
+                targetName.classList.add('done');
                 break;
             case 'NEW_KEY':
                 if(message.hasOwnProperty('error')){

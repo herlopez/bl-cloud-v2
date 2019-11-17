@@ -216,37 +216,44 @@ function paintSettingsTab(data){
     let contentBox = document.getElementById('content_box');
     console.log(contentBox);
     contentBox.innerHTML =
-        `<div class="p3 m0 ml1 c">` +
-        `<h2 style='color: White;'>Your Project Key: </h2>` +
-        `<div class="r ac">`+
-                `<input class="m0 ml3"  disabled value=" ${currentProjectData.key}">` +
+        `<div id= "PROJECT_SETTINGS_TAB" class="p3 m0 ml1 c">` +
+            `<h2 style='color: White;'>Your Project Key: </h2>` +
+            `<div class="r ac">`+
+                `<input class="m0"  disabled value=" ${currentProjectData.key}">` +
                 `<button onclick="copyToClip('${currentProjectData.key}')" style="color: white;" class="fa fa-copy mx2"></button>` +
                 `<button onclick="windowSwitcher('newKey')" title= "Generate New Project Key" style="color: white; background: #8c2726;" class="fa fa-redo mx0"></button>` +
                 `<p id="clip_message" style="transition: all 4s ease-in-out; color:orange; transform: translateY(20px); " class="ml3 dn">Copied to Clipboard!</p>` +
             `</div>`+
-        `<div class="c">` +
+            `<div class="c">` +
                 `<div id="project_settings_project_name"><h2 style='color: White;'>Project Name: </h2></div>` +
                 `<div id="project_settings_project_desc"><h2 style='color: White;'>Project Description: </h2></div>` +
             "</div>" +
+            `<div class=\"r ac\">` +
+                `<button onclick="windowSwitcher('deleteProject')" style="background: #8c2726;" class="ml0 mt4">Delete Project</button>` +
+            `</div>` +
         `</div>`;
-        let projectTitleInput = input(document.getElementById('project_settings_project_name'), {
+        let projectName = input(document.getElementById('project_settings_project_name'), {
             type: 'text',
-            class: 'ml3',
             edit: true,
+            id: 'project_settings_project_name_input',
+            onSaveMessage: "The new name has been set.",
             value: currentProjectData.name,
+            manualMode: true,
             onSave: async function(){
-                setProjectTitle(projectTitleInput, currentUid, currentId);
+                setProjectName(projectName.value, currentUid, currentId);
             }
         });
-    let projectTitleDesc = input(document.getElementById('project_settings_project_desc'), {
-        type: 'text',
-        class: 'ml3',
-        edit: true,
-        value: currentProjectData.description,
-        onSave: async function(){
-            setProjectDesc(projectTitleDesc, currentUid, currentId);
-        }
-    })
+        let projectDescription = input(document.getElementById('project_settings_project_desc'), {
+            type: 'text',
+            edit: true,
+            id: 'project_settings_project_desc_input',
+            onSaveMessage: "The new description has been set.",
+            value: currentProjectData.description,
+            manualMode: true,
+            onSave: async function(){
+                setProjectDescription(projectDescription.value, currentUid, currentId);
+            }
+        })
 }
 
 

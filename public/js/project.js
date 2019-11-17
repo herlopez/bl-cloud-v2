@@ -166,12 +166,14 @@ function paintChartsTab(data) {} // Settings Tab.
 function paintSettingsTab(data) {
   var contentBox = document.getElementById('content_box');
   console.log(contentBox);
-  contentBox.innerHTML = "<div class=\"p3 m0 ml1 c\">" + "<h2 style='color: White;'>Your Project Key: </h2>" + "<div class=\"r ac\">" + "<input class=\"m0 ml3\"  disabled value=\" ".concat(currentProjectData.key, "\">") + "<button onclick=\"copyToClip('".concat(currentProjectData.key, "')\" style=\"color: white;\" class=\"fa fa-copy mx2\"></button>") + "<button onclick=\"windowSwitcher('newKey')\" title= \"Generate New Project Key\" style=\"color: white; background: #8c2726;\" class=\"fa fa-redo mx0\"></button>" + "<p id=\"clip_message\" style=\"transition: all 4s ease-in-out; color:orange; transform: translateY(20px); \" class=\"ml3 dn\">Copied to Clipboard!</p>" + "</div>" + "<div class=\"c\">" + "<div id=\"project_settings_project_name\"><h2 style='color: White;'>Project Name: </h2></div>" + "<div id=\"project_settings_project_desc\"><h2 style='color: White;'>Project Description: </h2></div>" + "</div>" + "</div>";
-  var projectTitleInput = input(document.getElementById('project_settings_project_name'), {
+  contentBox.innerHTML = "<div id= \"PROJECT_SETTINGS_TAB\" class=\"p3 m0 ml1 c\">" + "<h2 style='color: White;'>Your Project Key: </h2>" + "<div class=\"r ac\">" + "<input class=\"m0\"  disabled value=\" ".concat(currentProjectData.key, "\">") + "<button onclick=\"copyToClip('".concat(currentProjectData.key, "')\" style=\"color: white;\" class=\"fa fa-copy mx2\"></button>") + "<button onclick=\"windowSwitcher('newKey')\" title= \"Generate New Project Key\" style=\"color: white; background: #8c2726;\" class=\"fa fa-redo mx0\"></button>" + "<p id=\"clip_message\" style=\"transition: all 4s ease-in-out; color:orange; transform: translateY(20px); \" class=\"ml3 dn\">Copied to Clipboard!</p>" + "</div>" + "<div class=\"c\">" + "<div id=\"project_settings_project_name\"><h2 style='color: White;'>Project Name: </h2></div>" + "<div id=\"project_settings_project_desc\"><h2 style='color: White;'>Project Description: </h2></div>" + "</div>" + "<div class=\"r ac\">" + "<button onclick=\"windowSwitcher('deleteProject')\" style=\"background: #8c2726;\" class=\"ml0 mt4\">Delete Project</button>" + "</div>" + "</div>";
+  var projectName = input(document.getElementById('project_settings_project_name'), {
     type: 'text',
-    "class": 'ml3',
     edit: true,
+    id: 'project_settings_project_name_input',
+    onSaveMessage: "The new name has been set.",
     value: currentProjectData.name,
+    manualMode: true,
     onSave: function () {
       var _onSave = _asyncToGenerator(
       /*#__PURE__*/
@@ -180,7 +182,7 @@ function paintSettingsTab(data) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                setProjectTitle(projectTitleInput, currentUid, currentId);
+                setProjectName(projectName.value, currentUid, currentId);
 
               case 1:
               case "end":
@@ -197,11 +199,13 @@ function paintSettingsTab(data) {
       return onSave;
     }()
   });
-  var projectTitleDesc = input(document.getElementById('project_settings_project_desc'), {
+  var projectDescription = input(document.getElementById('project_settings_project_desc'), {
     type: 'text',
-    "class": 'ml3',
     edit: true,
+    id: 'project_settings_project_desc_input',
+    onSaveMessage: "The new description has been set.",
     value: currentProjectData.description,
+    manualMode: true,
     onSave: function () {
       var _onSave2 = _asyncToGenerator(
       /*#__PURE__*/
@@ -210,7 +214,7 @@ function paintSettingsTab(data) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                setProjectDesc(projectTitleDesc, currentUid, currentId);
+                setProjectDescription(projectDescription.value, currentUid, currentId);
 
               case 1:
               case "end":
