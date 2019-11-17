@@ -1295,6 +1295,9 @@ body {
   justify-content: stretch;
   z-index: 10;
   overflow: hidden; }
+  #site_header .logo_flask img {
+    height: 4rem;
+    display: none; }
   #site_header img {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -1344,7 +1347,18 @@ body {
     #site_header .hamburger {
       display: -webkit-box !important;
       display: -ms-flexbox !important;
-      display: flex !important; } }
+      display: flex !important; }
+    #site_header .logo img {
+      display: none !important; }
+    #site_header .logo_flask {
+      display: -webkit-box !important;
+      display: -ms-flexbox !important;
+      display: flex !important;
+      position: absolute; }
+      #site_header .logo_flask img {
+        display: -webkit-box !important;
+        display: -ms-flexbox !important;
+        display: flex !important; } }
 
 #page_front {
   background-repeat: no-repeat;
@@ -1353,8 +1367,6 @@ body {
   background-size: cover;
   font-family: "Futura", sans-serif;
   background-color: transparent; }
-  #page_front #beaker {
-    height: 100px; }
   #page_front h1 {
     color: #F3B820;
     margin: 1rem !important;
@@ -1376,6 +1388,10 @@ body {
     background-color: transparent;
     width: 100%;
     height: auto; }
+    #page_front #f1 #beaker {
+      height: 6rem; }
+    #page_front #f1 button {
+      width: 100%; }
     #page_front #f1 .rxl {
       max-width: 80%;
       padding: 0 20%; }
@@ -1399,11 +1415,9 @@ body {
       font-size: 1.5rem;
       margin-top: 20px; }
   #page_front #f2 .rxl {
-    max-width: 80%;
-    padding: 0 10%; }
+    max-width: 80%; }
   #page_front #f3 .rxl {
-    max-width: 80%;
-    padding: 0 10%; }
+    max-width: 80%; }
   #page_front #f3 {
     background: transparent; }
     #page_front #f3 h2 {
@@ -1433,8 +1447,7 @@ body {
   #page_front #f4 img {
     max-width: 200px; }
   #page_front #f4 .rxl {
-    max-width: 80%;
-    padding: 0 10%; }
+    max-width: 80%; }
   #page_front footer {
     background: rgba(0, 0, 0, 0.5); }
     #page_front footer h3 {
@@ -1451,11 +1464,12 @@ body {
     #f1 h1 {
       font-size: 3rem; }
     #f1 #beaker {
-      height: 66px; }
+      height: 66px;
+      display: none !important; }
     #f1 button {
       margin-top: 2rem !important;
       font-size: 1rem !important;
-      width: 30% !important;
+      width: 100% !important;
       height: 40px !important; }
     #f1 .heart_img {
       min-width: 300px !important; }
@@ -1472,12 +1486,12 @@ body {
       margin-top: 2rem; }
     #f2 button {
       margin-top: 2rem !important;
-      font-size: 1rem;
+      font-size: 1rem !important;
       width: 100% !important;
       height: 40px !important; }
   #f3 button {
     margin-top: 2rem !important;
-    font-size: 1rem;
+    font-size: 1rem !important;
     width: 100% !important;
     height: 40px !important; }
   #f3 img {
@@ -1488,12 +1502,15 @@ body {
     -webkit-box-orient: horizontal !important;
     -webkit-box-direction: normal !important;
     -ms-flex-direction: row !important;
-    flex-direction: row !important; }
+    flex-direction: row !important;
+    padding: 0 !important; }
   #f4 .f4_content {
-    max-width: 33% !important; }
+    padding: 1rem !important; }
     #f4 .f4_content img {
       width: 150px;
       height: 150px; }
+  footer button {
+    font-size: 1rem !important; }
   footer #footer_width {
     width: 100% !important; }
   footer .footer_content {
@@ -1512,21 +1529,30 @@ body {
     width: 75% !important;
     margin: 0 !important; } }
 
+@media only screen and (max-width: 650px) {
+  #f4 .rxl {
+    max-width: 100% !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-box-direction: normal !important;
+    -ms-flex-direction: column !important;
+    flex-direction: column !important;
+    -webkit-box-pack: center !important;
+    -ms-flex-pack: center !important;
+    justify-content: center !important;
+    -webkit-box-align: center !important;
+    -ms-flex-align: center !important;
+    align-items: center !important;
+    padding: 0 !important; } }
+
 @media only screen and (max-width: 400px) {
   #front_page img {
     min-width: 240px; }
   #front_page button a {
     font-size: 1rem !important; }
   #f1 button {
-    width: 80% !important; }
+    width: 100% !important; }
   #f1 h2 {
     font-size: 1.5rem !important; }
-  #f4 .rxl {
-    max-width: 100% !important;
-    -webkit-box-orient: vertical !important;
-    -webkit-box-direction: normal !important;
-    -ms-flex-direction: column !important;
-    flex-direction: column !important; }
   #f4 .f4_content {
     max-width: 100% !important; }
     #f4 .f4_content img {

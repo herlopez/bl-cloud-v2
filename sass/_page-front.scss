@@ -7,9 +7,7 @@
     font-family: "Futura", sans-serif;
     background-color: transparent;
 
-    #beaker{
-        height: 100px;
-    }
+    
     h1 {
         color: #F3B820;
         margin:1rem !important;
@@ -39,7 +37,12 @@
         background-color:transparent;
         width: 100%;
         height: auto;
-        
+        #beaker{
+            height: 6rem;
+        }
+        button{
+            width: 100%;
+        }
         // box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3);
         .rxl{
             max-width: 80%;
@@ -73,14 +76,12 @@
     #f2 {
         .rxl{
             max-width: 80%;
-            padding: 0 10%;
         }
         
     }
     #f3 {
         .rxl{
             max-width: 80%;
-            padding: 0 10%;
         }
     }
     #f3{
@@ -123,7 +124,6 @@
         }
         .rxl{
             max-width: 80%;
-            padding: 0 10%;
         }
     
     }
@@ -143,19 +143,22 @@
 }
 
 @media only screen and (max-width: 947px) {
+    
+    
     #f1 {
         h1 {
             font-size: 3rem;
         }
         #beaker{
             height: 66px;
+            display: none !important;
         }
         height: 600px !important;
         background-size: cover !important;
         button{
             margin-top: 2rem !important;
             font-size: 1rem !important;
-            width: 30% !important;
+            width: 100% !important;
             height: 40px !important;
         }
         .heart_img{
@@ -177,7 +180,7 @@
         }
         button{
             margin-top: 2rem !important;
-            font-size: 1rem;
+            font-size: 1rem !important;
             width: 100% !important;
             height: 40px !important;
         }
@@ -185,7 +188,7 @@
     #f3{
         button{
             margin-top: 2rem !important;
-            font-size: 1rem;
+            font-size: 1rem !important;
             width: 100% !important;
             height: 40px !important;
         } 
@@ -198,9 +201,10 @@
         .rxl{
             max-width: 100% !important;
             flex-direction: row !important;
+            padding: 0 !important;
         }
         .f4_content{
-            max-width: 33% !important;
+            padding: 1rem !important;
             img{
                 width: 150px;
                 height: 150px;
@@ -208,6 +212,9 @@
         }
     }
     footer{
+        button{
+            font-size: 1rem !important;
+        }
         #footer_width{
             width: 100% !important;
         }
@@ -231,7 +238,17 @@
         margin: 0 !important;
     }
 }
-
+@media only screen and (max-width: 650px) {
+    #f4{
+        .rxl{
+            max-width: 100% !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            align-items: center !important;
+            padding: 0 !important;
+        }
+    }
+}
 @media only screen and (max-width: 400px) {
     #front_page{
         img{
@@ -245,17 +262,14 @@
     }
     #f1{
         button{
-            width: 80% !important;
+            width: 100% !important;
         }
         h2{
             font-size: 1.5rem !important;
         }
     }
     #f4{
-        .rxl{
-            max-width: 100% !important;
-            flex-direction: column !important;
-        }
+        
         .f4_content{
             max-width: 100% !important;
             img{

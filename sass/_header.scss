@@ -40,7 +40,12 @@
     justify-content: stretch;
     z-index: 10;
     overflow: hidden;
-
+    .logo_flask{
+        img{
+            height: 4rem;
+            display: none;
+        }
+    }
     img {
         display: flex;
         margin-left: 2rem;
@@ -106,6 +111,18 @@
         }
         .hamburger {
             display: flex !important;
+        }
+        .logo{
+            img{
+                display: none !important;
+            }
+        }
+        .logo_flask{
+            display: flex !important;
+            position: absolute;
+            img{
+                display: flex !important;
+            }
         }
     }
 
