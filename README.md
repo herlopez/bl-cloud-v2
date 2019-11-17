@@ -1,3 +1,22 @@
+# Dev Setup
+This project requires node and npm.  If you don't already have it installed then please visit: https://nodejs.org/en/ and download your recommended setup. 
+
+If you don't already have nodemon or gulp installed then 'npm -g install nodemon' and/or 'npm -g install gulp' is required.
+
+Step 1: In your terminal of choice using the CLI -> git clone https://github.com/Brilliant-Labs/bl-cloud-v2.git
+
+Step 2: cd into your bl-cloud-v2 directory
+
+Step 3: npm i (this is a shortcut for npm install)
+
+Step 4: gulp
+
+Step 5: In a new terminal: nodemon index.js
+
+Step 6: In your browser: http://localhost:3000/
+
+-------------------------------------
+
 # Brilliant Labs Cloud API
 
 

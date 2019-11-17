@@ -1,23 +1,26 @@
 mixin header()
     header.r.jc.ac#site_header
         .r.jsb.ac.w100
-            .r.jfs(style="width:25%;")
-                //- a(href="https://brilliantlabs.ca" target="_blank")
-                //-     img(src = "/images/brilliant-labs-logo-white.svg")
+            .logo.r.jfs(style="width:25%;")
+                a(href="https://brilliantlabs.ca" target="_blank")
+                    img(src = "/images/brilliant-labs-logo-white.svg")
+            .logo_flask.r.jfs(style="width:25%;")
+                a(href="https://brilliantlabs.ca" target="_blank")
+                    img(src = "/images/BL_Flask_White.png")        
             ul.navigation.r.jfe.ac(style="width:75%;")
                 li
                     a.r.jc.ac(href="/") &nbspHOME
                 li
                     a.r.jc.ac(target="_blank" href="https://bboard.now.sh/") &nbspCODE
                 li
-                    a.r.jc.ac(target="_blank" href="https://brilliantlabs.app/") &nbspPROJECTS
+                    a.r.jc.ac(target="_blank" href="http://projects.brilliantlabs.ca/projects-list/") &nbspPROJECTS
                 
                 li
-                    a.r.jc.ac &nbspBRILLIANT LABS
+                    a.r.jc.ac(target="_blank" href="https://brilliantlabs.ca/") &nbspBRILLIANT LABS
                 li
-                    a.r.jc.ac &nbspGET STARTED
-                li
-                    a.r.jc.ac &nbspSIGN IN
+                    a.r.jc.ac(target="_blank" href="/app/") &nbspGET STARTED
+                li    
+                    a.r.jc.ac(target="_blank" href="/app/") &nbspSIGN IN
             img.profile-image.ml5.c.ac.jc.dn#profile_image(src = "/images/empty-avatar.png")
             ul.hamburger.r.jc.ac.dn
                 li
@@ -27,13 +30,13 @@ mixin header()
         .profile-image.ml5.c.ac.jc#profile_image 
         ul.c.jc.ac.m0.p0(style="margin-top:4rem;")
             li
-                a.fa.fa-home.r.jfs.ac(href="/") &nbspHome
+                a.r.jfs.ac(href="/") &nbspHome
             li
-                a.fa.fa-code.r.jfs.ac(target="_blank" href="https://bboard.now.sh/") &nbspCode
+                a.r.jfs.ac(target="_blank" href="https://bboard.now.sh/") &nbspCode
             li
-                a.fa.fa-edit.r.jfs.ac(target="_blank" href="https://brilliantlabs.app/") &nbspProject Portal
+                a.r.jfs.ac(target="_blank" href="https://brilliantlabs.app/") &nbspProjects
             li
-                a.fa.fa-question.r.jfs.ac &nbspHelp
+                a.r.jfs.ac &nbspSign In
     script.
         var checkbox = document.getElementById("ham");
         var label = document.getElementById("ham_label");

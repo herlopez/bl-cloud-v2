@@ -7,9 +7,7 @@
     font-family: "Futura", sans-serif;
     background-color: transparent;
 
-    #bkg{
-        width: 475px;
-    }
+    
     h1 {
         color: #F3B820;
         margin:1rem !important;
@@ -20,13 +18,13 @@
     h2 {
         color: white;
         text-align: center;
-        font-size: 2rem;
         //background: rgba(0, 0, 0, 0.5);
         //border-radius: 2rem;
+        font-size: 2rem;
     }
     button {
         height: 44px;
-        background: #97509E;
+        background: #6d3472;
         font-size: 1.5rem ;
 
         a {
@@ -39,7 +37,12 @@
         background-color:transparent;
         width: 100%;
         height: auto;
-        
+        #beaker{
+            height: 6rem;
+        }
+        button{
+            width: 100%;
+        }
         // box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3);
         .rxl{
             max-width: 80%;
@@ -51,7 +54,7 @@
         background-color: rgba(0, 0, 0, 0);
         h2 {
             color: white;
-            font-size: 2rem;
+            
         }
         h3{
             font-size: 1.5rem;
@@ -73,13 +76,12 @@
     #f2 {
         .rxl{
             max-width: 80%;
-            padding: 0 10%;
         }
+        
     }
     #f3 {
         .rxl{
             max-width: 80%;
-            padding: 0 10%;
         }
     }
     #f3{
@@ -87,7 +89,7 @@
         background: transparent;
         h2 {
             color: white;
-            font-size: 2rem;
+            
         }
         h3{
             color: white;
@@ -122,11 +124,16 @@
         }
         .rxl{
             max-width: 80%;
-            padding: 0 10%;
         }
     
     }
     footer{
+        h3{
+            font-size: 1rem;
+        }
+        p{
+            font-size: 0.75rem;
+        }
         //height: 400px;
         background: rgba(0,0,0,0.5);
         h2, h3, h4, p{
@@ -136,28 +143,150 @@
 }
 
 @media only screen and (max-width: 947px) {
+    
+    
     #f1 {
         h1 {
-            margin-top: 1rem !important;
+            font-size: 3rem;
+        }
+        #beaker{
+            height: 66px;
+            display: none !important;
         }
         height: 600px !important;
         background-size: cover !important;
+        button{
+            margin-top: 2rem !important;
+            font-size: 1rem !important;
+            width: 100% !important;
+            height: 40px !important;
+        }
+        .heart_img{
+            min-width: 300px !important;
+        }
     }
     #f2{
+        padding: 0 !important;
         // h3,h2,p{
         //     //text-align: center !important;
         // }
         img{
-            max-width: 100%;
+            max-width: 60% !important;
+        }
+        #f2_content{
+            flex-direction: column-reverse !important;
+            max-width: 80%;
+            margin-top: 2rem;
+        }
+        button{
+            margin-top: 2rem !important;
+            font-size: 1rem !important;
+            width: 100% !important;
+            height: 40px !important;
+        }
+    }
+    #f3{
+        button{
+            margin-top: 2rem !important;
+            font-size: 1rem !important;
+            width: 100% !important;
+            height: 40px !important;
+        } 
+        img{
+            width: 240px;
+            height: 350px;
+        }
+    }
+    #f4{
+        .rxl{
+            max-width: 100% !important;
+            flex-direction: row !important;
+            padding: 0 !important;
+        }
+        .f4_content{
+            padding: 1rem !important;
+            img{
+                width: 150px;
+                height: 150px;
+            }
+        }
+    }
+    footer{
+        button{
+            font-size: 1rem !important;
+        }
+        #footer_width{
+            width: 100% !important;
+        }
+        .footer_content{
+            
+            img{
+                margin: 0;
+            }
+            padding: 1rem !important;
+            #footer_cta{
+                max-width: 33%;
+                flex-direction: column;
+            }
+        }
+    }
+    input{
+        width: 50% !important;
+    }
+    button{
+        width: 75% !important;
+        margin: 0 !important;
+    }
+}
+@media only screen and (max-width: 650px) {
+    #f4{
+        .rxl{
+            max-width: 100% !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            align-items: center !important;
+            padding: 0 !important;
         }
     }
 }
-
-@media only screen and (max-width: 1260px) {
-
+@media only screen and (max-width: 400px) {
+    #front_page{
+        img{
+            min-width: 240px;
+        }
+        button{
+            a{
+                font-size: 1rem !important; 
+            }
+        }
+    }
+    #f1{
+        button{
+            width: 100% !important;
+        }
+        h2{
+            font-size: 1.5rem !important;
+        }
+    }
+    #f4{
+        
+        .f4_content{
+            max-width: 100% !important;
+            img{
+                width: 150px;
+                height: 150px;
+            }
+        }
+    }
     footer{
-        .c{
-            width: 80%;
+        #footer_width{
+            
+            max-width: 100% !important;
+            flex-direction: column !important;
+            align-content: center !important;
+            .footer_content{
+                width: 80% !important;
+            }
         }
     }
 }
