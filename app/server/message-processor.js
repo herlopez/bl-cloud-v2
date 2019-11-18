@@ -1,8 +1,9 @@
 let webSocketUI = require('./command_processors/websocket-ui-commands.js');
 let webSocket = require('./command_processors/websocket-commands.js');
 let http = require('./command_processors/http-commands.js');
+let mqtt = require('./command_processors/mqtt-commands.js');
 
-function msgProcessor(message, callback, type, server) {
+function msgProcessor(message, callback, type, server, topic) {
     // Try to parse the JSON string sent.
     try {
         message = JSON.parse(JSON.stringify(message));

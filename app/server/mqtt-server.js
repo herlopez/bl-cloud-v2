@@ -21,7 +21,7 @@ function startMQTTBroker(port, wss) {
             this.send = (message)=>{
                 let msg = {
                     topic: topic +'-rsp',
-                    payload: message, // or a Buffer
+                    payload: JSON.stringify(message), // or a Buffer
                     qos: 0, // 0, 1, or 2
                     retain: false // or true
                 };
@@ -30,19 +30,28 @@ function startMQTTBroker(port, wss) {
             }
         }
         let broker = new Broker();
-        // console.log('Payload:',  packet.payload.toString());
+        console.log('Payload:',  packet.payload);
+
         let msg;
         try{
-            msg = JSON.parse(packet.payload);
-            processor.msgProcessor(msg, broker, 'mqtt', wss,  packet.topic);
+            if(typeof packet.payload === 'object'){
+                msg = JSON.parse(packet.payload);
+                processor.msgProcessor(msg, broker, 'mqtt', wss);
+            }
+
         }catch (e) {
+
+            let topicVar =  packet.topic;
+            if (!topicVar.endsWith('-rsp')){
+                topicVar = topicVar + '-rsp';
+            }
             let message = {
-                topic: packet.topic+'-rsp',
+                topic: topicVar,
                 payload: `{"error":"Unable to parse JSON: ${e}"}`, // or a Buffer
                 qos: 0, // 0, 1, or 2
                 retain: false // or true
             };
-            // console.log(`Topic: ${message.topic}, ${message.payload}` );
+            console.log(`Topic: ${message.topic}, ${message.payload} `, e );
             server.publish(message, function() {
             });
         }
