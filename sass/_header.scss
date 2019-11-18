@@ -119,9 +119,12 @@
         }
         .logo_flask{
             display: flex !important;
+
             position: absolute;
             img{
                 display: flex !important;
+                height: 55px !important;
+                width: auto !important;
             }
         }
     }

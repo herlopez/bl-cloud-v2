@@ -41,15 +41,22 @@ mixin header()
         var checkbox = document.getElementById("ham");
         var label = document.getElementById("ham_label");
         var dropdownMenu = document.getElementById('mobile_dropdown');
+        var body = document.getElementById('site_header')
+        var frontPage = document.getElementById('page_front')
         checkbox.addEventListener('change', function () {
             if (this.checked) {
                 label.classList.remove('fa-bars');
                 label.classList.add('fa-times');
                 dropdownMenu.classList.remove('dn');
+                body.classList.add('fixedPosition');
+                frontPage.classList.add('fixedPosition');
+
             } else {
                 label.classList.remove('fa-times');
                 label.classList.add('fa-bars');
                 dropdownMenu.classList.add('dn');
+                body.classList.remove('fixedPosition');
+                frontPage.classList.remove('fixedPosition');
             }
         });
         window.addEventListener('resize', function () {
