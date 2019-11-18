@@ -30,7 +30,7 @@ function startMQTTBroker(port, wss) {
             }
         }
         let broker = new Broker();
-        console.log('Payload:',  packet.payload.toString());
+        // console.log('Payload:',  packet.payload.toString());
         let msg;
         try{
             msg = JSON.parse(packet.payload);
@@ -42,7 +42,7 @@ function startMQTTBroker(port, wss) {
                 qos: 0, // 0, 1, or 2
                 retain: false // or true
             };
-            console.log(`Topic: ${message.topic}, ${message.payload}` );
+            // console.log(`Topic: ${message.topic}, ${message.payload}` );
             server.publish(message, function() {
             });
         }
