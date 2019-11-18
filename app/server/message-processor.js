@@ -13,7 +13,7 @@ function msgProcessor(message, callback, type, server) {
 
     // Make sure there was a command provided.
     if (!message.hasOwnProperty('cmd')) {
-        console.log(`No Command Specified.`);
+        // console.log(`No Command Specified.`);
         callback.send({error:`No Command Specified.`});
         return;
     }
