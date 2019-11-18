@@ -28,6 +28,9 @@ function msgProcessor(message, callback, type, server) {
         case 'http':
             http.commandProcessor(message, callback, server);
             break;
+        case 'mqtt':
+            http.commandProcessor(message, callback, server);
+            break;
         default:
             callback.send({error:`Unsupported Type.`});
             break;
