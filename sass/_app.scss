@@ -1,21 +1,11 @@
 #app {
     background-image: url("/images/space2.jpg"), linear-gradient(to bottom right, #f7f7fc, #dbe9ee);
     background-size: cover;
-    #site_header{
+    #main_header{
         background: #1C1C25;
-        ul{
-            li{
-                a {
-                    &:hover {
-                        box-shadow: 0 13px 27px -5px rgba(50, 50, 93, .25), 0 8px 16px -8px rgba(0, 0, 0, .3);
-                        background: rgba(0, 0, 0, 0.8);
-                        color: white !important;
-                    }
-                }
-            }
-        }
+        font-family: "Futura", sans-serif;
         .profile-image{
-           padding: 2px;
+            padding: 2px;
             height: 50px;
             margin-right: 25px;
             background: #9b55a3;
@@ -225,7 +215,7 @@
 }
 
 .widget-selection{
-    overflow: scroll;
+    overflow-y: scroll;
     .bbutton{
         width: 300px;
         height: 200px;
@@ -312,13 +302,13 @@
 
     .charts {
         width: 60%;
-        overflow: scroll;
+        //overflow: scroll;
         border-radius: 10px;
     }
 
     .variables {
         //width: 40%;
-        overflow: scroll;
+        //overflow: scroll;
         border-radius: 10px;
         h3{
             color: white;

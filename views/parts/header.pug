@@ -1,42 +1,39 @@
 mixin header()
-    header.r.jc.ac#site_header
-        .r.jsb.ac.w100
-            .logo.r.jfs(style="width:25%;")
-                a(href="https://brilliantlabs.ca" target="_blank")
-                    img(src = "/images/brilliant-labs-logo-white.svg")
-            .logo_flask.r.jfs(style="width:25%;")
-                a(href="https://brilliantlabs.ca" target="_blank")
-                    img(src = "/images/BL_Flask_White.png")        
-            ul.navigation.r.jfe.ac(style="width:75%;")
-                li
-                    a.r.jc.ac(href="/") &nbspHOME
-                li
-                    a.r.jc.ac(target="_blank" href="https://bboard.now.sh/") &nbspCODE
-                li
-                    a.r.jc.ac(target="_blank" href="http://projects.brilliantlabs.ca/projects-list/") &nbspPROJECTS
-                
-                li
-                    a.r.jc.ac(target="_blank" href="https://brilliantlabs.ca/") &nbspBRILLIANT LABS
-                li
-                    a.r.jc.ac(target="_blank" href="/app/") &nbspGET STARTED
-                li    
-                    a.r.jc.ac(target="_blank" href="/app/") &nbspSIGN IN
-            img.profile-image.ml5.c.ac.jc.dn#profile_image(src = "/images/empty-avatar.png")
-            ul.hamburger.r.jc.ac.dn
-                li
-                    input#ham.dn(name="ham" type="checkbox")
-                    label#ham_label.fa.fa-bars.r.jc.ac(for="ham" style="width: 4rem;")
-    #mobile_dropdown.dn
-        .profile-image.ml5.c.ac.jc#profile_image 
-        ul.c.jc.ac.m0.p0(style="margin-top:4rem;")
+    header#main_header.r.jsb.ac.w100.h5r
+        #header_logo.r.jfs.w25.ml4
+            a(href="https://brilliantlabs.ca" target="_blank")
+                img.ml2(src = "/images/brilliant-labs-logo-white.svg")
+        ul.dnml.m0.r.jfe.ac.w75.mr4.lsn
             li
-                a.r.jfs.ac(href="/") &nbspHome
+                a.hp.hc.cw.r.jc.ac.px2.tdn(href="/") &nbspHOME
             li
-                a.r.jfs.ac(target="_blank" href="https://bboard.now.sh/") &nbspCode
+                a.hp.hc.cw.r.jc.ac.px2.tdn(target="_blank" href="https://bboard.now.sh/") &nbspCODE
             li
-                a.r.jfs.ac(target="_blank" href="https://brilliantlabs.app/") &nbspProjects
+                a.hp.hc.cw.r.jc.ac.px2.tdn(target="_blank" href="http://projects.brilliantlabs.ca/projects-list/") &nbspPROJECTS
             li
-                a.r.jfs.ac &nbspSign In
+                a.hp.hc.cw.r.jc.ac.px2.tdn(target="_blank" href="https://brilliantlabs.ca/") &nbspBRILLIANT LABS
+            li
+                a.hp.hc.cw.r.jc.ac.px2.tdn( href="/app/") &nbspSIGN IN
+        img.profile-image.dnml.ml5.c.ac.jc.dn#profile_image(src = "/images/empty-avatar.png")
+        ul.dfml.jc.ac.py5.mr4.lsn
+            li
+                input#ham.dn(name="ham" type="checkbox")
+                label#ham_label.fa.fs15.fa-bars.r.jc.ac.hp.hc.cw.tdn(for="ham")
+
+
+    #mobile_dropdown.dn.w100.m0.cw.bs
+        .profile-image.ml5.c.ac.jc#profile_image
+        ul.c.jc.ac.m0.p0
+            li.r.jc.ac.hbs.hp.w90
+                a.r.cw.jc.tdn.ac(href="/") &nbspHOME
+            li.r.jc.ac.hbs.hp.w90
+                a.r.cw.jc.tdn.ac(target="_blank" href="https://bboard.now.sh/") &nbspCODE
+            li.r.jc.ac.hbs.hp.w90
+                a.r.cw.jc.tdn.ac(target="_blank" href="http://projects.brilliantlabs.ca/projects-list/") &nbspPROJECTS
+            li.r.jc.ac.hbs.hp.w90
+                a.r.cw.jc.tdn.ac(target="_blank" href="https://brilliantlabs.ca/") &nbspBRILLIANT LABS
+            li.r.jc.ac.hbs.hp.w90
+                a.r.cw.jc.tdn.ac(href="/app/") &nbspSIGN IN
     script.
         var checkbox = document.getElementById("ham");
         var label = document.getElementById("ham_label");
@@ -47,16 +44,13 @@ mixin header()
             if (this.checked) {
                 label.classList.remove('fa-bars');
                 label.classList.add('fa-times');
-                dropdownMenu.classList.remove('dn');
-                body.classList.add('fixedPosition');
-                frontPage.classList.add('fixedPosition');
-
+                disable_scroll();
+                dropdownMenu.classList.remove('dn')
             } else {
+                enable_scroll();
                 label.classList.remove('fa-times');
                 label.classList.add('fa-bars');
                 dropdownMenu.classList.add('dn');
-                body.classList.remove('fixedPosition');
-                frontPage.classList.remove('fixedPosition');
             }
         });
         window.addEventListener('resize', function () {
@@ -65,3 +59,27 @@ mixin header()
             label.classList.remove('fa-times');
             label.classList.add('fa-bars');
         })
+        function preventDefault(e) {
+            e = e || window.event;
+            if (e.preventDefault)
+                e.preventDefault();
+            e.returnValue = false;
+        }
+
+        function theMouseWheel(e) {
+            preventDefault(e);
+        }
+
+        function disable_scroll() {
+            if (window.addEventListener) {
+                window.addEventListener('DOMMouseScroll', theMouseWheel, false);
+            }
+            window.onmousewheel = document.onmousewheel = theMouseWheel;
+        }
+
+        function enable_scroll() {
+            if (window.removeEventListener) {
+                window.removeEventListener('DOMMouseScroll', theMouseWheel, false);
+            }
+            window.onmousewheel = document.onmousewheel = null;
+        }

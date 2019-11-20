@@ -92,6 +92,8 @@ function projectMenuSwitcher(target){
     // Get the content element and empty.
     let contentBox = document.getElementById('content_box');
     contentBox.innerHTML = "";
+    contentBox.style.overflow = "hidden";
+
 
     // Switch to the correct tab.
     switch (target) {
@@ -107,7 +109,7 @@ function projectMenuSwitcher(target){
             let projectSectionDashboard = document.createElement('section');
             projectSectionDashboard.id = "project_section_dashboard";
             projectSectionDashboard.innerHTML = "<div class=\"loader\"></div>";
-            projectSectionDashboard.style.overflow = "scroll";
+            projectSectionDashboard.style.overflow = "hidden";
             projectSectionDashboard.classList.add('r');
             projectSectionDashboard.classList.add('jc');
             projectSectionDashboard.classList.add('ac');
@@ -121,7 +123,7 @@ function projectMenuSwitcher(target){
             let projectSection = document.createElement('section');
             projectSection.id = "project_section_variables";
             projectSection.innerHTML = "<div class=\"loader\"></div>";
-            projectSection.style.overflow = "scroll";
+            projectSection.style.overflow = "hidden";
             projectSection.classList.add('r');
             projectSection.classList.add('jc');
             projectSection.classList.add('ac');
@@ -140,7 +142,7 @@ function projectMenuSwitcher(target){
             let projectSettings = document.createElement('section');
             projectSettings.id = "project_section_settings";
             projectSettings.innerHTML = "<div class=\"loader\"></div>";
-            projectSettings.style.overflow = "scroll";
+            projectSettings.style.overflow = "hidden";
             projectSettings.classList.add('r');
             projectSettings.classList.add('jc');
             projectSettings.classList.add('ac');

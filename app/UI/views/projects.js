@@ -15,7 +15,7 @@ function projectsView(){
     let section = document.createElement('section');
     section.id = "project_section";
     section.innerHTML = "<div  class=\"loader\"></div>";
-    section.style.overflow = "scroll";
+    section.style.overflow = "hidden";
     section.classList = 'r jc ac acfs';
 
 

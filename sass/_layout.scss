@@ -5,7 +5,17 @@ $mlScreen : 900px;
 $mdScreen : 720px;
 $smScreen : 540px;
 $xsScreen : 360px;
+
+$boxShadow: 0 13px 27px -5px rgba(50, 50, 93, .25), 0 8px 16px -8px rgba(0, 0, 0, .3);
+$hoverColor: #97509E;
+
 @media only screen and (max-width: $xxlScreen) {
+    .dfxxl{
+        display: flex !important;
+    }
+    .dnxxl{
+        display: none !important;
+    }
     .w100xxl{
         width: 100% !important;
     }
@@ -25,6 +35,12 @@ $xsScreen : 360px;
     }
 }
 @media only screen and (max-width: $xlScreen) {
+    .dfxl{
+        display: flex !important;
+    }
+    .dnxl{
+        display: none !important;
+    }
     .w100xl{
         width: 100% !important;
     }
@@ -44,6 +60,12 @@ $xsScreen : 360px;
     }
 }
 @media only screen and (max-width: $lgScreen) {
+    .dflg{
+        display: flex !important;
+    }
+    .dnlg{
+        display: none !important;
+    }
     .w100lg{
         width: 100% !important;
     }
@@ -63,6 +85,12 @@ $xsScreen : 360px;
     }
 }
 @media only screen and (max-width: $mlScreen) {
+    .dfml{
+        display: flex !important;
+    }
+    .dnml{
+        display: none !important;
+    }
     .w100ml{
         width: 100% !important;
     }
@@ -82,6 +110,12 @@ $xsScreen : 360px;
     }
 }
 @media only screen and (max-width: $mdScreen) {
+    .dfmd{
+        display: flex !important;
+    }
+    .dnmd{
+        display: none !important;
+    }
     .prmd22{
         padding-right: 2.2rem !important;
     }
@@ -104,6 +138,12 @@ $xsScreen : 360px;
     }
 }
 @media only screen and (max-width: $smScreen) {
+    .dfsm{
+        display: flex !important;
+    }
+    .dnsm{
+        display: none !important;
+    }
     .w100sm{
         width: 100% !important;
     }
@@ -123,6 +163,12 @@ $xsScreen : 360px;
     }
 }
 @media only screen and (max-width: $xsScreen) {
+    .dfxs{
+        display: flex !important;
+    }
+    .dnxs{
+        display: none !important;
+    }
     .w100xs{
         width: 100% !important;
     }
@@ -243,7 +289,48 @@ $xsScreen : 360px;
     display: none !important;
 }
 
-
+.dfxxl{
+    display: none;
+}
+.dnxxl{
+    display: flex;
+}
+.dfxl{
+    display: none;
+}
+.dnxl{
+    display: flex;
+}
+.dflg{
+    display: none;
+}
+.dnlg{
+    display: flex;
+}
+.dfml{
+    display: none;
+}
+.dnml{
+    display: flex;
+}
+.dfmd{
+    display: none;
+}
+.dnmd{
+    display: flex;
+}
+.dfsm{
+    display: none;
+}
+.dnsm{
+    display: flex;
+}
+.dfxs{
+    display: none;
+}
+.dnxs{
+    display: none !important;
+}
 // Width %
 .w0{
     width: 0;
@@ -255,6 +342,9 @@ $xsScreen : 360px;
 .w20{
     width: 20%;
 
+}
+.w25{
+    width: 25%;
 }
 .w30{
     width: 30%;
@@ -274,6 +364,10 @@ $xsScreen : 360px;
 }
 .w70{
     width: 70%;
+
+}
+.w75{
+    width: 75%;
 
 }
 .w80{
@@ -418,6 +512,83 @@ $xsScreen : 360px;
 }
 .h100 {
     height: 100%;
+}
+
+// heignt rem
+
+.h0r{
+    height: 0;
+}
+.h01r{
+    height: 0.1rem;
+
+}
+.h02r{
+    height: 0.2rem;
+
+}
+.h03r{
+    height: 0.3rem;
+
+}
+.h04r{
+    height: 0.4rem;
+
+}
+.h05r{
+    height: 0.5rem;
+
+}
+.h06r{
+    height: 0.6rem;
+
+}
+.h07r{
+    height: 0.7rem;
+
+}
+.h08r{
+    height: 0.8rem;
+
+}
+.h09r{
+    height: 0.9rem;
+
+}
+.h1r{
+    height: 1rem;
+
+}
+.h2r{
+    height: 2rem;
+
+}
+.h3r{
+    height: 3rem;
+
+}
+.h4r{
+    height: 4rem;
+
+}
+.h5r{
+    height: 5rem;
+
+}
+.h6r{
+    height: 6rem;
+
+}
+.h7r{
+    height: 7rem;
+
+}
+.h8r{
+    height: 8rem;
+
+}
+.h9r{
+    height: 9rem;
 }
 
 
@@ -844,8 +1015,14 @@ $xsScreen : 360px;
     margin-right: 3em;
     margin-left: 3em;
 }
+.fs075{
+    font-size: 0.75rem;
+}
 .fs1{
     font-size: 1rem;
+}
+.fs15{
+    font-size: 1.5rem;
 }
 .fs2{
     font-size: 2rem;
@@ -869,13 +1046,43 @@ $xsScreen : 360px;
     text-align: right !important;
 }
 
-
+.hp{
+    cursor: default;
+    &:hover{
+        cursor: pointer !important;
+    }
+}
+.hc{
+    &:hover{
+        color: $hoverColor !important;
+    }
+}
+.hbs{
+     &:hover{
+         box-shadow: $boxShadow !important;
+     }
+ }
+.lsn{
+    list-style: none !important;
+}
+.tdn{
+    text-decoration: none;
+}
 .fk{
     font-family: 'Karla', sans-serif;
 }
-
+.cw{
+    color: white;
+}
+.cb{
+    color: black;
+}
+.bs{
+    box-shadow: $boxShadow;
+}
 .fixedPosition
  {
     position: fixed !important;
+    top: 0;
     
  }

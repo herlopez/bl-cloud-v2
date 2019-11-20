@@ -140,3 +140,4 @@ function commandProcessor(message, callback, server, topic) {
 module.exports = {
     commandProcessor
 };
+

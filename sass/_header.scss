@@ -1,132 +1,29 @@
 #mobile_dropdown {
-    background: #1C1C25;
-    box-shadow: 0 13px 27px -5px rgba(50, 50, 93, .25), 0 8px 16px -8px rgba(0, 0, 0, .3);
-    color: white;
-    position: fixed;
-    width: 100%;
-    margin: 0;
+    background: rgba(36, 18, 37, 0.99);
+    position: absolute;
+    top: 80px;
+    z-index: 10;
     ul{
         li{
-            @extend .r;
-            @extend .jc;
-            @extend .ac;
             height: 80px;
-            width: 90%;
             transition: all 0.25s ease;
-            a{
-                text-decoration: none;
-                color: #fff;
-                width: 100%;
-                padding-left: 8%;
-            }
-            &:hover{
-                box-shadow: 0 13px 27px -5px rgba(50, 50, 93, .25), 0 8px 16px -8px rgba(0, 0, 0, .3);
+            &:hover {
                 background: rgba(0, 0, 0, 0.5);
                 width: 100%;
-                cursor: pointer;
-                > a{
-                    color: white;
-                }
             }
         }
     }
 }
 
-#site_header {
-    height: 5rem;
-    width: 100%;
-    background: transparent;
-    color: white;
-    justify-content: stretch;
-    z-index: 10;
-    overflow: hidden;
-    .logo_flask{
-        img{
-            height: 4rem;
-            display: none;
-        }
-    }
-    img {
-        display: flex;
-        margin-left: 2rem;
-    }
 
-    ul {
-        display: flex;
-        list-style: none;
-        height: 100%;
-        margin: 0;
-        overflow: hidden;
-        padding-right: 2rem;
-
-        li {
-            height: 100%;
-            a{
-                font-size: 0.75rem !important;
-            }
-            label {
-                &:hover {
-                    color: #97509E;
-                    cursor: pointer !important;
-                }
-            }
-            &:hover {
-                color: #97509E;
-                cursor: pointer !important;
-            }
-            a, label {
-                text-decoration: none;
-                color: white;
-                padding: 0 0.25rem;
-                height: 4rem;
-                &:hover {
-                    color: #97509E !important;
-                    cursor: pointer !important;
-                }
-                &:visited {
-                    color: #fff;
-                }
-            }
-        }
-    }
-
-    .hamburger:hover {
-        cursor: pointer;
-
-    }
-
-}
-
-
-@media only screen and (max-width: 947px) {
-
-    #site_header {
+@media only screen and (max-width: 900px) {
+    #main_header {
         justify-content: space-between !important;
-
-        .navigation {
-            display: none !important;
-        }
-        .profile-image{
-            display: none;
-        }
-        .hamburger {
-            display: flex !important;
-        }
-        .logo{
-            img{
-                display: none !important;
-            }
-        }
-        .logo_flask{
-            display: flex !important;
-
-            position: absolute;
-            img{
-                display: flex !important;
-                height: 55px !important;
-                width: auto !important;
-            }
-        }
+        background: rgba(28, 28, 37, 0.86);
     }
-
+    #header_logo a img{
+        content:url("https://cloud.brilliantlabs.ca/images/BL_Flask_White.png") !important;
+        height: 45px !important;
+        margin-left: 1rem;
+    }
 }

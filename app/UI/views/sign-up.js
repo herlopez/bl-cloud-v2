@@ -17,26 +17,34 @@ function signUpView(){
     userFirstName.type = 'name';
     userFirstName.placeholder = 'First Name';
     userFirstName.id = `${signUpForm.id}_first_name`;
+    userFirstName.style.width = "100% !important";
+
     let userLastName = document.createElement('input');
     userLastName.required = 'required';
     userLastName.type = 'name';
     userLastName.placeholder = 'Last Name';
     userLastName.id = `${signUpForm.id}_last_name`;
+    userLastName.style.width = "100% !important";
     let signUpEmail = document.createElement('input');
     signUpEmail.required = 'required';
     signUpEmail.type = 'email';
     signUpEmail.placeholder = 'Email Address';
+    signUpEmail.style.width = "100% !important";
     signUpEmail.id = `${signUpForm.id}_email`;
     let signUpPasswordInput = document.createElement('input');
     signUpPasswordInput.required = 'required';
     signUpPasswordInput.type = 'password';
     signUpPasswordInput.placeholder = 'Password';
     signUpPasswordInput.id = `${signUpForm.id}_password`;
+    signUpPasswordInput.style.width = "100% !important";
+
     let signUpPasswordInput2 = document.createElement('input');
     signUpPasswordInput2.required = 'required';
     signUpPasswordInput2.type = 'password';
     signUpPasswordInput2.placeholder = 'Confirm Password';
     signUpPasswordInput2.id = `${signUpForm.id}_password2`;
+    signUpPasswordInput2.style.width = "100% !important";
+
     let signUpSubmitButton = document.createElement('button');
     signUpSubmitButton.innerHTML = "Sign Up!";
     signUpSubmitButton.id = `${signUpForm.id}_submit`;
@@ -79,12 +87,13 @@ function signUpView(){
     appContainer.appendChild(signUpForm);
     let signInButton = document.createElement('a');
     signInButton.innerText = "Already have an Account? Click Here to Sign In!";
+    signInButton.style.color = "#ffffff";
     signInButton.addEventListener("mouseenter", function () {
         signInButton.style.color = "rgb(155, 85, 163)";
         signInButton.style.cursor = "pointer";
     });
     signInButton.addEventListener("mouseleave", function () {
-        signInButton.style.color = "#000000";
+        signInButton.style.color = "#ffffff";
         signInButton.style.cursor = "default";
     });
     signInButton.addEventListener("click", function (e) {
