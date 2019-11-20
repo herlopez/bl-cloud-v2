@@ -5,7 +5,7 @@ function signUpView(){
     appContainer.classList.remove('project-dash');
     appContainer.classList.remove('project-single');
     let signUpLogo = document.createElement('img');
-    signUpLogo.src = "/images/logo.png";
+    signUpLogo.src = "/images/BL_Logo_white.png";
     signUpLogo.width = '300';
     signUpLogo.style.marginBottom = "1rem";
     appContainer.appendChild(signUpLogo);

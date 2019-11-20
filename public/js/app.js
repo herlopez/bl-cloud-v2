@@ -98,12 +98,15 @@ docReady(function () {
 
     // Set the view to the login screen.
     viewSwitcher('sign_in');
-
+    let signInNav =document.getElementById('sign_in_nav');
     // When an authentication state has changed.
     firebase.auth().onAuthStateChanged(function (user) {
 
         // If the user is authenticated.
         if (user) {
+
+
+            signInNav.classList.add('dn');
 
             // Set the users profile image and information.
             setProfileInformation(user); // --> profile.js
@@ -174,6 +177,9 @@ docReady(function () {
 
         else {
             currentUid = null;
+
+            signInNav.classList.remove('dn');
+
             viewSwitcher('sign_in');
 
             // Set profile to default settings.
@@ -231,7 +237,7 @@ function signInView(){
     appContainer.classList.remove('project-dash');
     appContainer.style.userSelect = 'none';
     let signInLogo = document.createElement('img');
-    signInLogo.src = "/images/logo.png";
+    signInLogo.src = "/images/BL_Logo_white.png";
     signInLogo.width = '300';
     signInLogo.style.marginBottom = "1rem";
     appContainer.appendChild(signInLogo);
@@ -274,13 +280,14 @@ function signInView(){
     });
     appContainer.appendChild(signInForm);
     let signUp = document.createElement('a');
+    signUp.style.color = "#fff";
     signUp.innerText = "Dont Have an Account? Click Here to Sign Up!";
     signUp.addEventListener("mouseenter", function () {
         signUp.style.color = "rgb(155, 85, 163)";
         signUp.style.cursor = "pointer";
     });
     signUp.addEventListener("mouseleave", function () {
-        signUp.style.color = "#000000";
+        signUp.style.color = "#fff";
         signUp.style.cursor = "default";
     });
     signUp.addEventListener("click", function (e) {
@@ -291,14 +298,12 @@ function signInView(){
     forgot.innerText = "Forgot password?";
     forgot.style.fontSize = "12px";
     forgot.style.margin = "8px";
-    forgot.style.color = "#1a478e";
+    forgot.style.color = "rgb(79, 156, 121)";
 
     forgot.addEventListener("mouseenter", function () {
-        forgot.style.color = "rgb(155, 85, 163)";
         forgot.style.cursor = "pointer";
     });
     forgot.addEventListener("mouseleave", function () {
-        forgot.style.color = "#000000";
         forgot.style.cursor = "default";
     });
     forgot.addEventListener("click", function (e) {
@@ -315,12 +320,13 @@ function passwordResetSuccessView(){
     appContainer.innerHTML = '';
     appContainer.style.userSelect = 'none';
     let pwResetLogo = document.createElement('img');
-    pwResetLogo.src = "/images/logo.png";
+    pwResetLogo.src = "/images/BL_Logo_white.png";
     pwResetLogo.width = '300';
     pwResetLogo.style.marginBottom = "1rem";
     appContainer.appendChild(pwResetLogo);
     let pwResetMsg = document.createElement('h2');
     pwResetMsg.innerText = "An email has been sent with a password reset link.";
+    pwResetMsg.style.color = "#fff";
     appContainer.appendChild(pwResetMsg);
     let pwResetLogoSignIn = document.createElement('button');
     pwResetLogoSignIn.id = 'logout';
@@ -337,7 +343,7 @@ function signUpView(){
     appContainer.classList.remove('project-dash');
     appContainer.classList.remove('project-single');
     let signUpLogo = document.createElement('img');
-    signUpLogo.src = "/images/logo.png";
+    signUpLogo.src = "/images/BL_Logo_white.png";
     signUpLogo.width = '300';
     signUpLogo.style.marginBottom = "1rem";
     appContainer.appendChild(signUpLogo);
@@ -599,6 +605,9 @@ function projectsView(){
     appContainer.innerHTML = '';
     appContainer.style.userSelect = 'none';
     appContainer.classList.add('project-dash');
+    // appContainer.classList.add('ac');
+    // appContainer.classList.add('c');
+    // appContainer.classList.add('jfs');
     appContainer.classList.remove('project-single');
 
     // Add a loader until the projects get populated.
@@ -630,11 +639,13 @@ function forgotPasswordView(){
     appContainer.classList.remove('project-dash');
     appContainer.classList.remove('project-single');
     let forgotPasswordLogo = document.createElement('img');
-    forgotPasswordLogo.src = "/images/logo.png";
+    forgotPasswordLogo.src = "/images/BL_Logo_white.png";
     forgotPasswordLogo.width = '300';
     forgotPasswordLogo.style.marginBottom = "1rem";
     let message = document.createElement('h2');
     message.innerText = 'Enter your account email address.';
+    message.style.color = "#fff";
+
     appContainer.appendChild(forgotPasswordLogo);
     appContainer.appendChild(message);
     let forgotPasswordForm = document.createElement('form');
@@ -665,12 +676,14 @@ function forgotPasswordView(){
     appContainer.appendChild(forgotPasswordForm);
     let forgotPasswordSignInButton = document.createElement('a');
     forgotPasswordSignInButton.innerText = "Din't forget your password? Click Here to Sign In!";
+    forgotPasswordSignInButton.style.color = "#fff";
+
     forgotPasswordSignInButton.addEventListener("mouseenter", function () {
         forgotPasswordSignInButton.style.color = "rgb(155, 85, 163)";
         forgotPasswordSignInButton.style.cursor = "pointer";
     });
     forgotPasswordSignInButton.addEventListener("mouseleave", function () {
-        forgotPasswordSignInButton.style.color = "#000000";
+        forgotPasswordSignInButton.style.color = "#fff";
         forgotPasswordSignInButton.style.cursor = "default";
     });
     forgotPasswordSignInButton.addEventListener("click", function (e) {

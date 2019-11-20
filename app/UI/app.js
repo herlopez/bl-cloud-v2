@@ -17,12 +17,15 @@ docReady(function () {
 
     // Set the view to the login screen.
     viewSwitcher('sign_in');
-
+    let signInNav =document.getElementById('sign_in_nav');
     // When an authentication state has changed.
     firebase.auth().onAuthStateChanged(function (user) {
 
         // If the user is authenticated.
         if (user) {
+
+
+            signInNav.classList.add('dn');
 
             // Set the users profile image and information.
             setProfileInformation(user); // --> profile.js
@@ -93,6 +96,9 @@ docReady(function () {
 
         else {
             currentUid = null;
+
+            signInNav.classList.remove('dn');
+
             viewSwitcher('sign_in');
 
             // Set profile to default settings.

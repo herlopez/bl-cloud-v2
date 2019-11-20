@@ -12,10 +12,10 @@ function verifyString(obj, string, maxLen = 200, minLen = 0, type = 'string') {
                     if (obj[string].length < maxLen) {
                         return ('{}');
                     } else {
-                        return ({error:`${titleCase(string)} is to0 long.`});
+                        return ({error:`${titleCase(string)} is too long.`});
                     }
                 } else {
-                    return ({error:`${titleCase(string)} is to0 short.`});
+                    return ({error:`${titleCase(string)} is too short.`});
                 }
             }else{
                 return ({error:`${titleCase(string)} must be a string.`});

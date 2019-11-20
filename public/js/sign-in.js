@@ -4,7 +4,7 @@ function signInView() {
   appContainer.classList.remove('project-dash');
   appContainer.style.userSelect = 'none';
   var signInLogo = document.createElement('img');
-  signInLogo.src = "/images/logo.png";
+  signInLogo.src = "/images/BL_Logo_white.png";
   signInLogo.width = '300';
   signInLogo.style.marginBottom = "1rem";
   appContainer.appendChild(signInLogo);
@@ -46,13 +46,14 @@ function signInView() {
   });
   appContainer.appendChild(signInForm);
   var signUp = document.createElement('a');
+  signUp.style.color = "#fff";
   signUp.innerText = "Dont Have an Account? Click Here to Sign Up!";
   signUp.addEventListener("mouseenter", function () {
     signUp.style.color = "rgb(155, 85, 163)";
     signUp.style.cursor = "pointer";
   });
   signUp.addEventListener("mouseleave", function () {
-    signUp.style.color = "#000000";
+    signUp.style.color = "#fff";
     signUp.style.cursor = "default";
   });
   signUp.addEventListener("click", function (e) {
@@ -63,13 +64,11 @@ function signInView() {
   forgot.innerText = "Forgot password?";
   forgot.style.fontSize = "12px";
   forgot.style.margin = "8px";
-  forgot.style.color = "#1a478e";
+  forgot.style.color = "rgb(79, 156, 121)";
   forgot.addEventListener("mouseenter", function () {
-    forgot.style.color = "rgb(155, 85, 163)";
     forgot.style.cursor = "pointer";
   });
   forgot.addEventListener("mouseleave", function () {
-    forgot.style.color = "#000000";
     forgot.style.cursor = "default";
   });
   forgot.addEventListener("click", function (e) {

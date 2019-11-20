@@ -5,11 +5,13 @@ function forgotPasswordView(){
     appContainer.classList.remove('project-dash');
     appContainer.classList.remove('project-single');
     let forgotPasswordLogo = document.createElement('img');
-    forgotPasswordLogo.src = "/images/logo.png";
+    forgotPasswordLogo.src = "/images/BL_Logo_white.png";
     forgotPasswordLogo.width = '300';
     forgotPasswordLogo.style.marginBottom = "1rem";
     let message = document.createElement('h2');
     message.innerText = 'Enter your account email address.';
+    message.style.color = "#fff";
+
     appContainer.appendChild(forgotPasswordLogo);
     appContainer.appendChild(message);
     let forgotPasswordForm = document.createElement('form');
@@ -40,12 +42,14 @@ function forgotPasswordView(){
     appContainer.appendChild(forgotPasswordForm);
     let forgotPasswordSignInButton = document.createElement('a');
     forgotPasswordSignInButton.innerText = "Din't forget your password? Click Here to Sign In!";
+    forgotPasswordSignInButton.style.color = "#fff";
+
     forgotPasswordSignInButton.addEventListener("mouseenter", function () {
         forgotPasswordSignInButton.style.color = "rgb(155, 85, 163)";
         forgotPasswordSignInButton.style.cursor = "pointer";
     });
     forgotPasswordSignInButton.addEventListener("mouseleave", function () {
-        forgotPasswordSignInButton.style.color = "#000000";
+        forgotPasswordSignInButton.style.color = "#fff";
         forgotPasswordSignInButton.style.cursor = "default";
     });
     forgotPasswordSignInButton.addEventListener("click", function (e) {
