@@ -1,6 +1,6 @@
 let loki = require('lokijs');
 let databaseFunctions = require('./app/server/database.js');
-databaseFunctions.setDatabase(new loki('database.json'));
+databaseFunctions.setDatabase(new loki('../database.json'));
 
 
 console.log("Brilliant Labs Cloud 2.0");
