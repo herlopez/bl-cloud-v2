@@ -5,7 +5,8 @@
   background-size: cover; }
   #app header {
     background: #1C1C25;
-    font-family: "Futura", sans-serif; }
+    font-family: "Futura", sans-serif;
+    max-width: 100vw !important; }
     #app header .profile-image {
       padding: 2px;
       height: 50px;
