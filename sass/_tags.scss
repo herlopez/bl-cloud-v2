@@ -1,11 +1,11 @@
 body {
-    margin: 0;
-    font-family: Roboto, Helvetica Neue, Helvetica, Arial, sans-serif;
+    @extend .m0;
+    @extend .font2;
     overflow-x: hidden !important;
 
     header {
         background: transparent;
-        overflow-x: hidden;
+        overflow: hidden;
     }
 
     button{

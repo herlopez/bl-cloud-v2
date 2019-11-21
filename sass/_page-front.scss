@@ -3,369 +3,57 @@
     background-image: url('../images/Space-Background-sm.jpg');
     background-attachment: fixed;
     background-size: cover;
-    //transform: translateY(-4rem);
-    font-family: "Futura", sans-serif;
-    background-color: transparent;
 
-    
-    h1 {
-        color: #F3B820;
-        margin:1rem !important;
-        font-size: 5rem;
-        text-align: center;
-    }
-
-    h2 {
-        color: white;
-        text-align: center;
-        //background: rgba(0, 0, 0, 0.5);
-        //border-radius: 2rem;
-        font-size: 2rem;
-    }
-    button {
-        height: 44px;
-        background: #6d3472;
-        font-size: 1.5rem ;
-
-        a {
-            text-decoration: none;
-            color: white;
-            padding: 8px 30px !important;
+    main{
+        @extend .mwxxl;
+        @extend .px2;
+        @extend .my0;
+        @extend .mxa;
+        section{
+            @extend .w100;
+            @extend .c;
+            @extend .jfs;
+            @extend .ac;
+            @extend .py4;
         }
-    }
-    #f1 {
-        background-color:transparent;
-        width: 100%;
-        height: auto;
-        #beaker{
-            height: 6rem;
-        }
-        button{
-            width: 100%;
-        }
-        // box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3);
-        .rxl{
-            max-width: 80%;
-            padding: 0 20%;
-        }
-    }
-    #f2, #f4{
-        // box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3);
-        background-color: rgba(0, 0, 0, 0);
-        h2 {
-            color: white;
-            
-        }
-        h3{
-            font-size: 1.5rem;
-            text-align: left;
-            color:white;
-        }
-        p{
-            text-align: left;
-            font-size: 1rem;
-            color: white;
-        }
-        button{
-            width: fit-content;
-            height: 44px;
-            font-size: 1.5rem ;
-            margin-top: 20px;
-        }
-    }
-    #f2 {
-        .rxl{
-            max-width: 80%;
-        }
-        
-    }
-    #f3 {
-        .rxl{
-            max-width: 80%;
-        }
-    }
-    #f3{
-        // box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3);
-        background: transparent;
-        h2 {
-            color: white;
-            
-        }
-        h3{
-            color: white;
-            font-size: 1.5em;
-            text-align: left;
-        }
-        a{
-            color: #97509E;
-            text-decoration: none;
-        }
-        p{
-            color: white;
-            text-align: left;
-            font-size: 1rem
-        }
-        button{
-            width: fit-content;
-            height: 44px;
-            font-size: 1.5rem ;
-            margin-top: 20px;
-            a{
-                color: #fff;
-            }
-        }
-    }
-    #f4{
-
-        p{
-            font-size: 1rem;
-        }
-        img{
-            max-width: 200px;
-        }
-        #f4_cc{
-            
-            
-            
-
-            .f4_content{
-                width: 30%;
-                margin: 0 !important;
-                #f4_text{
-                    top:0;
-                    height: 102px;
-                }
-            }
-        }
-    
-    }
-    footer{
-        h3{
-            font-size: 1rem;
-        }
-        p{
-            font-size: 0.75rem;
-        }
-        //height: 400px;
-        background: rgba(0,0,0,0.5);
-        h2, h3, h4, p{
-            color: white;
-        }
-    }
-}
-@media only screen and (max-width: 1259px) {
-    #f4{
-        
-        .rxl{
-            max-width: 100% !important;
-            flex-direction: row !important;
-            padding: 0 !important;
-        }
-        .f4_content{
-            max-width: 25% !important;
-            padding: 1rem !important;
-            img{
-                width: 150px;
-                height: 150px;
-            }
-        }
-    }
-}
-@media only screen and (max-width: 947px) {
-    
-    
-    #f1 {
-        h1 {
-            font-size: 3rem;
-        }
-        #beaker{
-            height: 66px;
-            display: none !important;
-        }
-        height: 600px !important;
-        background-size: cover !important;
-        button{
-            margin-top: 2rem !important;
-            font-size: 1rem !important;
-            width: 100% !important;
-            height: 40px !important;
-        }
-        .heart_img{
-            min-width: 300px !important;
-        }
-    }
-    #f2{
-        padding: 0 !important;
-        // h3,h2,p{
-        //     //text-align: center !important;
-        // }
-        img{
-            max-width: 60% !important;
-        }
-        #f2_content{
-            flex-direction: column-reverse !important;
-            max-width: 80%;
-            margin-top: 2rem;
-        }
-        button{
-            margin-top: 2rem !important;
-            font-size: 1rem !important;
-            width: 100% !important;
-            height: 40px !important;
-        }
-    }
-    #f3{
-        button{
-            margin-top: 2rem !important;
-            font-size: 1rem !important;
-            width: 100% !important;
-            height: 40px !important;
-        } 
-        img{
-            width: 240px;
-            height: auto;
-        }
-    }
-    #f4{
-        
-        .f4_content{
-            #f4_text{
-                height: 150px;
-                padding-bottom: 2rem !important;
-                h3{
-                    font-size: 1.5rem ;
-                }
-                p{
-                    font-size: 1rem;
-                }
-            }
-            padding: 1rem !important;
-            img{
-                width: 125px;
-                height: 125px;
-                margin: 1rem !important;
-            }
-        }
-    }
-    footer{
-        button{
-            font-size: 1rem !important;
-        }
-        #footer_width{
-            width: 100% !important;
-        }
-        .footer_content{
-            
-            img{
-                margin: 0;
-            }
-            padding: 1rem !important;
-            #footer_cta{
-                max-width: 33%;
-                flex-direction: column;
-            }
-        }
-    }
-    //input{
-    //    width: 50% !important;
-    //}
-    //button{
-    //    width: 75% !important;
-    //    margin: 0 !important;
-    //}
-}
-@media only screen and (max-width: 650px) {
-    #f3{
-        img{
-            width: 150px !important;
-            height: auto !important;
-        }
-    }
-    
-    #f4{
-        #f4_cc{
-            flex-direction: column !important;
-            .f4_content{
-                width: 60% !important;
-                
-                #f4_text{
-                    height: 85px !important;
-                    padding-bottom: 2.5rem !important;
-                }
-                img{
-                    width: 100px !important;
-                    height: 100px !important;
-                    padding: 1rem;
-                }
-            }
-        }
-    }
-    footer{
-        #footer_width{
-            flex-direction: column !important;
-            align-items: center;
-            width: 80% !important;
-        }
-        .footer_content{
-            width: 100% !important;
-        }
-    }
-}
-@media only screen and (max-width: 400px) {
-    #front_page{
-        img{
-            min-width: 240px;
-        }
-        button{
-            a{
-                font-size: 1rem !important; 
-            }
-        }
-    }
-    #f1{
-        button{
-            width: 100% !important;
+        h1, h2, h3{
+            @extend .font1;
         }
         h2{
-            font-size: 1.5rem !important;
+            @extend .mt4;
+            @extend .tac;
+            @extend .px3;
+            @extend .fs3;
+            @extend .cw;
         }
-    }
-    #f4{
-        
-        .f4_content{
-            max-width: 100% !important;
-            img{
-                width: 150px;
-                height: 150px;
+        h3{
+            @extend .m0;
+            @extend .mb2;
+            @extend .cw;
+            @extend .fs2;
+            @extend .tac;
+        }
+        p{
+            @extend .m0;
+            @extend .mt2;
+            @extend .mb4;
+            @extend .cw;
+            @extend .fs15;
+            @extend .fw200;
+            @extend .tac;
+        }
+        button {
+            @extend .px3;
+            @extend .py1;
+            @extend .bgac;
+            @extend .fs15;
+            a {
+                @extend .px2;
+                @extend .py3;
+                @extend .cw;
+                @extend .tdn;
             }
         }
     }
-    footer{
-        #footer_width{
-            
-            max-width: 100% !important;
-            flex-direction: column !important;
-            align-content: center !important;
-            .footer_content{
-                width: 80% !important;
-                #sub{
-                    width: 100% !important;
-                    #subscribe{
-                        width: 100% !important;
-                        flex-direction: column;
-                        align-items: flex-start;
-                        input{
-                            width: 100% !important;
-                        }
-                        button{
-                            margin-top: 1rem !important;
-                            width: 75% !important;
-                            text-align: center !important;
-                        }
-                    }
-                }
-                
-            }
-        }
-    }
+
 }

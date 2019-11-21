@@ -1,29 +1,113 @@
-#mobile_dropdown {
-    background: rgba(36, 18, 37, 0.99);
-    position: absolute;
-    top: 80px;
-    z-index: 10;
-    ul{
-        li{
-            height: 80px;
-            transition: all 0.25s ease;
-            &:hover {
-                background: rgba(0, 0, 0, 0.5);
-                width: 100%;
+header{
+    @extend .r;
+    @extend .jsb;
+    @extend .ac;
+    @extend .w100;
+    @extend .h5r;
+    @extend .mwxxl;
+    @extend .my0;
+    @extend .mxa;
+    > a{
+        @extend .r;
+        @extend .jfs;
+        @extend .w25;
+        @extend .ml4;
+        img{
+            @extend .ml2;
+        }
+    }
+    > div{
+        @extend .dfml;
+        @extend .jc;
+        @extend .ac;
+        @extend .py5;
+        @extend .mr4;
+        @extend .lsn;
+        nav{
+            background: rgba(36, 18, 37, 0.99);
+            top: 80px;
+            left: 0;
+            z-index: 10;
+            @extend .poa;
+            @extend .dn;
+            @extend .w100;
+            @extend .c;
+            @extend .m0;
+            @extend .cw;
+            @extend .bs;
+            a{
+                @extend .ts50e;
+                @extend .h5r;
+                @extend .w90;
+                @extend .hbs;
+                @extend .hp;
+                @extend .r;
+                @extend .cw;
+                @extend .jc;
+                @extend .tdn;
+                @extend .ac;
+                &:hover {
+                    background: rgba(0, 0, 0, 0.5);
+                    @extend .w100;
+                }
             }
+        }
+        input{
+            @extend .dn;
+            &:checked{
+                + label:before{
+                    @include fa("\f00d");
+                }
+                ~ nav{
+                    display: flex !important;
+                }
+            }
+        }
+        label{
+            @extend  .fa;
+            @extend  .fs15;
+            @extend  .r;
+            @extend  .jc;
+            @extend  .ac;
+            @extend  .hp;
+            @extend  .hc;
+            @extend  .cw;
+            @extend  .tdn;
+            &:before{
+                @include fa("\f0c9");
+            }
+        }
+    }
+    nav{
+        @extend .dnml;
+        @extend .m0;
+        @extend .r;
+        @extend .jfe;
+        @extend .ac;
+        @extend .w75;
+        @extend .mr4;
+        @extend .lsn;
+        a{
+            @extend .hp;
+            @extend .hc;
+            @extend .cw;
+            @extend .r;
+            @extend .jc;
+            @extend .ac;
+            @extend .px2;
+            @extend .tdn;
         }
     }
 }
 
-
-@media only screen and (max-width: 900px) {
-    #main_header {
+@media only screen and (max-width: $lgScreen) {
+    header{
         justify-content: space-between !important;
-        background: rgba(28, 28, 37, 0.86);
-    }
-    #header_logo a img{
-        content:url("https://cloud.brilliantlabs.ca/images/BL_Flask_White.png") !important;
-        height: 45px !important;
-        margin-left: 1rem;
+        background: rgba(28, 28, 37, 0.86) !important;
+        > a img{
+            content:url("/images/BL_Flask_White.png") !important;
+            height: 45px !important;
+            margin-left: 1rem;
+        }
     }
 }

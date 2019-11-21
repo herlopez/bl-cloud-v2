@@ -1,63 +1,59 @@
 include main
-
-
 doctype html
 html
-    +head("Brilliant Labs Cloud")
+    +head("Discover the Ultimate IoT Cloud | Brilliant Labs")
     body#page_front
         +header()
-        #f1.w100.c.jfs.ac
-            .c.jfs.ac.mw60.p0.h80.mt5
-                
-                .r.jc.acfe.w100
-                    h1.mb3 CLOUD
-                    img(src="/images/BL_Flask_White.png", alt="Brilliant Labs logo In the center of a heart formed by electric circuits" id="beaker")                    
-                .heart_img.c.jfs.ac.w50
-                    img.w80(src="/images/Circuits_Heart_sm.png", alt="Brilliant Labs logo In the center of a heart formed by electric circuits")
-                    
-                .c.jc.ac
-                    button.p0.mt6
-                        a(href="/app/") Get Started
-        #f2.w100.c.jfs.ac
-            h2.mt4 What is the Brilliant Labs Cloud?
-            #f2_content.rxl.w100.p2
-                .c.p4.jc.ac
-                    h3.m0.mb2.w100  A place where Makers come to Connect.  
-                    p.m0.mt2.fk The Brilliant Labs Cloud empowers makers and students to collect data and control their b.Board powered IoT (Internet of Things) devices.  Students and makers can leverage HTTPS, MQTT, and WebSockets to develop real time IoT devices and collect a variety of sensor data for Big or Open Data projects. 
+        main(role="main")
+            section
+                .c.jfs.ac.mw60.p0.h80.mt5
+                    .r.jc.afs.w100
+                        h1(style="color: #F3B820;").m3.fs5.tac CLOUD
+                        img.dnml(src="/images/BL_Flask_White.png", alt="Brilliant Labs logo In the center of a heart formed by electric circuits" style="height: 6rem;")
                     .c.jc.ac
-                        button.p0.m0.w100
+                        img.mt5.w100(style="max-width: 350px;" src="/images/Circuits_Heart_sm.png", alt="Brilliant Labs logo In the center of a heart formed by electric circuits")
+                    .c.jc.ac.mb6
+                        button.p0.mt5.mb5
                             a(href="/app/") Get Started
-                .c.jc.ac.w100
-                    img.h100(src = "/images/devices4_angle.png" width="750" height="474" alt="Brilliant Labs platform displayed on multiple devices")
-        #f3.w100.c.jfs.ac
-            h2.mt4.p2 Experience the Power of the b.Board.    
-            .rxl.w100
-                .c.p0.jc.ac
-                    img(src = "/images/bBoard_w_clicks_sm.png" height="400" alt="Brilliant Labs b.Board device")
-                .c.p4.jc.ac
-                    h3.m0.mb2.w100 The b.Board
-                    p.m0.mt2.fk The b.Board is an open-source development board for the micro:bit, and CPX, giving you the option of connecting thousands of different Clickboard<sup>TM</sup> sensors and module combinations.  It’s block-based or JavaScript IDE makes the b.Board the perfect rapid prototyping solution for makers and students of all ages and abilities. 
-
+            section
+                h2 What is the Brilliant Labs Cloud?
+                .rrxl.fdr.w100.p2
+                    .c.p5.jc.ac
+                        h3  A place where Makers come to Connect.
+                        p The Brilliant Labs Cloud empowers makers and students to collect data and control their b.Board powered IoT (Internet of Things) devices.  Students and makers can leverage HTTPS, MQTT, and WebSockets to develop real time IoT devices and collect a variety of sensor data for Big or Open Data projects.
+                        .c.jc.ac
+                            button.p0.m0
+                                a(href="/app/") Get Started
+                    .c.jc.ac.miw60.my5
+                        img.w100.mw80(src = "/images/devices4_angle.png" alt="Brilliant Labs platform displayed on multiple devices")
+            section
+                h2 Experience the Power of the b.Board.
+                .rxl.w100.p2
+                    .c.p0.jc.ac.m5
+                        img(src = "/images/bBoard_w_clicks_sm.png" height="400" alt="Brilliant Labs b.Board device")
+                    .c.p4.jc.ac.mxa
+                        h3 The b.Board
+                        p(style="max-width:700px;") The b.Board is an open-source development board for the micro:bit, and CPX, giving you the option of connecting thousands of different Clickboard<sup>TM</sup> sensors and module combinations.  It’s block-based or JavaScript IDE makes the b.Board the perfect rapid prototyping solution for makers and students of all ages and abilities.
+                        .c.jc.ac
+                            button.p0.m0
+                                a(href="https://www.brilliantlabs.ca/bboard") Get The b.Board
+            section
+                h2 How does it all work?
+                .rml.jc.ac.fww
                     .c.jc.ac
-                        button.p0.m0
-                            a(href="https://www.brilliantlabs.ca/bboard") Get The b.Board
-        #f4.w100.c.jfs.ac
-            h2.mt4 How does it all work?
-            #f4_cc.r.w100.jc.ac
-                .f4_content.c.jc.ac
-                    #f4_text.c.jfs.ac.w100
-                        h3.m0.mb2.w100.tac Connect
-                        p.m0.mb2.w100.tac.fk Connect your b.Board powered IoT device to the Cloud through an Internet Connection using a WiFi BLE Clickboard<sup>TM</sup>.
-                    img.m4(src = "/images/wifi.png" alt="IoT device connected to the cloud")
-                .f4_content.c.jc.ac
-                    #f4_text.c.jfs.ac.w100
-                        h3.m0.mb2.w100.tac Transfer
-                        p.m0.mb2.w100.tac.fk Send or Receive Data from your b.Board powered IoT device to the Cloud using a using HTTPS, MQTT, or WebSockets.
+                        .c.jfs.ac.mwxs.m4
+                            h3 Connect
+                            p Connect your b.Board <powered></powered> IoT device to the Cloud through an Internet Connection using a WiFi BLE Clickboard<sup>TM</sup>.
+                        img.m4(width = "150" src = "/images/wifi.png" alt="IoT device connected to the cloud")
+                    .c.jc.ac
+                        .c.jfs.ac.mwxs.m4
+                            h3 Transfer
+                            p Send or Receive Data from your b.Board powered IoT device to the Cloud using a using HTTPS, MQTT, or WebSockets.
 
-                    img.m4(src = "/images/database.png" alt="The cloud receiving or sending data to the IoT device")
-                .f4_content.c.jc.ac
-                    #f4_text.c.jfs.ac.w100
-                        h3.m0.mb2.w100.tac Visualize
-                        p.m0.mb2.w100.tac.fk Visualise Data and Control our device from the Cloud.
-                    img.m4(src = "/images/home.png" alt="Control and visualise data from the IoT device on the cloud")
+                        img.m4(width = "150" src = "/images/database.png" alt="The cloud receiving or sending data to the IoT device")
+                    .c.jc.ac
+                        .c.jfs.ac.mwxs.m4
+                            h3 Visualize
+                            p Visualise Data and Control our device from the Cloud.
+                        img.m4(width = "150" src = "/images/home.png" alt="Control and visualise data from the IoT device on the cloud")
         +footer()

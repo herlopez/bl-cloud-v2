@@ -1,85 +1,27 @@
 mixin header()
-    header#main_header.r.jsb.ac.w100.h5r
-        #header_logo.r.jfs.w25.ml4
-            a(href="https://brilliantlabs.ca" target="_blank")
-                img.ml2(src = "/images/brilliant-labs-logo-white.svg")
-        ul.dnml.m0.r.jfe.ac.w75.mr4.lsn
-            li
-                a.hp.hc.cw.r.jc.ac.px2.tdn(href="/") &nbspHOME
-            li
-                a.hp.hc.cw.r.jc.ac.px2.tdn(target="_blank" href="https://bboard.now.sh/") &nbspCODE
-            li
-                a.hp.hc.cw.r.jc.ac.px2.tdn(target="_blank" href="http://projects.brilliantlabs.ca/projects-list/") &nbspPROJECTS
-            li
-                a.hp.hc.cw.r.jc.ac.px2.tdn(target="_blank" href="https://brilliantlabs.ca/") &nbspBRILLIANT LABS
-            li#sign_in_nav
-                a.hp.hc.cw.r.jc.ac.px2.tdn( href="/app/") &nbspSIGN IN
+    header
+        a(href="https://brilliantlabs.ca" target="_blank")
+            img(src = "/images/brilliant-labs-logo-white.svg")
+        nav
+            a(href="/") &nbspHOME
+            a(target="_blank" href="https://bboard.now.sh/") &nbspCODE
+            a(target="_blank" href="http://projects.brilliantlabs.ca/projects-list/") &nbspPROJECTS
+            a(target="_blank" href="https://brilliantlabs.ca/") &nbspBRILLIANT LABS
+            a#sign_in_nav( href="/app/") &nbspSIGN IN
         img.profile-image.dnml.ml5.c.ac.jc.dn#profile_image(src = "/images/empty-avatar.png")
-        ul.dfml.jc.ac.py5.mr4.lsn
-            li
-                input#ham.dn(name="ham" type="checkbox")
-                label#ham_label.fa.fs15.fa-bars.r.jc.ac.hp.hc.cw.tdn(for="ham")
-
-
-    #mobile_dropdown.dn.w100.m0.cw.bs
-        .profile-image.ml5.c.ac.jc#profile_image
-        ul.c.jc.ac.m0.p0
-            li.r.jc.ac.hbs.hp.w90
-                a.r.cw.jc.tdn.ac(href="/") &nbspHOME
-            li.r.jc.ac.hbs.hp.w90
-                a.r.cw.jc.tdn.ac(target="_blank" href="https://bboard.now.sh/") &nbspCODE
-            li.r.jc.ac.hbs.hp.w90
-                a.r.cw.jc.tdn.ac(target="_blank" href="http://projects.brilliantlabs.ca/projects-list/") &nbspPROJECTS
-            li.r.jc.ac.hbs.hp.w90
-                a.r.cw.jc.tdn.ac(target="_blank" href="https://brilliantlabs.ca/") &nbspBRILLIANT LABS
-            li.r.jc.ac.hbs.hp.w90
-                a.r.cw.jc.tdn.ac(href="/app/") &nbspSIGN IN
-    script.
-        var checkbox = document.getElementById("ham");
-        var label = document.getElementById("ham_label");
-        var dropdownMenu = document.getElementById('mobile_dropdown');
-        var body = document.getElementById('site_header')
-        var frontPage = document.getElementById('page_front')
-        checkbox.addEventListener('change', function () {
-            if (this.checked) {
-                label.classList.remove('fa-bars');
-                label.classList.add('fa-times');
-                disable_scroll();
-                dropdownMenu.classList.remove('dn')
-            } else {
-                enable_scroll();
-                label.classList.remove('fa-times');
-                label.classList.add('fa-bars');
-                dropdownMenu.classList.add('dn');
+        div
+            input#ham(name="ham" type="checkbox")
+            label(for="ham")
+            nav
+                a(href="/") &nbspHOME
+                a(target="_blank" href="https://bboard.now.sh/") &nbspCODE
+                a(target="_blank" href="http://projects.brilliantlabs.ca/projects-list/") &nbspPROJECTS
+                a(target="_blank" href="https://brilliantlabs.ca/") &nbspBRILLIANT LABS
+                a(href="/app/") &nbspSIGN IN
+        script.
+            window.onresize = function () {
+                document.getElementById("ham").checked = false;
             }
-        });
-        window.addEventListener('resize', function () {
-            checkbox.checked = false;
-            dropdownMenu.classList.add('dn');
-            label.classList.remove('fa-times');
-            label.classList.add('fa-bars');
-        })
-        function preventDefault(e) {
-            e = e || window.event;
-            if (e.preventDefault)
-                e.preventDefault();
-            e.returnValue = false;
-        }
-
-        function theMouseWheel(e) {
-            preventDefault(e);
-        }
-
-        function disable_scroll() {
-            if (window.addEventListener) {
-                window.addEventListener('DOMMouseScroll', theMouseWheel, false);
+            window.onscroll = function () {
+                document.getElementById("ham").checked = false;
             }
-            window.onmousewheel = document.onmousewheel = theMouseWheel;
-        }
-
-        function enable_scroll() {
-            if (window.removeEventListener) {
-                window.removeEventListener('DOMMouseScroll', theMouseWheel, false);
-            }
-            window.onmousewheel = document.onmousewheel = null;
-        }

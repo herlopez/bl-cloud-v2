@@ -1,0 +1,41 @@
+footer{
+    background: rgba(0,0,0,0.5);
+    h1, h2, h3{
+        @extend .font1;
+    }
+    h2{
+        @extend .mt4;
+        @extend .tal;
+        @extend .px3;
+        @extend .fs3;
+        @extend .cw;
+    }
+    h3{
+        @extend .m0;
+        @extend .mb2;
+        @extend .cw;
+        @extend .fs2;
+        @extend .tac;
+    }
+    p{
+        @extend .m0;
+        @extend .mt2;
+        @extend .mb4;
+        @extend .cw;
+        @extend .fs15;
+        @extend .fw200;
+        @extend .tal;
+    }
+    button {
+        @extend .px4;
+        @extend .py2;
+        @extend .bgac;
+        @extend .fs15;
+        a {
+            @extend .px2;
+            @extend .py3;
+            @extend .cw;
+            @extend .tdn;
+        }
+    }
+}
