@@ -61,6 +61,10 @@ function input(parentElement, options = {}){
 
         let editButton = document.createElement('i');
         let closeButton = document.createElement('i');
+        editButton.setAttribute('onmouseover', 'edit = true');
+        editButton.setAttribute('onmouseleave', 'edit = false');
+        closeButton.setAttribute('onmouseover', 'edit = true');
+        closeButton.setAttribute('onmouseleave', 'edit = false');
         let classWatcher;
         let popupError;
         closeButton.classList = 'fa fa-times dn';
@@ -71,7 +75,9 @@ function input(parentElement, options = {}){
         inputContainer.appendChild(errorPopup);
         inputTag.disabled = true;
         let oldInputValue = inputTag.value;
+        let app = document.getElementById('app');
         function loaderMode(){
+            app.classList.add('hold');
             editButton.classList.remove('fa-pencil-alt');
             editButton.classList.remove('fa-check');
             editButton.classList.add('fa-loader');
@@ -79,6 +85,7 @@ function input(parentElement, options = {}){
             inputTag.disabled = true;
         }
         function editMode(){
+            app.classList.add('hold');
             editButton.classList.remove('fa-pencil-alt');
             editButton.classList.add('fa-check');
             editButton.classList.remove('fa-loader');
@@ -87,6 +94,7 @@ function input(parentElement, options = {}){
             errorPopup.classList.add('dn');
         }
         function pencilMode(){
+            app.classList.remove('hold');
             editButton.classList.add('fa-pencil-alt');
             editButton.classList.remove('fa-check');
             editButton.classList.remove('fa-loader');
@@ -97,6 +105,8 @@ function input(parentElement, options = {}){
 
 
         editButton.addEventListener('click', async () => {
+            app.classList.add('hold');
+
             if (editButton.classList.contains('fa-pencil-alt')) {
                 oldInputValue = inputTag.value;
                 editMode();

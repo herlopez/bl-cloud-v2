@@ -59,6 +59,14 @@ function messageProcessor(message, callback) {
             case 'NEW_VARIABLE_CB':
             case 'SET_VARIABLE_CB':
                 console.log("Message: ", message, currentView);
+                let app = document.getElementById('app');
+                if(app.classList.contains('hold') || edit){
+                    setTimeout(()=>{
+                        messageProcessor('SET_VARIABLE_CB', callback);
+
+                    });
+                    return;
+                }
                 if(currentView === 'dashboard'){
                     getProjects(currentUid);
                 }

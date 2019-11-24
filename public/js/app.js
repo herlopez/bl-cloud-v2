@@ -756,6 +756,10 @@ function input(parentElement, options = {}){
 
         let editButton = document.createElement('i');
         let closeButton = document.createElement('i');
+        editButton.setAttribute('onmouseover', 'edit = true');
+        editButton.setAttribute('onmouseleave', 'edit = false');
+        closeButton.setAttribute('onmouseover', 'edit = true');
+        closeButton.setAttribute('onmouseleave', 'edit = false');
         let classWatcher;
         let popupError;
         closeButton.classList = 'fa fa-times dn';
@@ -766,7 +770,9 @@ function input(parentElement, options = {}){
         inputContainer.appendChild(errorPopup);
         inputTag.disabled = true;
         let oldInputValue = inputTag.value;
+        let app = document.getElementById('app');
         function loaderMode(){
+            app.classList.add('hold');
             editButton.classList.remove('fa-pencil-alt');
             editButton.classList.remove('fa-check');
             editButton.classList.add('fa-loader');
@@ -774,6 +780,7 @@ function input(parentElement, options = {}){
             inputTag.disabled = true;
         }
         function editMode(){
+            app.classList.add('hold');
             editButton.classList.remove('fa-pencil-alt');
             editButton.classList.add('fa-check');
             editButton.classList.remove('fa-loader');
@@ -782,6 +789,7 @@ function input(parentElement, options = {}){
             errorPopup.classList.add('dn');
         }
         function pencilMode(){
+            app.classList.remove('hold');
             editButton.classList.add('fa-pencil-alt');
             editButton.classList.remove('fa-check');
             editButton.classList.remove('fa-loader');
@@ -792,6 +800,8 @@ function input(parentElement, options = {}){
 
 
         editButton.addEventListener('click', async () => {
+            app.classList.add('hold');
+
             if (editButton.classList.contains('fa-pencil-alt')) {
                 oldInputValue = inputTag.value;
                 editMode();
@@ -961,8 +971,9 @@ function setDefaultProfile(){
 function windowSwitcher(targetWindow, options) {
     console.log('targetWindow: ', targetWindow);
     let window = document.getElementById('window');
-
+    let app = document.getElementById('app');
     function windowHide() {
+        app.classList.remove('hold');
         window.classList.remove('cr');
         window.classList.remove('ac');
         window.classList.remove('jc');
@@ -971,6 +982,7 @@ function windowSwitcher(targetWindow, options) {
     }
 
     function windowShow() {
+        app.classList.add('hold');
         window.classList.add('cr');
         window.classList.add('ac');
         window.classList.add('jc');
@@ -1795,6 +1807,14 @@ function messageProcessor(message, callback) {
             case 'NEW_VARIABLE_CB':
             case 'SET_VARIABLE_CB':
                 console.log("Message: ", message, currentView);
+                let app = document.getElementById('app');
+                if(app.classList.contains('hold') || edit){
+                    setTimeout(()=>{
+                        messageProcessor('SET_VARIABLE_CB', callback);
+
+                    });
+                    return;
+                }
                 if(currentView === 'dashboard'){
                     getProjects(currentUid);
                 }
@@ -1968,6 +1988,7 @@ function projectSearch() {
 let currentProjectData ;
 // Populate the content of a project.
 function paintProject(data){
+
     currentProjectData = data;
     switch (projectTab) {
         case 'dashboard':
@@ -2094,50 +2115,18 @@ function paintVariableTab(data){
         };
         project.innerHTML = `
         <div style="" class="w100 c ac">
- 
             <div style="height: 100%; overflow: visible;" class="w100 rxl ac jc">
-                        <div id="variables" class="m1 variables c jfs ac w100xl"> 
-                            <h3 class="mb2 w100" style="text-align: center;">Variables </h3>
-                            <div class="r afe jfs">
-                                <button class="fa fa-plus" onclick="windowSwitcher('new_variable')"></button>
-                                <button onclick="editVariables()" style="padding: 8px 30px;" class="m0 p0 fa fa-pencil-alt" id = "var_button" onclick=""></button>
-                             </div>
-                            <!--<div class="r jc ac">-->
-                                <!--<i class="mr1 fa fa-search"></i>-->
-                                <!--<input type="search" id="variable-search">-->
-                            <!--</div>-->
-                        </div>
+                <div id="variables" class="m1 variables c jfs ac w100xl"> 
+                    <h3 class="mb2 w100" style="text-align: center;">Variables </h3>
+                    <div class="r afe jfs">
+                        <button class="fa fa-plus" onclick="windowSwitcher('new_variable')"></button>
+                        <button onclick="editVariables()" style="padding: 8px 30px;" class="m0 p0 fa fa-pencil-alt" id = "var_button" onclick=""></button>
+                     </div>
+                        
+                </div>
                       
-                    </div>
-                </div>`;
-        // project.innerHTML = `
-        //                 <div style="" class="w100 c ac">
-        //                 <h1 style="" class="m0">${data.name}</h1>
-        //                 <h3 style="">${data.description}</h3>
-        //                 <div class="r js ac">
-        //                     <h4>Project Key: </h4>
-        //                      <input class="ml2" id="project_key" value="${data.key}" disabled>
-        //                 </div>
-        //
-        //                 <div style="height: 100%; overflow: visible;" class="w100 rxl ac jc">
-        //                     <div id="variables" class="m1 variables c jfs ac w100xl">
-        //                         <h3 class="mb0">Variables <button class="fa fa-plus" onclick="windowSwitcher('new_variable')"></button><button onclick="editVariables()" style="padding: 8px 30px;" class="m0 p0 fa fa-pencil-alt" id = "var_button" onclick=""></button></h3>
-        //                         <!--<div class="r jc ac">-->
-        //                             <!--<i class="mr1 fa fa-search"></i>-->
-        //                             <!--<input type="search" id="variable-search">-->
-        //                         <!--</div>-->
-        //                     </div>
-        //                     <div id="charts" class="m1 charts c jfs ac w100xl">
-        //                         <h3 class="mb0">Charts</h3>
-        //                         <p style="background: #9b55a3; color: white; border-radius: 20px; padding: 5px 40px;">No Charts 🙁</p>
-        //                         <!--<div class="r jc ac">-->
-        //                             <!--<i class="mr1 fa fa-search"></i>-->
-        //                             <!--<input type="search" id="variable-search">-->
-        //                         <!--</div>-->
-        //                     </div>
-        //                 </div>
-        //             </div>`;
-
+            </div>
+        </div>`;
         document.getElementById('content_box').appendChild(project);
         let variables = document.getElementById('variables');
         let vars = data.variables;
@@ -2148,6 +2137,8 @@ function paintVariableTab(data){
             }
             let newVar = document.createElement('div');
             newVar.id = "var_" + variable;
+            newVar.setAttribute('onmouseover', 'edit = true');
+            newVar.setAttribute('onmouseleave', 'edit = false');
             newVar.innerHTML = `
 
                 <div class="variable r mt4" id = "${variable}">
@@ -2234,9 +2225,7 @@ function createVariable(name, uid){
 
 function updateProject(project, id){
     let variables = document.getElementById('variables');
-    if(variables.classList.contains('hold')){
-        return;
-    }
+
     let vars = project.variables;
     let count = 0;
     for(var variable in vars){
@@ -2247,6 +2236,8 @@ function updateProject(project, id){
         let newVar = document.getElementById( "var_" + variable);
         newVar.setAttribute('onmouseover', "document.getElementById('variables').classList.add('hold');");
         newVar.setAttribute('onmouseleave', "document.getElementById('variables').classList.remove('hold');");
+        newVar.setAttribute('onmouseover', 'edit = true');
+        newVar.setAttribute('onmouseleave', 'edit = false');
         newVar.innerHTML = `
                 <div class="variable r mt4" id = "${variable}">
                     <input disabled class="name-input" style ="min-width: 100px; max-width: 100px;"id = "var_name_${variable}" value ="${variable}">
@@ -2339,6 +2330,7 @@ function variableEdit(id, key = null){
     button.classList.add('fa-check');
     button.classList.add('double-button');
     button.style.color = 'green';
+
     button.removeAttribute('onClick');
 
     // Add a click listener in the event that the save (check mark) button is clicked.

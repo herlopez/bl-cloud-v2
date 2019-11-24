@@ -62,6 +62,7 @@ function input(parentElement) {
 
   if (options.edit === true) {
     var loaderMode = function loaderMode() {
+      app.classList.add('hold');
       editButton.classList.remove('fa-pencil-alt');
       editButton.classList.remove('fa-check');
       editButton.classList.add('fa-loader');
@@ -70,6 +71,7 @@ function input(parentElement) {
     };
 
     var editMode = function editMode() {
+      app.classList.add('hold');
       editButton.classList.remove('fa-pencil-alt');
       editButton.classList.add('fa-check');
       editButton.classList.remove('fa-loader');
@@ -79,6 +81,7 @@ function input(parentElement) {
     };
 
     var pencilMode = function pencilMode() {
+      app.classList.remove('hold');
       editButton.classList.add('fa-pencil-alt');
       editButton.classList.remove('fa-check');
       editButton.classList.remove('fa-loader');
@@ -88,6 +91,10 @@ function input(parentElement) {
 
     var editButton = document.createElement('i');
     var closeButton = document.createElement('i');
+    editButton.setAttribute('onmouseover', 'edit = true');
+    editButton.setAttribute('onmouseleave', 'edit = false');
+    closeButton.setAttribute('onmouseover', 'edit = true');
+    closeButton.setAttribute('onmouseleave', 'edit = false');
     var classWatcher;
     var popupError;
     closeButton.classList = 'fa fa-times dn';
@@ -98,6 +105,7 @@ function input(parentElement) {
     inputContainer.appendChild(errorPopup);
     inputTag.disabled = true;
     var oldInputValue = inputTag.value;
+    var app = document.getElementById('app');
     editButton.addEventListener('click',
     /*#__PURE__*/
     _asyncToGenerator(
@@ -108,21 +116,23 @@ function input(parentElement) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
+              app.classList.add('hold');
+
               if (!editButton.classList.contains('fa-pencil-alt')) {
-                _context.next = 5;
+                _context.next = 6;
                 break;
               }
 
               oldInputValue = inputTag.value;
               editMode();
-              _context.next = 27;
+              _context.next = 28;
               break;
 
-            case 5:
+            case 6:
               console.log("Options", options);
 
               if (!options.hasOwnProperty('onSave')) {
-                _context.next = 26;
+                _context.next = 27;
                 break;
               }
 
@@ -136,12 +146,12 @@ function input(parentElement) {
                   popupError.classList.add('dn');
                 });
               }, 4000);
-              _context.prev = 8;
+              _context.prev = 9;
               loaderMode();
-              _context.next = 12;
+              _context.next = 13;
               return options.onSave();
 
-            case 12:
+            case 13:
               if (!options.manualClass) {
                 popupError = inputContainer.querySelector('.error-popup');
                 popupError.innerHTML = '<i class="pr3 fa fa-check"></i> <p></p>';
@@ -195,12 +205,12 @@ function input(parentElement) {
                 }, 100);
               }
 
-              _context.next = 24;
+              _context.next = 25;
               break;
 
-            case 15:
-              _context.prev = 15;
-              _context.t0 = _context["catch"](8);
+            case 16:
+              _context.prev = 16;
+              _context.t0 = _context["catch"](9);
               inputTag.value = oldInputValue;
               pencilMode();
 
@@ -218,19 +228,19 @@ function input(parentElement) {
               inputTag.classList.remove('error');
               clearInterval(classWatcher);
 
-            case 24:
-              _context.next = 27;
+            case 25:
+              _context.next = 28;
               break;
 
-            case 26:
+            case 27:
               pencilMode();
 
-            case 27:
+            case 28:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee, null, [[8, 15]]);
+      }, _callee, null, [[9, 16]]);
     })));
     closeButton.addEventListener('click', function () {
       pencilMode();

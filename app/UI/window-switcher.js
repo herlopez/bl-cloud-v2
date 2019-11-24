@@ -2,8 +2,9 @@
 function windowSwitcher(targetWindow, options) {
     console.log('targetWindow: ', targetWindow);
     let window = document.getElementById('window');
-
+    let app = document.getElementById('app');
     function windowHide() {
+        app.classList.remove('hold');
         window.classList.remove('cr');
         window.classList.remove('ac');
         window.classList.remove('jc');
@@ -12,6 +13,7 @@ function windowSwitcher(targetWindow, options) {
     }
 
     function windowShow() {
+        app.classList.add('hold');
         window.classList.add('cr');
         window.classList.add('ac');
         window.classList.add('jc');
