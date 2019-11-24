@@ -4,7 +4,10 @@
     <list default="true" id="f8dc789a-0ee8-4036-b494-978e5ba3fd15" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/main.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sass/_app.scss" beforeDir="false" afterPath="$PROJECT_DIR$/sass/_app.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/project.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/project.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/projects.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/projects.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sass/_header.scss" beforeDir="false" afterPath="$PROJECT_DIR$/sass/_header.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sass/_layout.scss" beforeDir="false" afterPath="$PROJECT_DIR$/sass/_layout.scss" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -191,7 +194,8 @@
       <workItem from="1574227226304" duration="6997000" />
       <workItem from="1574281459755" duration="7967000" />
       <workItem from="1574351846057" duration="70000" />
-      <workItem from="1574351935255" duration="13979000" />
+      <workItem from="1574351935255" duration="14579000" />
+      <workItem from="1574543776512" duration="1656000" />
     </task>
     <task id="LOCAL-00001" summary="=MQTT Implementation">
       <created>1568726588352</created>

@@ -1,4 +1,3 @@
-@charset "UTF-8";
 #app {
   background-image: url("/images/space2.jpg.png"), -webkit-gradient(linear, left top, right bottom, from(#f7f7fc), to(#dbe9ee));
   background-image: url("/images/space2.jpg.png"), linear-gradient(to bottom right, #f7f7fc, #dbe9ee);
@@ -1581,9 +1580,10 @@ header > div input:checked + label:before {
   font-style: normal;
   font-variant: normal;
   text-rendering: auto;
+  content: "\f00d";
+  font-weight: 900;
   -webkit-font-smoothing: antialiased;
-  font-family: "Font Awesome 5 Free";
-  content: ""; }
+  font-family: "Font Awesome 5 Free"; }
 
 header > div input:checked ~ nav {
   display: -webkit-box !important;
@@ -1595,9 +1595,10 @@ header > div label:before {
   font-style: normal;
   font-variant: normal;
   text-rendering: auto;
+  content: "\f0c9";
+  font-weight: 900;
   -webkit-font-smoothing: antialiased;
-  font-family: "Font Awesome 5 Free";
-  content: ""; }
+  font-family: "Font Awesome 5 Free"; }
 
 @media only screen and (max-width: 1080px) {
   header {

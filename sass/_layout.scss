@@ -1198,9 +1198,11 @@ $font3: Roboto, Helvetica Neue, Helvetica, Arial, sans-serif;
     font-style: normal;
     font-variant: normal;
     text-rendering: auto;
+    content: unquote("\"#{$icon}\"");
+    font-weight: 900;
     -webkit-font-smoothing: antialiased;
     font-family: "Font Awesome 5 Free";
-    content: $icon;
 }
+
 
 
