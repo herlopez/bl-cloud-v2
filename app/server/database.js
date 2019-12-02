@@ -110,7 +110,6 @@ function updateWidget(msg, uid){
     return {cmd:"UPDATE_WIDGET", result:project};
 
 }
-
 function addWidget(msg, uid){
 
     // Make sure that the project exist in the database for the user making the request.
