@@ -61,18 +61,15 @@ function paintDashboardTab(data){
                         display = "none";
                         mb = '';
                     }
-
-                    let range = Math.abs(widgets[widget].min) +  Math.abs(widgets[widget].max);
+                    let range = Math.abs(widgets[widget].min - widgets[widget].max);
                     let tic = 270/range;
-                    console.log(tic);
-                    let angle = Math.floor(tic * data['variables'][widgets[widget].variable]);
-                    console.log(angle);
+                    let angle = Math.floor(270/(range-data['variables'][widgets[widget].variable]));
+                    angle = ((data['variables'][widgets[widget].variable] - widgets[widget].min) * tic) - 135;
                     if(angle >  135) angle = 135;
                     if(angle <  -135) angle = -135;
-
                     div.innerHTML =
-                    `<h2 style="${mb}" id="h2Widget">${widgets[widget].title}</h2>` +
-                    `<h3 style="font-size:14px; display:${display};" class="m0 mb3 p0" id="widgetVariable">${widgets[widget].variable}</h3>` +
+                    `<h2 style="${mb}" id="">${widgets[widget].title}</h2>` +
+                    `<h3 style="font-size:14px; display:${display};" class="m0 mb3 p0" id="">${widgets[widget].variable}</h3>` +
                     `<svg height="${200*mod}" width="${200*mod}">` +
                         `<circle cx= "${100*mod}" cy= "${100*mod}" r="${5*mod}" fill="#ffffff"/>` +
                         `<path fill="${widgets[widget].color1}" d="M${29.29*mod},${170.71*mod}           A ${100*mod} ${100*mod} 0 0 1 ${0*mod} ${102.5*mod}                 L ${20*mod} ${102.5*mod}               A ${80*mod} ${80*mod} 0 0 0 ${43.432*mod} ${156.568*mod}"/>` +
@@ -84,8 +81,8 @@ function paintDashboardTab(data){
                         `<path style="transform: rotate(${angle}deg); transform-origin: ${100*mod}px ${100*mod}px;" fill="#707070" d="M${95*mod},${110*mod} L ${105*mod} ${110*mod} L ${102*mod} ${95*mod} L ${100*mod} ${3*mod} L ${98*mod} ${95*mod}"/>`+
                     '</svg>' +
                     '<div style="transform: translateY(-25px);" class="r ac jc">' +
-                        `<h2 id="gauge_min_value" style="width: 140px; font-size: 16px;" class="m0 mr5 r ac jc" >${widgets[widget].min}</h2>` +
-                        `<h2 id="gauge_max_value" style="width: 140px; font-size: 16px;" class="m0 ml5 r ac jc" >${widgets[widget].max}</h2>` +
+                        `<h2 id="" style="width: 140px; font-size: 16px;" class="m0 mr5 r ac jc" >${widgets[widget].min}</h2>` +
+                        `<h2 id="" style="width: 140px; font-size: 16px;" class="m0 ml5 r ac jc" >${widgets[widget].max}</h2>` +
                     '</div>'+
                     '<div style="transform: translateY(-40px);" class="r ac jc">'+
                         `<h1>${data['variables'][widgets[widget].variable]}${widgets[widget].units}</h1>` +
@@ -99,8 +96,8 @@ function paintDashboardTab(data){
                     }
 
                     div.innerHTML =
-                    `<h2 style="${mb}" id="h2Widget">${widgets[widget].title}</h2>` +
-                    `<h3 style="font-size:14px; display:${display};" id="widgetVariable" class="m0 mb3 p0">${widgets[widget].variable}</h3>` +
+                    `<h2 style="${mb}" id="">${widgets[widget].title}</h2>` +
+                    `<h3 style="font-size:14px; display:${display};" id="" class="m0 mb3 p0">${widgets[widget].variable}</h3>` +
                     '<div style="" class="r ac jc">' +
                     `<h1 style = " font-size: 5rem; margin: 0; margin-bottom: 1rem;" >${data['variables'][widgets[widget].variable]}</h1>` +
                     `<h1 style = " font-size: 5rem; margin: 0; margin-bottom: 1rem;"  class="m0">${widgets[widget].units}</h1>` +
@@ -133,7 +130,7 @@ function paintVariableTab(data){
                     <h3 class="mb2 w100" style="text-align: center;">Variables </h3>
                     <div class="r afe jfs">
                         <button class="fa fa-plus" onclick="windowSwitcher('new_variable')"></button>
-                        <button onclick="editVariables()" style="padding: 8px 30px;" class="m0 p0 fa fa-pencil-alt" id = "var_button" onclick=""></button>
+                        <button onclick="editVariables()" style="padding: 8px 30px;" class="m0 p0 fa fa-trash-alt" id = "var_button" onclick=""></button>
                      </div>
                         
                 </div>
@@ -185,24 +182,30 @@ function paintChartsTab(data){
 // Settings Tab.
 function paintSettingsTab(data){
     let contentBox = document.getElementById('content_box');
-    console.log(contentBox);
-    contentBox.innerHTML =
-        `<div id= "PROJECT_SETTINGS_TAB" class="p3 m0 ml1 c">` +
-            `<h2 style='color: White;'>Your Project Key: </h2>` +
-            `<div class="r ac">`+
-                `<input class="m0"  disabled value=" ${currentProjectData.key}">` +
-                `<button onclick="copyToClip('${currentProjectData.key}')" style="color: white;" class="fa fa-copy mx2"></button>` +
-                `<button onclick="windowSwitcher('newKey')" title= "Generate New Project Key" style="color: white; background: #8c2726;" class="fa fa-redo mx0"></button>` +
-                `<p id="clip_message" style="transition: all 4s ease-in-out; color:orange; transform: translateY(20px); " class="ml3 dn">Copied to Clipboard!</p>` +
-            `</div>`+
-            `<div class="c">` +
-                `<div id="project_settings_project_name"><h2 style='color: White;'>Project Name: </h2></div>` +
-                `<div id="project_settings_project_desc"><h2 style='color: White;'>Project Description: </h2></div>` +
-            "</div>" +
-            `<div class=\"r ac\">` +
-                `<button onclick="windowSwitcher('deleteProject')" style="background: #8c2726;" class="ml0 mt4">Delete Project</button>` +
-            `</div>` +
-        `</div>`;
+    contentBox.innerHTML = `
+        <div id= "PROJECT_SETTINGS_TAB" class="p3 m0 ml1 c">
+            <h1 class="mb1 cw">Project Settings</h1>
+            <hr class="w100">
+            <div class="r">
+                <h2 class="cw mb3">Your Project Key: </h2>
+            </div>
+            <div class="r ac fww">
+                <input class="m0"  disabled value=" ${currentProjectData.key}">
+                <button onclick="copyToClip('${currentProjectData.key}')" style="color: white;" class="fa fa-copy my2 mx2"></button>
+                <button onclick="windowSwitcher('newKey')" title= "Generate New Project Key" style="color: white; background: #8c2726;" class="fa fa-redo mb0 my2 mx0"></button>
+                <p id="clip_message" style="transition: all 4s ease-in-out; color:orange; transform: translateY(20px); " class="ml3 dn">Copied to Clipboard!</p>
+            </div>
+            <div id="project_settings_project_name" class="">
+                <h2 class="cw mb3">Project Name: </h2>
+            </div>
+            <div id="project_settings_project_desc" class="">
+                <h2 class="cw mb3">Project Description: </h2>
+            </div>
+            <div class="r ac">
+                <button onclick="windowSwitcher('deleteProject')" style="background: #8c2726;" class="ml0 mt4">Delete Project</button>
+            </div>
+        </div>`;
+
         let projectName = input(document.getElementById('project_settings_project_name'), {
             type: 'text',
             edit: true,

@@ -1,6 +1,11 @@
 #app {
     background-image: url("/images/space2.jpg.png"), linear-gradient(to bottom right, #f7f7fc, #dbe9ee);
     background-size: cover;
+    button{
+        &:hover{
+            transform: translateY(0) !important;
+        }
+    }
     header{
         background: #1C1C25;
         font-family: "Futura", sans-serif;

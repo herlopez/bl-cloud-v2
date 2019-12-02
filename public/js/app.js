@@ -972,6 +972,7 @@ function windowSwitcher(targetWindow, options) {
     console.log('targetWindow: ', targetWindow);
     let window = document.getElementById('window');
     let app = document.getElementById('app');
+
     function windowHide() {
         app.classList.remove('hold');
         window.classList.remove('cr');
@@ -1124,34 +1125,43 @@ function windowSwitcher(targetWindow, options) {
 
 
         case 'gauge':
+
             windowShow();
+
+            // Create the root element for the gauge.
             let gaugeSettings = document.createElement('div');
             gaugeSettings.id = 'window_content_block';
-            let mod2 = 1;
             gaugeSettings.classList.add('widget-gauge-settings');
+
+            // Scale of the gauge.
+            let scale = 1;
+
+            // The content of the window.
             let content =
-                `<div class="c ac jc">` +
-                '<h2 class=" mb1"  id="gauge_title">Gauge</h2>' +
-                '<h3 class="m0" style="font-size: 0.8rem;" id="variable_title"></h3>' +
-                `<svg class="mt2" height="${200 * mod2}" width="${200 * mod2}">` +
-                `<circle cx= "${100 * mod2}" cy= "${100 * mod2}" r="${5 * mod2}" fill="#ffffff"/>` +
-                `<path id="gauge_color_1" fill="#0D790A" d="M${29.29 * mod2},${170.71 * mod2}           A ${100 * mod2} ${100 * mod2} 0 0 1 ${0 * mod2} ${102.5 * mod2}                 L ${20 * mod2} ${102.5 * mod2}               A ${80 * mod2} ${80 * mod2} 0 0 0 ${43.432 * mod2} ${156.568 * mod2}"/>` +
-                `<path id="gauge_color_2" fill="#0D790A" d="M${0 * mod2},${97.5 * mod2}                 A ${100 * mod2} ${100 * mod2} 0 0 1 ${27.592735 * mod2} ${31.12827 * mod2}      L ${41.6915 * mod2} ${45.227 * mod2}         A ${80 * mod2} ${80 * mod2} 0 0 0 ${20 * mod2} ${97.5 * mod2} "/>` +
-                `<path id="gauge_color_3" fill="#F3B820" d="M${31.05709 * mod2}, ${27.521555 * mod2}    A ${100 * mod2} ${100 * mod2} 0 0 1 ${97.5 * mod2} ${0 * mod2}                  L ${97.5 * mod2} ${20 * mod2}                A ${80 * mod2} ${80 * mod2} 0 0 0 ${45.226855 * mod2} ${41.6915 * mod2}"/>` +
-                `<path id="gauge_color_4" fill="#F3B820" d="M${102.5 * mod2},${0 * mod2}                A ${100 * mod2} ${100 * mod2} 0 0 1 ${168.94291 * mod2} ${27.521555 * mod2}     L ${154.773145 * mod2} ${41.6915 * mod2}     A ${80 * mod2} ${80 * mod2} 0 0 0 ${102.5 * mod2} ${20 * mod2}"/>` +
-                `<path id="gauge_color_5" fill="#D20303" d="M${172.407265 * mod2},${31.12827 * mod2}    A ${100 * mod2} ${100 * mod2} 0 0 1 ${200 * mod2} ${97.5 * mod2}                L ${180 * mod2} ${97.5 * mod2}               A ${80 * mod2} ${80 * mod2} 0 0 0 ${158.3085 * mod2} ${45.227 * mod2}"/>` +
-                `<path id="gauge_color_6" fill="#D20303" d="M${200 * mod2},${102.5 * mod2}              A ${100 * mod2} ${100 * mod2} 0 0 1 ${170.71 * mod2} ${170.71 * mod2}           L ${156.568 * mod2} ${156.568 * mod2}        A ${80 * mod2} ${80 * mod2} 0 0 0 ${180 * mod2} ${102.5 * mod2}"/>` +
-                `<path style="transform-origin: ${100 * mod2}px ${100 * mod2}px;" fill="#707070" d="M${95 * mod2},${110 * mod2} L ${105 * mod2} ${110 * mod2} L ${102 * mod2} ${95 * mod2} L ${100 * mod2} ${3 * mod2} L ${98 * mod2} ${95 * mod2}"/>` +
-                '</svg>' +
-                '<div style="transform: translateY(-20px);" class="r ac jc">' +
-                '<h2 id="gauge_min_value" class="m0 mr5" >0</h2>' +
-                '<h2 id="gauge_max_value" class="m0 ml5" >100</h2>' +
-                '</div>' +
-                '<div style="transform: translateY(-40px);" class="r ac jc">' +
-                '<h1 id="value">50</h1>' +
-                '<h1 class="m0" id="units"></h1>' +
-                '</div>' +
-                '<div class="r mb3">Variable:&nbsp;';
+            `<div class="c ac jc">
+                <h2 class=" mb1"  id="gauge_title">Gauge</h2> 
+                <h3 class="m0" style="font-size: 0.8rem;" id="variable_title"></h3> 
+                <svg class="mt2" height="${200 * scale}" width="${200 * scale}">
+                    <circle cx= "${100 * scale}" cy= "${100 * scale}" r="${5 * scale}" fill="#ffffff"/>
+                    <path id="gauge_color_1" fill="#0D790A" d="M${29.29 * scale},${170.71 * scale}           A ${100 * scale} ${100 * scale} 0 0 1 ${0 * scale} ${102.5 * scale}                 L ${20 * scale} ${102.5 * scale}               A ${80 * scale} ${80 * scale} 0 0 0 ${43.432 * scale} ${156.568 * scale}"/>
+                    <path id="gauge_color_2" fill="#0D790A" d="M${0 * scale},${97.5 * scale}                 A ${100 * scale} ${100 * scale} 0 0 1 ${27.592735 * scale} ${31.12827 * scale}      L ${41.6915 * scale} ${45.227 * scale}         A ${80 * scale} ${80 * scale} 0 0 0 ${20 * scale} ${97.5 * scale} "/>
+                    <path id="gauge_color_3" fill="#F3B820" d="M${31.05709 * scale}, ${27.521555 * scale}    A ${100 * scale} ${100 * scale} 0 0 1 ${97.5 * scale} ${0 * scale}                  L ${97.5 * scale} ${20 * scale}                A ${80 * scale} ${80 * scale} 0 0 0 ${45.226855 * scale} ${41.6915 * scale}"/>
+                    <path id="gauge_color_4" fill="#F3B820" d="M${102.5 * scale},${0 * scale}                A ${100 * scale} ${100 * scale} 0 0 1 ${168.94291 * scale} ${27.521555 * scale}     L ${154.773145 * scale} ${41.6915 * scale}     A ${80 * scale} ${80 * scale} 0 0 0 ${102.5 * scale} ${20 * scale}"/>
+                    <path id="gauge_color_5" fill="#D20303" d="M${172.407265 * scale},${31.12827 * scale}    A ${100 * scale} ${100 * scale} 0 0 1 ${200 * scale} ${97.5 * scale}                L ${180 * scale} ${97.5 * scale}               A ${80 * scale} ${80 * scale} 0 0 0 ${158.3085 * scale} ${45.227 * scale}"/>
+                    <path id="gauge_color_6" fill="#D20303" d="M${200 * scale},${102.5 * scale}              A ${100 * scale} ${100 * scale} 0 0 1 ${170.71 * scale} ${170.71 * scale}           L ${156.568 * scale} ${156.568 * scale}        A ${80 * scale} ${80 * scale} 0 0 0 ${180 * scale} ${102.5 * scale}"/>
+                    <path style="transform-origin: ${100 * scale}px ${100 * scale}px;" fill="#707070" d="M${95 * scale},${110 * scale} L ${105 * scale} ${110 * scale} L ${102 * scale} ${95 * scale} L ${100 * scale} ${3 * scale} L ${98 * scale} ${95 * scale}"/>
+                </svg> 
+                <div style="transform: translateY(-20px);" class="r ac jc"> 
+                    <h2 id="gauge_min_value" class="m0 mr5" >0</h2> 
+                    <h2 id="gauge_max_value" class="m0 ml5" >100</h2> 
+                </div> 
+                <div style="transform: translateY(-40px);" class="r ac jc"> 
+                    <h1 id="value">50</h1> 
+                    <h1 class="m0" id="units"></h1> 
+                </div> 
+            <div class="r mb3">Variable:&nbsp;`;
+
+            // Build an list of options whereas the values are variables that are numbers.
             let validVariablesForGauge = `<option value="">Select a Variable</option>`;
             if (currentProjectData.hasOwnProperty('variables')) {
                 let variables = currentProjectData['variables'];
@@ -1163,13 +1173,14 @@ function windowSwitcher(targetWindow, options) {
                     }
                 }
             }
+
             gaugeSettings.innerHTML = content + '<select oninput="variableSettings()" id="variable_title_input">' + validVariablesForGauge +
                 '</select>&nbsp;Hide: <input id="gauge_variable_hide" oninput="gaugeHideVariableName()" style="width: 20px;" type="checkbox">' +
                 '</div>' +
                 '<div class="c jc afe p3 pt0">' +
                 '<div class="mb2">Title: <input id="gauge_title_input" onkeyup="gaugeSettingsTitle()" type="text" value="Gauge"></div>' +
-                '<div class="mb2">Min Value: <input type="number" oninput="minSettings(this)"  value="0"></div>' +
-                '<div class="mb2">Max Value: <input type="number" oninput="maxSettings(this)" value="100"></div>' +
+                '<div class="mb2">Min Value: <input type="number" onkeyup="minSettings(this)" onchange="minSettings(this)" value="0"></div>' +
+                '<div class="mb2">Max Value: <input type="number" onkeyup="maxSettings(this)" onchange="maxSettings(this)" value="100"></div>' +
                 '</div>' +
                 '<div class="r jc ac">' +
                 '<input id="color1" oninput="gaugeColorSettings(this, 1)"  style="background: transparent;" class="mx3" type="color" value="#0D790A">' +
@@ -1242,7 +1253,7 @@ function windowSwitcher(targetWindow, options) {
                 `</div>` +
                 '</div>';
             window.appendChild(gaugeSettings);
-            break;
+        break;
 
         case 'widget_selection':
             windowShow();
@@ -1252,57 +1263,59 @@ function windowSwitcher(targetWindow, options) {
             widgetSelection.classList.add('widget-selection');
             let mod = 0.7;
             console.log(currentKey);
-            widgetSelection.innerHTML = '<h2 class="mb0"> Add Widget</h2> <hr>' +
-
-                // Gauge
-                '<div class="r ac jc" style="flex-wrap: wrap; max-width: 1345px;">' +
-                '<div class="c ac jc">' +
-                '<button onclick="windowSwitcher(`gauge`)" class="bbutton">' +
-                `<svg height="${200 * mod}" width="${200 * mod}">` +
-                `<circle cx= "${100 * mod}" cy= "${100 * mod}" r="${5 * mod}" fill="#ffffff"/>` +
-                `<path fill="#0D790A" d="M${29.29 * mod},${170.71 * mod}           A ${100 * mod} ${100 * mod} 0 0 1 ${0 * mod} ${102.5 * mod}                 L ${20 * mod} ${102.5 * mod}               A ${80 * mod} ${80 * mod} 0 0 0 ${43.432 * mod} ${156.568 * mod}"/>` +
-                `<path fill="#0D790A" d="M${0 * mod},${97.5 * mod}                 A ${100 * mod} ${100 * mod} 0 0 1 ${27.592735 * mod} ${31.12827 * mod}      L ${41.6915 * mod} ${45.227 * mod}         A ${80 * mod} ${80 * mod} 0 0 0 ${20 * mod} ${97.5 * mod} "/>` +
-                `<path fill="#F3B820" d="M${31.05709 * mod}, ${27.521555 * mod}    A ${100 * mod} ${100 * mod} 0 0 1 ${97.5 * mod} ${0 * mod}                  L ${97.5 * mod} ${20 * mod}                A ${80 * mod} ${80 * mod} 0 0 0 ${45.226855 * mod} ${41.6915 * mod}"/>` +
-                `<path fill="#F3B820" d="M${102.5 * mod},${0 * mod}                A ${100 * mod} ${100 * mod} 0 0 1 ${168.94291 * mod} ${27.521555 * mod}     L ${154.773145 * mod} ${41.6915 * mod}     A ${80 * mod} ${80 * mod} 0 0 0 ${102.5 * mod} ${20 * mod}"/>` +
-                `<path fill="#D20303" d="M${172.407265 * mod},${31.12827 * mod}    A ${100 * mod} ${100 * mod} 0 0 1 ${200 * mod} ${97.5 * mod}                L ${180 * mod} ${97.5 * mod}               A ${80 * mod} ${80 * mod} 0 0 0 ${158.3085 * mod} ${45.227 * mod}"/>` +
-                `<path fill="#D20303" d="M${200 * mod},${102.5 * mod}              A ${100 * mod} ${100 * mod} 0 0 1 ${170.71 * mod} ${170.71 * mod}           L ${156.568 * mod} ${156.568 * mod}        A ${80 * mod} ${80 * mod} 0 0 0 ${180 * mod} ${102.5 * mod}"/>` +
-                `<path style="transform-origin: ${100 * mod}px ${100 * mod}px;" fill="#707070" d="M${95 * mod},${110 * mod} L ${105 * mod} ${110 * mod} L ${102 * mod} ${95 * mod} L ${100 * mod} ${3 * mod} L ${98 * mod} ${95 * mod}"/>` +
-                '</svg>' +
-                '</button>' +
-                '<h2>Gauge</h2>' +
-                '</div>' +
-
-                '  <div class="c ac jc">' +
-                `     <button onclick = "windowSwitcher('data')" class="bbutton"><div class="c"><h3>Temperature</h3><h1>24</h1><p>2019-10-26 12:48:01</p></div></button>` +
-                '     <h2>Data Block</h2>' +
-                '  </div>' +
-                '  <div class="c ac jc">' +
-                '     <button class="bbutton"><input class="slider" type="range"></button>' +
-                '     <h2>Slider</h2>' +
-                '  </div>' +
-                '  <div class="c ac jc">' +
-                '     <button class="bbutton"><div class="ct-chart-pie-widget"></div></button>' +
-                '     <h2>Pie Chart</h2>' +
-                '  </div>' +
-                '  <div class="c ac jc">' +
-                '     <button class="bbutton"><div class="ct-chart-line-chart-widget"></div></button>' +
-                '     <h2>Line Graph</h2>' +
-                '  </div>' +
-                '  <div class="c ac jc">' +
-                '     <button class="bbutton"><div class="ct-chart-scatter-chart-widget"></div></button>' +
-                '     <h2>Scatter Plot</h2>' +
-                '  </div>' +
-                '  <div class="c ac jc">' +
-                '     <button class="bbutton"><div class="mr3 ct-chart-histo-chart-widget"></div></button>' +
-                '     <h2>Bar Graph</h2>' +
-                '  </div>' +
-                '  <div class="c ac jc">' +
-                '     <button class="bbutton"></button>' +
-                '     <h2>Raw Data</h2>' +
-                '  </div>' +
-                `<button onclick="windowSwitcher('none')">Cancel</button>` +
-                '</div>' +
-                '';
+            widgetSelection.innerHTML = `
+            <h2 class="mb0">Add Widget</h2>
+            <hr>
+            <div class="c ac jc">
+                <div class="r ac jc" style="flex-wrap: wrap; max-width: 1345px;"> 
+                    <div class="c ac jc"> 
+                        <button onclick="windowSwitcher('gauge')" class="bbutton"> 
+                            <svg height="${200 * mod}" width="${200 * mod}">
+                                <circle cx= "${100 * mod}" cy= "${100 * mod}" r="${5 * mod}" fill="#ffffff"/>
+                                <path fill="#0D790A" d="M${29.29 * mod},${170.71 * mod}           A ${100 * mod} ${100 * mod} 0 0 1 ${0 * mod} ${102.5 * mod}                 L ${20 * mod} ${102.5 * mod}               A ${80 * mod} ${80 * mod} 0 0 0 ${43.432 * mod} ${156.568 * mod}"/>
+                                <path fill="#0D790A" d="M${0 * mod},${97.5 * mod}                 A ${100 * mod} ${100 * mod} 0 0 1 ${27.592735 * mod} ${31.12827 * mod}      L ${41.6915 * mod} ${45.227 * mod}         A ${80 * mod} ${80 * mod} 0 0 0 ${20 * mod} ${97.5 * mod} "/>
+                                <path fill="#F3B820" d="M${31.05709 * mod}, ${27.521555 * mod}    A ${100 * mod} ${100 * mod} 0 0 1 ${97.5 * mod} ${0 * mod}                  L ${97.5 * mod} ${20 * mod}                A ${80 * mod} ${80 * mod} 0 0 0 ${45.226855 * mod} ${41.6915 * mod}"/>
+                                <path fill="#F3B820" d="M${102.5 * mod},${0 * mod}                A ${100 * mod} ${100 * mod} 0 0 1 ${168.94291 * mod} ${27.521555 * mod}     L ${154.773145 * mod} ${41.6915 * mod}     A ${80 * mod} ${80 * mod} 0 0 0 ${102.5 * mod} ${20 * mod}"/>
+                                <path fill="#D20303" d="M${172.407265 * mod},${31.12827 * mod}    A ${100 * mod} ${100 * mod} 0 0 1 ${200 * mod} ${97.5 * mod}                L ${180 * mod} ${97.5 * mod}               A ${80 * mod} ${80 * mod} 0 0 0 ${158.3085 * mod} ${45.227 * mod}"/>
+                                <path fill="#D20303" d="M${200 * mod},${102.5 * mod}              A ${100 * mod} ${100 * mod} 0 0 1 ${170.71 * mod} ${170.71 * mod}           L ${156.568 * mod} ${156.568 * mod}        A ${80 * mod} ${80 * mod} 0 0 0 ${180 * mod} ${102.5 * mod}"/>
+                                <path style="transform-origin: ${100 * mod}px ${100 * mod}px;" fill="#707070" d="M${95 * mod},${110 * mod} L ${105 * mod} ${110 * mod} L ${102 * mod} ${95 * mod} L ${100 * mod} ${3 * mod} L ${98 * mod} ${95 * mod}"/>
+                            </svg> 
+                        </button> 
+                        <h2>Gauge</h2> 
+                    </div> 
+                    <div class="c ac jc">
+                        <button onclick = "windowSwitcher('data')" class="bbutton"><div class="c"><h3>Temperature</h3><h1>24</h1><p>2019-10-26 12:48:01</p></div></button>
+                        <h2>Data Block</h2>
+                    </div>
+                    <div class="c ac jc">
+                        <button class="bbutton"><input class="slider" type="range"></button>
+                        <h2>Slider</h2>
+                    </div>
+                    <div class="c ac jc">
+                        <button class="bbutton"><div class="ct-chart-pie-widget"></div></button>
+                        <h2>Pie Chart</h2>
+                    </div>
+                    <div class="c ac jc">   
+                        <button class="bbutton"><div class="ct-chart-line-chart-widget"></div></button>
+                        <h2>Line Graph</h2>
+                    </div>
+                    <div class="c ac jc">
+                        <button class="bbutton"><div class="ct-chart-scatter-chart-widget"></div></button>
+                        <h2>Scatter Plot</h2>
+                    </div>
+                    <div class="c ac jc">
+                        <button class="bbutton"><div class="mr3 ct-chart-histo-chart-widget"></div></button>
+                        <h2>Bar Graph</h2>
+                    </div>
+                    <div class="c ac jc">
+                        <button class="bbutton"></button>
+                        <h2>Raw Data</h2>
+                    </div>
+                </div>
+                <div class="r">
+                    <button onclick="windowSwitcher('none')">Cancel</button>
+                </div>
+            </div>`;
             window.appendChild(widgetSelection);
             new Chartist.Pie('.ct-chart-pie-widget', {
                 series: [5, 10, 20, 25, 40, 100]
@@ -1591,10 +1604,12 @@ function unitSettings(i) {
 }
 
 function minSettings(i) {
+    console.log("MIN   ", i.value, document.getElementById('gauge_min_value').innerText);
     document.getElementById('gauge_min_value').innerText = i.value;
 }
 
 function maxSettings(i) {
+    console.log("MAX   ", i.value);
     document.getElementById('gauge_max_value').innerText = i.value;
 }
 
@@ -2048,18 +2063,15 @@ function paintDashboardTab(data){
                         display = "none";
                         mb = '';
                     }
-
-                    let range = Math.abs(widgets[widget].min) +  Math.abs(widgets[widget].max);
+                    let range = Math.abs(widgets[widget].min - widgets[widget].max);
                     let tic = 270/range;
-                    console.log(tic);
-                    let angle = Math.floor(tic * data['variables'][widgets[widget].variable]);
-                    console.log(angle);
+                    let angle = Math.floor(270/(range-data['variables'][widgets[widget].variable]));
+                    angle = ((data['variables'][widgets[widget].variable] - widgets[widget].min) * tic) - 135;
                     if(angle >  135) angle = 135;
                     if(angle <  -135) angle = -135;
-
                     div.innerHTML =
-                    `<h2 style="${mb}" id="h2Widget">${widgets[widget].title}</h2>` +
-                    `<h3 style="font-size:14px; display:${display};" class="m0 mb3 p0" id="widgetVariable">${widgets[widget].variable}</h3>` +
+                    `<h2 style="${mb}" id="">${widgets[widget].title}</h2>` +
+                    `<h3 style="font-size:14px; display:${display};" class="m0 mb3 p0" id="">${widgets[widget].variable}</h3>` +
                     `<svg height="${200*mod}" width="${200*mod}">` +
                         `<circle cx= "${100*mod}" cy= "${100*mod}" r="${5*mod}" fill="#ffffff"/>` +
                         `<path fill="${widgets[widget].color1}" d="M${29.29*mod},${170.71*mod}           A ${100*mod} ${100*mod} 0 0 1 ${0*mod} ${102.5*mod}                 L ${20*mod} ${102.5*mod}               A ${80*mod} ${80*mod} 0 0 0 ${43.432*mod} ${156.568*mod}"/>` +
@@ -2071,8 +2083,8 @@ function paintDashboardTab(data){
                         `<path style="transform: rotate(${angle}deg); transform-origin: ${100*mod}px ${100*mod}px;" fill="#707070" d="M${95*mod},${110*mod} L ${105*mod} ${110*mod} L ${102*mod} ${95*mod} L ${100*mod} ${3*mod} L ${98*mod} ${95*mod}"/>`+
                     '</svg>' +
                     '<div style="transform: translateY(-25px);" class="r ac jc">' +
-                        `<h2 id="gauge_min_value" style="width: 140px; font-size: 16px;" class="m0 mr5 r ac jc" >${widgets[widget].min}</h2>` +
-                        `<h2 id="gauge_max_value" style="width: 140px; font-size: 16px;" class="m0 ml5 r ac jc" >${widgets[widget].max}</h2>` +
+                        `<h2 id="" style="width: 140px; font-size: 16px;" class="m0 mr5 r ac jc" >${widgets[widget].min}</h2>` +
+                        `<h2 id="" style="width: 140px; font-size: 16px;" class="m0 ml5 r ac jc" >${widgets[widget].max}</h2>` +
                     '</div>'+
                     '<div style="transform: translateY(-40px);" class="r ac jc">'+
                         `<h1>${data['variables'][widgets[widget].variable]}${widgets[widget].units}</h1>` +
@@ -2086,8 +2098,8 @@ function paintDashboardTab(data){
                     }
 
                     div.innerHTML =
-                    `<h2 style="${mb}" id="h2Widget">${widgets[widget].title}</h2>` +
-                    `<h3 style="font-size:14px; display:${display};" id="widgetVariable" class="m0 mb3 p0">${widgets[widget].variable}</h3>` +
+                    `<h2 style="${mb}" id="">${widgets[widget].title}</h2>` +
+                    `<h3 style="font-size:14px; display:${display};" id="" class="m0 mb3 p0">${widgets[widget].variable}</h3>` +
                     '<div style="" class="r ac jc">' +
                     `<h1 style = " font-size: 5rem; margin: 0; margin-bottom: 1rem;" >${data['variables'][widgets[widget].variable]}</h1>` +
                     `<h1 style = " font-size: 5rem; margin: 0; margin-bottom: 1rem;"  class="m0">${widgets[widget].units}</h1>` +
@@ -2120,7 +2132,7 @@ function paintVariableTab(data){
                     <h3 class="mb2 w100" style="text-align: center;">Variables </h3>
                     <div class="r afe jfs">
                         <button class="fa fa-plus" onclick="windowSwitcher('new_variable')"></button>
-                        <button onclick="editVariables()" style="padding: 8px 30px;" class="m0 p0 fa fa-pencil-alt" id = "var_button" onclick=""></button>
+                        <button onclick="editVariables()" style="padding: 8px 30px;" class="m0 p0 fa fa-trash-alt" id = "var_button" onclick=""></button>
                      </div>
                         
                 </div>
@@ -2172,24 +2184,30 @@ function paintChartsTab(data){
 // Settings Tab.
 function paintSettingsTab(data){
     let contentBox = document.getElementById('content_box');
-    console.log(contentBox);
-    contentBox.innerHTML =
-        `<div id= "PROJECT_SETTINGS_TAB" class="p3 m0 ml1 c">` +
-            `<h2 style='color: White;'>Your Project Key: </h2>` +
-            `<div class="r ac">`+
-                `<input class="m0"  disabled value=" ${currentProjectData.key}">` +
-                `<button onclick="copyToClip('${currentProjectData.key}')" style="color: white;" class="fa fa-copy mx2"></button>` +
-                `<button onclick="windowSwitcher('newKey')" title= "Generate New Project Key" style="color: white; background: #8c2726;" class="fa fa-redo mx0"></button>` +
-                `<p id="clip_message" style="transition: all 4s ease-in-out; color:orange; transform: translateY(20px); " class="ml3 dn">Copied to Clipboard!</p>` +
-            `</div>`+
-            `<div class="c">` +
-                `<div id="project_settings_project_name"><h2 style='color: White;'>Project Name: </h2></div>` +
-                `<div id="project_settings_project_desc"><h2 style='color: White;'>Project Description: </h2></div>` +
-            "</div>" +
-            `<div class=\"r ac\">` +
-                `<button onclick="windowSwitcher('deleteProject')" style="background: #8c2726;" class="ml0 mt4">Delete Project</button>` +
-            `</div>` +
-        `</div>`;
+    contentBox.innerHTML = `
+        <div id= "PROJECT_SETTINGS_TAB" class="p3 m0 ml1 c">
+            <h1 class="mb1 cw">Project Settings</h1>
+            <hr class="w100">
+            <div class="r">
+                <h2 class="cw mb3">Your Project Key: </h2>
+            </div>
+            <div class="r ac fww">
+                <input class="m0"  disabled value=" ${currentProjectData.key}">
+                <button onclick="copyToClip('${currentProjectData.key}')" style="color: white;" class="fa fa-copy my2 mx2"></button>
+                <button onclick="windowSwitcher('newKey')" title= "Generate New Project Key" style="color: white; background: #8c2726;" class="fa fa-redo mb0 my2 mx0"></button>
+                <p id="clip_message" style="transition: all 4s ease-in-out; color:orange; transform: translateY(20px); " class="ml3 dn">Copied to Clipboard!</p>
+            </div>
+            <div id="project_settings_project_name" class="">
+                <h2 class="cw mb3">Project Name: </h2>
+            </div>
+            <div id="project_settings_project_desc" class="">
+                <h2 class="cw mb3">Project Description: </h2>
+            </div>
+            <div class="r ac">
+                <button onclick="windowSwitcher('deleteProject')" style="background: #8c2726;" class="ml0 mt4">Delete Project</button>
+            </div>
+        </div>`;
+
         let projectName = input(document.getElementById('project_settings_project_name'), {
             type: 'text',
             edit: true,
