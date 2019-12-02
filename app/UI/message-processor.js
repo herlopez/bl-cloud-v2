@@ -105,6 +105,7 @@ function messageProcessor(message, callback) {
                 windowSwitcher('none');
                 break;
             case 'ADD_WIDGET':
+            case 'UPDATE_WIDGET':
                 if(message.hasOwnProperty('error')){
                     windowError('window_content_block',message['error']);
                     return;

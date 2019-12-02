@@ -23,10 +23,13 @@ function commandProcessor(message, callback, server){
         case 'ADD_WIDGET':
             let addWidget = databaseFunctions.addWidget(message, callback.uid);
             addWidget['cmd'] = 'ADD_WIDGET';
-            console.log('heree', addWidget);
             callback.send(JSON.stringify(addWidget));
             break;
-
+        case 'UPDATE_WIDGET':
+            let updateWidget = databaseFunctions.updateWidget(message, callback.uid);
+            updateWidget['cmd'] = 'UPDATE_WIDGET';
+            callback.send(JSON.stringify(updateWidget));
+            break;
         case 'CREATE_PROJECT':
             callback.send(JSON.stringify(databaseFunctions.createProject(message, callback.uid)));
             return;

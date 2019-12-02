@@ -62,13 +62,56 @@ function getProjects(uid) {
 }
 
 
+function updateWidget(msg, uid){
+    // Make sure that the project exist in the database for the user making the request.
+    if(!msg.hasOwnProperty('project')) return {error: "Error! No project id sent."};
+    let project = PROJECTS.findOne({id: msg.project});
+    if(project === null) return {error: "Error! No project was found for this id." };
+
+    // Make sure the user owns the project.
+    if(uid !== msg.uid) return{error: "Error! Conflicting user id's."};
+    if(!project.hasOwnProperty('owner')) return {error: "Project ownership error."};
+    if(project['owner'] !== uid) return{error: "Error! User does not have access to this project."};
+    console.log('Done: ', project);
+    if(!msg.hasOwnProperty('options') ) return{error: "Error! No widget settings provided."};
+    let nameCheck = tools.verifyString(msg['options'], 'title', 200, 0);
+    if (tools.hasError(nameCheck)) return nameCheck;
+    let typeCheck = tools.verifyString(msg['options'], 'type', 200, 0);
+    if (tools.hasError(typeCheck)) return typeCheck;
+    let idCheck = tools.verifyString(msg['options'], 'id', 200, 0);
+    if (tools.hasError(idCheck)) return idCheck;
+    let hideCheck = tools.verifyString(msg['options'], 'hide', 200, 0);
+    if (tools.hasError(hideCheck)) return hideCheck;
+    if(!msg['options'].hasOwnProperty('variable') ) return{error: "No variable was provided."};
+    if(!project.hasOwnProperty('variables'))  return{error: "Error! Project has no variables."};
+    if(msg['options']['variable'] === '') return{error: "Please Select a Variable."};
+    if(!project['variables'].hasOwnProperty(msg['options']['variable'])) return{error: "Error! Project does not have this variable."};
+
+
+    if(!msg['options'].hasOwnProperty('type')) return {error: 'Error! Widget Type not Defined.'};
+    switch (msg['options']['type']) {
+        case 'gauge':
+            if(typeof project['variables'][msg['options']['variable']] !== 'number') return{error:"Please select a variable that is an integer."};
+            if(!msg['options'].hasOwnProperty('min') || !msg['options'].hasOwnProperty('max')) return{error:"Error! No Min/Max options provided."};
+            if(typeof msg['options']['min'] !== 'number'|| typeof msg['options']['max'] !== 'number') return{error:"Please provide a valid min and max value."};
+            if(msg['options']['min'] >= msg['options']['max']) return{error:"Min value must be inferior to max value."};
+            break;
+        case 'data':
+            break;
+        default:
+            return {error: 'Error! Invalid Widget Type'}
+    }
+    let widgetIndex = project['widgets'].findIndex(w => w.id === msg['options']['id']);
+    if(widgetIndex === '-1'){
+        return {error: 'Error! Invalid Widget Id'}
+    }
+    project['widgets'][widgetIndex] =  msg['options'];
+    PROJECTS.update(project);
+    return {cmd:"UPDATE_WIDGET", result:project};
+
+}
 
 function addWidget(msg, uid){
-    console.log(msg);
-
-    // Make sure the variable name is in proper format.
-
-
 
     // Make sure that the project exist in the database for the user making the request.
     if(!msg.hasOwnProperty('project')) return {error: "Error! No project id sent."};
@@ -773,6 +816,7 @@ module.exports = {
     getChartData,
     notifyClients,
     addWidget,
+    updateWidget,
     newProjectKey,
     deleteProject,
     createVariable,

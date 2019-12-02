@@ -47,9 +47,8 @@ function paintDashboardTab(data){
                 div.style.height = "275px";
                 div.style.minWidth = "300px";
                 div.style.maxWidth = "300px";
-                // div.style.background = projects[project]['color'];
+                div.id = widgets[widget].id;
                 div.style.background = "rgba(3, 4, 8, 0.46)";
-                // div.id = projects[project]['id'];
                 div.borderRadius = "10px";
                 let mod = 0.7;
                 console.log('DATA        ', data);
@@ -68,8 +67,9 @@ function paintDashboardTab(data){
                     if(angle >  135) angle = 135;
                     if(angle <  -135) angle = -135;
                     div.innerHTML =
-                    `<h2 style="${mb}" id="">${widgets[widget].title}</h2>` +
-                    `<h3 style="font-size:14px; display:${display};" class="m0 mb3 p0" id="">${widgets[widget].variable}</h3>` +
+                        `<i  onclick="windowSwitcher('gauge_settings','${div.id}')" style="position: absolute; transform: translate(130px, 5px)" class="hc hac fa fa-ellipsis-v"></i>` +
+                    `<h2 style="${mb}" id="${div.id}_title">${widgets[widget].title}</h2>` +
+                    `<h3  id="${div.id}_variable_title" style="font-size:14px; display:${display};" class="m0 mb3 p0" >${widgets[widget].variable}</h3>` +
                     `<svg height="${200*mod}" width="${200*mod}">` +
                         `<circle cx= "${100*mod}" cy= "${100*mod}" r="${5*mod}" fill="#ffffff"/>` +
                         `<path fill="${widgets[widget].color1}" d="M${29.29*mod},${170.71*mod}           A ${100*mod} ${100*mod} 0 0 1 ${0*mod} ${102.5*mod}                 L ${20*mod} ${102.5*mod}               A ${80*mod} ${80*mod} 0 0 0 ${43.432*mod} ${156.568*mod}"/>` +
@@ -81,11 +81,11 @@ function paintDashboardTab(data){
                         `<path style="transform: rotate(${angle}deg); transform-origin: ${100*mod}px ${100*mod}px;" fill="#707070" d="M${95*mod},${110*mod} L ${105*mod} ${110*mod} L ${102*mod} ${95*mod} L ${100*mod} ${3*mod} L ${98*mod} ${95*mod}"/>`+
                     '</svg>' +
                     '<div style="transform: translateY(-25px);" class="r ac jc">' +
-                        `<h2 id="" style="width: 140px; font-size: 16px;" class="m0 mr5 r ac jc" >${widgets[widget].min}</h2>` +
-                        `<h2 id="" style="width: 140px; font-size: 16px;" class="m0 ml5 r ac jc" >${widgets[widget].max}</h2>` +
+                        `<h2 id="${div.id}_min_title" style="width: 140px; font-size: 16px;" class="m0 mr5 r ac jc" >${widgets[widget].min}</h2>` +
+                        `<h2 id="${div.id}_max_title" style="width: 140px; font-size: 16px;" class="m0 ml5 r ac jc" >${widgets[widget].max}</h2>` +
                     '</div>'+
                     '<div style="transform: translateY(-40px);" class="r ac jc">'+
-                        `<h1>${data['variables'][widgets[widget].variable]}${widgets[widget].units}</h1>` +
+                        `<h1 id="${div.id}_units_title">${data['variables'][widgets[widget].variable]}${widgets[widget].units}</h1>` +
                     '</div>';
                 }
                 if(widgets[widget].type === 'data') {

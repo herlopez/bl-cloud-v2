@@ -112,3 +112,20 @@ function addWidget(uid, project, options){
         options : options
     }));
 }
+
+
+/*
+    Save Widget
+    @Desc: Update widget.
+    @param: uid - User ID
+    @param id - Project ID
+    @param options - Widget Options
+*/
+function updateWidget(uid, project, options){
+    ws.send(JSON.stringify({
+        cmd: "UPDATE_WIDGET",
+        uid: uid,
+        project: project,
+        options : options
+    }));
+}

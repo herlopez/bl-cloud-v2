@@ -154,7 +154,143 @@ function windowSwitcher(targetWindow, options) {
 
             break;
 
+        case 'gauge_settings':
+            windowShow();
+            console.log("Op: ",options, currentProjectData);
+            let gauge = currentProjectData.widgets.find((widget) => widget.id === options);
+            let gaugeEdit = document.createElement('div');
+            gaugeEdit.id = 'window_content_block';
+            console.log(gauge)
+            // Scale of the gauge.
+            let gaugeEditScale = 1;
 
+
+            let gaugeEditDcaleContent =
+                `<div class="c ac jc">
+                <h2 class=" mb1"  id="gauge_title">${gauge.title}</h2>
+                <h3 class="m0" style="font-size: 0.8rem;" id="variable_title">${gauge.variable}</h3> 
+                <svg class="mt2" height="${200 * gaugeEditScale}" width="${200 * gaugeEditScale}">
+                    <circle cx= "${100 * gaugeEditScale}" cy= "${100 * gaugeEditScale}" r="${5 * gaugeEditScale}" fill="#ffffff"/>
+                    <path id="gauge_color_1" fill="${gauge.color1}" d="M${29.29 * gaugeEditScale},${170.71 * gaugeEditScale}           A ${100 * gaugeEditScale} ${100 * gaugeEditScale} 0 0 1 ${0 * gaugeEditScale} ${102.5 * gaugeEditScale}                 L ${20 * gaugeEditScale} ${102.5 * gaugeEditScale}               A ${80 * gaugeEditScale} ${80 * gaugeEditScale} 0 0 0 ${43.432 * gaugeEditScale} ${156.568 * gaugeEditScale}"/>
+                    <path id="gauge_color_2" fill="${gauge.color2}" d="M${0 * gaugeEditScale},${97.5 * gaugeEditScale}                 A ${100 * gaugeEditScale} ${100 * gaugeEditScale} 0 0 1 ${27.592735 * gaugeEditScale} ${31.12827 * gaugeEditScale}      L ${41.6915 * gaugeEditScale} ${45.227 * gaugeEditScale}         A ${80 * gaugeEditScale} ${80 * gaugeEditScale} 0 0 0 ${20 * gaugeEditScale} ${97.5 * gaugeEditScale} "/>
+                    <path id="gauge_color_3" fill="${gauge.color3}" d="M${31.05709 * gaugeEditScale}, ${27.521555 * gaugeEditScale}    A ${100 * gaugeEditScale} ${100 * gaugeEditScale} 0 0 1 ${97.5 * gaugeEditScale} ${0 * gaugeEditScale}                  L ${97.5 * gaugeEditScale} ${20 * gaugeEditScale}                A ${80 * gaugeEditScale} ${80 * gaugeEditScale} 0 0 0 ${45.226855 * gaugeEditScale} ${41.6915 * gaugeEditScale}"/>
+                    <path id="gauge_color_4" fill="${gauge.color4}" d="M${102.5 * gaugeEditScale},${0 * gaugeEditScale}                A ${100 * gaugeEditScale} ${100 * gaugeEditScale} 0 0 1 ${168.94291 * gaugeEditScale} ${27.521555 * gaugeEditScale}     L ${154.773145 * gaugeEditScale} ${41.6915 * gaugeEditScale}     A ${80 * gaugeEditScale} ${80 * gaugeEditScale} 0 0 0 ${102.5 * gaugeEditScale} ${20 * gaugeEditScale}"/>
+                    <path id="gauge_color_5" fill="${gauge.color5}" d="M${172.407265 * gaugeEditScale},${31.12827 * gaugeEditScale}    A ${100 * gaugeEditScale} ${100 * gaugeEditScale} 0 0 1 ${200 * gaugeEditScale} ${97.5 * gaugeEditScale}                L ${180 * gaugeEditScale} ${97.5 * gaugeEditScale}               A ${80 * gaugeEditScale} ${80 * gaugeEditScale} 0 0 0 ${158.3085 * gaugeEditScale} ${45.227 * gaugeEditScale}"/>
+                    <path id="gauge_color_6" fill="${gauge.color6}" d="M${200 * gaugeEditScale},${102.5 * gaugeEditScale}              A ${100 * gaugeEditScale} ${100 * gaugeEditScale} 0 0 1 ${170.71 * gaugeEditScale} ${170.71 * gaugeEditScale}           L ${156.568 * gaugeEditScale} ${156.568 * gaugeEditScale}        A ${80 * gaugeEditScale} ${80 * gaugeEditScale} 0 0 0 ${180 * gaugeEditScale} ${102.5 * gaugeEditScale}"/>
+                    <path style="transform-origin: ${100 * gaugeEditScale}px ${100 * gaugeEditScale}px;" fill="#707070" d="M${95 * gaugeEditScale},${110 * gaugeEditScale} L ${105 * gaugeEditScale} ${110 * gaugeEditScale} L ${102 * gaugeEditScale} ${95 * gaugeEditScale} L ${100 * gaugeEditScale} ${3 * gaugeEditScale} L ${98 * gaugeEditScale} ${95 * gaugeEditScale}"/>
+                </svg> 
+                <div style="transform: translateY(-20px);" class="r ac jc"> 
+                    <h2 id="gauge_min_value" class="m0 mr5" >${gauge.min}</h2> 
+                    <h2 id="gauge_max_value" class="m0 ml5" >${gauge.max}</h2> 
+                </div> 
+                <div style="transform: translateY(-40px);" class="r ac jc"> 
+                    <h1 id="value">${currentProjectData.variables[gauge.variable]}</h1> 
+                    <h1 class="m0" id="units">${gauge.units}</h1> 
+                </div> 
+            <div class="r mb3">Variable:&nbsp;`;
+            // Build an list of options whereas the values are variables that are numbers.
+            let validVariablesForGauge3 = `<option >Select a Variable</option>`;
+            if (currentProjectData.hasOwnProperty('variables')) {
+                let variables = currentProjectData['variables'];
+                for (let variable in variables) {
+                    if(variables.hasOwnProperty(variable)){
+                        if (typeof variables[variable] === "number" && variable !== 'default') {
+                            validVariablesForGauge3 = validVariablesForGauge3 +`<option value="${variable}">${variable}</option>`;
+                        }
+                    }
+                }
+            }
+            gaugeEdit.innerHTML = gaugeEditDcaleContent + `<select oninput="variableSettings()" id="${gauge.id}_variable_title_input">` + validVariablesForGauge3 +
+                `</select>&nbsp;Hide: <input id="gauge_variable_hide"  oninput="gaugeHideVariableName()" style="width: 20px;" type="checkbox">` +
+                '</div>' +
+                '<div class="c jc afe p3 pt0">' +
+                `<div class="mb2">Title: <input id="gauge_title_input" onkeyup="gaugeSettingsTitle()" type="text" value="${gauge.title}"></div>` +
+                `<div class="mb2">Min Value: <input type="number" onkeyup="minSettings(this)" onchange="minSettings(this)" value="${gauge.min}"></div>` +
+                `<div class="mb2">Max Value: <input type="number" onkeyup="maxSettings(this)" onchange="maxSettings(this)" value="${gauge.max}"></div>` +
+                '</div>' +
+                '<div class="r jc ac">' +
+                `<input id="color1" oninput="gaugeColorSettings(this, 1)"  style="background: transparent;" class="mx3" type="color" value="${gauge.color1}">` +
+                `<input id="color2" oninput="gaugeColorSettings(this, 2)" style="background: transparent;" class="mx3" type="color" value="${gauge.color2}">` +
+                `<input id="color3" oninput="gaugeColorSettings(this, 3)" style="background: transparent;" class="mx3" type="color" value="${gauge.color3}">` +
+                `<input id="color4" oninput="gaugeColorSettings(this, 4)" style="background: transparent;" class="mx3" type="color" value="${gauge.color4}">` +
+                `<input id="color5" oninput="gaugeColorSettings(this, 5)" style="background: transparent;" class="mx3" type="color" value="${gauge.color5}">` +
+                `<input id="color6" oninput="gaugeColorSettings(this, 6)" style="background: transparent;" class="mx3" type="color" value="${gauge.color6}">` +
+                '</div>' +
+                '<div class="r mb2 mt4">Units:&nbsp;' +
+                `<select oninput="unitSettings(this)" id="${gauge.id}_variable_units">` +
+                '<optgroup label="Genral">' +
+                '<option value="percent">%</option>' +
+                '</optgroup>' +
+                '<optgroup label="Temperature">' +
+                '<option value="°C" title="celsius">°C</option>' +
+                '<option value="°F" title="fahrenheit">°F</option>' +
+                '<option value="K" title="kelvin">K</option>' +
+                '<option value="°Ré" title="reaumur">°Ré</option>' +
+                '<option value="°N" title="newton">°N</option>' +
+                '<option value="°Ra" title="rankine">°Ra</option>' +
+                '</optgroup>' +
+                '<optgroup label="Volume">' +
+                ' <option value="m³" title="cubic meter">m³</option>' +
+                ' <option value="dm³" title="cubic decimeter">dm³</option>' +
+                ' <option value="cm³" title="cubic centimeter">cm³</option>' +
+                ' <option value="l" title="liter">l</option>' +
+                ' <option value="dl" title="deciliter">dl</option>' +
+                ' <option value="cl" title="centiliter">cl</option>' +
+                ' <option value="ml" title="milliliter">ml</option>' +
+                ' <option value="oz" title="fluid ounce">oz</option>' +
+                ' <option value="in³" title="cubic inch">in³</option>' +
+                ' <option value="ft³" title="cubic foot">ft³</option>' +
+                ' <option value="yd³" title="cubic yard">yd³</option>' +
+                ' <option value="gal" title="gallon uk">gal</option>' +
+                ' <option value="bbl" title="petroleum barrel">bbl</option>' +
+                ' <option value="pt" title="pint">pt</option>' +
+                '</optgroup>' +
+                '<optgroup label="Distance">' +
+                '<option value="km" title="kilometer">km</option>' +
+                '<option value="m" title="meter">m</option>' +
+                '<option value="dm" title="decimeter">dm</option>' +
+                '<option value="cm" title="centimeter">cm</option>' +
+                '<option value="mm" title="millimeter">mm</option>' +
+                '<option value="mi" title="mile">mi</option>' +
+                '<option value="in" title="inch">in</option>' +
+                '<option value="ft" title="foot">ft</option>' +
+                '<option value="yd" title="yard">yd</option>' +
+                '</optgroup>' +
+                '<optgroup label="Mass">' +
+                '<option value="t" title="tonne">t</option>' +
+                '<option value="kg" title="kilogram">kg</option>' +
+                '<option value="hg" title="hectogram">hg</option>' +
+                '<option value="g" title="gram">g</option>' +
+                '<option value="dg" title="decigram">dg</option>' +
+                '<option value="cg" title="centigram">cg</option>' +
+                '<option value="mg" title="milligram">mg</option>' +
+                '<option value="µg" title="microgram">µg</option>' +
+                '<option value="carat" title="carat">carat</option>' +
+                '<option value="grain" title="grain">grain</option>' +
+                '<option value="oz" title="pounce avoirdupois">oz</option>' +
+                '<option value="lb" title="pound avoirdupois">lb</option>' +
+                '<option value="cwt" title="long hundredweight">cwt</option>' +
+                '<option value="ton" title="ton">ton</option>' +
+                '<option value="st" title="stone">st</option>' +
+                '</optgroup>' +
+                `</select>` +
+                '</div>' +
+                `<div class="r">` +
+                `<button onclick="windowSwitcher('none')">Cancel</button>` +
+                `<button onclick="updateGaugeWidget('${gauge.id}')"> &nbsp;Save&nbsp;</button>` +
+                `</div>` +
+                '</div>';
+            window.appendChild(gaugeEdit);
+            document.getElementById(`${gauge.id}_variable_title_input`).value = gauge.variable;
+            document.getElementById(`${gauge.id}_variable_units`).value = gauge.units;
+            if (gauge.hide === "true") {
+                document.getElementById('variable_title').classList.add('dn');
+                document.getElementById('gauge_variable_hide').checked = true;
+            } else {
+                document.getElementById('variable_title').classList.remove('dn');
+                document.getElementById('gauge_variable_hide').checked = false;
+            }
+            break;
         case 'gauge':
 
             windowShow();
@@ -223,7 +359,9 @@ function windowSwitcher(targetWindow, options) {
                 '</div>' +
                 '<div class="r mb2 mt4">Units:&nbsp;' +
                 '<select oninput="unitSettings(this)" id="">' +
+                '<optgroup label="Math">' +
                 '<option value="percent">%</option>' +
+                '</optgroup>' +
                 '<optgroup label="Temperature">' +
                 '<option value="°C" title="celsius">°C</option>' +
                 '<option value="°F" title="fahrenheit">°F</option>' +
@@ -665,6 +803,24 @@ function newGaugeWidget() {
         min: parseInt(document.getElementById('gauge_min_value').innerText),
         max: parseInt(document.getElementById('gauge_max_value').innerText)
     });
+}
+function updateGaugeWidget(id){
+    updateWidget(currentUid, currentProject, {
+        type: 'gauge',
+        hide: `${document.getElementById('gauge_variable_hide').checked}`,
+        variable: `${document.getElementById(`${id}_variable_title_input`).value}`,
+        units: `${document.getElementById('units').innerText}`,
+        title: `${document.getElementById('gauge_title').innerText}`,
+        color1: `${document.getElementById('color1').value}`,
+        color2: `${document.getElementById('color2').value}`,
+        color3: `${document.getElementById('color3').value}`,
+        color4: `${document.getElementById('color4').value}`,
+        color5: `${document.getElementById('color5').value}`,
+        color6: `${document.getElementById('color6').value}`,
+        min: parseInt(document.getElementById('gauge_min_value').innerText),
+        max: parseInt(document.getElementById('gauge_max_value').innerText),
+        id: id
+    })
 }
 
 function newDataWidget() {
