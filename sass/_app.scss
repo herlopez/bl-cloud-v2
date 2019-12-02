@@ -292,7 +292,7 @@
 }
 
 #app_container.project-single {
-    flex-direction: row !important;
+    flex-direction: row;
     justify-content: flex-start !important;
     align-items: center !important;
     header {
@@ -409,6 +409,7 @@
 }
 .dashboard-button-select{
     border-left: solid 3px #9b55a3 !important;
+
 }
 .dashboard-button{
     border-left: solid 3px transparent;
@@ -439,6 +440,40 @@
     margin: 0 !important;
 }
 
+
+@media only screen and (max-width: $xlScreen) {
+    .dashboard-button-select{
+        border-bottom: solid 3px #9b55a3 !important;
+        border-left:  solid 3px transparent !important;
+    }
+    #app_container.project-single {
+        #menu_box{
+            position: unset;
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 0px;
+            border-bottom-right-radius: 0px;
+            border-top-right-radius: 20px;
+            .dashboard-button{
+                width: calc(25% - 32px);
+                text-align: center;
+                justify-content: center;
+                align-items: center;
+                display: flex;
+                margin: 0 !important;
+                border-bottom: solid 3px transparent;
+                border-left:  solid 3px transparent;
+
+                button{
+                    margin: auto !important;
+                    p{
+                       display: none;
+                   }
+                }
+            }
+
+        }
+    }
+}
 @keyframes spin {
     0% {
         transform: rotate(0deg);

@@ -48,6 +48,12 @@ $font3: Roboto, Helvetica Neue, Helvetica, Arial, sans-serif;
     .w100xl{
         width: 100% !important;
     }
+    .mw100xl{
+        max-width: 100% !important;
+    }
+    .h100xl{
+        height: 100% !important;
+    }
     .rxl{
         flex-direction: column !important;
         width: 100% !important;
@@ -62,6 +68,10 @@ $font3: Roboto, Helvetica Neue, Helvetica, Arial, sans-serif;
     .crxl{
         flex-direction: row-reverse !important;
     }
+    .tacxl{
+        text-align: center !important;
+    }
+
 }
 @media only screen and (max-width: $lgScreen) {
     .dflg{

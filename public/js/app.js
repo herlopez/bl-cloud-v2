@@ -449,27 +449,33 @@ function projectView(id){
     appContainer.classList.add('project-single');
 
     // Top of container.
-    let singleHeader = document.createElement('header');
-    singleHeader.style.padding = 0;
+
     let backButton = document.createElement('button');
-    backButton.style.marginTop = 0;
+    backButton.style.maxWidth = '74px';
     backButton.innerHTML = "<i class=\"fas fa-arrow-left\"></i>";
     backButton.addEventListener('click', ()=>{
         currentProject = null;
         viewSwitcher('dashboard');
     });
-    singleHeader.appendChild(backButton);
+    // singleHeader.appendChild(backButton);
 
     //--  Left Menu in Container   --//
     let menu = document.createElement('div');
     menu.id = "menu_box";
+    menu.classList.add('cxl');
+    menu.classList.add('mw100xl');
+    menu.classList.add('w100xl');
+    menu.classList.add('h100xl');
+    menu.classList.add('tacxl');
+    menu.classList.add('fww');
+    menu.appendChild(backButton);
 
     // Dashboard Tab
     let dashboard = document.createElement('div');
     dashboard.classList = "dashboard-button";
     dashboard.classList.add('dashboard-button-select');
     dashboard.id = "dashboard_trigger";
-    dashboard.innerHTML = "<button><i class='fa fa-chart-bar'></i>Dashboard</button>";
+    dashboard.innerHTML = "<button class='r ac jc'><i class='fa fa-chart-bar'></i><p>Dashboard</p></button>";
     dashboard.addEventListener('click', ()=>{
         projectMenuSwitcher('dashboard', this);
     });
@@ -478,7 +484,7 @@ function projectView(id){
     let variables = document.createElement('div');
     variables.classList = "dashboard-button";
     variables.id = "variables_trigger";
-    variables.innerHTML = "<button><i class='fa fa-code'></i>Variables</button>";
+    variables.innerHTML = "<button class='r ac jc'><i class='fa fa-code'></i><p>Variables</p></button>";
     variables.addEventListener('click', ()=>{
         projectMenuSwitcher('variables', this);
     });
@@ -487,7 +493,7 @@ function projectView(id){
     let charts = document.createElement('div');
     charts.classList = "dashboard-button";
     charts.id = "charts_trigger";
-    charts.innerHTML = "<button><i class='fa fa-chart-pie'></i>Charts</button>";
+    charts.innerHTML = "<button class='r ac jc'><i class='fa fa-chart-pie'></i><p>Charts</p></button>";
     charts.addEventListener('click', ()=>{
         projectMenuSwitcher('charts', this);
     });
@@ -496,12 +502,11 @@ function projectView(id){
     let settings = document.createElement('div');
     settings.classList = "dashboard-button";
     settings.id = "settings_trigger";
-    settings.innerHTML = "<button><i class='fa fa-cogs'></i>Project Settings</button>";
+    settings.innerHTML = "<button class='r ac jc'><i class='fa fa-cogs'></i><p>Settings</p></button>";
     settings.addEventListener('click', ()=>{
         projectMenuSwitcher('settings', this);
     });
 
-    menu.appendChild(singleHeader);
     menu.appendChild(dashboard);
     menu.appendChild(variables);
     menu.appendChild(charts);
@@ -605,9 +610,7 @@ function projectsView(){
     appContainer.innerHTML = '';
     appContainer.style.userSelect = 'none';
     appContainer.classList.add('project-dash');
-    // appContainer.classList.add('ac');
-    // appContainer.classList.add('c');
-    // appContainer.classList.add('jfs');
+    appContainer.classList.add('rxl');
     appContainer.classList.remove('project-single');
 
     // Add a loader until the projects get populated.

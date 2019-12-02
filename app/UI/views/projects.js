@@ -9,9 +9,7 @@ function projectsView(){
     appContainer.innerHTML = '';
     appContainer.style.userSelect = 'none';
     appContainer.classList.add('project-dash');
-    // appContainer.classList.add('ac');
-    // appContainer.classList.add('c');
-    // appContainer.classList.add('jfs');
+    appContainer.classList.add('rxl');
     appContainer.classList.remove('project-single');
 
     // Add a loader until the projects get populated.
