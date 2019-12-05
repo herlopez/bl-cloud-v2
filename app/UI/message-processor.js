@@ -61,11 +61,11 @@ function messageProcessor(message, callback) {
                 console.log("Message: ", message, currentView);
                 let app = document.getElementById('app');
                 if(app.classList.contains('hold') || edit){
+                    console.log('2');
                     setTimeout(()=>{
                         messageProcessor('SET_VARIABLE_CB', callback);
-
-                    });
-                    return;
+                    },1000);
+                    if(message.cmd !== 'NEW_VARIABLE_CB') return;
                 }
                 if(currentView === 'dashboard'){
                     getProjects(currentUid);

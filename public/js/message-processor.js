@@ -61,10 +61,11 @@ function messageProcessor(message, callback) {
           var app = document.getElementById('app');
 
           if (app.classList.contains('hold') || edit) {
+            console.log('2');
             setTimeout(function () {
               messageProcessor('SET_VARIABLE_CB', callback);
-            });
-            return;
+            }, 1000);
+            if (message.cmd !== 'NEW_VARIABLE_CB') return;
           }
 
           if (currentView === 'dashboard') {

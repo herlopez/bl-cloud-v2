@@ -1699,6 +1699,7 @@ function windowSwitcher(targetWindow, options) {
         // Create a new variable window.
         case 'new_variable':
             windowShow();
+            app.classList.add('new-variable');
             let newVariableContentBlock = document.createElement('div');
             newVariableContentBlock.id = 'window_content_block';
             newVariableContentBlock.innerHTML =
@@ -2000,11 +2001,11 @@ function messageProcessor(message, callback) {
                 console.log("Message: ", message, currentView);
                 let app = document.getElementById('app');
                 if(app.classList.contains('hold') || edit){
+                    console.log('2');
                     setTimeout(()=>{
                         messageProcessor('SET_VARIABLE_CB', callback);
-
-                    });
-                    return;
+                    },1000);
+                    if(message.cmd !== 'NEW_VARIABLE_CB') return;
                 }
                 if(currentView === 'dashboard'){
                     getProjects(currentUid);

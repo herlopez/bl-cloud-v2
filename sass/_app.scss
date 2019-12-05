@@ -136,6 +136,8 @@
     #window_content_block.update-profile{
     }
     #window_content_block {
+        overflow-y: scroll;
+
         input[type="range"]{
             border: solid 1px rgb(155, 85, 163);
             border-radius: 20px;
@@ -465,6 +467,9 @@
 
                 button{
                     margin: auto !important;
+                    i{
+                        margin-right: 0 !important;
+                    }
                     p{
                        display: none;
                    }

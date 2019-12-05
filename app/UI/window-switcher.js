@@ -727,6 +727,7 @@ function windowSwitcher(targetWindow, options) {
         // Create a new variable window.
         case 'new_variable':
             windowShow();
+            app.classList.add('new-variable');
             let newVariableContentBlock = document.createElement('div');
             newVariableContentBlock.id = 'window_content_block';
             newVariableContentBlock.innerHTML =
