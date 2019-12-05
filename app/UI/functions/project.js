@@ -157,7 +157,9 @@ function paintVariableTab(data){
                     <button class="m0 p0 fa fa-pencil-alt" id = "var_button_${variable}" onclick="variableEdit(id, '${data.key}')"></button>
                     <button class="m0 p0 fa fa-times dn" id = "var_button_2_${variable}" ></button>
                     <p style = 'position: absolute; padding-top: 18px; padding-left: 20px; background: transparent; font-size: 14px; color: red;' id = "var_error_${variable}" class="dn">Error: Unable To Set Variable.</p>
-                </div>`;
+                    <i style="color:red;" class="mt2 hp hc far fa-trash-alt" onclick="windowSwitcher('double_check', '${variable}')"></i>
+                </div>
+`;
             variables.appendChild(newVar);
             count ++;
         }

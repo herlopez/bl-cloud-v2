@@ -52,6 +52,12 @@ function messageProcessor(message, callback) {
 
           break;
 
+        case 'DELETE_VARIABLE_CB':
+        case 'REMOVE_WIDGET':
+          getProject(currentUid, currentProject);
+          windowSwitcher('none');
+          break;
+
         case 'CREATE_CHART_CB':
         case 'ERASE_VARIABLE_CB':
         case 'ERASE_CHART_CB':

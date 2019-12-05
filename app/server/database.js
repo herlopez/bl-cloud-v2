@@ -61,7 +61,27 @@ function getProjects(uid) {
     }
 }
 
+function removeWidget(msg, uid){
+    if(!msg.hasOwnProperty('project')) return {error: "Error! No project id sent."};
+    let project = PROJECTS.findOne({id: msg.project});
+    if(project === null) return {error: "Error! No project was found for this id." };
 
+    // Make sure the user owns the project.
+    if(uid !== msg.uid) return{error: "Error! Conflicting user id's."};
+    if(!project.hasOwnProperty('owner')) return {error: "Project ownership error."};
+    if(project['owner'] !== uid) return{error: "Error! User does not have access to this project."};
+    console.log('Done: ', project);
+    let idCheck = tools.verifyString(msg, 'id', 200, 0);
+    if (tools.hasError(idCheck)) return idCheck;
+
+    let widgetIndex = project['widgets'].findIndex(w => w.id === msg['id']);
+    if(widgetIndex === '-1'){
+        return {error: 'Error! Invalid Widget Id'}
+    }
+    project['widgets'].splice(widgetIndex, 1);
+    PROJECTS.update(project);
+    return {cmd:"REMOVE_WIDGET", result:project};
+}
 function updateWidget(msg, uid){
     // Make sure that the project exist in the database for the user making the request.
     if(!msg.hasOwnProperty('project')) return {error: "Error! No project id sent."};
@@ -421,10 +441,10 @@ function deleteVariable(msg) {
 
     PROJECTS.update(project);
 
-    return JSON.stringify({
+    return {
         "meta": project['meta'],
         "results": true
-    });
+    };
 
 }
 
@@ -821,5 +841,6 @@ module.exports = {
     createVariable,
     setProjectName,
     setProjectDescription,
+    removeWidget,
     getChartType,
 };

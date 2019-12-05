@@ -119,6 +119,24 @@ function addWidget(uid, project, options) {
     options: options
   }));
 }
+
+function removeWidget(uid, project, options) {
+  ws.send(JSON.stringify({
+    cmd: "REMOVE_WIDGET",
+    uid: uid,
+    project: project,
+    id: options
+  }));
+}
+
+function deleteVariable(uid, project, name) {
+  ws.send(JSON.stringify({
+    cmd: "DELETE_VARIABLE",
+    uid: uid,
+    key: project,
+    name: name
+  }));
+}
 /*
     Save Widget
     @Desc: Update widget.

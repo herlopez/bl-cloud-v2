@@ -25,6 +25,11 @@ function commandProcessor(message, callback, server){
             addWidget['cmd'] = 'ADD_WIDGET';
             callback.send(JSON.stringify(addWidget));
             break;
+        case 'REMOVE_WIDGET':
+            let removeWidget = databaseFunctions.removeWidget(message, callback.uid);
+            removeWidget['cmd'] = 'REMOVE_WIDGET';
+            callback.send(JSON.stringify(removeWidget));
+        break;
         case 'UPDATE_WIDGET':
             let updateWidget = databaseFunctions.updateWidget(message, callback.uid);
             updateWidget['cmd'] = 'UPDATE_WIDGET';
@@ -60,6 +65,12 @@ function commandProcessor(message, callback, server){
             }
             callback.send(JSON.stringify(setVariableData));
             if(!setVariableData.hasOwnProperty('error')) databaseFunctions.notifyClients(server, message.key, 'SET_VARIABLE_CB', setVariableData);
+            break;
+        case 'DELETE_VARIABLE':
+            console.log(message);
+            let deleteVariable = databaseFunctions.deleteVariable(message);
+            deleteVariable['cmd'] = 'DELETE_VARIABLE_CB';
+            callback.send(JSON.stringify(deleteVariable));
             break;
     }
 }

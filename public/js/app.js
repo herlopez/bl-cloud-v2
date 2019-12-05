@@ -1000,6 +1000,25 @@ function windowSwitcher(targetWindow, options) {
         case 'none':
             windowHide();
             break;
+
+        case 'double_check':
+            windowShow();
+            let deleteVariableWindow = document.createElement('div');
+            deleteVariableWindow.id = 'window_content_block';
+            deleteVariableWindow.classList.add('c');
+            deleteVariableWindow.classList.add('ac');
+            deleteVariableWindow.classList.add('jc');
+            deleteVariableWindow.style.maxWidth = '500px';
+            deleteVariableWindow.innerHTML= `
+            <h2 style="text-align:center;">ARE YOU SURE YOU WANT TO <u style="color: red;">DELETE</u> THIS VARIABLE?<br>
+            <div class="r ac jc">
+                <button onclick="windowSwitcher('none')">Cancel</button>
+                <button onclick ="deleteVariable('${currentUid}','${currentKey}','${options}')" style="background: #8c2726;">DELETE</button>
+            </div>`;
+            window.appendChild(deleteVariableWindow);
+
+        break;
+
         case 'deleteProject':
             windowShow();
             let deleteProjectWindow = document.createElement('div');
@@ -1132,13 +1151,16 @@ function windowSwitcher(targetWindow, options) {
             let gauge = currentProjectData.widgets.find((widget) => widget.id === options);
             let gaugeEdit = document.createElement('div');
             gaugeEdit.id = 'window_content_block';
-            console.log(gauge)
             // Scale of the gauge.
             let gaugeEditScale = 1;
 
 
             let gaugeEditDcaleContent =
-                `<div class="c ac jc">
+                `
+            <i style="color: red; top: 5px; right: 0;" class="por fs125 hc hp fa fa-trash-alt" onclick="removeGaugeWidget('${gauge.id}')"></i> 
+
+            <div class="c ac jc">
+
                 <h2 class=" mb1"  id="gauge_title">${gauge.title}</h2>
                 <h3 class="m0" style="font-size: 0.8rem;" id="variable_title">${gauge.variable}</h3> 
                 <svg class="mt2" height="${200 * gaugeEditScale}" width="${200 * gaugeEditScale}">
@@ -1428,14 +1450,14 @@ function windowSwitcher(targetWindow, options) {
                         <button onclick = "windowSwitcher('data')" class="bbutton"><div class="c"><h3>Temperature</h3><h1>24</h1><p>2019-10-26 12:48:01</p></div></button>
                         <h2>Data Block</h2>
                     </div>
-                    <div class="c ac jc">
-                        <button class="bbutton"><input class="slider" type="range"></button>
-                        <h2>Slider</h2>
-                    </div>
-                    <div class="c ac jc">
-                        <button class="bbutton"><div class="ct-chart-pie-widget"></div></button>
-                        <h2>Pie Chart</h2>
-                    </div>
+<!--                    <div class="c ac jc">-->
+<!--                        <button class="bbutton"><input class="slider" type="range"></button>-->
+<!--                        <h2>Slider</h2>-->
+<!--                    </div>-->
+<!--                    <div class="c ac jc">-->
+<!--                        <button class="bbutton"><div class="ct-chart-pie-widget"></div></button>-->
+<!--                        <h2>Pie Chart</h2>-->
+<!--                    </div>-->
                     <div class="c ac jc">   
                         <button class="bbutton"><div class="ct-chart-line-chart-widget"></div></button>
                         <h2>Line Graph</h2>
@@ -1444,14 +1466,14 @@ function windowSwitcher(targetWindow, options) {
                         <button class="bbutton"><div class="ct-chart-scatter-chart-widget"></div></button>
                         <h2>Scatter Plot</h2>
                     </div>
-                    <div class="c ac jc">
-                        <button class="bbutton"><div class="mr3 ct-chart-histo-chart-widget"></div></button>
-                        <h2>Bar Graph</h2>
-                    </div>
-                    <div class="c ac jc">
-                        <button class="bbutton"></button>
-                        <h2>Raw Data</h2>
-                    </div>
+<!--                    <div class="c ac jc">-->
+<!--                        <button class="bbutton"><div class="mr3 ct-chart-histo-chart-widget"></div></button>-->
+<!--                        <h2>Bar Graph</h2>-->
+<!--                    </div>-->
+<!--                    <div class="c ac jc">-->
+<!--                        <button class="bbutton"></button>-->
+<!--                        <h2>Raw Data</h2>-->
+<!--                    </div>-->
                 </div>
                 <div class="r">
                     <button onclick="windowSwitcher('none')">Cancel</button>
@@ -1795,6 +1817,10 @@ function updateGaugeWidget(id){
         id: id
     })
 }
+function removeGaugeWidget(id){
+    removeWidget(currentUid, currentProject, id);
+}
+
 
 function newDataWidget() {
     addWidget(currentUid, currentProject, {
@@ -1862,6 +1888,7 @@ function deleteProject(uid, id){
         id: id,
     }));
 }
+
 /*
     Set Project Description
     @Desc: Change the description of the project.
@@ -1913,6 +1940,7 @@ function getProject(uid, id){
     @param id - Project ID
     @param options - Widget Options
 */
+
 function addWidget(uid, project, options){
     ws.send(JSON.stringify({
         cmd: "ADD_WIDGET",
@@ -1922,6 +1950,22 @@ function addWidget(uid, project, options){
     }));
 }
 
+function removeWidget(uid, project, options){
+    ws.send(JSON.stringify({
+        cmd: "REMOVE_WIDGET",
+        uid: uid,
+        project: project,
+        id : options
+    }));
+}
+function deleteVariable(uid, project, name){
+    ws.send(JSON.stringify({
+        cmd: "DELETE_VARIABLE",
+        uid: uid,
+        key: project,
+        name : name
+    }));
+}
 
 /*
     Save Widget
@@ -1992,6 +2036,12 @@ function messageProcessor(message, callback) {
                     console.log(e);
                 }
                 break;
+
+            case 'DELETE_VARIABLE_CB':
+            case 'REMOVE_WIDGET':
+                getProject(currentUid, currentProject);
+                windowSwitcher('none');
+            break;
 
             case 'CREATE_CHART_CB':
             case 'ERASE_VARIABLE_CB':
@@ -2337,7 +2387,9 @@ function paintVariableTab(data){
                     <button class="m0 p0 fa fa-pencil-alt" id = "var_button_${variable}" onclick="variableEdit(id, '${data.key}')"></button>
                     <button class="m0 p0 fa fa-times dn" id = "var_button_2_${variable}" ></button>
                     <p style = 'position: absolute; padding-top: 18px; padding-left: 20px; background: transparent; font-size: 14px; color: red;' id = "var_error_${variable}" class="dn">Error: Unable To Set Variable.</p>
-                </div>`;
+                    <i style="color:red;" class="mt2 hp hc far fa-trash-alt" onclick="windowSwitcher('double_check', '${variable}')"></i>
+                </div>
+`;
             variables.appendChild(newVar);
             count ++;
         }
