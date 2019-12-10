@@ -81,7 +81,7 @@ function formError(msg) {
 
 
 let ws, wsHandler;
-let currentView, currentProject;
+let currentView, currentProject, currentWindow;
 let currentUid = null;
 let currentId = null;
 let projectTab =  null;
@@ -973,6 +973,7 @@ function setDefaultProfile(){
 // Function that opens a pop up window.
 function windowSwitcher(targetWindow, options) {
     console.log('targetWindow: ', targetWindow);
+    currentWindow = targetWindow;
     let window = document.getElementById('window');
     let app = document.getElementById('app');
 
@@ -2148,8 +2149,14 @@ function messageProcessor(message, callback) {
 function paintProjects(projects){
     let projectSection = document.getElementById('project_section');
     if(projectSection.classList.contains('hold')){
+        console.log('88888')
         return;
     }
+    if(currentWindow === "new_project"){
+        windowSwitcher('none');
+
+    }
+    console.log('8888889')
     projectSection.classList.add('jc');
     projectSection.classList.remove('ac');
     projectSection.style.flexWrap = 'wrap';

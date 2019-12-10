@@ -5,6 +5,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 // Function that opens a pop up window.
 function windowSwitcher(targetWindow, options) {
   console.log('targetWindow: ', targetWindow);
+  currentWindow = targetWindow;
   var window = document.getElementById('window');
   var app = document.getElementById('app');
 

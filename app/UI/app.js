@@ -1,6 +1,6 @@
 
 let ws, wsHandler;
-let currentView, currentProject;
+let currentView, currentProject, currentWindow;
 let currentUid = null;
 let currentId = null;
 let projectTab =  null;

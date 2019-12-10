@@ -1,6 +1,7 @@
 // Function that opens a pop up window.
 function windowSwitcher(targetWindow, options) {
     console.log('targetWindow: ', targetWindow);
+    currentWindow = targetWindow;
     let window = document.getElementById('window');
     let app = document.getElementById('app');
 
