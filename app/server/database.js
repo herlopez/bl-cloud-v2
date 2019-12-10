@@ -598,6 +598,7 @@ function deleteChart(msg) {
     return {error: "Chart not found."};
 }
 
+
 /**
  * Add data point.
  * @function addDataPoint
@@ -770,7 +771,6 @@ function getChartData(msg) {
     }
 
 }
-
 /**
  * Get all charts.
  * @function getAllCharts
@@ -799,6 +799,7 @@ function getAllCharts(msg){
         "results": data
     };
 }
+
 function getChartType(key, chart_name) {
     let userKey = PROJECTS.findOne({key: key});
     if (userKey['charts'].some(e => e.name === chart_name)) {
@@ -809,15 +810,23 @@ function getChartType(key, chart_name) {
     return {error: "Chart not found."};
 }
 
+
+
 function setDatabase(database) {
     db = database;
     db.loadDatabase({}, function () {
         PROJECTS = db.getCollection('users');
+        if (PROJECTS === null) {
+            console.log("Creating New DB");
+            PROJECTS = db.addCollection("users");
+        }
+        setInterval(() => {
+            console.log('Saving: ',   db.saveDatabase());
+        }, 5000);
     });
-    setInterval(() => {
-        db.saveDatabase();
-    }, 240000);
 }
+
+
 
 module.exports = {
     getProjects,
