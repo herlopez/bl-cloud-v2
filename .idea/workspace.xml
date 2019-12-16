@@ -3,18 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="f8dc789a-0ee8-4036-b494-978e5ba3fd15" name="Default Changelist" comment="styling">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/server/database.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/server/database.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gulpfile.js" beforeDir="false" afterPath="$PROJECT_DIR$/gulpfile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/lokijs/build/lokijs.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/lokijs/build/lokijs.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/lokijs/jsdoc-conf.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/lokijs/karma.build.conf.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/lokijs/karma.build.conf.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/lokijs/karma.conf.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/lokijs/karma.conf.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/lokijs/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/lokijs/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/lokijs/src/loki-fs-structured-adapter.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/lokijs/src/loki-fs-structured-adapter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/lokijs/src/loki-indexed-adapter.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/lokijs/src/loki-indexed-adapter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/lokijs/src/lokijs.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/lokijs/src/lokijs.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -211,7 +200,8 @@
       <workItem from="1575251563834" duration="17806000" />
       <workItem from="1575296808534" duration="4920000" />
       <workItem from="1575517812128" duration="10879000" />
-      <workItem from="1575940833112" duration="5526000" />
+      <workItem from="1575940833112" duration="8383000" />
+      <workItem from="1576086807529" duration="1380000" />
     </task>
     <task id="LOCAL-00001" summary="=MQTT Implementation">
       <created>1568726588352</created>
@@ -258,7 +248,6 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/app/server/database.js</url>
           <line>63</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
