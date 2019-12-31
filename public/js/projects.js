@@ -2,7 +2,6 @@ function paintProjects(projects) {
   var projectSection = document.getElementById('project_section');
 
   if (projectSection.classList.contains('hold')) {
-    console.log('88888');
     return;
   }
 
@@ -10,7 +9,6 @@ function paintProjects(projects) {
     windowSwitcher('none');
   }
 
-  console.log('8888889');
   projectSection.classList.add('jc');
   projectSection.classList.remove('ac');
   projectSection.style.flexWrap = 'wrap';

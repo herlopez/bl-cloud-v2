@@ -2,14 +2,11 @@
 function paintProjects(projects){
     let projectSection = document.getElementById('project_section');
     if(projectSection.classList.contains('hold')){
-        console.log('88888')
         return;
     }
     if(currentWindow === "new_project"){
         windowSwitcher('none');
-
     }
-    console.log('8888889')
     projectSection.classList.add('jc');
     projectSection.classList.remove('ac');
     projectSection.style.flexWrap = 'wrap';

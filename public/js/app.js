@@ -32,53 +32,160 @@ function formError(msg) {
     appContainer.appendChild(errorMessage);
 }
 
-
-//
-// class ClassWatcher {
-//
-//     constructor(targetNode, classToWatch, classAddedCallback, classRemovedCallback) {
-//         this.targetNode = targetNode
-//         this.classToWatch = classToWatch
-//         this.classAddedCallback = classAddedCallback
-//         this.classRemovedCallback = classRemovedCallback
-//         this.observer = null
-//         this.lastClassState = targetNode.classList.contains(this.classToWatch)
-//
-//         this.init()
-//     }
-//
-//     init() {
-//         this.observer = new MutationObserver(this.mutationCallback)
-//         this.observe()
-//     }
-//
-//     observe() {
-//         this.observer.observe(this.targetNode, { attributes: true })
-//     }
-//
-//     disconnect() {
-//         this.observer.disconnect()
-//     }
-//
-//     mutationCallback = mutationsList => {
-//         for(let mutation of mutationsList) {
-//             if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-//                 let currentClassState = mutation.target.classList.contains(this.classToWatch)
-//                 if(this.lastClassState !== currentClassState) {
-//                     this.lastClassState = currentClassState
-//                     if(currentClassState) {
-//                         this.classAddedCallback()
-//                     }
-//                     else {
-//                         this.classRemovedCallback()
-//                     }
-//                 }
-//             }
-//         }
-//     }
-// }
-
-
+function unitsList(id = "", onInput = ()=>{},  value=''){
+    function f(current){
+        if(value === current) return 'selected';
+        else return '';
+    }
+    return`
+        <select oninput="${onInput}" id="${id}">
+             <optgroup label="General">
+                <option ${f('')}  value="">None</option>
+                <option ${f('%')}  value="%">%</option>
+            </optgroup>
+            <optgroup label="Temperature">
+                <option ${f("°C")} value="°C" title="celsius">°C</option>
+                <option ${f("°F")} value="°F" title="fahrenheit">°F</option>
+                <option ${f("K")} value="K" title="kelvin">K</option>
+                <option ${f("°Ré")} value="°Ré" title="reaumur">°Ré</option>
+                <option ${f("°N")} value="°N" title="newton">°N</option>
+                <option ${f("°Ra")} value="°Ra" title="rankine">°Ra</option>
+            </optgroup>
+            <optgroup label="Volume">
+                 <option ${f("m³")} value="m³" title="cubic meter">m³</option>
+                 <option ${f("dm³")} value="dm³" title="cubic decimeter">dm³</option>
+                 <option ${f("cm³")} value="cm³" title="cubic centimeter">cm³</option>
+                 <option ${f("l")} value="l" title="liter">l</option>
+                 <option ${f("dl")} value="dl" title="deciliter">dl</option>
+                 <option ${f("cl")} value="cl" title="centiliter">cl</option>
+                 <option ${f("ml")} value="ml" title="milliliter">ml</option>
+                 <option ${f("oz")} value="oz" title="fluid ounce">oz</option>
+                 <option ${f("in³")} value="in³" title="cubic inch">in³</option>
+                 <option ${f("ft³")} value="ft³" title="cubic foot">ft³</option>
+                 <option ${f("yd³")} value="yd³" title="cubic yard">yd³</option>
+                 <option ${f("gal")} value="gal" title="gallon uk">gal</option>
+                 <option ${f("bbl")} value="bbl" title="petroleum barrel">bbl</option>
+                 <option ${f("pt")} value="pt" title="pint">pt</option>
+            </optgroup>
+            <optgroup label="Distance">
+                <option ${f("km")} value="km" title="kilometer">km</option>
+                <option ${f("m")} value="m" title="meter">m</option>
+                <option ${f("dm")} value="dm" title="decimeter">dm</option>
+                <option ${f("cm")} value="cm" title="centimeter">cm</option>
+                <option ${f("mm")} value="mm" title="millimeter">mm</option>
+                <option ${f("mi")} value="mi" title="mile">mi</option>
+                <option ${f("in")} value="in" title="inch">in</option>
+                <option ${f("ft")} value="ft" title="foot">ft</option>
+                <option ${f("yd")} value="yd" title="yard">yd</option>
+            </optgroup>
+            <optgroup label="Mass">
+                <option ${f("t")} value="t" title="tonne">t</option>
+                <option ${f("kg")} value="kg" title="kilogram">kg</option>
+                <option ${f("hg")} value="hg" title="hectogram">hg</option>
+                <option ${f("g")} value="g" title="gram">g</option>
+                <option ${f("dg")} value="dg" title="decigram">dg</option>
+                <option ${f("cg")} value="cg" title="centigram">cg</option>
+                <option ${f("mg")} value="mg" title="milligram">mg</option>
+                <option ${f("µg")} value="µg" title="microgram">µg</option>
+                <option ${f("carat")} value="carat" title="carat">carat</option>
+                <option ${f("grain")} value="grain" title="grain">grain</option>
+                <option ${f("oz")} value="oz" title="pounce avoirdupois">oz</option>
+                <option ${f("lb")} value="lb" title="pound avoirdupois">lb</option>
+                <option ${f("cwt")} value="cwt" title="long hundredweight">cwt</option>
+                <option ${f("ton")} value="ton" title="ton">ton</option>
+                <option ${f("st")} value="st" title="stone">st</option>
+            </optgroup>
+            <optgroup label="Area">
+                <option ${f("km²")} value="km²" title="square kilometer">km²</option>
+                <option ${f("m²")} value="m²" title="square meter">m²</option>
+                <option ${f("dm²")} value="dm²" title="square decimeter">dm²</option>
+                <option ${f("cm²")} value="cm²" title="square centimeter">cm²</option>
+                <option ${f("TB")} value="TB" title="square milimeter">TB</option>
+                <option ${f("ha")} value="ha" title="hectare">ha</option>
+                <option ${f("a")} value="a" title="are">a</option>
+                <option ${f("ca")} value="ca" title="centiare">ca</option>
+                <option ${f("mile²")} value="mile²" title="square mile">mile²</option>
+                <option ${f("in²")} value="in²" title="square inch">in²</option>
+                <option ${f("yd²")} value="yd²" title="square yard">yd²</option>
+                <option ${f("ft²")} value="ft²" title="square foot">ft²</option>
+                <option ${f("ro")} value="ro" title="rood">ro</option>
+                <option ${f("acre")} value="acre" title="acre">acre</option>
+                <option ${f("nautical mile²")} value="nautical mile²" title="square nautical mile">nautical mile²</option>
+            </optgroup>
+            <optgroup label="Speed">
+                <option ${f("kmph")} value="kmph" title="kilometer per hour">kph</option>
+                <option ${f("mps")} value="mps" title="mile per second">mps</option>
+                <option ${f("mph")} value="mph" title="mile per hour">mph</option>
+                <option ${f("knot")} value="knot" title="knot">knot</option>
+                <option ${f("ma")} value="ma" title="mac">ma</option>
+                <option ${f("a")} value="a" title="are">mg</option>
+            </optgroup>
+            <optgroup label="Data byte">
+                <option ${f("b")} value="b" title="bit">b</option>
+                <option ${f("B")} value="B" title="byte">B</option>
+                <option ${f("KB")} value="KB" title="kilobyte">KB</option>
+                <option ${f("MB")} value="MB" title="megabyte">MB</option>
+                <option ${f("GB")} value="GB" title="gigabyte">GB</option>
+                <option ${f("TB")} value="TB" title="terabyte">TB</option>
+                <option ${f("PB")} value="PB" title="petabyte">PB</option>
+                <option ${f("EB")} value="EB" title="exabyte">EB</option>
+                <option ${f("ZB")} value="ZB" title="zettabyte">ZB</option>
+                <option ${f("YB")} value="YB" title="yottabyte">YB</option>
+            </optgroup>
+            <optgroup label="Time">
+                <option ${f("year")} value="year" title="common year">year</option>
+                <option ${f("week")} value="week" title="week">week</option>
+                <option ${f("day")} value="day" title="day">day</option>
+                <option ${f("h")} value="h" title="hour">h</option>
+                <option ${f("min")} value="min" title="minute">min</option>
+                <option ${f("s")} value="s" title="second">s</option>
+                <option ${f("ms")} value="ms" title="millisecond">ms</option>
+                <option ${f("µs")} value="µs" title="microsecond">µs</option>
+                <option ${f("nanosecond")} value="nanosecond" title="nanosecond">nanosecond</option>
+                <option ${f("picosecond")} value="picosecond" title="picosecond">picosecond</option>
+                <option ${f("femtosecond")} value="femtosecond" title="femtosecond">femtosecond</option>
+                <option ${f("attosecond")} value="attosecond" title="attosecond">attosecond</option>
+            </optgroup>  
+            <optgroup label="Frequency">
+                <option ${f("Hz")} value="Hz" title="Hertz">Hz</option>
+                <option ${f("KHz")} value="KHz" title="K">KHz</option>
+                <option ${f("MHz")} value="MHz" title="megahertz">MHz</option>
+                <option ${f("GHz")} value="GHz" title="Gigahertz">GHz</option>
+            </optgroup>
+            <optgroup label="Pressure">
+                <option ${f("atm")} value="atm" title="atmosphere">atm</option>
+                <option ${f("bar")} value="bar" title="bar">bar</option>
+                <option ${f("mbar")} value="mbar" title="millibar">mbar</option>
+                <option ${f("Pa")} value="Pa" title="Pascal">Pa</option>
+                <option ${f("hPa")} value="hPa" title="hectopascal">hPa</option>
+                <option ${f("Psi")} value="Psi" title="pounds per square inch">Psi</option>
+                <option ${f("Torr")} value="Torr" title="torr">torr</option>
+            </optgroup>
+            <optgroup label="Energy">
+                <option ${f("J")} value="J" title="joule">J</option>
+                <option ${f("KJ")} value="KJ" title="kilojoule">KJ</option>
+                <option ${f("cal")} value="cal" title="calorie">cal</option>
+                <option ${f("kcal")} value="kcal" title="kilocalorie">kcal</option>
+                <option ${f("Wh")} value="Wh" title="watt-hour">Wh</option>
+                <option ${f("kWh")} value="kWh" title="kilowatt-hour">kWh</option>
+                <option ${f("BTU")} value="BTU" title="british thermal unit">BTU</option>
+                <option ${f("thm")} value="thm" title="Therm americain">thm</option>
+                <option ${f("gt-lb")} value="gt-lb" title="foot-pound">ft-lb</option>
+            </optgroup>
+            <optgroup label="Angle">
+                <option ${f("deg")} value="deg" title="degree">deg</option>
+                <option ${f("grad")} value="grad" title="grad">grad</option>
+                <option ${f("angular mil")} value="angular mil" title="angular mil">angular mil</option>
+                <option ${f("minute of arc")} value="minute of arc" title="minute of arc">minute of arc</option>
+                <option ${f("rad")} value="rad" title="radian">rad</option>
+                <option ${f("second of arc")} value="second of arc" title="second of arc">second of arc</option>
+                <option ${f("BTU")} value="BTU" title="british thermal unit">BTU</option>
+                <option ${f("thm")} value="thm" title="Therm americain">thm</option>
+                <option ${f("gt-lb")} value="gt-lb" title="foot-pound">ft-lb</option>
+            </optgroup>
+        </select>
+    `;
+}
 
 let ws, wsHandler;
 let currentView, currentProject, currentWindow;
@@ -972,11 +1079,15 @@ function setDefaultProfile(){
 }
 // Function that opens a pop up window.
 function windowSwitcher(targetWindow, options) {
-    console.log('targetWindow: ', targetWindow);
+
+    // Save the current window in us for global usage.
     currentWindow = targetWindow;
+
+    // Get the document elements. The window ele which is initially hidden.
     let window = document.getElementById('window');
     let app = document.getElementById('app');
 
+    // Function to hide the popup window.
     function windowHide() {
         app.classList.remove('hold');
         window.classList.remove('cr');
@@ -986,6 +1097,7 @@ function windowSwitcher(targetWindow, options) {
         window.innerHTML = '';
     }
 
+    // Function to show the pop up window.
     function windowShow() {
         app.classList.add('hold');
         window.classList.add('cr');
@@ -995,752 +1107,63 @@ function windowSwitcher(targetWindow, options) {
         window.innerHTML = '';
     }
 
+    // If the target window is none, hide the pop up window.
+    if (targetWindow === 'none' || targetWindow === 'close') {
+        windowHide();
+        return;
+    }
+
+    // Show the window.
+    windowShow();
+
+    let windowContent = document.createElement('div');
+    windowContent.id = 'window_content_block';
+
+    let content = "";
+
     switch (targetWindow) {
 
-        // No window Shown.
         case 'none':
             windowHide();
             break;
-
+        case 'widget_selection':
+            content = windowWidgetSelection(windowContent);
+            break;
         case 'double_check':
-            windowShow();
-            let deleteVariableWindow = document.createElement('div');
-            deleteVariableWindow.id = 'window_content_block';
-            deleteVariableWindow.classList.add('c');
-            deleteVariableWindow.classList.add('ac');
-            deleteVariableWindow.classList.add('jc');
-            deleteVariableWindow.style.maxWidth = '500px';
-            deleteVariableWindow.innerHTML= `
-            <h2 style="text-align:center;">ARE YOU SURE YOU WANT TO <u style="color: red;">DELETE</u> THIS VARIABLE?<br>
-            <div class="r ac jc">
-                <button onclick="windowSwitcher('none')">Cancel</button>
-                <button onclick ="deleteVariable('${currentUid}','${currentKey}','${options}')" style="background: #8c2726;">DELETE</button>
-            </div>`;
-            window.appendChild(deleteVariableWindow);
-
-        break;
-
+            content = windowDoubleCheck(windowContent, options);
+            break;
         case 'deleteProject':
-            windowShow();
-            let deleteProjectWindow = document.createElement('div');
-            deleteProjectWindow.id = 'window_content_block';
-            deleteProjectWindow.classList.add('c');
-            deleteProjectWindow.classList.add('ac');
-            deleteProjectWindow.classList.add('jc');
-            deleteProjectWindow.style.maxWidth = '500px';
-            deleteProjectWindow.innerHTML= "<h2 style=\"text-align:center;\">ARE YOU SURE YOU WANT TO <u style='color: red;'>DELETE</u> THIS PROJECT?<br><br> <u style='color: red;'>All data</u> tied to this project will be lost if deleted.</h2>" +
-                `<div class="r ac jc"><button onclick="windowSwitcher('none')">Cancel</button><button onclick ="deleteProject(currentUid, currentId)" style="background: #8c2726;">DELETE</button></div>`;
-            window.appendChild(deleteProjectWindow);
-
+            content = windowDeleteProject(windowContent);
             break;
         case 'newKey':
-            windowShow();
-            let newKeySettings = document.createElement('div');
-            newKeySettings.id = 'window_content_block';
-            newKeySettings.classList.add('c');
-            newKeySettings.classList.add('ac');
-            newKeySettings.classList.add('jc');
-            newKeySettings.style.maxWidth = '500px';
-            newKeySettings.innerHTML= "<h2>Are you sure you want to generate a new project key? <u style='color: red;'>All devices</u> using this key will need to have the new key implemented for all the devices connected to this project to continue functioning.</h2>" +
-                `<div class="r ac jc"><button onclick="windowSwitcher('none')">Cancel</button><button onclick ="newProjectKey('${currentUid}', '${currentId}')" style="background: #8c2726;">New Key</button></div>`;
-            window.appendChild(newKeySettings);
-
+            content = windowNewKey(windowContent);
             break;
         case 'data':
-            windowShow();
-
-            let dataSettings = document.createElement('div');
-            dataSettings.id = 'window_content_block';
-            dataSettings.classList.add('widget-data-settings');
-            let dataWidgetContent =
-                `<div class="c ac jc">` +
-                    '<h2 class=" mb1"  id="gauge_title">Data Point</h2>' +
-                    '<h3 class="m0" style="font-size: 0.8rem;" id="variable_title"></h3>' +
-                    '<div style="" class="r ac jc">' +
-                        '<h1 id="value">50</h1>' +
-                        '<h1 class="m0" id="units"></h1>' +
-                    '</div>' +
-                    `<div>${new Date().toLocaleString()}</div>` +
-                    '<div class="r mt4 mb3">Variable:&nbsp;' +
-                    '<select oninput="variableSettings()" id="variable_title_input">';
-                    let validVariablesForData = `<option value="">Select a Variable</option>`;
-                    if (currentProjectData.hasOwnProperty('variables')) {
-                        let variables = currentProjectData['variables'];
-                        for (let variable in variables) {
-                            if(variables.hasOwnProperty(variable)){
-                                if (variable !== 'default') {
-                                    validVariablesForData = validVariablesForData +`<option value="${variable}">${variable}</option>`;
-                                }
-                            }
-                        }
-                    }
-            dataSettings.innerHTML = dataWidgetContent + validVariablesForData + '</select>&nbsp;Hide: <input id="gauge_variable_hide" oninput="gaugeHideVariableName()" style="width: 20px;" type="checkbox">' +
-                '</div>' +
-                '<div class="c jc afe p3 py0">' +
-                '<div class="mb2">Title: <input id="gauge_title_input" onkeyup="gaugeSettingsTitle()" type="text" value="Data Point"></div>' +
-                '</div>' +
-                '<div class="r mb2 mt0">Units:&nbsp;' +
-                '<select oninput="unitSettings(this)" id="">' +
-                '<option value="">-</option>' +
-                '<optgroup label="Temperature">' +
-                '<option value="°C" title="celsius">°C</option>' +
-                '<option value="°F" title="fahrenheit">°F</option>' +
-                '<option value="K" title="kelvin">K</option>' +
-                '<option value="°Ré" title="reaumur">°Ré</option>' +
-                '<option value="°N" title="newton">°N</option>' +
-                '<option value="°Ra" title="rankine">°Ra</option>' +
-                '</optgroup>' +
-                '<optgroup label="Volume">' +
-                ' <option value="m³" title="cubic meter">m³</option>' +
-                ' <option value="dm³" title="cubic decimeter">dm³</option>' +
-                ' <option value="cm³" title="cubic centimeter">cm³</option>' +
-                ' <option value="l" title="liter">l</option>' +
-                ' <option value="dl" title="deciliter">dl</option>' +
-                ' <option value="cl" title="centiliter">cl</option>' +
-                ' <option value="ml" title="milliliter">ml</option>' +
-                ' <option value="oz" title="fluid ounce">oz</option>' +
-                ' <option value="in³" title="cubic inch">in³</option>' +
-                ' <option value="ft³" title="cubic foot">ft³</option>' +
-                ' <option value="yd³" title="cubic yard">yd³</option>' +
-                ' <option value="gal" title="gallon uk">gal</option>' +
-                ' <option value="bbl" title="petroleum barrel">bbl</option>' +
-                ' <option value="pt" title="pint">pt</option>' +
-                '</optgroup>' +
-                '<optgroup label="Distance">' +
-                '<option value="km" title="kilometer">km</option>' +
-                '<option value="m" title="meter">m</option>' +
-                '<option value="dm" title="decimeter">dm</option>' +
-                '<option value="cm" title="centimeter">cm</option>' +
-                '<option value="mm" title="millimeter">mm</option>' +
-                '<option value="mi" title="mile">mi</option>' +
-                '<option value="in" title="inch">in</option>' +
-                '<option value="ft" title="foot">ft</option>' +
-                '<option value="yd" title="yard">yd</option>' +
-                '</optgroup>' +
-                '<optgroup label="Mass">' +
-                '<option value="t" title="tonne">t</option>' +
-                '<option value="kg" title="kilogram">kg</option>' +
-                '<option value="hg" title="hectogram">hg</option>' +
-                '<option value="g" title="gram">g</option>' +
-                '<option value="dg" title="decigram">dg</option>' +
-                '<option value="cg" title="centigram">cg</option>' +
-                '<option value="mg" title="milligram">mg</option>' +
-                '<option value="µg" title="microgram">µg</option>' +
-                '<option value="carat" title="carat">carat</option>' +
-                '<option value="grain" title="grain">grain</option>' +
-                '<option value="oz" title="pounce avoirdupois">oz</option>' +
-                '<option value="lb" title="pound avoirdupois">lb</option>' +
-                '<option value="cwt" title="long hundredweight">cwt</option>' +
-                '<option value="ton" title="ton">ton</option>' +
-                '<option value="st" title="stone">st</option>' +
-                '</optgroup>' +
-                `</select>` +
-                '</div>' +
-
-                `<div class="r">` +
-                `<button onclick="windowSwitcher('widget_selection')">Cancel</button>` +
-                `<button onclick="newDataWidget()"> &nbsp;&nbsp;Add&nbsp;&nbsp;</button>` +
-                `</div>` +
-                '</div>';
-            window.appendChild(dataSettings);
-
-            break;
-
-        case 'gauge_settings':
-            windowShow();
-            console.log("Op: ",options, currentProjectData);
-            let gauge = currentProjectData.widgets.find((widget) => widget.id === options);
-            let gaugeEdit = document.createElement('div');
-            gaugeEdit.id = 'window_content_block';
-            // Scale of the gauge.
-            let gaugeEditScale = 1;
-
-
-            let gaugeEditDcaleContent =
-                `
-            <i style="color: red; top: 5px; right: 0;" class="por fs125 hc hp fa fa-trash-alt" onclick="removeGaugeWidget('${gauge.id}')"></i> 
-
-            <div class="c ac jc">
-
-                <h2 class=" mb1"  id="gauge_title">${gauge.title}</h2>
-                <h3 class="m0" style="font-size: 0.8rem;" id="variable_title">${gauge.variable}</h3> 
-                <svg class="mt2" height="${200 * gaugeEditScale}" width="${200 * gaugeEditScale}">
-                    <circle cx= "${100 * gaugeEditScale}" cy= "${100 * gaugeEditScale}" r="${5 * gaugeEditScale}" fill="#ffffff"/>
-                    <path id="gauge_color_1" fill="${gauge.color1}" d="M${29.29 * gaugeEditScale},${170.71 * gaugeEditScale}           A ${100 * gaugeEditScale} ${100 * gaugeEditScale} 0 0 1 ${0 * gaugeEditScale} ${102.5 * gaugeEditScale}                 L ${20 * gaugeEditScale} ${102.5 * gaugeEditScale}               A ${80 * gaugeEditScale} ${80 * gaugeEditScale} 0 0 0 ${43.432 * gaugeEditScale} ${156.568 * gaugeEditScale}"/>
-                    <path id="gauge_color_2" fill="${gauge.color2}" d="M${0 * gaugeEditScale},${97.5 * gaugeEditScale}                 A ${100 * gaugeEditScale} ${100 * gaugeEditScale} 0 0 1 ${27.592735 * gaugeEditScale} ${31.12827 * gaugeEditScale}      L ${41.6915 * gaugeEditScale} ${45.227 * gaugeEditScale}         A ${80 * gaugeEditScale} ${80 * gaugeEditScale} 0 0 0 ${20 * gaugeEditScale} ${97.5 * gaugeEditScale} "/>
-                    <path id="gauge_color_3" fill="${gauge.color3}" d="M${31.05709 * gaugeEditScale}, ${27.521555 * gaugeEditScale}    A ${100 * gaugeEditScale} ${100 * gaugeEditScale} 0 0 1 ${97.5 * gaugeEditScale} ${0 * gaugeEditScale}                  L ${97.5 * gaugeEditScale} ${20 * gaugeEditScale}                A ${80 * gaugeEditScale} ${80 * gaugeEditScale} 0 0 0 ${45.226855 * gaugeEditScale} ${41.6915 * gaugeEditScale}"/>
-                    <path id="gauge_color_4" fill="${gauge.color4}" d="M${102.5 * gaugeEditScale},${0 * gaugeEditScale}                A ${100 * gaugeEditScale} ${100 * gaugeEditScale} 0 0 1 ${168.94291 * gaugeEditScale} ${27.521555 * gaugeEditScale}     L ${154.773145 * gaugeEditScale} ${41.6915 * gaugeEditScale}     A ${80 * gaugeEditScale} ${80 * gaugeEditScale} 0 0 0 ${102.5 * gaugeEditScale} ${20 * gaugeEditScale}"/>
-                    <path id="gauge_color_5" fill="${gauge.color5}" d="M${172.407265 * gaugeEditScale},${31.12827 * gaugeEditScale}    A ${100 * gaugeEditScale} ${100 * gaugeEditScale} 0 0 1 ${200 * gaugeEditScale} ${97.5 * gaugeEditScale}                L ${180 * gaugeEditScale} ${97.5 * gaugeEditScale}               A ${80 * gaugeEditScale} ${80 * gaugeEditScale} 0 0 0 ${158.3085 * gaugeEditScale} ${45.227 * gaugeEditScale}"/>
-                    <path id="gauge_color_6" fill="${gauge.color6}" d="M${200 * gaugeEditScale},${102.5 * gaugeEditScale}              A ${100 * gaugeEditScale} ${100 * gaugeEditScale} 0 0 1 ${170.71 * gaugeEditScale} ${170.71 * gaugeEditScale}           L ${156.568 * gaugeEditScale} ${156.568 * gaugeEditScale}        A ${80 * gaugeEditScale} ${80 * gaugeEditScale} 0 0 0 ${180 * gaugeEditScale} ${102.5 * gaugeEditScale}"/>
-                    <path style="transform-origin: ${100 * gaugeEditScale}px ${100 * gaugeEditScale}px;" fill="#707070" d="M${95 * gaugeEditScale},${110 * gaugeEditScale} L ${105 * gaugeEditScale} ${110 * gaugeEditScale} L ${102 * gaugeEditScale} ${95 * gaugeEditScale} L ${100 * gaugeEditScale} ${3 * gaugeEditScale} L ${98 * gaugeEditScale} ${95 * gaugeEditScale}"/>
-                </svg> 
-                <div style="transform: translateY(-20px);" class="r ac jc"> 
-                    <h2 id="gauge_min_value" class="m0 mr5" >${gauge.min}</h2> 
-                    <h2 id="gauge_max_value" class="m0 ml5" >${gauge.max}</h2> 
-                </div> 
-                <div style="transform: translateY(-40px);" class="r ac jc"> 
-                    <h1 id="value">${currentProjectData.variables[gauge.variable]}</h1> 
-                    <h1 class="m0" id="units">${gauge.units}</h1> 
-                </div> 
-            <div class="r mb3">Variable:&nbsp;`;
-            // Build an list of options whereas the values are variables that are numbers.
-            let validVariablesForGauge3 = `<option >Select a Variable</option>`;
-            if (currentProjectData.hasOwnProperty('variables')) {
-                let variables = currentProjectData['variables'];
-                for (let variable in variables) {
-                    if(variables.hasOwnProperty(variable)){
-                        if (typeof variables[variable] === "number" && variable !== 'default') {
-                            validVariablesForGauge3 = validVariablesForGauge3 +`<option value="${variable}">${variable}</option>`;
-                        }
-                    }
-                }
-            }
-            gaugeEdit.innerHTML = gaugeEditDcaleContent + `<select oninput="variableSettings()" id="${gauge.id}_variable_title_input">` + validVariablesForGauge3 +
-                `</select>&nbsp;Hide: <input id="gauge_variable_hide"  oninput="gaugeHideVariableName()" style="width: 20px;" type="checkbox">` +
-                '</div>' +
-                '<div class="c jc afe p3 pt0">' +
-                `<div class="mb2">Title: <input id="gauge_title_input" onkeyup="gaugeSettingsTitle()" type="text" value="${gauge.title}"></div>` +
-                `<div class="mb2">Min Value: <input type="number" onkeyup="minSettings(this)" onchange="minSettings(this)" value="${gauge.min}"></div>` +
-                `<div class="mb2">Max Value: <input type="number" onkeyup="maxSettings(this)" onchange="maxSettings(this)" value="${gauge.max}"></div>` +
-                '</div>' +
-                '<div class="r jc ac">' +
-                `<input id="color1" oninput="gaugeColorSettings(this, 1)"  style="background: transparent;" class="mx3" type="color" value="${gauge.color1}">` +
-                `<input id="color2" oninput="gaugeColorSettings(this, 2)" style="background: transparent;" class="mx3" type="color" value="${gauge.color2}">` +
-                `<input id="color3" oninput="gaugeColorSettings(this, 3)" style="background: transparent;" class="mx3" type="color" value="${gauge.color3}">` +
-                `<input id="color4" oninput="gaugeColorSettings(this, 4)" style="background: transparent;" class="mx3" type="color" value="${gauge.color4}">` +
-                `<input id="color5" oninput="gaugeColorSettings(this, 5)" style="background: transparent;" class="mx3" type="color" value="${gauge.color5}">` +
-                `<input id="color6" oninput="gaugeColorSettings(this, 6)" style="background: transparent;" class="mx3" type="color" value="${gauge.color6}">` +
-                '</div>' +
-                '<div class="r mb2 mt4">Units:&nbsp;' +
-                `<select oninput="unitSettings(this)" id="${gauge.id}_variable_units">` +
-                '<optgroup label="Genral">' +
-                '<option value="percent">%</option>' +
-                '</optgroup>' +
-                '<optgroup label="Temperature">' +
-                '<option value="°C" title="celsius">°C</option>' +
-                '<option value="°F" title="fahrenheit">°F</option>' +
-                '<option value="K" title="kelvin">K</option>' +
-                '<option value="°Ré" title="reaumur">°Ré</option>' +
-                '<option value="°N" title="newton">°N</option>' +
-                '<option value="°Ra" title="rankine">°Ra</option>' +
-                '</optgroup>' +
-                '<optgroup label="Volume">' +
-                ' <option value="m³" title="cubic meter">m³</option>' +
-                ' <option value="dm³" title="cubic decimeter">dm³</option>' +
-                ' <option value="cm³" title="cubic centimeter">cm³</option>' +
-                ' <option value="l" title="liter">l</option>' +
-                ' <option value="dl" title="deciliter">dl</option>' +
-                ' <option value="cl" title="centiliter">cl</option>' +
-                ' <option value="ml" title="milliliter">ml</option>' +
-                ' <option value="oz" title="fluid ounce">oz</option>' +
-                ' <option value="in³" title="cubic inch">in³</option>' +
-                ' <option value="ft³" title="cubic foot">ft³</option>' +
-                ' <option value="yd³" title="cubic yard">yd³</option>' +
-                ' <option value="gal" title="gallon uk">gal</option>' +
-                ' <option value="bbl" title="petroleum barrel">bbl</option>' +
-                ' <option value="pt" title="pint">pt</option>' +
-                '</optgroup>' +
-                '<optgroup label="Distance">' +
-                '<option value="km" title="kilometer">km</option>' +
-                '<option value="m" title="meter">m</option>' +
-                '<option value="dm" title="decimeter">dm</option>' +
-                '<option value="cm" title="centimeter">cm</option>' +
-                '<option value="mm" title="millimeter">mm</option>' +
-                '<option value="mi" title="mile">mi</option>' +
-                '<option value="in" title="inch">in</option>' +
-                '<option value="ft" title="foot">ft</option>' +
-                '<option value="yd" title="yard">yd</option>' +
-                '</optgroup>' +
-                '<optgroup label="Mass">' +
-                '<option value="t" title="tonne">t</option>' +
-                '<option value="kg" title="kilogram">kg</option>' +
-                '<option value="hg" title="hectogram">hg</option>' +
-                '<option value="g" title="gram">g</option>' +
-                '<option value="dg" title="decigram">dg</option>' +
-                '<option value="cg" title="centigram">cg</option>' +
-                '<option value="mg" title="milligram">mg</option>' +
-                '<option value="µg" title="microgram">µg</option>' +
-                '<option value="carat" title="carat">carat</option>' +
-                '<option value="grain" title="grain">grain</option>' +
-                '<option value="oz" title="pounce avoirdupois">oz</option>' +
-                '<option value="lb" title="pound avoirdupois">lb</option>' +
-                '<option value="cwt" title="long hundredweight">cwt</option>' +
-                '<option value="ton" title="ton">ton</option>' +
-                '<option value="st" title="stone">st</option>' +
-                '</optgroup>' +
-                `</select>` +
-                '</div>' +
-                `<div class="r">` +
-                `<button onclick="windowSwitcher('none')">Cancel</button>` +
-                `<button onclick="updateGaugeWidget('${gauge.id}')"> &nbsp;Save&nbsp;</button>` +
-                `</div>` +
-                '</div>';
-            window.appendChild(gaugeEdit);
-            document.getElementById(`${gauge.id}_variable_title_input`).value = gauge.variable;
-            document.getElementById(`${gauge.id}_variable_units`).value = gauge.units;
-            if (gauge.hide === "true") {
-                document.getElementById('variable_title').classList.add('dn');
-                document.getElementById('gauge_variable_hide').checked = true;
-            } else {
-                document.getElementById('variable_title').classList.remove('dn');
-                document.getElementById('gauge_variable_hide').checked = false;
-            }
+            content = windowWidgetData(windowContent);
             break;
         case 'gauge':
-
-            windowShow();
-
-            // Create the root element for the gauge.
-            let gaugeSettings = document.createElement('div');
-            gaugeSettings.id = 'window_content_block';
-            gaugeSettings.classList.add('widget-gauge-settings');
-
-            // Scale of the gauge.
-            let scale = 1;
-
-            // The content of the window.
-            let content =
-            `<div class="c ac jc">
-                <h2 class=" mb1"  id="gauge_title">Gauge</h2> 
-                <h3 class="m0" style="font-size: 0.8rem;" id="variable_title"></h3> 
-                <svg class="mt2" height="${200 * scale}" width="${200 * scale}">
-                    <circle cx= "${100 * scale}" cy= "${100 * scale}" r="${5 * scale}" fill="#ffffff"/>
-                    <path id="gauge_color_1" fill="#0D790A" d="M${29.29 * scale},${170.71 * scale}           A ${100 * scale} ${100 * scale} 0 0 1 ${0 * scale} ${102.5 * scale}                 L ${20 * scale} ${102.5 * scale}               A ${80 * scale} ${80 * scale} 0 0 0 ${43.432 * scale} ${156.568 * scale}"/>
-                    <path id="gauge_color_2" fill="#0D790A" d="M${0 * scale},${97.5 * scale}                 A ${100 * scale} ${100 * scale} 0 0 1 ${27.592735 * scale} ${31.12827 * scale}      L ${41.6915 * scale} ${45.227 * scale}         A ${80 * scale} ${80 * scale} 0 0 0 ${20 * scale} ${97.5 * scale} "/>
-                    <path id="gauge_color_3" fill="#F3B820" d="M${31.05709 * scale}, ${27.521555 * scale}    A ${100 * scale} ${100 * scale} 0 0 1 ${97.5 * scale} ${0 * scale}                  L ${97.5 * scale} ${20 * scale}                A ${80 * scale} ${80 * scale} 0 0 0 ${45.226855 * scale} ${41.6915 * scale}"/>
-                    <path id="gauge_color_4" fill="#F3B820" d="M${102.5 * scale},${0 * scale}                A ${100 * scale} ${100 * scale} 0 0 1 ${168.94291 * scale} ${27.521555 * scale}     L ${154.773145 * scale} ${41.6915 * scale}     A ${80 * scale} ${80 * scale} 0 0 0 ${102.5 * scale} ${20 * scale}"/>
-                    <path id="gauge_color_5" fill="#D20303" d="M${172.407265 * scale},${31.12827 * scale}    A ${100 * scale} ${100 * scale} 0 0 1 ${200 * scale} ${97.5 * scale}                L ${180 * scale} ${97.5 * scale}               A ${80 * scale} ${80 * scale} 0 0 0 ${158.3085 * scale} ${45.227 * scale}"/>
-                    <path id="gauge_color_6" fill="#D20303" d="M${200 * scale},${102.5 * scale}              A ${100 * scale} ${100 * scale} 0 0 1 ${170.71 * scale} ${170.71 * scale}           L ${156.568 * scale} ${156.568 * scale}        A ${80 * scale} ${80 * scale} 0 0 0 ${180 * scale} ${102.5 * scale}"/>
-                    <path style="transform-origin: ${100 * scale}px ${100 * scale}px;" fill="#707070" d="M${95 * scale},${110 * scale} L ${105 * scale} ${110 * scale} L ${102 * scale} ${95 * scale} L ${100 * scale} ${3 * scale} L ${98 * scale} ${95 * scale}"/>
-                </svg> 
-                <div style="transform: translateY(-20px);" class="r ac jc"> 
-                    <h2 id="gauge_min_value" class="m0 mr5" >0</h2> 
-                    <h2 id="gauge_max_value" class="m0 ml5" >100</h2> 
-                </div> 
-                <div style="transform: translateY(-40px);" class="r ac jc"> 
-                    <h1 id="value">50</h1> 
-                    <h1 class="m0" id="units"></h1> 
-                </div> 
-            <div class="r mb3">Variable:&nbsp;`;
-
-            // Build an list of options whereas the values are variables that are numbers.
-            let validVariablesForGauge = `<option value="">Select a Variable</option>`;
-            if (currentProjectData.hasOwnProperty('variables')) {
-                let variables = currentProjectData['variables'];
-                for (let variable in variables) {
-                    if(variables.hasOwnProperty(variable)){
-                        if (typeof variables[variable] === "number" && variable !== 'default') {
-                            validVariablesForGauge = validVariablesForGauge +`<option value="${variable}">${variable}</option>`;
-                        }
-                    }
-                }
-            }
-
-            gaugeSettings.innerHTML = content + '<select oninput="variableSettings()" id="variable_title_input">' + validVariablesForGauge +
-                '</select>&nbsp;Hide: <input id="gauge_variable_hide" oninput="gaugeHideVariableName()" style="width: 20px;" type="checkbox">' +
-                '</div>' +
-                '<div class="c jc afe p3 pt0">' +
-                '<div class="mb2">Title: <input id="gauge_title_input" onkeyup="gaugeSettingsTitle()" type="text" value="Gauge"></div>' +
-                '<div class="mb2">Min Value: <input type="number" onkeyup="minSettings(this)" onchange="minSettings(this)" value="0"></div>' +
-                '<div class="mb2">Max Value: <input type="number" onkeyup="maxSettings(this)" onchange="maxSettings(this)" value="100"></div>' +
-                '</div>' +
-                '<div class="r jc ac">' +
-                '<input id="color1" oninput="gaugeColorSettings(this, 1)"  style="background: transparent;" class="mx3" type="color" value="#0D790A">' +
-                '<input id="color2" oninput="gaugeColorSettings(this, 2)" style="background: transparent;" class="mx3" type="color" value="#0D790A">' +
-                '<input id="color3" oninput="gaugeColorSettings(this, 3)" style="background: transparent;" class="mx3" type="color" value="#F3B820">' +
-                '<input id="color4" oninput="gaugeColorSettings(this, 4)" style="background: transparent;" class="mx3" type="color" value="#F3B820">' +
-                '<input id="color5" oninput="gaugeColorSettings(this, 5)" style="background: transparent;" class="mx3" type="color" value="#D20303">' +
-                '<input id="color6" oninput="gaugeColorSettings(this, 6)" style="background: transparent;" class="mx3" type="color" value="#D20303">' +
-                '</div>' +
-                '<div class="r mb2 mt4">Units:&nbsp;' +
-                '<select oninput="unitSettings(this)" id="">' +
-                '<optgroup label="Math">' +
-                '<option value="percent">%</option>' +
-                '</optgroup>' +
-                '<optgroup label="Temperature">' +
-                '<option value="°C" title="celsius">°C</option>' +
-                '<option value="°F" title="fahrenheit">°F</option>' +
-                '<option value="K" title="kelvin">K</option>' +
-                '<option value="°Ré" title="reaumur">°Ré</option>' +
-                '<option value="°N" title="newton">°N</option>' +
-                '<option value="°Ra" title="rankine">°Ra</option>' +
-                '</optgroup>' +
-                '<optgroup label="Volume">' +
-                ' <option value="m³" title="cubic meter">m³</option>' +
-                ' <option value="dm³" title="cubic decimeter">dm³</option>' +
-                ' <option value="cm³" title="cubic centimeter">cm³</option>' +
-                ' <option value="l" title="liter">l</option>' +
-                ' <option value="dl" title="deciliter">dl</option>' +
-                ' <option value="cl" title="centiliter">cl</option>' +
-                ' <option value="ml" title="milliliter">ml</option>' +
-                ' <option value="oz" title="fluid ounce">oz</option>' +
-                ' <option value="in³" title="cubic inch">in³</option>' +
-                ' <option value="ft³" title="cubic foot">ft³</option>' +
-                ' <option value="yd³" title="cubic yard">yd³</option>' +
-                ' <option value="gal" title="gallon uk">gal</option>' +
-                ' <option value="bbl" title="petroleum barrel">bbl</option>' +
-                ' <option value="pt" title="pint">pt</option>' +
-                '</optgroup>' +
-                '<optgroup label="Distance">' +
-                '<option value="km" title="kilometer">km</option>' +
-                '<option value="m" title="meter">m</option>' +
-                '<option value="dm" title="decimeter">dm</option>' +
-                '<option value="cm" title="centimeter">cm</option>' +
-                '<option value="mm" title="millimeter">mm</option>' +
-                '<option value="mi" title="mile">mi</option>' +
-                '<option value="in" title="inch">in</option>' +
-                '<option value="ft" title="foot">ft</option>' +
-                '<option value="yd" title="yard">yd</option>' +
-                '</optgroup>' +
-                '<optgroup label="Mass">' +
-                '<option value="t" title="tonne">t</option>' +
-                '<option value="kg" title="kilogram">kg</option>' +
-                '<option value="hg" title="hectogram">hg</option>' +
-                '<option value="g" title="gram">g</option>' +
-                '<option value="dg" title="decigram">dg</option>' +
-                '<option value="cg" title="centigram">cg</option>' +
-                '<option value="mg" title="milligram">mg</option>' +
-                '<option value="µg" title="microgram">µg</option>' +
-                '<option value="carat" title="carat">carat</option>' +
-                '<option value="grain" title="grain">grain</option>' +
-                '<option value="oz" title="pounce avoirdupois">oz</option>' +
-                '<option value="lb" title="pound avoirdupois">lb</option>' +
-                '<option value="cwt" title="long hundredweight">cwt</option>' +
-                '<option value="ton" title="ton">ton</option>' +
-                '<option value="st" title="stone">st</option>' +
-                '</optgroup>' +
-                `</select>` +
-                '</div>' +
-                `<div class="r">` +
-                `<button onclick="windowSwitcher('widget_selection')">Cancel</button>` +
-                `<button onclick="newGaugeWidget(); "> &nbsp;&nbsp;Add&nbsp;&nbsp;</button>` +
-                `</div>` +
-                '</div>';
-            window.appendChild(gaugeSettings);
-        break;
-
-        case 'widget_selection':
-            windowShow();
-            console.log('Widget Selection');
-            let widgetSelection = document.createElement('div');
-            widgetSelection.id = 'window_content_block';
-            widgetSelection.classList.add('widget-selection');
-            let mod = 0.7;
-            console.log(currentKey);
-            widgetSelection.innerHTML = `
-            <h2 class="mb0">Add Widget</h2>
-            <hr>
-            <div class="c ac jc">
-                <div class="r ac jc" style="flex-wrap: wrap; max-width: 1345px;"> 
-                    <div class="c ac jc"> 
-                        <button onclick="windowSwitcher('gauge')" class="bbutton"> 
-                            <svg height="${200 * mod}" width="${200 * mod}">
-                                <circle cx= "${100 * mod}" cy= "${100 * mod}" r="${5 * mod}" fill="#ffffff"/>
-                                <path fill="#0D790A" d="M${29.29 * mod},${170.71 * mod}           A ${100 * mod} ${100 * mod} 0 0 1 ${0 * mod} ${102.5 * mod}                 L ${20 * mod} ${102.5 * mod}               A ${80 * mod} ${80 * mod} 0 0 0 ${43.432 * mod} ${156.568 * mod}"/>
-                                <path fill="#0D790A" d="M${0 * mod},${97.5 * mod}                 A ${100 * mod} ${100 * mod} 0 0 1 ${27.592735 * mod} ${31.12827 * mod}      L ${41.6915 * mod} ${45.227 * mod}         A ${80 * mod} ${80 * mod} 0 0 0 ${20 * mod} ${97.5 * mod} "/>
-                                <path fill="#F3B820" d="M${31.05709 * mod}, ${27.521555 * mod}    A ${100 * mod} ${100 * mod} 0 0 1 ${97.5 * mod} ${0 * mod}                  L ${97.5 * mod} ${20 * mod}                A ${80 * mod} ${80 * mod} 0 0 0 ${45.226855 * mod} ${41.6915 * mod}"/>
-                                <path fill="#F3B820" d="M${102.5 * mod},${0 * mod}                A ${100 * mod} ${100 * mod} 0 0 1 ${168.94291 * mod} ${27.521555 * mod}     L ${154.773145 * mod} ${41.6915 * mod}     A ${80 * mod} ${80 * mod} 0 0 0 ${102.5 * mod} ${20 * mod}"/>
-                                <path fill="#D20303" d="M${172.407265 * mod},${31.12827 * mod}    A ${100 * mod} ${100 * mod} 0 0 1 ${200 * mod} ${97.5 * mod}                L ${180 * mod} ${97.5 * mod}               A ${80 * mod} ${80 * mod} 0 0 0 ${158.3085 * mod} ${45.227 * mod}"/>
-                                <path fill="#D20303" d="M${200 * mod},${102.5 * mod}              A ${100 * mod} ${100 * mod} 0 0 1 ${170.71 * mod} ${170.71 * mod}           L ${156.568 * mod} ${156.568 * mod}        A ${80 * mod} ${80 * mod} 0 0 0 ${180 * mod} ${102.5 * mod}"/>
-                                <path style="transform-origin: ${100 * mod}px ${100 * mod}px;" fill="#707070" d="M${95 * mod},${110 * mod} L ${105 * mod} ${110 * mod} L ${102 * mod} ${95 * mod} L ${100 * mod} ${3 * mod} L ${98 * mod} ${95 * mod}"/>
-                            </svg> 
-                        </button> 
-                        <h2>Gauge</h2> 
-                    </div> 
-                    <div class="c ac jc">
-                        <button onclick = "windowSwitcher('data')" class="bbutton"><div class="c"><h3>Temperature</h3><h1>24</h1><p>2019-10-26 12:48:01</p></div></button>
-                        <h2>Data Block</h2>
-                    </div>
-<!--                    <div class="c ac jc">-->
-<!--                        <button class="bbutton"><input class="slider" type="range"></button>-->
-<!--                        <h2>Slider</h2>-->
-<!--                    </div>-->
-<!--                    <div class="c ac jc">-->
-<!--                        <button class="bbutton"><div class="ct-chart-pie-widget"></div></button>-->
-<!--                        <h2>Pie Chart</h2>-->
-<!--                    </div>-->
-                    <div class="c ac jc">   
-                        <button class="bbutton"><div class="ct-chart-line-chart-widget"></div></button>
-                        <h2>Line Graph</h2>
-                    </div>
-                    <div class="c ac jc">
-                        <button class="bbutton"><div class="ct-chart-scatter-chart-widget"></div></button>
-                        <h2>Scatter Plot</h2>
-                    </div>
-<!--                    <div class="c ac jc">-->
-<!--                        <button class="bbutton"><div class="mr3 ct-chart-histo-chart-widget"></div></button>-->
-<!--                        <h2>Bar Graph</h2>-->
-<!--                    </div>-->
-<!--                    <div class="c ac jc">-->
-<!--                        <button class="bbutton"></button>-->
-<!--                        <h2>Raw Data</h2>-->
-<!--                    </div>-->
-                </div>
-                <div class="r">
-                    <button onclick="windowSwitcher('none')">Cancel</button>
-                </div>
-            </div>`;
-            window.appendChild(widgetSelection);
-            new Chartist.Pie('.ct-chart-pie-widget', {
-                series: [5, 10, 20, 25, 40, 100]
-            }, {
-                donut: true,
-                donutWidth: 15,
-                donutSolid: true,
-                startAngle: 270,
-                showLabel: false
-            });
-            new Chartist.Line('.ct-chart-line-chart-widget', {
-                series: [
-                    [1, 5, 2, 5, 4, 3],
-                    [2, 3, 4, 8, 1, 2],
-                    [5, 4, 3, 2, 1, 0.5]
-                ]
-            }, {
-                fullWidth: true,
-                showPoint: false,
-                axisY: {
-                    showLabel: false,
-                    showGrid: false
-                },
-                axisX: {
-                    showLabel: false,
-                    showGrid: false
-                }
-
-            });
-            var times = function (n) {
-                return Array.apply(null, new Array(n));
-            };
-
-            var data = times(5).map(Math.random).reduce(function (data, rnd, index) {
-                data.labels.push(index + 1);
-                data.series.forEach(function (series) {
-                    series.push(Math.random() * 100)
-                });
-
-                return data;
-            }, {
-                labels: [],
-                series: times(4).map(function () {
-                    return new Array()
-                })
-            });
-
-            var options = {
-                showLine: false,
-
-                axisY: {
-                    showLabel: false,
-                    showGrid: false
-                },
-                axisX: {
-                    showLabel: false,
-                    showGrid: false
-                }
-            };
-
-            var responsiveOptions = [
-                ['screen and (min-width: 640px)', {
-                    axisX: {
-                        labelInterpolationFnc: function (value, index) {
-                            return index % 4 === 0 ? 'W' + value : null;
-                        }
-                    }
-                }]
-            ];
-
-            new Chartist.Line('.ct-chart-scatter-chart-widget', data, options, responsiveOptions);
-
-            var data = {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                series: [
-                    [5, 4, 3, 7, 5, 10, 3, 4, 8, 10, 6, 8],
-                    [3, 2, 9, 5, 4, 6, 4, 6, 7, 8, 7, 4]
-                ]
-            };
-
-            var options = {
-                seriesBarDistance: 3,
-                axisY: {
-                    showLabel: false,
-                    showGrid: false
-                },
-                axisX: {
-                    showLabel: false,
-                    showGrid: false
-                }
-            };
-
-            var responsiveOptions = [
-                ['screen and (max-width: 640px)', {
-                    seriesBarDistance: 5,
-                    axisX: {
-                        labelInterpolationFnc: function (value) {
-                            return value[0];
-                        }
-                    }
-                }]
-            ];
-            new Chartist.Bar('.ct-chart-histo-chart-widget', data, options);
-
-
+            content = windowWidgetGauge(windowContent);
+            break;
+        case 'new_variable':
+            content = windowNewVariable(windowContent);
+            break;
+        case 'new_project':
+            content = windowNewProject(windowContent);
             break;
         case 'profile_settings':
-            document.getElementById('profile_window').classList.add('dn');
+            content = windowProfileSettings(windowContent);
+            break;
+        case 'gauge_settings':
+            content = windowGaugeSettings(windowContent, options);
+            break;
+        case 'data_settings':
+            content = windowDataSettings(windowContent, options);
+            break;
+        default:
             windowHide();
-            windowShow();
-            let profileSettings = document.createElement('div');
-            profileSettings.id = 'window_content_block';
-            profileSettings.classList.add('update-profile');
-            let user = firebase.auth().currentUser;
-            let profileSettingsForm = document.createElement('form');
-            profileSettingsForm.id = 'update_profile';
-            h2(profileSettings, {
-                innerText: "Profile Settings"
-            });
-
-            p(profileSettings, {
-                innerText: "Display Name"
-            });
-
-            let displayNameInput = input(profileSettings, {
-                type: 'test',
-                edit: true,
-                onSaveMessage: "Display name has been changed.",
-                value: user.displayName,
-                required: true,
-                disabled: true,
-                onSave: async () => {
-                    console.log("Save");
-                    if (user.displayName === displayNameInput.value) {
-                        throw new Error('none');
-                    }
-                    user.updateProfile({
-                        displayName: displayNameInput.value
-                    }).then(function () {
-                        displayNameInput.value = user.displayName;
-                        setProfileInformation(user);
-                    }).catch(function (error) {
-                        throw error;
-                    });
-                }
-            });
-
-            p(profileSettings, {
-                innerText: "Email Address"
-            });
-            let emailInput = input(profileSettings, {
-                type: 'email',
-                edit: true,
-                onSaveMessage: "A verification email was sent to your new email address.",
-                value: user.email,
-                required: true,
-                onSave: async function () {
-                    console.log("Save: ", emailInput.value);
-                    if (user.email === emailInput.value) {
-                        throw new Error('none');
-                    }
-                    await user.updateEmail(emailInput.value).then(async function () {
-                        await user.sendEmailVerification().then(function () {
-                        }).catch(function (error) {
-                            throw error;
-                        });
-                    }).catch(function (error) {
-                        throw error;
-                    }).then(() => {
-                        setProfileInformation(user);
-                    });
-
-                },
-                disabled: true
-            });
-
-            p(profileSettings, {
-                innerText: "Password"
-            });
-            let passwordInput = input(profileSettings, {
-                type: 'password',
-                edit: true,
-                onSaveMessage: "Your password has been changed.",
-                value: "******",
-                required: true,
-                onSave: async function () {
-
-                    if (passwordInput.value !== "******") {
-                        await user.updatePassword(passwordInput.value).then(function () {
-                            // Update successful.
-                        }).catch(function (error) {
-                            throw error;
-                        });
-                    } else {
-                        throw new Error('none');
-                    }
-
-                },
-                disabled: true
-            });
-
-            let closeContent = document.createElement('div');
-            closeContent.classList = "c ac jc w100";
-            closeContent.innerHTML = '    <p class="white-link r ac jc"><a href="https://en.gravatar.com" target="_blank">Change your profile Image<br> on Gravatar</a></p>' +
-                `    <button onclick="windowSwitcher('none')">Close</button></div>`;
-            profileSettings.appendChild(closeContent);
-            window.appendChild(profileSettings);
-            break;
-
-        // Creating a new project window.
-        case 'new_project':
-            windowShow();
-            let contentBlock = document.createElement('div');
-            contentBlock.id = 'window_content_block';
-            contentBlock.innerHTML =
-                '<form id="create_project"> ' +
-                '<h2>Create a New Project</h2>' +
-                '<p>Project Name:</p>' +
-                '<input required type="text" id="project" placeholder="My Project Name...">' +
-                '<p>Project Description:</p>' +
-                '<textarea id="desc" placeholder="Project Description..." required> </textarea> ' +
-                '<p>Make this project Private or Public:</p>' +
-                '<input class="input-radio" type="radio" checked="checked" name="access"  id="private" value="Private">' +
-                '<label for="private">Private</label><br>' +
-                '<input class="input-radio" type="radio" name="access" id="public" value="Public">' +
-                '<label for="public">Public</label><br>' +
-                // '<div class="r ac"> <p>Project Color: </p>'+
-                '<input id="color" style="margin-left: 4px; margin-top: 4px;" value="#9b55a3" type="color" hidden></div> ' +
-                '<div class="r jc"><button >Create</button>' +
-                `<button onclick="windowSwitcher('none')">Cancel</button></div>` +
-                '</form>';
-            window.appendChild(contentBlock);
-            document.getElementById('create_project').addEventListener('submit', (e) => {
-                createProject(document.getElementById('project').value, document.getElementById('desc').value, document.querySelector('input[name="access"]:checked').value, document.getElementById('color').value, currentUid);
-                getProjects(currentUid);
-                e.preventDefault();    //stop form from submitting
-            });
-            break;
-
-        // Create a new variable window.
-        case 'new_variable':
-            windowShow();
-            app.classList.add('new-variable');
-            let newVariableContentBlock = document.createElement('div');
-            newVariableContentBlock.id = 'window_content_block';
-            newVariableContentBlock.innerHTML =
-                '<form id="new_variable"> ' +
-                '<h2>Create a New Variable</h2>' +
-                '<p>Variable Name:</p>' +
-                '<input class="" required type="text" id="project" placeholder="My Variable Name...">' +
-                '<div class="r jc"><button >Create</button>' +
-                `<button onclick="windowSwitcher('none')">Cancel</button></div>` +
-                '</form>';
-            window.appendChild(newVariableContentBlock);
-            document.getElementById('new_variable').addEventListener('submit', (e) => {
-                createVariable(document.getElementById('project').value, currentUid);
-                getProjects(currentUid);
-                e.preventDefault();    //stop form from submitting
-            });
             break;
     }
+    window.appendChild(content);
 }
 
 function gaugeHideVariableName() {
@@ -1818,6 +1241,17 @@ function updateGaugeWidget(id){
         id: id
     })
 }
+function updateDataWidget(id){
+    updateWidget(currentUid, currentProject, {
+        type: 'data',
+        hide: `${document.getElementById('gauge_variable_hide').checked}`,
+        variable: `${document.getElementById(`${id}_variable_title_input`).value}`,
+        units: `${document.getElementById('units').innerText}`,
+        title: `${document.getElementById('gauge_title').innerText}`,
+        id: id
+    })
+}
+
 function removeGaugeWidget(id){
     removeWidget(currentUid, currentProject, id);
 }
@@ -2117,15 +1551,14 @@ function messageProcessor(message, callback) {
             case 'CREATE_PROJECT':
                 console.log("Project msg: ", message);
                 if(message.hasOwnProperty('error')){
-                    console.log(message['error']);
+                    console.log("message error", message['error']);
                     windowError('create_project',message['error']);
                     return;
                 }
-                if(currentView === 'dashboard'){
+                else{
                     getProjects(currentUid);
                     windowSwitcher('none');
                 }
-
                 break;
 
 
@@ -2149,14 +1582,11 @@ function messageProcessor(message, callback) {
 function paintProjects(projects){
     let projectSection = document.getElementById('project_section');
     if(projectSection.classList.contains('hold')){
-        console.log('88888')
         return;
     }
     if(currentWindow === "new_project"){
         windowSwitcher('none');
-
     }
-    console.log('8888889')
     projectSection.classList.add('jc');
     projectSection.classList.remove('ac');
     projectSection.style.flexWrap = 'wrap';
@@ -2304,7 +1734,7 @@ function paintDashboardTab(data){
                     if(angle >  135) angle = 135;
                     if(angle <  -135) angle = -135;
                     div.innerHTML =
-                        `<i  onclick="windowSwitcher('gauge_settings','${div.id}')" style="position: absolute; transform: translate(130px, 5px)" class="hc hac fa fa-ellipsis-v"></i>` +
+                        `<i  onclick="windowSwitcher('gauge_settings','${div.id}')" style="position: absolute; transform: translate(109px, -5px)" class="hc p3 hac fa fa-ellipsis-v"></i>` +
                     `<h2 style="${mb}" id="${div.id}_title">${widgets[widget].title}</h2>` +
                     `<h3  id="${div.id}_variable_title" style="font-size:14px; display:${display};" class="m0 mb3 p0" >${widgets[widget].variable}</h3>` +
                     `<svg height="${200*mod}" width="${200*mod}">` +
@@ -2333,6 +1763,7 @@ function paintDashboardTab(data){
                     }
 
                     div.innerHTML =
+                    `<i  onclick="windowSwitcher('data_settings','${div.id}')" style="position: absolute; transform: translate(109px, -35px)" class="hc p3 hac fa fa-ellipsis-v"></i>` +
                     `<h2 style="${mb}" id="">${widgets[widget].title}</h2>` +
                     `<h3 style="font-size:14px; display:${display};" id="" class="m0 mb3 p0">${widgets[widget].variable}</h3>` +
                     '<div style="" class="r ac jc">' +
@@ -2682,3 +2113,637 @@ function variableSave(id, old, key){
     }, 3000);
 }
 
+
+function windowDoubleCheck(content, options){
+    content.classList.add('c');
+    content.classList.add('ac');
+    content.classList.add('jc');
+    content.style.maxWidth = '500px';
+    content.innerHTML= `
+        <h2 style="text-align:center;">ARE YOU SURE YOU WANT TO <u style="color: red;">DELETE</u> THIS VARIABLE?<br>
+        <div class="r ac jc">
+            <button onclick="windowSwitcher('none')">Cancel</button>
+            <button onclick ="deleteVariable('${currentUid}','${currentKey}','${options}')" style="background: #8c2726;">DELETE</button>
+        </div>
+    `;
+    return content;
+}
+function windowDeleteProject(content){
+    content.classList.add('c');
+    content.classList.add('ac');
+    content.classList.add('jc');
+    content.style.maxWidth = '500px';
+    content.innerHTML= `
+        <h2 style="text-align:center;">ARE YOU SURE YOU WANT TO <u style='color: red;'>DELETE</u> THIS PROJECT?<br><br> <u style="color: red;">All data</u> tied to this project will be lost if deleted.</h2>
+        <div class="r ac jc">
+            <button onclick="windowSwitcher('none')">Cancel</button>
+            <button onclick ="deleteProject(currentUid, currentId)" style="background: #8c2726;">DELETE</button>
+        </div>
+    `;
+    return content;
+}
+
+function windowNewKey(content) {
+    content.classList.add('c');
+    content.classList.add('ac');
+    content.classList.add('jc');
+    content.style.maxWidth = '500px';
+    content.innerHTML = `
+        <h2>Are you sure you want to generate a new project key? <u style='color: red;'>All devices</u> using this key will need to have the new key implemented for all the devices connected to this project to continue functioning.</h2>
+        <div class="r ac jc">
+            <button onclick="windowSwitcher('none')">Cancel</button>
+            <button onclick ="newProjectKey('${currentUid}', '${currentId}')" style="background: #8c2726;">New Key</button>
+        </div>
+    `;
+    return content;
+}
+function windowWidgetData(content) {
+    content.classList.add('widget-data-settings');
+    let validVariablesForData = '';
+    if (currentProjectData.hasOwnProperty('variables')) {
+        let variables = currentProjectData['variables'];
+        for (let variable in variables) {
+            if (variables.hasOwnProperty(variable)) {
+                if (variable !== 'default') {
+                    validVariablesForData += `<option value="${variable}">${variable}</option>`;
+                }
+            }
+        }
+    }
+    content.innerHTML = `
+        <div class="c ac jc">
+            <h2 class=" mb1"  id="gauge_title">Data Point</h2>
+            <h3 class="m0" style="font-size: 0.8rem;" id="variable_title"></h3>
+            <div style="" class="r ac jc">
+                <h1 id="value">50</h1>
+                <h1 class="m0" id="units"></h1>
+            </div>
+            <div>
+                ${new Date().toLocaleString()}
+            </div>
+            <div class="r mt4 mb3">Variable:&nbsp;
+                <select oninput="variableSettings()" id="variable_title_input">
+                    <optgroup value="Variables">
+                        <option value="">Select a Variable</option>
+                        ${validVariablesForData}
+                    </optgroup>
+                </select>
+                &nbsp;Hide: 
+                <input id="gauge_variable_hide" oninput="gaugeHideVariableName()" style="width: 20px;" type="checkbox">
+            </div>
+            <div class="c jc afe p3 py0">
+                <div class="mb2">
+                    Title: <input id="gauge_title_input" onkeyup="gaugeSettingsTitle()" type="text" value="Data Point">
+                </div>
+            </div>
+            <div class="r mb2 mt0">
+               Units:&nbsp;
+               ${unitsList('', " unitSettings(this)")}
+            </div>
+            <div class="r">
+                <button onclick="windowSwitcher('widget_selection')">Cancel</button>
+                <button onclick="newDataWidget()"> &nbsp;&nbsp;Add&nbsp;&nbsp;</button>
+            </div>
+        </div>      
+    `;
+    return content;
+}
+
+
+
+function windowWidgetGauge(content){
+
+    content.classList.add('widget-gauge-settings');
+
+    // Scale of the gauge.
+    let scale = 1;
+
+    // Build an list of options whereas the values are variables that are numbers.
+    let validVariablesForGauge = "";
+    if (currentProjectData.hasOwnProperty('variables')) {
+        let variables = currentProjectData['variables'];
+        for (let variable in variables) {
+            if(variables.hasOwnProperty(variable)){
+                if (typeof variables[variable] === "number" && variable !== 'default') {
+                    validVariablesForGauge += `<option value="${variable}">${variable}</option>`;
+                }
+            }
+        }
+    }
+    // The content of the window.
+    content.innerHTML =
+        `<div class="c ac jc">
+            <h2 class="mb1"  id="gauge_title">Gauge</h2> 
+            <h3 class="m0" style="font-size: 0.8rem;" id="variable_title"></h3> 
+            <svg class="mt2" height="${200 * scale}" width="${200 * scale}">
+                <circle cx= "${100 * scale}" cy= "${100 * scale}" r="${5 * scale}" fill="#ffffff"/>
+                <path id="gauge_color_1" fill="#0D790A" d="M${29.29 * scale},${170.71 * scale}           A ${100 * scale} ${100 * scale} 0 0 1 ${0 * scale} ${102.5 * scale}                 L ${20 * scale} ${102.5 * scale}               A ${80 * scale} ${80 * scale} 0 0 0 ${43.432 * scale} ${156.568 * scale}"/>
+                <path id="gauge_color_2" fill="#0D790A" d="M${0 * scale},${97.5 * scale}                 A ${100 * scale} ${100 * scale} 0 0 1 ${27.592735 * scale} ${31.12827 * scale}      L ${41.6915 * scale} ${45.227 * scale}         A ${80 * scale} ${80 * scale} 0 0 0 ${20 * scale} ${97.5 * scale} "/>
+                <path id="gauge_color_3" fill="#F3B820" d="M${31.05709 * scale}, ${27.521555 * scale}    A ${100 * scale} ${100 * scale} 0 0 1 ${97.5 * scale} ${0 * scale}                  L ${97.5 * scale} ${20 * scale}                A ${80 * scale} ${80 * scale} 0 0 0 ${45.226855 * scale} ${41.6915 * scale}"/>
+                <path id="gauge_color_4" fill="#F3B820" d="M${102.5 * scale},${0 * scale}                A ${100 * scale} ${100 * scale} 0 0 1 ${168.94291 * scale} ${27.521555 * scale}     L ${154.773145 * scale} ${41.6915 * scale}     A ${80 * scale} ${80 * scale} 0 0 0 ${102.5 * scale} ${20 * scale}"/>
+                <path id="gauge_color_5" fill="#D20303" d="M${172.407265 * scale},${31.12827 * scale}    A ${100 * scale} ${100 * scale} 0 0 1 ${200 * scale} ${97.5 * scale}                L ${180 * scale} ${97.5 * scale}               A ${80 * scale} ${80 * scale} 0 0 0 ${158.3085 * scale} ${45.227 * scale}"/>
+                <path id="gauge_color_6" fill="#D20303" d="M${200 * scale},${102.5 * scale}              A ${100 * scale} ${100 * scale} 0 0 1 ${170.71 * scale} ${170.71 * scale}           L ${156.568 * scale} ${156.568 * scale}        A ${80 * scale} ${80 * scale} 0 0 0 ${180 * scale} ${102.5 * scale}"/>
+                <path style="transform-origin: ${100 * scale}px ${100 * scale}px;" fill="#707070" d="M${95 * scale},${110 * scale} L ${105 * scale} ${110 * scale} L ${102 * scale} ${95 * scale} L ${100 * scale} ${3 * scale} L ${98 * scale} ${95 * scale}"/>
+            </svg> 
+            <div style="transform: translateY(-20px);" class="r ac jc"> 
+                <h2 id="gauge_min_value" class="m0 mr5" >0</h2> 
+                <h2 id="gauge_max_value" class="m0 ml5" >100</h2> 
+            </div> 
+            <div style="transform: translateY(-40px);" class="r ac jc"> 
+                <h1 id="value">50</h1> 
+                <h1 class="m0" id="units"></h1> 
+            </div> 
+            <div class="r mb3">Variable:&nbsp;            
+                <select oninput="variableSettings()" id="variable_title_input">
+                    <optgroup value="Variables">
+                    <option value="">Select a Variable</option>
+                        ${validVariablesForGauge}
+                    </optgroup>
+                </select>
+                &nbsp;Hide: 
+                <input id="gauge_variable_hide" oninput="gaugeHideVariableName()" style="width: 20px;" type="checkbox">
+            </div>
+            <div class="c jc afe p3 pt0">
+                <div class="mb2">Title: <input id="gauge_title_input" onkeyup="gaugeSettingsTitle()" type="text" value="Gauge"></div>
+                <div class="mb2">Min Value: <input type="number" onkeyup="minSettings(this)" onchange="minSettings(this)" value="0"></div>
+                <div class="mb2">Max Value: <input type="number" onkeyup="maxSettings(this)" onchange="maxSettings(this)" value="100"></div>
+            </div>
+            <div class="r jc ac">
+                <input id="color1" oninput="gaugeColorSettings(this, 1)"  style="background: transparent;" class="mx3" type="color" value="#0D790A">
+                <input id="color2" oninput="gaugeColorSettings(this, 2)" style="background: transparent;" class="mx3" type="color" value="#0D790A">
+                <input id="color3" oninput="gaugeColorSettings(this, 3)" style="background: transparent;" class="mx3" type="color" value="#F3B820">
+                <input id="color4" oninput="gaugeColorSettings(this, 4)" style="background: transparent;" class="mx3" type="color" value="#F3B820">
+                <input id="color5" oninput="gaugeColorSettings(this, 5)" style="background: transparent;" class="mx3" type="color" value="#D20303">
+                <input id="color6" oninput="gaugeColorSettings(this, 6)" style="background: transparent;" class="mx3" type="color" value="#D20303">
+            </div>
+            <div class="r mb2 mt4">
+                Units:&nbsp;
+                ${unitsList('', " unitSettings(this)")}
+            </div>
+            <div class="r">
+                <button onclick="windowSwitcher('widget_selection')">Cancel</button>
+                <button onclick="newGaugeWidget(); "> &nbsp;&nbsp;Add&nbsp;&nbsp;</button>
+            </div>
+        </div>
+        `;
+
+    return content;
+}
+function windowNewVariable(content){
+    content.classList.add('new-variable');
+    content.innerHTML = `
+        <form id="new_variable">
+            <h2>Create a New Variable</h2>
+            <p>Variable Name:</p>
+            <input class="" required type="text" id="project" placeholder="My Variable Name...">
+            <div class="r jc">
+                <button>Create</button>
+                <button onclick="windowSwitcher('none')">Cancel</button>
+            </div>
+        </form>
+    `;
+    content.addEventListener('submit', (e) => {
+        createVariable(document.getElementById('project').value, currentUid);
+        getProjects(currentUid);
+        e.preventDefault();    //stop form from submitting
+    });
+    return content;
+}
+        
+
+function windowNewProject(content){
+    content.innerHTML = `
+        <form id="create_project"> 
+            <h2>Create a New Project</h2>
+            <p>Project Name:</p>
+            <input required type="text" id="project" placeholder="My Project Name...">
+            <p>Project Description:</p>
+            <textarea id="desc" placeholder="Project Description..." required> </textarea> 
+            <p>Make this project Private or Public:</p>
+            <input class="input-radio" type="radio" checked="checked" name="access"  id="private" value="Private">
+            <label for="private">Private</label><br>
+            <input class="input-radio" type="radio" name="access" id="public" value="Public">
+            <label for="public">Public</label><br>
+            <input id="color" style="margin-left: 4px; margin-top: 4px;" value="#9b55a3" type="color" hidden></div> 
+            <div class="r jc">
+                <button >Create</button>
+                <button onclick="windowSwitcher('none')">Cancel</button>
+            </div>
+        </form>
+    `;
+    content.addEventListener('submit', (e) => {
+        createProject(document.getElementById('project').value, document.getElementById('desc').value, document.querySelector('input[name="access"]:checked').value, document.getElementById('color').value, currentUid);
+        e.preventDefault();    //stop form from submitting
+    });
+    return content;
+}
+function windowProfileSettings(content) {
+
+    document.getElementById('profile_window').classList.add('dn');
+    content.id = 'window_content_block';
+    content.classList.add('update-profile');
+    let user = firebase.auth().currentUser;
+    let profileSettingsForm = document.createElement('form');
+    profileSettingsForm.id = 'update_profile';
+    h2(content, {
+        innerText: "Profile Settings"
+    });
+
+    p(content, {
+        innerText: "Display Name"
+    });
+
+    let displayNameInput = input(content, {
+        type: 'test',
+        edit: true,
+        onSaveMessage: "Display name has been changed.",
+        value: user.displayName,
+        required: true,
+        disabled: true,
+        onSave: async () => {
+            console.log("Save");
+            if (user.displayName === displayNameInput.value) {
+                throw new Error('none');
+            }
+            user.updateProfile({
+                displayName: displayNameInput.value
+            }).then(function () {
+                displayNameInput.value = user.displayName;
+                setProfileInformation(user);
+            }).catch(function (error) {
+                throw error;
+            });
+        }
+    });
+
+    p(content, {
+        innerText: "Email Address"
+    });
+    let emailInput = input(content, {
+        type: 'email',
+        edit: true,
+        onSaveMessage: "A verification email was sent to your new email address.",
+        value: user.email,
+        required: true,
+        onSave: async function () {
+            console.log("Save: ", emailInput.value);
+            if (user.email === emailInput.value) {
+                throw new Error('none');
+            }
+            await user.updateEmail(emailInput.value).then(async function () {
+                await user.sendEmailVerification().then(function () {
+                }).catch(function (error) {
+                    throw error;
+                });
+            }).catch(function (error) {
+                throw error;
+            }).then(() => {
+                setProfileInformation(user);
+            });
+
+        },
+        disabled: true
+    });
+
+    p(content, {
+        innerText: "Password"
+    });
+    let passwordInput = input(content, {
+        type: 'password',
+        edit: true,
+        onSaveMessage: "Your password has been changed.",
+        value: "******",
+        required: true,
+        onSave: async function () {
+
+            if (passwordInput.value !== "******") {
+                await user.updatePassword(passwordInput.value).then(function () {
+                    // Update successful.
+                }).catch(function (error) {
+                    throw error;
+                });
+            } else {
+                throw new Error('none');
+            }
+
+        },
+        disabled: true
+    });
+
+    let closeContent = document.createElement('div');
+    closeContent.classList = "c ac jc w100";
+    closeContent.innerHTML = '    <p class="white-link r ac jc"><a href="https://en.gravatar.com" target="_blank">Change your profile Image<br> on Gravatar</a></p>' +
+        `    <button onclick="windowSwitcher('none')">Close</button></div>`;
+    content.appendChild(closeContent);
+    return content;
+}
+function windowWidgetSelection(content) {
+    content.classList.add('widget-selection');
+    let mod = 0.7;
+    content.innerHTML = `
+        <h2 class="mb0">Add Widget</h2>
+        <hr>
+        <div class="c ac jc">
+            <div class="r ac jc" style="flex-wrap: wrap; max-width: 1345px;"> 
+                <div class="c ac jc"> 
+                    <button onclick="windowSwitcher('gauge')" class="bbutton"> 
+                        <svg height="${200 * mod}" width="${200 * mod}">
+                            <circle cx= "${100 * mod}" cy= "${100 * mod}" r="${5 * mod}" fill="#ffffff"/>
+                            <path fill="#0D790A" d="M${29.29 * mod},${170.71 * mod}           A ${100 * mod} ${100 * mod} 0 0 1 ${0 * mod} ${102.5 * mod}                 L ${20 * mod} ${102.5 * mod}               A ${80 * mod} ${80 * mod} 0 0 0 ${43.432 * mod} ${156.568 * mod}"/>
+                            <path fill="#0D790A" d="M${0 * mod},${97.5 * mod}                 A ${100 * mod} ${100 * mod} 0 0 1 ${27.592735 * mod} ${31.12827 * mod}      L ${41.6915 * mod} ${45.227 * mod}         A ${80 * mod} ${80 * mod} 0 0 0 ${20 * mod} ${97.5 * mod} "/>
+                            <path fill="#F3B820" d="M${31.05709 * mod}, ${27.521555 * mod}    A ${100 * mod} ${100 * mod} 0 0 1 ${97.5 * mod} ${0 * mod}                  L ${97.5 * mod} ${20 * mod}                A ${80 * mod} ${80 * mod} 0 0 0 ${45.226855 * mod} ${41.6915 * mod}"/>
+                            <path fill="#F3B820" d="M${102.5 * mod},${0 * mod}                A ${100 * mod} ${100 * mod} 0 0 1 ${168.94291 * mod} ${27.521555 * mod}     L ${154.773145 * mod} ${41.6915 * mod}     A ${80 * mod} ${80 * mod} 0 0 0 ${102.5 * mod} ${20 * mod}"/>
+                            <path fill="#D20303" d="M${172.407265 * mod},${31.12827 * mod}    A ${100 * mod} ${100 * mod} 0 0 1 ${200 * mod} ${97.5 * mod}                L ${180 * mod} ${97.5 * mod}               A ${80 * mod} ${80 * mod} 0 0 0 ${158.3085 * mod} ${45.227 * mod}"/>
+                            <path fill="#D20303" d="M${200 * mod},${102.5 * mod}              A ${100 * mod} ${100 * mod} 0 0 1 ${170.71 * mod} ${170.71 * mod}           L ${156.568 * mod} ${156.568 * mod}        A ${80 * mod} ${80 * mod} 0 0 0 ${180 * mod} ${102.5 * mod}"/>
+                            <path style="transform-origin: ${100 * mod}px ${100 * mod}px;" fill="#707070" d="M${95 * mod},${110 * mod} L ${105 * mod} ${110 * mod} L ${102 * mod} ${95 * mod} L ${100 * mod} ${3 * mod} L ${98 * mod} ${95 * mod}"/>
+                        </svg> 
+                    </button> 
+                    <h2>Gauge</h2> 
+                </div> 
+                <div class="c ac jc">
+                    <button onclick = "windowSwitcher('data')" class="bbutton"><div class="c"><h3>Temperature</h3><h1>24</h1><p>2019-10-26 12:48:01</p></div></button>
+                    <h2>Data Block</h2>
+                </div>
+<!--                    <div class="c ac jc">-->
+<!--                        <button class="bbutton"><input class="slider" type="range"></button>-->
+<!--                        <h2>Slider</h2>-->
+<!--                    </div>-->
+<!--                    <div class="c ac jc">-->
+<!--                        <button class="bbutton"><div class="ct-chart-pie-widget"></div></button>-->
+<!--                        <h2>Pie Chart</h2>-->
+<!--                    </div>-->
+                <div class="c ac jc">   
+                    <button class="bbutton"><div class="ct-chart-line-chart-widget"></div></button>
+                    <h2>Line Graph</h2>
+                </div>
+                <div class="c ac jc">
+                    <button class="bbutton"><div class="ct-chart-scatter-chart-widget"></div></button>
+                    <h2>Scatter Plot</h2>
+                </div>
+<!--                    <div class="c ac jc">-->
+<!--                        <button class="bbutton"><div class="mr3 ct-chart-histo-chart-widget"></div></button>-->
+<!--                        <h2>Bar Graph</h2>-->
+<!--                    </div>-->
+<!--                    <div class="c ac jc">-->
+<!--                        <button class="bbutton"></button>-->
+<!--                        <h2>Raw Data</h2>-->
+<!--                    </div>-->
+            </div>
+            <div class="r">
+                <button onclick="windowSwitcher('none')">Cancel</button>
+            </div>
+        </div>`;
+    new Chartist.Pie('.ct-chart-pie-widget', {
+        series: [5, 10, 20, 25, 40, 100]
+    }, {
+        donut: true,
+        donutWidth: 15,
+        donutSolid: true,
+        startAngle: 270,
+        showLabel: false
+    });
+    new Chartist.Line('.ct-chart-line-chart-widget', {
+        series: [
+            [1, 5, 2, 5, 4, 3],
+            [2, 3, 4, 8, 1, 2],
+            [5, 4, 3, 2, 1, 0.5]
+        ]
+    }, {
+        fullWidth: true,
+        showPoint: false,
+        axisY: {
+            showLabel: false,
+            showGrid: false
+        },
+        axisX: {
+            showLabel: false,
+            showGrid: false
+        }
+
+    });
+    var times = function (n) {
+        return Array.apply(null, new Array(n));
+    };
+
+    var data = times(5).map(Math.random).reduce(function (data, rnd, index) {
+        data.labels.push(index + 1);
+        data.series.forEach(function (series) {
+            series.push(Math.random() * 100)
+        });
+
+        return data;
+    }, {
+        labels: [],
+        series: times(4).map(function () {
+            return new Array()
+        })
+    });
+
+    var options = {
+        showLine: false,
+
+        axisY: {
+            showLabel: false,
+            showGrid: false
+        },
+        axisX: {
+            showLabel: false,
+            showGrid: false
+        }
+    };
+
+    var responsiveOptions = [
+        ['screen and (min-width: 640px)', {
+            axisX: {
+                labelInterpolationFnc: function (value, index) {
+                    return index % 4 === 0 ? 'W' + value : null;
+                }
+            }
+        }]
+    ];
+
+    new Chartist.Line('.ct-chart-scatter-chart-widget', data, options, responsiveOptions);
+
+    var data = {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        series: [
+            [5, 4, 3, 7, 5, 10, 3, 4, 8, 10, 6, 8],
+            [3, 2, 9, 5, 4, 6, 4, 6, 7, 8, 7, 4]
+        ]
+    };
+
+    var options = {
+        seriesBarDistance: 3,
+        axisY: {
+            showLabel: false,
+            showGrid: false
+        },
+        axisX: {
+            showLabel: false,
+            showGrid: false
+        }
+    };
+
+    var responsiveOptions = [
+        ['screen and (max-width: 640px)', {
+            seriesBarDistance: 5,
+            axisX: {
+                labelInterpolationFnc: function (value) {
+                    return value[0];
+                }
+            }
+        }]
+    ];
+    new Chartist.Bar('.ct-chart-histo-chart-widget', data, options);
+    return content;
+}
+function windowGaugeSettings(content, options) {
+
+    content.id = 'window_content_block';
+
+    // Find the current gauge.
+    let gauge = currentProjectData.widgets.find((widget) => widget.id === options);
+
+    // Scale of the gauge.
+    let scale = 1;
+    // Build an list of options whereas the values are variables that are numbers.
+    let validVariablesForGauge = "";
+    if (currentProjectData.hasOwnProperty('variables')) {
+        let variables = currentProjectData['variables'];
+        for (let variable in variables) {
+            if(variables.hasOwnProperty(variable)){
+                if (typeof variables[variable] === "number" && variable !== 'default') {
+                    if(variable ===gauge.variable){
+                        validVariablesForGauge += `<option selected value="${variable}">${variable}</option>`;
+                    }
+                    else{
+                        validVariablesForGauge += `<option value="${variable}">${variable}</option>`;
+                    }
+                }
+            }
+        }
+    }
+    let hideValue = '';
+    let hideTopTitle = '';
+    if(gauge.hide === 'true'){
+        hideValue= "checked";
+        hideTopTitle = "dn";
+    }
+    content.innerHTML = `
+        <i style="color: red; top: 5px; right: 0;" class="por fs125 hc hp fa fa-trash-alt" onclick="removeGaugeWidget('${gauge.id}')"></i> 
+        <div class="c ac jc">
+            <h2 class=" mb1"  id="gauge_title">${gauge.title}</h2>
+            <h3 class="m0 ${hideTopTitle}" style="font-size: 0.8rem;" id="variable_title">${gauge.variable}</h3> 
+            <svg class="mt2" height="${200 * scale}" width="${200 * scale}">
+                <circle cx= "${100 * scale}" cy= "${100 * scale}" r="${5 * scale}" fill="#ffffff"/>
+                <path id="gauge_color_1" fill="${gauge.color1}" d="M${29.29 * scale},${170.71 * scale}           A ${100 * scale} ${100 * scale} 0 0 1 ${0 * scale} ${102.5 * scale}                 L ${20 * scale} ${102.5 * scale}               A ${80 * scale} ${80 * scale} 0 0 0 ${43.432 * scale} ${156.568 * scale}"/>
+                <path id="gauge_color_2" fill="${gauge.color2}" d="M${0 * scale},${97.5 * scale}                 A ${100 * scale} ${100 * scale} 0 0 1 ${27.592735 * scale} ${31.12827 * scale}      L ${41.6915 * scale} ${45.227 * scale}         A ${80 * scale} ${80 * scale} 0 0 0 ${20 * scale} ${97.5 * scale} "/>
+                <path id="gauge_color_3" fill="${gauge.color3}" d="M${31.05709 * scale}, ${27.521555 * scale}    A ${100 * scale} ${100 * scale} 0 0 1 ${97.5 * scale} ${0 * scale}                  L ${97.5 * scale} ${20 * scale}                A ${80 * scale} ${80 * scale} 0 0 0 ${45.226855 * scale} ${41.6915 * scale}"/>
+                <path id="gauge_color_4" fill="${gauge.color4}" d="M${102.5 * scale},${0 * scale}                A ${100 * scale} ${100 * scale} 0 0 1 ${168.94291 * scale} ${27.521555 * scale}     L ${154.773145 * scale} ${41.6915 * scale}     A ${80 * scale} ${80 * scale} 0 0 0 ${102.5 * scale} ${20 * scale}"/>
+                <path id="gauge_color_5" fill="${gauge.color5}" d="M${172.407265 * scale},${31.12827 * scale}    A ${100 * scale} ${100 * scale} 0 0 1 ${200 * scale} ${97.5 * scale}                L ${180 * scale} ${97.5 * scale}               A ${80 * scale} ${80 * scale} 0 0 0 ${158.3085 * scale} ${45.227 * scale}"/>
+                <path id="gauge_color_6" fill="${gauge.color6}" d="M${200 * scale},${102.5 * scale}              A ${100 * scale} ${100 * scale} 0 0 1 ${170.71 * scale} ${170.71 * scale}           L ${156.568 * scale} ${156.568 * scale}        A ${80 * scale} ${80 * scale} 0 0 0 ${180 * scale} ${102.5 * scale}"/>
+                <path style="transform-origin: ${100 * scale}px ${100 * scale}px;" fill="#707070" d="M${95 * scale},${110 * scale} L ${105 * scale} ${110 * scale} L ${102 * scale} ${95 * scale} L ${100 * scale} ${3 * scale} L ${98 * scale} ${95 * scale}"/>
+            </svg> 
+            <div style="transform: translateY(-20px);" class="r ac jc"> 
+                <h2 id="gauge_min_value" class="m0 mr5" >${gauge.min}</h2> 
+                <h2 id="gauge_max_value" class="m0 ml5" >${gauge.max}</h2> 
+            </div> 
+            <div style="transform: translateY(-40px);" class="r ac jc"> 
+                <h1 id="value">${currentProjectData.variables[gauge.variable]}</h1> 
+                <h1 class="m0" id="units">${gauge.units}</h1> 
+            </div> 
+             <div class="r mb3">Variable:&nbsp;            
+                <select value="${gauge.variable}" oninput="variableSettings()" id="${gauge.id}_variable_title_input">
+                    <option disabled value="">Select a Variable</option>
+                    ${validVariablesForGauge}
+                </select>
+                &nbsp;Hide: 
+                <input id="gauge_variable_hide" ${hideValue} oninput="gaugeHideVariableName()" style="width: 20px;" type="checkbox">
+            </div>
+            <div class="c jc afe p3 pt0">
+                <div class="mb2">Title: <input id="gauge_title_input" onkeyup="gaugeSettingsTitle()" type="text" value="${gauge.title}"></div>
+                <div class="mb2">Min Value: <input type="number" onkeyup="minSettings(this)" onchange="minSettings(this)" value="${gauge.min}"></div>
+                <div class="mb2">Max Value: <input type="number" onkeyup="maxSettings(this)" onchange="maxSettings(this)" value="${gauge.max}"></div>
+            </div>
+            <div class="r jc ac">
+                <input id="color1" oninput="gaugeColorSettings(this, 1)"  style="background: transparent;" class="mx3" type="color" value="${gauge.color1}">
+                <input id="color2" oninput="gaugeColorSettings(this, 2)" style="background: transparent;" class="mx3" type="color" value="${gauge.color2}">
+                <input id="color3" oninput="gaugeColorSettings(this, 3)" style="background: transparent;" class="mx3" type="color" value="${gauge.color3}">
+                <input id="color4" oninput="gaugeColorSettings(this, 4)" style="background: transparent;" class="mx3" type="color" value="${gauge.color4}">
+                <input id="color5" oninput="gaugeColorSettings(this, 5)" style="background: transparent;" class="mx3" type="color" value="${gauge.color5}">
+                <input id="color6" oninput="gaugeColorSettings(this, 6)" style="background: transparent;" class="mx3" type="color" value="${gauge.color6}">
+            </div>
+             <div class="r mb2 mt4">
+                Units:&nbsp;
+                ${unitsList('settings_variable_units', " unitSettings(this)", gauge.units)}
+            </div>
+            <div class="r">
+                <button onclick="windowSwitcher('none')">Cancel</button>
+                <button onclick="updateGaugeWidget('${gauge.id}')"> &nbsp;Save&nbsp;</button>
+            </div>
+        </div>
+    `;
+    return content;
+}
+
+
+function windowDataSettings(content, options){
+    let dataWidget = currentProjectData.widgets.find((widget) => widget.id === options);
+    // Build an list of options whereas the values are variables that are numbers.
+    let validVariablesForGauge = "";
+    if (currentProjectData.hasOwnProperty('variables')) {
+        let variables = currentProjectData['variables'];
+        for (let variable in variables) {
+            if(variables.hasOwnProperty(variable)){
+                if (variable !== 'default') {
+                    if (variable === dataWidget.variable) {
+                        validVariablesForGauge += `<option selected value="${variable}">${variable}</option>`;
+                    } else {
+                        validVariablesForGauge += `<option value="${variable}">${variable}</option>`;
+                    }
+                }
+            }
+        }
+    }
+    let hideValue = '';
+    let hideTopTitle = '';
+    if(dataWidget.hide === 'true'){
+        hideValue= "checked";
+        hideTopTitle = "dn";
+    }
+    content.innerHTML = `
+        <i style="color: red; top: 5px; right: 0;" class="por fs125 hc hp fa fa-trash-alt" onclick="removeGaugeWidget('${dataWidget.id}')"></i>
+        <div class="c ac jc">
+            <h2 class=" mb1"  id="gauge_title">${dataWidget.title}</h2>
+            <h3 class="m0 ${hideTopTitle}" style="font-size: 0.8rem;" id="variable_title">${dataWidget.variable}</h3>
+            <div style="" class="r ac jc">
+                <h1 id="value">${currentProjectData.variables[dataWidget.variable]}</h1>
+                <h1 class="m0" id="units">${dataWidget.units}</h1>
+            </div> 
+            <div>${new Date().toLocaleString()}</div>
+              <div class="r mt4 mb3">Variable:&nbsp;            
+            <select value="${dataWidget.variable}" oninput="variableSettings()" id="${dataWidget.id}_variable_title_input">
+                <option disabled value="">Select a Variable</option>
+                ${validVariablesForGauge}
+            </select>
+            &nbsp;Hide: 
+            <input id="gauge_variable_hide" ${hideValue} oninput="gaugeHideVariableName()" style="width: 20px;" type="checkbox">
+        </div>
+        <div class="c jc afe p3 pt0">
+            <div class="mb2">Title: <input id="gauge_title_input" onkeyup="gaugeSettingsTitle()" type="text" value="${dataWidget.title}"></div>
+        </div>        
+          <div class="r mb2">
+                Units:&nbsp;
+                ${unitsList('settings_variable_units', " unitSettings(this)", dataWidget.units)}
+            </div>
+              <div class="r">
+            <button onclick="windowSwitcher('none')">Cancel</button>
+            <button onclick="updateDataWidget('${dataWidget.id}')"> &nbsp;Save&nbsp;</button>
+       </div>
+        </div> 
+     
+      
+      
+    `;
+    return content;
+}

@@ -2,8 +2,32 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f8dc789a-0ee8-4036-b494-978e5ba3fd15" name="Default Changelist" comment="styling">
+      <change afterPath="$PROJECT_DIR$/app/UI/windows/window-data-settings.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/UI/windows/window-delete-project.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/UI/windows/window-double-check.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/UI/windows/window-gauge-settings.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/UI/windows/window-new-key.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/UI/windows/window-new-project.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/UI/windows/window-new-variable.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/UI/windows/window-profile-settings.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/UI/windows/window-widget-data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/UI/windows/window-widget-gauge.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/UI/windows/window-widget-selection.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/UI/functions/project.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/functions/project.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/UI/functions/projects.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/functions/projects.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/UI/message-processor.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/message-processor.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/UI/tools.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/tools.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/UI/window-switcher.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/window-switcher.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gulpfile.js" beforeDir="false" afterPath="$PROJECT_DIR$/gulpfile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/main.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/message-processor.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/message-processor.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/project.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/project.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/projects.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/projects.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/tools.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/tools.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/window-switcher.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/window-switcher.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sass/_app.scss" beforeDir="false" afterPath="$PROJECT_DIR$/sass/_app.scss" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -39,6 +63,40 @@
       </list>
     </option>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>create</find>
+      <find>password</find>
+      <find>pencil</find>
+      <find>penci</find>
+      <find>user_name</find>
+      <find>f</find>
+      <find>tim</find>
+      <find>fa-</find>
+      <find>displayNa</find>
+      <find>displayN</find>
+      <find>&quot;app/UI/message-processor.js&quot;</find>
+      <find>var</find>
+      <find>200</find>
+      <find>time</find>
+      <find>new</find>
+      <find>is to</find>
+      <find>000000</find>
+      <find>w70</find>
+      <find>list</find>
+      <find>lis</find>
+      <find>font</find>
+      <find>to</find>
+      <find>load</find>
+      <find>hea</find>
+      <find>m4</find>
+      <find>em;</find>
+      <find>3em</find>
+      <find>rrlg</find>
+      <find>wrap</find>
+      <find>rml</find>
+    </findStrings>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -53,14 +111,14 @@
     <other-services-enabled>true</other-services-enabled>
     <auto-save>true</auto-save>
   </component>
-  <component name="ProjectId" id="1TvsKZFzfs4bRm4qOQWxaRRwkRI" />
+  <component name="ProjectId" id="1Vb5qy9UZbyQqJmvY6YZvEJ2w1S" />
   <component name="ProjectLevelVcsManager">
     <OptionsSetting value="false" id="Update" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="DatabaseDriversLRU" value="mariadb" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
     <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
@@ -68,7 +126,7 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1574351644472" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1574344571668" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="HTML" />
     <property name="jsx.switch.disabled" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -189,19 +247,11 @@
       <workItem from="1574084745725" duration="5230000" />
       <workItem from="1574135838673" duration="10954000" />
       <workItem from="1574227226304" duration="6997000" />
-      <workItem from="1574281459755" duration="7967000" />
-      <workItem from="1574351846057" duration="70000" />
-      <workItem from="1574351935255" duration="14579000" />
-      <workItem from="1574543776512" duration="9150000" />
-      <workItem from="1575003391591" duration="802000" />
-      <workItem from="1575005234406" duration="388000" />
-      <workItem from="1575049115028" duration="140000" />
-      <workItem from="1575052110842" duration="20000" />
-      <workItem from="1575251563834" duration="17806000" />
-      <workItem from="1575296808534" duration="4920000" />
-      <workItem from="1575517812128" duration="10879000" />
-      <workItem from="1575940833112" duration="8383000" />
-      <workItem from="1576086807529" duration="1380000" />
+      <workItem from="1574281459755" duration="4795000" />
+      <workItem from="1574339751362" duration="576000" />
+      <workItem from="1574340661373" duration="3683000" />
+      <workItem from="1577199714298" duration="171000" />
+      <workItem from="1577509153004" duration="9553000" />
     </task>
     <task id="LOCAL-00001" summary="=MQTT Implementation">
       <created>1568726588352</created>
@@ -228,9 +278,7 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="COLUMN_ORDER" />
-            </State>
+            <State />
           </value>
         </entry>
       </map>
@@ -242,19 +290,107 @@
     <MESSAGE value="styling" />
     <option name="LAST_COMMIT_MESSAGE" value="styling" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/app/server/database.js</url>
-          <line>63</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
     <option name="FILTER_TARGETS" value="false" />
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>No facets are configured</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>@types/express</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>RVM: ruby-2.1.0</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>cloud</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.6" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>RVM: ruby-2.1.0</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
   </component>
 </project>

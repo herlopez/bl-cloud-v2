@@ -32,49 +32,157 @@ function formError(msg) {
     appContainer.appendChild(errorMessage);
 }
 
-
-//
-// class ClassWatcher {
-//
-//     constructor(targetNode, classToWatch, classAddedCallback, classRemovedCallback) {
-//         this.targetNode = targetNode
-//         this.classToWatch = classToWatch
-//         this.classAddedCallback = classAddedCallback
-//         this.classRemovedCallback = classRemovedCallback
-//         this.observer = null
-//         this.lastClassState = targetNode.classList.contains(this.classToWatch)
-//
-//         this.init()
-//     }
-//
-//     init() {
-//         this.observer = new MutationObserver(this.mutationCallback)
-//         this.observe()
-//     }
-//
-//     observe() {
-//         this.observer.observe(this.targetNode, { attributes: true })
-//     }
-//
-//     disconnect() {
-//         this.observer.disconnect()
-//     }
-//
-//     mutationCallback = mutationsList => {
-//         for(let mutation of mutationsList) {
-//             if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-//                 let currentClassState = mutation.target.classList.contains(this.classToWatch)
-//                 if(this.lastClassState !== currentClassState) {
-//                     this.lastClassState = currentClassState
-//                     if(currentClassState) {
-//                         this.classAddedCallback()
-//                     }
-//                     else {
-//                         this.classRemovedCallback()
-//                     }
-//                 }
-//             }
-//         }
-//     }
-// }
-
+function unitsList(id = "", onInput = ()=>{},  value=''){
+    function f(current){
+        if(value === current) return 'selected';
+        else return '';
+    }
+    return`
+        <select oninput="${onInput}" id="${id}">
+             <optgroup label="General">
+                <option ${f('')}  value="">None</option>
+                <option ${f('%')}  value="%">%</option>
+            </optgroup>
+            <optgroup label="Temperature">
+                <option ${f("°C")} value="°C" title="celsius">°C</option>
+                <option ${f("°F")} value="°F" title="fahrenheit">°F</option>
+                <option ${f("K")} value="K" title="kelvin">K</option>
+                <option ${f("°Ré")} value="°Ré" title="reaumur">°Ré</option>
+                <option ${f("°N")} value="°N" title="newton">°N</option>
+                <option ${f("°Ra")} value="°Ra" title="rankine">°Ra</option>
+            </optgroup>
+            <optgroup label="Volume">
+                 <option ${f("m³")} value="m³" title="cubic meter">m³</option>
+                 <option ${f("dm³")} value="dm³" title="cubic decimeter">dm³</option>
+                 <option ${f("cm³")} value="cm³" title="cubic centimeter">cm³</option>
+                 <option ${f("l")} value="l" title="liter">l</option>
+                 <option ${f("dl")} value="dl" title="deciliter">dl</option>
+                 <option ${f("cl")} value="cl" title="centiliter">cl</option>
+                 <option ${f("ml")} value="ml" title="milliliter">ml</option>
+                 <option ${f("oz")} value="oz" title="fluid ounce">oz</option>
+                 <option ${f("in³")} value="in³" title="cubic inch">in³</option>
+                 <option ${f("ft³")} value="ft³" title="cubic foot">ft³</option>
+                 <option ${f("yd³")} value="yd³" title="cubic yard">yd³</option>
+                 <option ${f("gal")} value="gal" title="gallon uk">gal</option>
+                 <option ${f("bbl")} value="bbl" title="petroleum barrel">bbl</option>
+                 <option ${f("pt")} value="pt" title="pint">pt</option>
+            </optgroup>
+            <optgroup label="Distance">
+                <option ${f("km")} value="km" title="kilometer">km</option>
+                <option ${f("m")} value="m" title="meter">m</option>
+                <option ${f("dm")} value="dm" title="decimeter">dm</option>
+                <option ${f("cm")} value="cm" title="centimeter">cm</option>
+                <option ${f("mm")} value="mm" title="millimeter">mm</option>
+                <option ${f("mi")} value="mi" title="mile">mi</option>
+                <option ${f("in")} value="in" title="inch">in</option>
+                <option ${f("ft")} value="ft" title="foot">ft</option>
+                <option ${f("yd")} value="yd" title="yard">yd</option>
+            </optgroup>
+            <optgroup label="Mass">
+                <option ${f("t")} value="t" title="tonne">t</option>
+                <option ${f("kg")} value="kg" title="kilogram">kg</option>
+                <option ${f("hg")} value="hg" title="hectogram">hg</option>
+                <option ${f("g")} value="g" title="gram">g</option>
+                <option ${f("dg")} value="dg" title="decigram">dg</option>
+                <option ${f("cg")} value="cg" title="centigram">cg</option>
+                <option ${f("mg")} value="mg" title="milligram">mg</option>
+                <option ${f("µg")} value="µg" title="microgram">µg</option>
+                <option ${f("carat")} value="carat" title="carat">carat</option>
+                <option ${f("grain")} value="grain" title="grain">grain</option>
+                <option ${f("oz")} value="oz" title="pounce avoirdupois">oz</option>
+                <option ${f("lb")} value="lb" title="pound avoirdupois">lb</option>
+                <option ${f("cwt")} value="cwt" title="long hundredweight">cwt</option>
+                <option ${f("ton")} value="ton" title="ton">ton</option>
+                <option ${f("st")} value="st" title="stone">st</option>
+            </optgroup>
+            <optgroup label="Area">
+                <option ${f("km²")} value="km²" title="square kilometer">km²</option>
+                <option ${f("m²")} value="m²" title="square meter">m²</option>
+                <option ${f("dm²")} value="dm²" title="square decimeter">dm²</option>
+                <option ${f("cm²")} value="cm²" title="square centimeter">cm²</option>
+                <option ${f("TB")} value="TB" title="square milimeter">TB</option>
+                <option ${f("ha")} value="ha" title="hectare">ha</option>
+                <option ${f("a")} value="a" title="are">a</option>
+                <option ${f("ca")} value="ca" title="centiare">ca</option>
+                <option ${f("mile²")} value="mile²" title="square mile">mile²</option>
+                <option ${f("in²")} value="in²" title="square inch">in²</option>
+                <option ${f("yd²")} value="yd²" title="square yard">yd²</option>
+                <option ${f("ft²")} value="ft²" title="square foot">ft²</option>
+                <option ${f("ro")} value="ro" title="rood">ro</option>
+                <option ${f("acre")} value="acre" title="acre">acre</option>
+                <option ${f("nautical mile²")} value="nautical mile²" title="square nautical mile">nautical mile²</option>
+            </optgroup>
+            <optgroup label="Speed">
+                <option ${f("kmph")} value="kmph" title="kilometer per hour">kph</option>
+                <option ${f("mps")} value="mps" title="mile per second">mps</option>
+                <option ${f("mph")} value="mph" title="mile per hour">mph</option>
+                <option ${f("knot")} value="knot" title="knot">knot</option>
+                <option ${f("ma")} value="ma" title="mac">ma</option>
+                <option ${f("a")} value="a" title="are">mg</option>
+            </optgroup>
+            <optgroup label="Data byte">
+                <option ${f("b")} value="b" title="bit">b</option>
+                <option ${f("B")} value="B" title="byte">B</option>
+                <option ${f("KB")} value="KB" title="kilobyte">KB</option>
+                <option ${f("MB")} value="MB" title="megabyte">MB</option>
+                <option ${f("GB")} value="GB" title="gigabyte">GB</option>
+                <option ${f("TB")} value="TB" title="terabyte">TB</option>
+                <option ${f("PB")} value="PB" title="petabyte">PB</option>
+                <option ${f("EB")} value="EB" title="exabyte">EB</option>
+                <option ${f("ZB")} value="ZB" title="zettabyte">ZB</option>
+                <option ${f("YB")} value="YB" title="yottabyte">YB</option>
+            </optgroup>
+            <optgroup label="Time">
+                <option ${f("year")} value="year" title="common year">year</option>
+                <option ${f("week")} value="week" title="week">week</option>
+                <option ${f("day")} value="day" title="day">day</option>
+                <option ${f("h")} value="h" title="hour">h</option>
+                <option ${f("min")} value="min" title="minute">min</option>
+                <option ${f("s")} value="s" title="second">s</option>
+                <option ${f("ms")} value="ms" title="millisecond">ms</option>
+                <option ${f("µs")} value="µs" title="microsecond">µs</option>
+                <option ${f("nanosecond")} value="nanosecond" title="nanosecond">nanosecond</option>
+                <option ${f("picosecond")} value="picosecond" title="picosecond">picosecond</option>
+                <option ${f("femtosecond")} value="femtosecond" title="femtosecond">femtosecond</option>
+                <option ${f("attosecond")} value="attosecond" title="attosecond">attosecond</option>
+            </optgroup>  
+            <optgroup label="Frequency">
+                <option ${f("Hz")} value="Hz" title="Hertz">Hz</option>
+                <option ${f("KHz")} value="KHz" title="K">KHz</option>
+                <option ${f("MHz")} value="MHz" title="megahertz">MHz</option>
+                <option ${f("GHz")} value="GHz" title="Gigahertz">GHz</option>
+            </optgroup>
+            <optgroup label="Pressure">
+                <option ${f("atm")} value="atm" title="atmosphere">atm</option>
+                <option ${f("bar")} value="bar" title="bar">bar</option>
+                <option ${f("mbar")} value="mbar" title="millibar">mbar</option>
+                <option ${f("Pa")} value="Pa" title="Pascal">Pa</option>
+                <option ${f("hPa")} value="hPa" title="hectopascal">hPa</option>
+                <option ${f("Psi")} value="Psi" title="pounds per square inch">Psi</option>
+                <option ${f("Torr")} value="Torr" title="torr">torr</option>
+            </optgroup>
+            <optgroup label="Energy">
+                <option ${f("J")} value="J" title="joule">J</option>
+                <option ${f("KJ")} value="KJ" title="kilojoule">KJ</option>
+                <option ${f("cal")} value="cal" title="calorie">cal</option>
+                <option ${f("kcal")} value="kcal" title="kilocalorie">kcal</option>
+                <option ${f("Wh")} value="Wh" title="watt-hour">Wh</option>
+                <option ${f("kWh")} value="kWh" title="kilowatt-hour">kWh</option>
+                <option ${f("BTU")} value="BTU" title="british thermal unit">BTU</option>
+                <option ${f("thm")} value="thm" title="Therm americain">thm</option>
+                <option ${f("gt-lb")} value="gt-lb" title="foot-pound">ft-lb</option>
+            </optgroup>
+            <optgroup label="Angle">
+                <option ${f("deg")} value="deg" title="degree">deg</option>
+                <option ${f("grad")} value="grad" title="grad">grad</option>
+                <option ${f("angular mil")} value="angular mil" title="angular mil">angular mil</option>
+                <option ${f("minute of arc")} value="minute of arc" title="minute of arc">minute of arc</option>
+                <option ${f("rad")} value="rad" title="radian">rad</option>
+                <option ${f("second of arc")} value="second of arc" title="second of arc">second of arc</option>
+                <option ${f("BTU")} value="BTU" title="british thermal unit">BTU</option>
+                <option ${f("thm")} value="thm" title="Therm americain">thm</option>
+                <option ${f("gt-lb")} value="gt-lb" title="foot-pound">ft-lb</option>
+            </optgroup>
+        </select>
+    `;
+}

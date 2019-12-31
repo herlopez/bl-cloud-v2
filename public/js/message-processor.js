@@ -148,12 +148,10 @@ function messageProcessor(message, callback) {
           console.log("Project msg: ", message);
 
           if (message.hasOwnProperty('error')) {
-            console.log(message['error']);
+            console.log("message error", message['error']);
             windowError('create_project', message['error']);
             return;
-          }
-
-          if (currentView === 'dashboard') {
+          } else {
             getProjects(currentUid);
             windowSwitcher('none');
           }

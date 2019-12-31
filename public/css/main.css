@@ -1155,9 +1155,17 @@
   position: static; }
 
 #app {
+  /* Optional: show position indicator in red */
   background-image: url("/images/space2.jpg.png"), -webkit-gradient(linear, left top, right bottom, from(#f7f7fc), to(#dbe9ee));
   background-image: url("/images/space2.jpg.png"), linear-gradient(to bottom right, #f7f7fc, #dbe9ee);
   background-size: cover; }
+  #app ::-webkit-scrollbar {
+    width: 0px;
+    /* Remove scrollbar space */
+    background: transparent;
+    /* Optional: just make scrollbar invisible */ }
+  #app ::-webkit-scrollbar-thumb {
+    background: #FF0000; }
   #app button:hover {
     -webkit-transform: translateY(0) !important;
     transform: translateY(0) !important; }
@@ -1276,7 +1284,6 @@
   align-items: center;
   background: rgba(41, 43, 54, 0.59); }
   #window #window_content_block {
-    overflow-y: scroll;
     background: #0c0c15;
     border: none;
     border-radius: 25px;

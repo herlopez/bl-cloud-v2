@@ -67,7 +67,7 @@ function paintDashboardTab(data){
                     if(angle >  135) angle = 135;
                     if(angle <  -135) angle = -135;
                     div.innerHTML =
-                        `<i  onclick="windowSwitcher('gauge_settings','${div.id}')" style="position: absolute; transform: translate(130px, 5px)" class="hc hac fa fa-ellipsis-v"></i>` +
+                        `<i  onclick="windowSwitcher('gauge_settings','${div.id}')" style="position: absolute; transform: translate(109px, -5px)" class="hc p3 hac fa fa-ellipsis-v"></i>` +
                     `<h2 style="${mb}" id="${div.id}_title">${widgets[widget].title}</h2>` +
                     `<h3  id="${div.id}_variable_title" style="font-size:14px; display:${display};" class="m0 mb3 p0" >${widgets[widget].variable}</h3>` +
                     `<svg height="${200*mod}" width="${200*mod}">` +
@@ -96,6 +96,7 @@ function paintDashboardTab(data){
                     }
 
                     div.innerHTML =
+                    `<i  onclick="windowSwitcher('data_settings','${div.id}')" style="position: absolute; transform: translate(109px, -35px)" class="hc p3 hac fa fa-ellipsis-v"></i>` +
                     `<h2 style="${mb}" id="">${widgets[widget].title}</h2>` +
                     `<h3 style="font-size:14px; display:${display};" id="" class="m0 mb3 p0">${widgets[widget].variable}</h3>` +
                     '<div style="" class="r ac jc">' +

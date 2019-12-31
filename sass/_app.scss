@@ -1,4 +1,12 @@
 #app {
+    ::-webkit-scrollbar {
+        width: 0px;  /* Remove scrollbar space */
+        background: transparent;  /* Optional: just make scrollbar invisible */
+    }
+    /* Optional: show position indicator in red */
+    ::-webkit-scrollbar-thumb {
+        background: #FF0000;
+    }
     background-image: url("/images/space2.jpg.png"), linear-gradient(to bottom right, #f7f7fc, #dbe9ee);
     background-size: cover;
     button{
@@ -136,7 +144,7 @@
     #window_content_block.update-profile{
     }
     #window_content_block {
-        overflow-y: scroll;
+        //overflow-y: scroll;
 
         input[type="range"]{
             border: solid 1px rgb(155, 85, 163);
