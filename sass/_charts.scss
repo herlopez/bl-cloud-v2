@@ -1,0 +1,89 @@
+.ct-grid{
+    stroke: #afafaf !important;
+}
+.ct-label{
+    color: #afafaf !important;
+}
+.ct-pl-x-title-units{
+    text-align: right;
+    transform: translate(-16px, -20px);
+    position: relative;
+    color: white;
+}
+.ct-pl-y-title-units{
+    //transform: translate(-16px, -20px);
+    position: relative;
+    color: white;
+}
+.ct-pl-x-title{
+    transform: translate(0px, -20px);
+}
+
+
+.ct-pl-y-title{
+    transform: rotate(-90deg);
+    position: relative;
+    top: 46px;
+    max-width: 200px;
+    right: 3px;
+    transform-origin-x: 64px;
+    text-align: center;
+    transform-origin-y: 85px;
+}
+
+.widget-plot-graph-settings{
+    input[type="color"] {
+        border: none;
+        cursor: pointer;
+        border-radius: 20px;
+        background: none;
+        width: 18px !important;
+        padding: 0;
+        margin-left: 4px;
+        margin-bottom: 0px;
+    }
+}
+
+.ct-zoom-rect {
+    fill: rgba(200, 100, 100, 0.3);
+    stroke: red;
+}
+$ct-series-colors: red;
+
+.ct-legend {
+    position: relative;
+    z-index: 10;
+
+    li {
+        position: relative;
+        padding-left: 23px;
+        margin-bottom: 3px;
+    }
+
+    li:before {
+        width: 12px;
+        height: 12px;
+        position: absolute;
+        left: 0;
+        content: '';
+        border: 3px solid transparent;
+        border-radius: 2px;
+    }
+
+    li.inactive:before {
+        background: transparent;
+    }
+
+    &.ct-legend-inside {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    @for $i from 0 to length($ct-series-colors) {
+        .ct-series-#{$i}:before {
+            background-color: nth($ct-series-colors, $i + 1);
+            border-color: nth($ct-series-colors, $i + 1);
+        }
+    }
+}

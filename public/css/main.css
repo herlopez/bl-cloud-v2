@@ -1317,6 +1317,11 @@
     #window #window_content_block h2 {
       color: white; }
 
+#project_section_dashboard {
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start; }
+
 .slider {
   -webkit-appearance: none;
   width: 100%;
@@ -1759,3 +1764,74 @@ header > div label:before {
 
 footer {
   background: rgba(0, 0, 0, 0.5); }
+
+.ct-grid {
+  stroke: #afafaf !important; }
+
+.ct-label {
+  color: #afafaf !important; }
+
+.ct-pl-x-title-units {
+  text-align: right;
+  -webkit-transform: translate(-16px, -20px);
+  transform: translate(-16px, -20px);
+  position: relative;
+  color: white; }
+
+.ct-pl-y-title-units {
+  position: relative;
+  color: white; }
+
+.ct-pl-x-title {
+  -webkit-transform: translate(0px, -20px);
+  transform: translate(0px, -20px); }
+
+.ct-pl-y-title {
+  -webkit-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+  position: relative;
+  top: 46px;
+  max-width: 200px;
+  right: 3px;
+  transform-origin-x: 64px;
+  text-align: center;
+  transform-origin-y: 85px; }
+
+.widget-plot-graph-settings input[type="color"] {
+  border: none;
+  cursor: pointer;
+  border-radius: 20px;
+  background: none;
+  width: 18px !important;
+  padding: 0;
+  margin-left: 4px;
+  margin-bottom: 0px; }
+
+.ct-zoom-rect {
+  fill: rgba(200, 100, 100, 0.3);
+  stroke: red; }
+
+.ct-legend {
+  position: relative;
+  z-index: 10; }
+  .ct-legend li {
+    position: relative;
+    padding-left: 23px;
+    margin-bottom: 3px; }
+  .ct-legend li:before {
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    left: 0;
+    content: '';
+    border: 3px solid transparent;
+    border-radius: 2px; }
+  .ct-legend li.inactive:before {
+    background: transparent; }
+  .ct-legend.ct-legend-inside {
+    position: absolute;
+    top: 0;
+    right: 0; }
+  .ct-legend .ct-series-0:before {
+    background-color: red;
+    border-color: red; }

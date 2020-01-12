@@ -1,12 +1,15 @@
-function windowGaugeSettings(content, options) {
+//
+// Gauge Settings Edit Window.
+//
 
-    content.id = 'window_content_block';
+function windowGaugeSettings(content, options) {
 
     // Find the current gauge.
     let gauge = currentProjectData.widgets.find((widget) => widget.id === options);
 
     // Scale of the gauge.
     let scale = 1;
+
     // Build an list of options whereas the values are variables that are numbers.
     let validVariablesForGauge = "";
     if (currentProjectData.hasOwnProperty('variables')) {
@@ -24,12 +27,15 @@ function windowGaugeSettings(content, options) {
             }
         }
     }
+
     let hideValue = '';
     let hideTopTitle = '';
     if(gauge.hide === 'true'){
         hideValue= "checked";
         hideTopTitle = "dn";
     }
+
+    content.id = 'window_content_block';
     content.innerHTML = `
         <i style="color: red; top: 5px; right: 0;" class="por fs125 hc hp fa fa-trash-alt" onclick="removeGaugeWidget('${gauge.id}')"></i> 
         <div class="c ac jc">

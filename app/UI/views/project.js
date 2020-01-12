@@ -67,7 +67,7 @@ function projectView(id){
 
     menu.appendChild(dashboard);
     menu.appendChild(variables);
-    menu.appendChild(charts);
+    // menu.appendChild(charts);
     menu.appendChild(settings);
     appContainer.appendChild(menu);
     //--  Left Menu in Container END   --//

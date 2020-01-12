@@ -43,6 +43,7 @@ function messageProcessor(message, callback) {
                 windowSwitcher('none');
                 viewSwitcher('dashboard');
             break;
+
             // Server sends back a the data for a users project.
             case 'GET_PROJECT':
                 try{
@@ -60,6 +61,7 @@ function messageProcessor(message, callback) {
             break;
 
             case 'CREATE_CHART_CB':
+            case 'ADD_DATA_POINT_CB':
             case 'ERASE_VARIABLE_CB':
             case 'ERASE_CHART_CB':
             case 'NEW_VARIABLE_CB':

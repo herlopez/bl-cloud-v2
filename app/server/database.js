@@ -102,21 +102,34 @@ function updateWidget(msg, uid){
     if (tools.hasError(idCheck)) return idCheck;
     let hideCheck = tools.verifyString(msg['options'], 'hide', 200, 0);
     if (tools.hasError(hideCheck)) return hideCheck;
-    if(!msg['options'].hasOwnProperty('variable') ) return{error: "No variable was provided."};
-    if(!project.hasOwnProperty('variables'))  return{error: "Error! Project has no variables."};
-    if(msg['options']['variable'] === '') return{error: "Please Select a Variable."};
-    if(!project['variables'].hasOwnProperty(msg['options']['variable'])) return{error: "Error! Project does not have this variable."};
-
 
     if(!msg['options'].hasOwnProperty('type')) return {error: 'Error! Widget Type not Defined.'};
     switch (msg['options']['type']) {
         case 'gauge':
+            if(!msg['options'].hasOwnProperty('variable') ) return{error: "No variable was provided."};
+            if(!project.hasOwnProperty('variables'))  return{error: "Error! Project has no variables."};
+            if(msg['options']['variable'] === '') return{error: "Please Select a Variable."};
+            if(!project['variables'].hasOwnProperty(msg['options']['variable'])) return{error: "Error! Project does not have this variable."};
             if(typeof project['variables'][msg['options']['variable']] !== 'number') return{error:"Please select a variable that is an integer."};
             if(!msg['options'].hasOwnProperty('min') || !msg['options'].hasOwnProperty('max')) return{error:"Error! No Min/Max options provided."};
             if(typeof msg['options']['min'] !== 'number'|| typeof msg['options']['max'] !== 'number') return{error:"Please provide a valid min and max value."};
             if(msg['options']['min'] >= msg['options']['max']) return{error:"Min value must be inferior to max value."};
             break;
         case 'data':
+            if(!msg['options'].hasOwnProperty('variable') ) return{error: "No variable was provided."};
+            if(!project.hasOwnProperty('variables'))  return{error: "Error! Project has no variables."};
+            if(msg['options']['variable'] === '') return{error: "Please Select a Variable."};
+            if(!project['variables'].hasOwnProperty(msg['options']['variable'])) return{error: "Error! Project does not have this variable."};
+            break;
+        case 'scatter':
+            let xAxisTitleCheck = tools.verifyString(msg['options'], 'xAxisTitle', 200, 0);
+            if (tools.hasError(xAxisTitleCheck)) return xAxisTitleCheck;
+            let yAxisTitleCheck = tools.verifyString(msg['options'], 'yAxisTitle', 200, 0);
+            if (tools.hasError(yAxisTitleCheck)) return yAxisTitleCheck;
+            let xAxisUnitsCheck = tools.verifyString(msg['options'], 'xAxisUnits', 200, -1);
+            if (tools.hasError(xAxisUnitsCheck)) return xAxisUnitsCheck;
+            let yAxisUnitsCheck = tools.verifyString(msg['options'], 'yAxisUnits', 200, -1);
+            if (tools.hasError(yAxisUnitsCheck)) return yAxisUnitsCheck;
             break;
         default:
             return {error: 'Error! Invalid Widget Type'}
@@ -125,6 +138,7 @@ function updateWidget(msg, uid){
     if(widgetIndex === '-1'){
         return {error: 'Error! Invalid Widget Id'}
     }
+    msg['options'].series  = project['widgets'][widgetIndex].series;
     project['widgets'][widgetIndex] =  msg['options'];
     PROJECTS.update(project);
     return {cmd:"UPDATE_WIDGET", result:project};
@@ -141,52 +155,94 @@ function addWidget(msg, uid){
     if(uid !== msg.uid) return{error: "Error! Conflicting user id's."};
     if(!project.hasOwnProperty('owner')) return {error: "Project ownership error."};
     if(project['owner'] !== uid) return{error: "Error! User does not have access to this project."};
-    console.log('Done: ', project);
     if(!msg.hasOwnProperty('options') ) return{error: "Error! No widget settings provided."};
     let nameCheck = tools.verifyString(msg['options'], 'title', 200, 0);
     if (tools.hasError(nameCheck)) return nameCheck;
     let typeCheck = tools.verifyString(msg['options'], 'type', 200, 0);
-    if (tools.hasError(typeCheck)) return nameCheck;
+    if (tools.hasError(typeCheck)) return typeCheck;
     let hideCheck = tools.verifyString(msg['options'], 'hide', 200, 0);
-    if (tools.hasError(hideCheck)) return nameCheck;
-    if(!msg['options'].hasOwnProperty('variable') ) return{error: "No variable was provided."};
-    if(!project.hasOwnProperty('variables'))  return{error: "Error! Project has no variables."};
-    if(msg['options']['variable'] === '') return{error: "Please Select a Variable."};
-    if(!project['variables'].hasOwnProperty(msg['options']['variable'])) return{error: "Error! Project does not have this variable."};
-
+    if (tools.hasError(hideCheck)) return hideCheck;
 
     if(!msg['options'].hasOwnProperty('type')) return {error: 'Error! Widget Type not Defined.'};
     switch (msg['options']['type']) {
+
         case 'gauge':
+            if(!msg['options'].hasOwnProperty('variable') ) return{error: "No variable was provided."};
+            if(!project.hasOwnProperty('variables'))  return{error: "Error! Project has no variables."};
+            if(msg['options']['variable'] === '') return{error: "Please Select a Variable."};
+            if(!project['variables'].hasOwnProperty(msg['options']['variable'])) return{error: "Error! Project does not have this variable."}
             if(typeof project['variables'][msg['options']['variable']] !== 'number') return{error:"Please select a variable that is an integer."};
             if(!msg['options'].hasOwnProperty('min') || !msg['options'].hasOwnProperty('max')) return{error:"Error! No Min/Max options provided."};
             if(typeof msg['options']['min'] !== 'number'|| typeof msg['options']['max'] !== 'number') return{error:"Please provide a valid min and max value."};
             if(msg['options']['min'] >= msg['options']['max']) return{error:"Min value must be inferior to max value."};
-            break;
+        break;
+
         case 'data':
-            break;
+            if(!msg['options'].hasOwnProperty('variable') ) return{error: "No variable was provided."};
+            if(!project.hasOwnProperty('variables'))  return{error: "Error! Project has no variables."};
+            if(msg['options']['variable'] === '') return{error: "Please Select a Variable."};
+            if(!project['variables'].hasOwnProperty(msg['options']['variable'])) return{error: "Error! Project does not have this variable."}
+        break;
+
+        case 'line':
+        case 'scatter':
+            let xAxisTitleCheck = tools.verifyString(msg['options'], 'xAxisTitle', 200, 0);
+            if (tools.hasError(xAxisTitleCheck)) return xAxisTitleCheck;
+            let yAxisTitleCheck = tools.verifyString(msg['options'], 'yAxisTitle', 200, 0);
+            if (tools.hasError(yAxisTitleCheck)) return yAxisTitleCheck;
+            let xAxisUnitsCheck = tools.verifyString(msg['options'], 'xAxisUnits', 200, -1);
+            if (tools.hasError(xAxisUnitsCheck)) return xAxisUnitsCheck;
+            let yAxisUnitsCheck = tools.verifyString(msg['options'], 'yAxisUnits', 200, -1);
+            if (tools.hasError(yAxisUnitsCheck)) return yAxisUnitsCheck;
+
+            if(!msg['options'].hasOwnProperty('series') ) return{error: "No series provided."};
+            if(!project.hasOwnProperty('charts'))  return{error: "Error! Project has no charts."};
+            if(typeof msg['options']['series'] !== 'object' ) return{error: "Invalid Series Object."};
+
+            let series = msg['options']['series'];
+            let savedCharts = project['charts'];
+            let nameIndex = 1;
+
+            for(let s in series){
+                if(series.hasOwnProperty(s)) {
+                    console.log('Series: ', series[s]);
+
+                    let seriesNameCheck = tools.verifyString(series[s], 'name', 200, 0);
+                    if (tools.hasError(seriesNameCheck)) return {error: `Series ${nameIndex} invalid chart data.`};
+
+                    let seriesColorCheck = tools.verifyString(series[s], 'color', 8, 0);
+                    if (tools.hasError(seriesColorCheck)) return {error: `Series ${nameIndex} invalid color.`};
+
+                    let foundSeries = false;
+
+                    for(let chart in savedCharts){
+                        if(savedCharts.hasOwnProperty(chart)){
+                            if(savedCharts[chart].name === series[s].name){
+                                foundSeries = true;
+                                if(savedCharts[chart].type !== msg['options']['type'].toUpperCase()) return {error: `Series ${nameIndex} chart data is not a scatter plot.`};
+                            }
+                        }
+                    }
+
+                    if(!foundSeries) return {error: `Series ${nameIndex} chart data not found.`};
+                    nameIndex ++;
+
+                }
+                else{
+                    return{error: "Invalid Series Object."}
+                }
+            }
+        break;
         default:
             return {error: 'Error! Invalid Widget Type'}
+        break;
     }
 
     let time = new Date().getTime();
     msg['options']['id'] =  uniqid(time);
-    // if(!project['options'].hasOwnProperty(msg[''])  return{error: "Error! Project has no variables."};
     project['widgets'].push(msg['options']);
-        console.log(project);
     PROJECTS.update(project);
     return {cmd:"ADD_WIDGET", result:project};
-
-
-
-
-    //
-    // if (project['variables'].hasOwnProperty(msg.name)) return {error: "Variable name already taken"};
-    //
-    //
-    // let nameCheck = tools.verifyString(msg, 'title', 200, 1);
-    // if (tools.hasError(nameCheck)) return nameCheck;
-
 }
 
 function setProjectName(msg, uid){

@@ -32,7 +32,10 @@ let jsSourceFiles = [
     "app/UI/windows/window-profile-settings.js",
     "app/UI/windows/window-widget-selection.js",
     "app/UI/windows/window-gauge-settings.js",
-    "app/UI/windows/window-data-settings.js"
+    "app/UI/windows/window-data-settings.js",
+    "app/UI/windows/window-widget-line-graph.js",
+    "app/UI/windows/window-widget-plot-graph.js",
+    "app/UI/windows/window-scatter-settings.js",
 ];
 
 

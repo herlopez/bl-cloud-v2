@@ -616,7 +616,7 @@ function projectView(id){
 
     menu.appendChild(dashboard);
     menu.appendChild(variables);
-    menu.appendChild(charts);
+    // menu.appendChild(charts);
     menu.appendChild(settings);
     appContainer.appendChild(menu);
     //--  Left Menu in Container END   --//
@@ -1150,6 +1150,9 @@ function windowSwitcher(targetWindow, options) {
         case 'new_project':
             content = windowNewProject(windowContent);
             break;
+        case 'scatter_plot_settings':
+            content = windowScatterSettings(windowContent,options);
+            break;
         case 'profile_settings':
             content = windowProfileSettings(windowContent);
             break;
@@ -1159,11 +1162,121 @@ function windowSwitcher(targetWindow, options) {
         case 'data_settings':
             content = windowDataSettings(windowContent, options);
             break;
+        case 'line_graph':
+            content = windowWidgetLineGraph(windowContent, options);
+            break;
+        case 'plot_graph':
+            content = windowWidgetPlotGraph(windowContent, options);
+            break;
         default:
             windowHide();
             break;
     }
     window.appendChild(content);
+    drawPLotWindow()
+    drawLineGraphWindow();
+    new Chartist.Pie('.ct-chart-pie-widget', {
+        series: [5, 10, 20, 25, 40, 100]
+    }, {
+        donut: true,
+        donutWidth: 15,
+        donutSolid: true,
+        startAngle: 270,
+        showLabel: false
+    });
+    new Chartist.Line('.ct-chart-line-chart-widget', {
+        series: [
+            [1, 5, 2, 5, 4, 3],
+            [2, 3, 4, 8, 1, 2],
+            [5, 4, 3, 2, 1, 0.5]
+        ]
+    }, {
+        fullWidth: true,
+        showPoint: false,
+        axisY: {
+            showLabel: false,
+            showGrid: false
+        },
+        axisX: {
+            showLabel: false,
+            showGrid: false
+        }
+
+    });
+    var times = function (n) {
+        return Array.apply(null, new Array(n));
+    };
+
+    var data = times(5).map(Math.random).reduce(function (data, rnd, index) {
+        data.labels.push(index + 1);
+        data.series.forEach(function (series) {
+            series.push(Math.random() * 100)
+        });
+
+        return data;
+    }, {
+        labels: [],
+        series: times(4).map(function () {
+            return new Array()
+        })
+    });
+
+    var options = {
+        showLine: false,
+
+        axisY: {
+            showLabel: false,
+            showGrid: false
+        },
+        axisX: {
+            showLabel: false,
+            showGrid: false
+        }
+    };
+
+    var responsiveOptions = [
+        ['screen and (min-width: 640px)', {
+            axisX: {
+                labelInterpolationFnc: function (value, index) {
+                    return index % 4 === 0 ? 'W' + value : null;
+                }
+            }
+        }]
+    ];
+
+    new Chartist.Line('.ct-chart-scatter-chart-widget', data, options, responsiveOptions);
+
+    var data = {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        series: [
+            [5, 4, 3, 7, 5, 10, 3, 4, 8, 10, 6, 8],
+            [3, 2, 9, 5, 4, 6, 4, 6, 7, 8, 7, 4]
+        ]
+    };
+
+    var options = {
+        seriesBarDistance: 3,
+        axisY: {
+            showLabel: false,
+            showGrid: false
+        },
+        axisX: {
+            showLabel: false,
+            showGrid: false
+        }
+    };
+
+    var responsiveOptions = [
+        ['screen and (max-width: 640px)', {
+            seriesBarDistance: 5,
+            axisX: {
+                labelInterpolationFnc: function (value) {
+                    return value[0];
+                }
+            }
+        }]
+    ];
+    new Chartist.Bar('.ct-chart-histo-chart-widget', data, options);
 }
 
 function gaugeHideVariableName() {
@@ -1181,14 +1294,13 @@ function gaugeSettingsTitle() {
 }
 
 function variableSettings() {
-    document.getElementById('variable_title').innerText = document.getElementById('variable_title_input').value;
     let newValue = document.getElementById('variable_title_input').value;
     document.getElementById('value').innerText = currentProjectData['variables'][newValue];
 
 }
 
-function unitSettings(i) {
-    document.getElementById('units').innerText = i.value;
+function unitSettings(i, id = 'units') {
+    document.getElementById(id).innerText = i.value;
 }
 
 function minSettings(i) {
@@ -1206,6 +1318,54 @@ function gaugeColorSettings(i, n) {
     document.getElementById(`gauge_color_${n}`).style.fill = i.value;
 }
 
+
+
+
+
+
+//
+// Plot Widget
+//
+function newPlotWidget(id, type, seriesCount){
+    let series = [];
+    for(let i = 0; i < seriesCount; i++){
+        console.log(i)
+        series[i] = {
+            name: document.getElementById(`series_${i}`).value,
+            color: document.getElementById(`series_${i}_color`).value,
+        }
+    }
+    addWidget(currentUid, currentProject, {
+        type: type,
+        hide:'false',
+        title: `${document.getElementById('gauge_title').innerText}`,
+        xAxisTitle: `${document.getElementById('x_axis_title').value}`,
+        xAxisUnits: `${document.getElementById('x_axis_units').value}`,
+        yAxisTitle: `${document.getElementById('y_axis_title').value}`,
+        yAxisUnits: `${document.getElementById('y_axis_units').value}`,
+        series: series
+    });
+}
+function updatePlotWidget(id, type){
+    updateWidget(currentUid, currentProject, {
+        type: type,
+        hide: 'false',
+        title: `${document.getElementById('gauge_title').innerText}`,
+        xAxisTitle: `${document.getElementById('x_axis_title').value}`,
+        xAxisUnits: `${document.getElementById('x_axis_units').value}`,
+        yAxisTitle: `${document.getElementById('y_axis_title').value}`,
+        yAxisUnits: `${document.getElementById('y_axis_units').value}`,
+        id: id,
+    });
+}
+function removePlotWidget(id){
+    removeWidget(currentUid, currentProject, id);
+}
+
+
+//
+// Gauge Widget
+//
 function newGaugeWidget() {
     addWidget(currentUid, currentProject, {
         type: 'gauge',
@@ -1241,6 +1401,25 @@ function updateGaugeWidget(id){
         id: id
     })
 }
+function removeGaugeWidget(id){
+    removeWidget(currentUid, currentProject, id);
+}
+
+
+
+//
+// Data Widget
+//
+function newDataWidget() {
+    addWidget(currentUid, currentProject, {
+        type: 'data',
+        hide: `${document.getElementById('gauge_variable_hide').checked}`,
+        variable: `${document.getElementById('variable_title_input').value}`,
+        units: `${document.getElementById('units').innerText}`,
+        title: `${document.getElementById('gauge_title').innerText}`,
+    });
+}
+
 function updateDataWidget(id){
     updateWidget(currentUid, currentProject, {
         type: 'data',
@@ -1251,21 +1430,12 @@ function updateDataWidget(id){
         id: id
     })
 }
-
-function removeGaugeWidget(id){
+function removeDataWidget(id){
     removeWidget(currentUid, currentProject, id);
 }
 
 
-function newDataWidget() {
-    addWidget(currentUid, currentProject, {
-        type: 'data',
-        hide: `${document.getElementById('gauge_variable_hide').checked}`,
-        variable: `${document.getElementById('variable_title_input').value}`,
-        units: `${document.getElementById('units').innerText}`,
-        title: `${document.getElementById('gauge_title').innerText}`,
-    });
-}
+
 
 
 /*
@@ -1462,6 +1632,7 @@ function messageProcessor(message, callback) {
                 windowSwitcher('none');
                 viewSwitcher('dashboard');
             break;
+
             // Server sends back a the data for a users project.
             case 'GET_PROJECT':
                 try{
@@ -1479,6 +1650,7 @@ function messageProcessor(message, callback) {
             break;
 
             case 'CREATE_CHART_CB':
+            case 'ADD_DATA_POINT_CB':
             case 'ERASE_VARIABLE_CB':
             case 'ERASE_CHART_CB':
             case 'NEW_VARIABLE_CB':
@@ -1665,11 +1837,15 @@ function projectSearch() {
 }
 
 
-let currentProjectData ;
+let currentProjectData;
+
 // Populate the content of a project.
-function paintProject(data){
+function paintProject(data) {
 
     currentProjectData = data;
+    currentProject = data.id;
+    currentKey = data.key;
+
     switch (projectTab) {
         case 'dashboard':
             paintDashboardTab(data);
@@ -1691,12 +1867,10 @@ function paintProject(data){
 }
 
 
-
 // Dashboard Tab.
-function paintDashboardTab(data){
+function paintDashboardTab(data) {
     let dashboard = document.getElementById('project_section_dashboard');
-    currentProject = data.id;
-    currentKey = data.key;
+
     dashboard.classList = 'w100 r ac jc';
     dashboard.style = {
         height: "100%",
@@ -1705,11 +1879,17 @@ function paintDashboardTab(data){
     };
     dashboard.style.flexWrap = "wrap";
     dashboard.innerHTML = '';
-    if(data.hasOwnProperty('widgets')){
+
+    if (data.hasOwnProperty('widgets')) {
+
         let widgets = data['widgets'];
-        for(let widget in widgets){
-            if(widgets.hasOwnProperty(widget)){
+
+        for (let widget in widgets) {
+
+            if (widgets.hasOwnProperty(widget)) {
                 console.log(widgets[widget]);
+
+                // Widget box.
                 let div = document.createElement('button');
                 div.style.height = "275px";
                 div.style.minWidth = "300px";
@@ -1717,62 +1897,126 @@ function paintDashboardTab(data){
                 div.id = widgets[widget].id;
                 div.style.background = "rgba(3, 4, 8, 0.46)";
                 div.borderRadius = "10px";
+
                 let mod = 0.7;
-                console.log('DATA        ', data);
-                let display= "inherit";
+                let display = "inherit";
                 let mb = 'margin-bottom: 5px; margin-top: 8px;';
-                if(widgets[widget].type === 'gauge'){
-                    console.log(widgets[widget]['hide']);
-                    if(widgets[widget]['hide'] === 'true'){
+
+
+                if (widgets[widget].type === 'line') {
+                    div.style.height = "325px";
+                    div.style.minWidth = "632px";
+                    div.style.maxWidth = "632px";
+                    div.style.paddingRight = "2px";
+                    let leftPar = "";
+                    let rightPar = "";
+
+                    if (widgets[widget].xAxisUnits !== "") {
+                        leftPar = "(";
+                        rightPar = ")";
+                    }
+                    div.innerHTML = `
+
+                        <i onclick="windowSwitcher('line_graph_settings','${div.id}')" style="position: absolute; transform: translate(262px, -10px)" class="hc p3 hac fa fa-ellipsis-v"></i>
+                        <h2 style="${mb}" id="${div.id}_title">${widgets[widget].title}</h2>
+                        <p style="transform: translate(-40px,94px) rotate(-90deg); position: absolute; transform-origin-x: 95px; text-align: center; transform-origin-y: 59px; width: 280px;" class="mt0">${widgets[widget].yAxisTitle} <i>${leftPar}${widgets[widget].yAxisUnits}${rightPar}</i></p>
+                        <div class="ct-${div.id}-plot"></div>
+                        <p class="mt0 mb1">${widgets[widget].xAxisTitle} <i>${leftPar}${widgets[widget].xAxisUnits}${rightPar}</i></p>
+                        <style id="${div.id}_plot_styles">
+                      
+                        </style>
+                        <i style="position: absolute; transform: translate(250px,-230px);" onclick="resetFnc && resetFnc();" class="hp hc fas fa-search-minus" id="reset-zoom-btn"></i>
+                        <div class ="r jc ac m2" id="${div.id}_plot_legend"></div>
+                        
+                    `;
+                    dashboard.appendChild(div);
+                    drawLineGraph(`.ct-${div.id}-plot`, div.id)
+
+                }
+                if (widgets[widget].type === 'scatter') {
+                    div.style.height = "325px";
+                    div.style.minWidth = "632px";
+                    div.style.maxWidth = "632px";
+                    div.style.paddingRight = "2px";
+                    let leftPar = "";
+                    let rightPar = "";
+
+                    if (widgets[widget].xAxisUnits !== "") {
+                        leftPar = "(";
+                        rightPar = ")";
+                    }
+                    div.innerHTML = `
+
+                        <i  onclick="windowSwitcher('scatter_plot_settings','${div.id}')" style="position: absolute; transform: translate(262px, -10px)" class="hc p3 hac fa fa-ellipsis-v"></i>
+                        <h2 style="${mb}" id="${div.id}_title">${widgets[widget].title}</h2>
+                        <p style="transform: translate(-40px,94px) rotate(-90deg); position: absolute; transform-origin-x: 95px; text-align: center; transform-origin-y: 59px; width: 280px;" class="mt0">${widgets[widget].yAxisTitle} <i>${leftPar}${widgets[widget].yAxisUnits}${rightPar}</i></p>
+                        <div class="ct-${div.id}-plot"></div>
+                        <p class="mt0 mb1">${widgets[widget].xAxisTitle} <i>${leftPar}${widgets[widget].xAxisUnits}${rightPar}</i></p>
+                        <style id="${div.id}_plot_styles">
+                        
+                        </style>
+                        <i style="position: absolute; transform: translate(250px,-230px);" onclick="resetFnc && resetFnc();" class="hp hc fas fa-search-minus" id="reset-zoom-btn"></i>
+                        <div class ="r jc ac m2" id="${div.id}_plot_legend"></div>
+                        
+                    `;
+                    dashboard.appendChild(div);
+
+                    drawScatterPLot(`.ct-${div.id}-plot`, div.id)
+                }
+                if (widgets[widget].type === 'gauge') {
+                    if (widgets[widget]['hide'] === 'true') {
                         display = "none";
                         mb = '';
                     }
                     let range = Math.abs(widgets[widget].min - widgets[widget].max);
-                    let tic = 270/range;
-                    let angle = Math.floor(270/(range-data['variables'][widgets[widget].variable]));
+                    let tic = 270 / range;
+                    let angle = Math.floor(270 / (range - data['variables'][widgets[widget].variable]));
                     angle = ((data['variables'][widgets[widget].variable] - widgets[widget].min) * tic) - 135;
-                    if(angle >  135) angle = 135;
-                    if(angle <  -135) angle = -135;
+                    if (angle > 135) angle = 135;
+                    if (angle < -135) angle = -135;
                     div.innerHTML =
                         `<i  onclick="windowSwitcher('gauge_settings','${div.id}')" style="position: absolute; transform: translate(109px, -5px)" class="hc p3 hac fa fa-ellipsis-v"></i>` +
-                    `<h2 style="${mb}" id="${div.id}_title">${widgets[widget].title}</h2>` +
-                    `<h3  id="${div.id}_variable_title" style="font-size:14px; display:${display};" class="m0 mb3 p0" >${widgets[widget].variable}</h3>` +
-                    `<svg height="${200*mod}" width="${200*mod}">` +
-                        `<circle cx= "${100*mod}" cy= "${100*mod}" r="${5*mod}" fill="#ffffff"/>` +
-                        `<path fill="${widgets[widget].color1}" d="M${29.29*mod},${170.71*mod}           A ${100*mod} ${100*mod} 0 0 1 ${0*mod} ${102.5*mod}                 L ${20*mod} ${102.5*mod}               A ${80*mod} ${80*mod} 0 0 0 ${43.432*mod} ${156.568*mod}"/>` +
-                        `<path fill="${widgets[widget].color2}" d="M${0*mod},${97.5*mod}                 A ${100*mod} ${100*mod} 0 0 1 ${27.592735*mod} ${31.12827*mod}      L ${41.6915*mod} ${45.227*mod}         A ${80*mod} ${80*mod} 0 0 0 ${20*mod} ${97.5*mod} "/>`+
-                        `<path fill="${widgets[widget].color3}" d="M${31.05709*mod}, ${27.521555*mod}    A ${100*mod} ${100*mod} 0 0 1 ${97.5*mod} ${0*mod}                  L ${97.5*mod} ${20*mod}                A ${80*mod} ${80*mod} 0 0 0 ${45.226855*mod} ${41.6915*mod}"/>` +
-                        `<path fill="${widgets[widget].color4}" d="M${102.5*mod},${0*mod}                A ${100*mod} ${100*mod} 0 0 1 ${168.94291*mod} ${27.521555*mod}     L ${154.773145*mod} ${41.6915*mod}     A ${80*mod} ${80*mod} 0 0 0 ${102.5*mod} ${20*mod}"/>` +
-                        `<path fill="${widgets[widget].color5}" d="M${172.407265*mod},${31.12827*mod}    A ${100*mod} ${100*mod} 0 0 1 ${200*mod} ${97.5*mod}                L ${180*mod} ${97.5*mod}               A ${80*mod} ${80*mod} 0 0 0 ${158.3085*mod} ${45.227*mod}"/>` +
-                        `<path fill="${widgets[widget].color6}" d="M${200*mod},${102.5*mod}              A ${100*mod} ${100*mod} 0 0 1 ${170.71*mod} ${170.71*mod}           L ${156.568*mod} ${156.568*mod}        A ${80*mod} ${80*mod} 0 0 0 ${180*mod} ${102.5*mod}"/>` +
-                        `<path style="transform: rotate(${angle}deg); transform-origin: ${100*mod}px ${100*mod}px;" fill="#707070" d="M${95*mod},${110*mod} L ${105*mod} ${110*mod} L ${102*mod} ${95*mod} L ${100*mod} ${3*mod} L ${98*mod} ${95*mod}"/>`+
-                    '</svg>' +
-                    '<div style="transform: translateY(-25px);" class="r ac jc">' +
+                        `<h2 style="${mb}" id="${div.id}_title">${widgets[widget].title}</h2>` +
+                        `<h3  id="${div.id}_variable_title" style="font-size:14px; display:${display};" class="m0 mb3 p0" >${widgets[widget].variable}</h3>` +
+                        `<svg height="${200 * mod}" width="${200 * mod}">` +
+                        `<circle cx= "${100 * mod}" cy= "${100 * mod}" r="${5 * mod}" fill="#ffffff"/>` +
+                        `<path fill="${widgets[widget].color1}" d="M${29.29 * mod},${170.71 * mod}           A ${100 * mod} ${100 * mod} 0 0 1 ${0 * mod} ${102.5 * mod}                 L ${20 * mod} ${102.5 * mod}               A ${80 * mod} ${80 * mod} 0 0 0 ${43.432 * mod} ${156.568 * mod}"/>` +
+                        `<path fill="${widgets[widget].color2}" d="M${0 * mod},${97.5 * mod}                 A ${100 * mod} ${100 * mod} 0 0 1 ${27.592735 * mod} ${31.12827 * mod}      L ${41.6915 * mod} ${45.227 * mod}         A ${80 * mod} ${80 * mod} 0 0 0 ${20 * mod} ${97.5 * mod} "/>` +
+                        `<path fill="${widgets[widget].color3}" d="M${31.05709 * mod}, ${27.521555 * mod}    A ${100 * mod} ${100 * mod} 0 0 1 ${97.5 * mod} ${0 * mod}                  L ${97.5 * mod} ${20 * mod}                A ${80 * mod} ${80 * mod} 0 0 0 ${45.226855 * mod} ${41.6915 * mod}"/>` +
+                        `<path fill="${widgets[widget].color4}" d="M${102.5 * mod},${0 * mod}                A ${100 * mod} ${100 * mod} 0 0 1 ${168.94291 * mod} ${27.521555 * mod}     L ${154.773145 * mod} ${41.6915 * mod}     A ${80 * mod} ${80 * mod} 0 0 0 ${102.5 * mod} ${20 * mod}"/>` +
+                        `<path fill="${widgets[widget].color5}" d="M${172.407265 * mod},${31.12827 * mod}    A ${100 * mod} ${100 * mod} 0 0 1 ${200 * mod} ${97.5 * mod}                L ${180 * mod} ${97.5 * mod}               A ${80 * mod} ${80 * mod} 0 0 0 ${158.3085 * mod} ${45.227 * mod}"/>` +
+                        `<path fill="${widgets[widget].color6}" d="M${200 * mod},${102.5 * mod}              A ${100 * mod} ${100 * mod} 0 0 1 ${170.71 * mod} ${170.71 * mod}           L ${156.568 * mod} ${156.568 * mod}        A ${80 * mod} ${80 * mod} 0 0 0 ${180 * mod} ${102.5 * mod}"/>` +
+                        `<path style="transform: rotate(${angle}deg); transform-origin: ${100 * mod}px ${100 * mod}px;" fill="#707070" d="M${95 * mod},${110 * mod} L ${105 * mod} ${110 * mod} L ${102 * mod} ${95 * mod} L ${100 * mod} ${3 * mod} L ${98 * mod} ${95 * mod}"/>` +
+                        '</svg>' +
+                        '<div style="transform: translateY(-25px);" class="r ac jc">' +
                         `<h2 id="${div.id}_min_title" style="width: 140px; font-size: 16px;" class="m0 mr5 r ac jc" >${widgets[widget].min}</h2>` +
                         `<h2 id="${div.id}_max_title" style="width: 140px; font-size: 16px;" class="m0 ml5 r ac jc" >${widgets[widget].max}</h2>` +
-                    '</div>'+
-                    '<div style="transform: translateY(-40px);" class="r ac jc">'+
+                        '</div>' +
+                        '<div style="transform: translateY(-40px);" class="r ac jc">' +
                         `<h1 id="${div.id}_units_title">${data['variables'][widgets[widget].variable]}${widgets[widget].units}</h1>` +
-                    '</div>';
-                }
-                if(widgets[widget].type === 'data') {
+                        '</div>';
+                    dashboard.appendChild(div);
 
-                    if(widgets[widget]['hide'] === 'true'){
+                }
+                if (widgets[widget].type === 'data') {
+
+                    if (widgets[widget]['hide'] === 'true') {
                         display = "none";
                         mb = '';
                     }
 
                     div.innerHTML =
-                    `<i  onclick="windowSwitcher('data_settings','${div.id}')" style="position: absolute; transform: translate(109px, -35px)" class="hc p3 hac fa fa-ellipsis-v"></i>` +
-                    `<h2 style="${mb}" id="">${widgets[widget].title}</h2>` +
-                    `<h3 style="font-size:14px; display:${display};" id="" class="m0 mb3 p0">${widgets[widget].variable}</h3>` +
-                    '<div style="" class="r ac jc">' +
-                    `<h1 style = " font-size: 5rem; margin: 0; margin-bottom: 1rem;" >${data['variables'][widgets[widget].variable]}</h1>` +
-                    `<h1 style = " font-size: 5rem; margin: 0; margin-bottom: 1rem;"  class="m0">${widgets[widget].units}</h1>` +
-                    '</div>' +
-                    `<div>${new Date().toLocaleString()}</div>`;
+                        `<i  onclick="windowSwitcher('data_settings','${div.id}')" style="position: absolute; transform: translate(109px, -35px)" class="hc p3 hac fa fa-ellipsis-v"></i>` +
+                        `<h2 style="${mb}" id="">${widgets[widget].title}</h2>` +
+                        `<h3 style="font-size:14px; display:${display};" id="" class="m0 mb3 p0">${widgets[widget].variable}</h3>` +
+                        '<div style="" class="r ac jc">' +
+                        `<h1 style = " font-size: 5rem; margin: 0; margin-bottom: 1rem;" >${data['variables'][widgets[widget].variable]}</h1>` +
+                        `<h1 style = " font-size: 5rem; margin: 0; margin-bottom: 1rem;"  class="m0">${widgets[widget].units}</h1>` +
+                        '</div>' +
+                        `<div>${new Date().toLocaleString()}</div>`;
+                    dashboard.appendChild(div);
+
                 }
-                dashboard.appendChild(div);
 
             }
 
@@ -1781,43 +2025,41 @@ function paintDashboardTab(data){
 }
 
 // Variables Tab.
-function paintVariableTab(data){
+function paintVariableTab(data) {
 
     let project = document.getElementById('project_section_variables');
-        currentProject = data.id;
-        currentKey = data.key;
-        project.classList = 'w100 c ac jc';
-        project.style = {
-            height: "100%",
-            overflow: "visible"
-        };
-        project.innerHTML = `
+    project.classList = 'w100 c ac jc';
+    project.style = {
+        height: "100%",
+        overflow: "visible"
+    };
+    project.innerHTML = `
         <div style="" class="w100 c ac">
             <div style="height: 100%; overflow: visible;" class="w100 rxl ac jc">
                 <div id="variables" class="m1 variables c jfs ac w100xl"> 
                     <h3 class="mb2 w100" style="text-align: center;">Variables </h3>
                     <div class="r afe jfs">
                         <button class="fa fa-plus" onclick="windowSwitcher('new_variable')"></button>
-                        <button onclick="editVariables()" style="padding: 8px 30px;" class="m0 p0 fa fa-trash-alt" id = "var_button" onclick=""></button>
+<!--                        <button onclick="editVariables()" style="padding: 8px 30px;" class="m0 p0 fa fa-trash-alt" id = "var_button" onclick=""></button>-->
                      </div>
-                        
+                     
                 </div>
                       
             </div>
         </div>`;
-        document.getElementById('content_box').appendChild(project);
-        let variables = document.getElementById('variables');
-        let vars = data.variables;
-        let count = 0;
-        for(var variable in vars){
-            if(variable === 'default'){
-                continue;
-            }
-            let newVar = document.createElement('div');
-            newVar.id = "var_" + variable;
-            newVar.setAttribute('onmouseover', 'edit = true');
-            newVar.setAttribute('onmouseleave', 'edit = false');
-            newVar.innerHTML = `
+    document.getElementById('content_box').appendChild(project);
+    let variables = document.getElementById('variables');
+    let vars = data.variables;
+    let count = 0;
+    for (var variable in vars) {
+        if (variable === 'default') {
+            continue;
+        }
+        let newVar = document.createElement('div');
+        newVar.id = "var_" + variable;
+        newVar.setAttribute('onmouseover', 'edit = true');
+        newVar.setAttribute('onmouseleave', 'edit = false');
+        newVar.innerHTML = `
 
                 <div class="variable r mt4" id = "${variable}">
                     <input disabled class="name-input" style ="min-width: 100px; max-width: 100px;"id = "var_name_${variable}" value ="${variable}">
@@ -1828,29 +2070,28 @@ function paintVariableTab(data){
                     <i style="color:red;" class="mt2 hp hc far fa-trash-alt" onclick="windowSwitcher('double_check', '${variable}')"></i>
                 </div>
 `;
-            variables.appendChild(newVar);
-            count ++;
-        }
-        if(!count){
-            let noVars = document.createElement('div');
-            noVars.innerHTML = `<p style="background: #9b55a3; color: white; border-radius: 20px; padding: 5px 40px;">No Variables 🙁</p>`;
-            variables.appendChild(noVars);
-            return;
-        }
-
-
-
+        variables.appendChild(newVar);
+        count++;
+    }
+    if (!count) {
+        let noVars = document.createElement('div');
+        noVars.innerHTML = `<p style="background: #9b55a3; color: white; border-radius: 20px; padding: 5px 40px;">No Variables 🙁</p>`;
+        variables.appendChild(noVars);
+        return;
+    }
 
 
 }
 
 // Charts Tab.
-function paintChartsTab(data){
-
+function paintChartsTab(data) {
+    console.log('here charts');
+    let contentBox = document.getElementById('content_box');
+    contentBox.innerHTML = `<p>${currentProjectData.charts}</p>`;
 }
 
 // Settings Tab.
-function paintSettingsTab(data){
+function paintSettingsTab(data) {
     let contentBox = document.getElementById('content_box');
     contentBox.innerHTML = `
         <div id= "PROJECT_SETTINGS_TAB" class="p3 m0 ml1 c">
@@ -1872,54 +2113,55 @@ function paintSettingsTab(data){
                 <h2 class="cw mb3">Project Description: </h2>
             </div>
             <div class="r ac">
+                <button class="ml0 mt4 mb1">Export Project Data</button>
+            </div>
+            <div class="r ac">
                 <button onclick="windowSwitcher('deleteProject')" style="background: #8c2726;" class="ml0 mt4">Delete Project</button>
             </div>
         </div>`;
 
-        let projectName = input(document.getElementById('project_settings_project_name'), {
-            type: 'text',
-            edit: true,
-            id: 'project_settings_project_name_input',
-            onSaveMessage: "The new name has been set.",
-            value: currentProjectData.name,
-            manualMode: true,
-            onSave: async function(){
-                setProjectName(projectName.value, currentUid, currentId);
-            }
-        });
-        let projectDescription = input(document.getElementById('project_settings_project_desc'), {
-            type: 'text',
-            edit: true,
-            id: 'project_settings_project_desc_input',
-            onSaveMessage: "The new description has been set.",
-            value: currentProjectData.description,
-            manualMode: true,
-            onSave: async function(){
-                setProjectDescription(projectDescription.value, currentUid, currentId);
-            }
-        })
+    let projectName = input(document.getElementById('project_settings_project_name'), {
+        type: 'text',
+        edit: true,
+        id: 'project_settings_project_name_input',
+        onSaveMessage: "The new name has been set.",
+        value: currentProjectData.name,
+        manualMode: true,
+        onSave: async function () {
+            setProjectName(projectName.value, currentUid, currentId);
+        }
+    });
+    let projectDescription = input(document.getElementById('project_settings_project_desc'), {
+        type: 'text',
+        edit: true,
+        id: 'project_settings_project_desc_input',
+        onSaveMessage: "The new description has been set.",
+        value: currentProjectData.description,
+        manualMode: true,
+        onSave: async function () {
+            setProjectDescription(projectDescription.value, currentUid, currentId);
+        }
+    })
 }
 
 
-function createVariable(name, uid){
+function createVariable(name, uid) {
     console.log('Creating Var: ', name, uid);
     ws.send(`{"cmd":"CREATE_VARIABLE", "key":"${currentKey}", "name":"${name}", "onSuccess":"console.log('Success!'); windowSwitcher('none'); getProject(currentUid, currentId);", "onError":""}`);
 }
 
 
-
-
-function updateProject(project, id){
+function updateProject(project, id) {
     let variables = document.getElementById('variables');
 
     let vars = project.variables;
     let count = 0;
-    for(var variable in vars){
-        if(variable === 'default'){
+    for (var variable in vars) {
+        if (variable === 'default') {
             continue;
         }
         // console.log(variables.querySelector('variable'));
-        let newVar = document.getElementById( "var_" + variable);
+        let newVar = document.getElementById("var_" + variable);
         newVar.setAttribute('onmouseover', "document.getElementById('variables').classList.add('hold');");
         newVar.setAttribute('onmouseleave', "document.getElementById('variables').classList.remove('hold');");
         newVar.setAttribute('onmouseover', 'edit = true');
@@ -1940,17 +2182,12 @@ function updateProject(project, id){
 }
 
 
-
-
-
-
-
-function copyToClip(val){
+function copyToClip(val) {
     let clipMessage = document.getElementById('clip_message');
     copyTextToClipboard(val);
     clipMessage.classList.remove('dn');
     clipMessage.style.transform = "translateY(0px)";
-    setTimeout(()=>{
+    setTimeout(() => {
         clipMessage.classList.add('dn');
         clipMessage.style.transform = "translateY(20px)";
     }, 2000);
@@ -1960,7 +2197,7 @@ function copyToClip(val){
 function fallbackCopyTextToClipboard(text) {
     var textArea = document.createElement("textarea");
     textArea.value = text;
-    textArea.style.position="fixed";  //avoid scrolling to bottom
+    textArea.style.position = "fixed";  //avoid scrolling to bottom
     document.body.appendChild(textArea);
     textArea.focus();
     textArea.select();
@@ -1975,33 +2212,36 @@ function fallbackCopyTextToClipboard(text) {
 
     document.body.removeChild(textArea);
 }
+
 function copyTextToClipboard(text) {
 
     if (!navigator.clipboard) {
         fallbackCopyTextToClipboard(text);
         return;
     }
-    navigator.clipboard.writeText(text).then(function() {
+    navigator.clipboard.writeText(text).then(function () {
         console.log('Async: Copying to clipboard was successful!');
-    }, function(err) {
+    }, function (err) {
         console.error('Async: Could not copy text: ', err);
     });
 }
-function editVariables(){
-    if(currentView === 'projectSingle'){
+
+function editVariables() {
+    if (currentView === 'projectSingle') {
         let variables = document.getElementById('variables');
         console.log(document.getElementById('variables'));
 
     }
 }
+
 // Handles the events of editing a variable value in the UI.
-function variableEdit(id, key = null){
+function variableEdit(id, key = null) {
     // console.log('key: ', id);
     edit = true;
     let error = document.getElementById(`var_error_${id.substring('var_button_'.length)}`);
     error.classList.add('dn');
     // Get the input element.
-    let inputString =`var_input_${id.substring('var_button_'.length)}`;
+    let inputString = `var_input_${id.substring('var_button_'.length)}`;
     let input = document.getElementById(inputString);
 
     // Make the input editable by removing the disabled attribute.
@@ -2034,7 +2274,7 @@ function variableEdit(id, key = null){
     button2.style.color = 'red';
 
     // When someone clicks the red cross to cancel the variable edit.
-    button2.addEventListener('click', ()=>{
+    button2.addEventListener('click', () => {
         edit = false;
 
         // Get the input ele.
@@ -2061,20 +2301,22 @@ function variableEdit(id, key = null){
 
 
 }
-function variableSave(id, old, key){
+
+function variableSave(id, old, key) {
     let editButton = document.getElementById(id);
     editButton.classList.remove('fa-check');
     editButton.classList.remove('fa-pencil-alt');
     editButton.classList.add('loader-small', 'double-button-load');
     let button2 = document.getElementById(`var_button_2_${id.substring('var_button_'.length)}`);
     button2.classList.add('dn');
-    let inputString =`var_input_${id.substring('var_button_'.length)}`;
+    let inputString = `var_input_${id.substring('var_button_'.length)}`;
     let input = document.getElementById(inputString);
     input.setAttribute('disabled', true);
     let name = document.getElementById(`var_name_${id.substring('var_button_'.length)}`);
     let errorElement = `var_error_${id.substring('var_button_'.length)}`;
-    let  value = input.value;
-     console.log("here: ", value.substring(0,2));
+    let value = input.value;
+    console.log("here: ", value.substring(0, 2));
+
     function filterInt(value) {
         if (/^[-+]|(\d)|[.]$/.test(value)) {
             return Number(value);
@@ -2082,23 +2324,23 @@ function variableSave(id, old, key){
             return NaN;
         }
     }
-    if(value.substring(0,2) === "@@"){
 
-        if(!isNaN(filterInt(value.substring(2, value.length)))){
+    if (value.substring(0, 2) === "@@") {
+
+        if (!isNaN(filterInt(value.substring(2, value.length)))) {
             value = `\"${value.substring(2, value.length)}\"`;
-        }
-        else{
+        } else {
             value = `\"${input.value}\"`;
         }
-    }else{
-        if(isNaN(filterInt(value))){
+    } else {
+        if (isNaN(filterInt(value))) {
             value = `\"${input.value}\"`;
         }
     }
 
     ws.send(`{"cmd":"SET_VARIABLE", "key":"${key}", "name":"${name.value}", "value":${value}, "onSuccess":"console.log('Success!'); var editButton = document.getElementById('${id}'); editButton.classList.add('fa-pencil-alt', 'done'); editButton.setAttribute('onClick', \`variableEdit(id, '${key}')\`); edit=false; editButton.classList.remove('fa-check', 'loader-small', 'double-button-load'); editButton.style.color = '#9b55a3'; editButton.classList.remove('double-button'); ", "onError":"var editButton = document.getElementById('${id}'); editButton.classList.add('fa-pencil-alt'); editButton.classList.remove('fa-check', 'loader-small', 'double-button-load'); editButton.style.color = '#9b55a3'; editButton.classList.remove('double-button'); let error = document.getElementById('${errorElement}'); error.classList.remove('dn'); error.innerText = 'Error: ' + errorMessage;"}`);
-    setTimeout(()=>{
-        if(!editButton.classList.contains('done')) {
+    setTimeout(() => {
+        if (!editButton.classList.contains('done')) {
             editButton.classList.add('fa-pencil-alt');
             edit = false;
             editButton.classList.remove('fa-check', 'loader-small', 'double-button-load');
@@ -2112,6 +2354,206 @@ function variableSave(id, old, key){
         }
     }, 3000);
 }
+
+function drawLineGraph(classID, targetID){
+    let data = {
+        labels: [],
+        series: []
+    };
+    let widget = currentProjectData.widgets.find((widget) => widget.id === targetID);
+
+
+    let targetSeries = widget.series;
+    console.log('Line Graph TargetSeries', widget, currentProjectData)
+
+    let index = 0;
+    let seriesTitles = [];
+
+    for (let targetSerie in targetSeries) {
+        console.log('targetSerie', targetSeries[targetSerie], targetSeries[targetSerie].name, currentProjectData.charts)
+        let chartData = currentProjectData.charts.find((chart) => chart.name === targetSeries[targetSerie].name);
+        console.log('Chart Data:  ', chartData)
+        let seriesData = [];
+        let alphaMap = ['a', 'b', 'c', 'd', 'e', 'f'];
+        let legend = document.getElementById(`${targetID}_plot_legend`);
+        seriesTitles.push(targetSeries[targetSerie].name);
+        legend.innerHTML = legend.innerHTML + `<div class="r mr2" style=" font-size: 0.7rem;"><i class="fas fa-circle" style="margin-top:1px; color: ${targetSeries[targetSerie].color}; font-size: 0.7rem;">&nbsp;\</i>${targetSeries[targetSerie].name}</div>`;
+        if (chartData.entries !== 0) {
+
+            let dataPoints = chartData.data;
+            for (let point in dataPoints) {
+                seriesData.push({x: dataPoints[point].entry, y: dataPoints[point].value});
+                document.getElementById(`${targetID}_plot_styles`).innerHTML = document.getElementById(`${targetID}_plot_styles`).innerHTML +
+                    `${classID} .ct-series-${alphaMap[index]} .ct-line,
+                     ${classID} .ct-series-${alphaMap[index]} .ct-point {
+                      stroke: ${targetSeries[targetSerie].color};
+                    }`;
+            }
+            index++;
+            data.series.push(seriesData)
+        }
+    }
+
+    console.log('Line Graph Data:  ', data.series)
+    var options = {
+
+        width: '90%',
+        height: '220px',
+        showArea: true,
+        showPoint: false,
+        chartPadding: {
+            right: 30
+        },
+        axisY: {
+            showLabel: true,
+            showGrid: true
+        },
+        axisX: {
+            position: 'end',
+            showLabel: true,
+            showGrid: true,
+            type: Chartist.AutoScaleAxis,
+            onlyInteger: true,
+
+            // type: Chartist.FixedScaleAxis,
+            // divisor: 1,
+            // // ticks: [
+            // //     new Date("2018-08-29 06:01:52"),
+            // //     new Date("2018-08-29 06:01:53"),
+            // //     new Date("2018-08-29 06:01:55"),
+            // //     new Date("2018-08-29 06:01:59")
+            // // ],
+        },
+        plugins: [
+            Chartist.plugins.zoom({
+                onZoom: onZoom,
+                resetOnRightMouseBtn: true  // If set to true, a right click in the zoom area, will reset zoom.
+            }),
+        ],
+    };
+
+    var responsiveOptions = [
+        ['screen and (min-width: 12640px)', {
+            axisX: {
+                labelInterpolationFnc: function (value, index) {
+                    return index % 4 === 0 ? value : null;
+                }
+            }
+        }]
+    ];
+
+
+    new Chartist.Line(classID, data, options, responsiveOptions);
+}
+
+function drawScatterPLot(classID, targetID) {
+    // var times = function (n) {
+    //     return Array.apply(null, new Array(n));
+    // };
+    let data = {
+        labels: [],
+        series: []
+    };
+
+    // var data = {
+    //     // A labels array that can contain any sort of values
+    //     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+    //     // Our series array that contains series objects or in this case series data arrays
+    //     series: [
+    //         [5, 2, 4, 2, 0]
+    //     ]
+    // };
+
+
+    let widget = currentProjectData.widgets.find((widget) => widget.id === targetID);
+
+
+    let targetSeries = widget.series;
+    console.log('targetSeries', targetSeries, currentProjectData)
+    let index = 0;
+    let seriesTitles = [];
+    for (let targetSerie in targetSeries) {
+        console.log('targetSerie', targetSeries[targetSerie], targetSeries[targetSerie].name, currentProjectData.charts)
+        let chartData = currentProjectData.charts.find((chart) => chart.name === targetSeries[targetSerie].name);
+        console.log('Chart Data:  ', chartData)
+        let seriesData = [];
+        let alphaMap = ['a', 'b', 'c', 'd', 'e', 'f'];
+        let legend = document.getElementById(`${targetID}_plot_legend`);
+        seriesTitles.push(targetSeries[targetSerie].name);
+        legend.innerHTML = legend.innerHTML + `<div class="r mr2" style=" font-size: 0.7rem;"><i class="fas fa-circle" style="margin-top:1px; color: ${targetSeries[targetSerie].color}; font-size: 0.7rem;">&nbsp;\</i>${targetSeries[targetSerie].name}</div>`;
+        if (chartData.entries !== 0) {
+
+            let dataPoints = chartData.data;
+            for (let point in dataPoints) {
+                seriesData.push({x: dataPoints[point].x, y: dataPoints[point].y});
+                document.getElementById(`${targetID}_plot_styles`).innerHTML = document.getElementById(`${targetID}_plot_styles`).innerHTML +
+                    `${classID} .ct-series-${alphaMap[index]} .ct-line,
+                     ${classID} .ct-series-${alphaMap[index]} .ct-point {
+                      stroke: ${targetSeries[targetSerie].color};
+                    }`;
+            }
+            index++;
+
+
+            data.series.push(seriesData)
+        }
+    }
+
+    // for(let widgetSeries in widgetSeries ){
+    //     // data.series.push()
+    // }
+
+    var options = {
+
+        showLine: false,
+        width: '90%',
+        height: '220px',
+        chartPadding: {
+            right: 30
+        },
+        axisY: {
+            showLabel: true,
+            showGrid: true
+        },
+        axisX: {
+            position: 'end',
+            showLabel: true,
+            showGrid: true,
+            type: Chartist.AutoScaleAxis,
+            onlyInteger: true,
+        },
+        plugins: [
+            Chartist.plugins.zoom({
+                onZoom: onZoom,
+                resetOnRightMouseBtn: true  // If set to true, a right click in the zoom area, will reset zoom.
+            }),
+            // Chartist.plugins.legend({
+            //     legendNames: seriesTitles,
+            // })
+        ],
+    };
+
+    var responsiveOptions = [
+        ['screen and (min-width: 12640px)', {
+            axisX: {
+                labelInterpolationFnc: function (value, index) {
+                    return index % 4 === 0 ? value : null;
+                }
+            }
+        }]
+    ];
+
+
+    new Chartist.Line(classID, data, options, responsiveOptions);
+
+}
+
+var resetFnc;
+
+function onZoom(chart, reset) {
+    resetFnc = reset;
+}
+
 
 
 function windowDoubleCheck(content, options){
@@ -2473,11 +2915,11 @@ function windowWidgetSelection(content) {
 <!--                        <h2>Pie Chart</h2>-->
 <!--                    </div>-->
                 <div class="c ac jc">   
-                    <button class="bbutton"><div class="ct-chart-line-chart-widget"></div></button>
+                    <button onclick = "windowSwitcher('line_graph')" class="bbutton"><div class="ct-chart-line-chart-widget"></div></button>
                     <h2>Line Graph</h2>
                 </div>
                 <div class="c ac jc">
-                    <button class="bbutton"><div class="ct-chart-scatter-chart-widget"></div></button>
+                    <button onclick = "windowSwitcher('plot_graph')" class="bbutton"><div class="ct-chart-scatter-chart-widget"></div></button>
                     <h2>Scatter Plot</h2>
                 </div>
 <!--                    <div class="c ac jc">-->
@@ -2493,119 +2935,21 @@ function windowWidgetSelection(content) {
                 <button onclick="windowSwitcher('none')">Cancel</button>
             </div>
         </div>`;
-    new Chartist.Pie('.ct-chart-pie-widget', {
-        series: [5, 10, 20, 25, 40, 100]
-    }, {
-        donut: true,
-        donutWidth: 15,
-        donutSolid: true,
-        startAngle: 270,
-        showLabel: false
-    });
-    new Chartist.Line('.ct-chart-line-chart-widget', {
-        series: [
-            [1, 5, 2, 5, 4, 3],
-            [2, 3, 4, 8, 1, 2],
-            [5, 4, 3, 2, 1, 0.5]
-        ]
-    }, {
-        fullWidth: true,
-        showPoint: false,
-        axisY: {
-            showLabel: false,
-            showGrid: false
-        },
-        axisX: {
-            showLabel: false,
-            showGrid: false
-        }
 
-    });
-    var times = function (n) {
-        return Array.apply(null, new Array(n));
-    };
-
-    var data = times(5).map(Math.random).reduce(function (data, rnd, index) {
-        data.labels.push(index + 1);
-        data.series.forEach(function (series) {
-            series.push(Math.random() * 100)
-        });
-
-        return data;
-    }, {
-        labels: [],
-        series: times(4).map(function () {
-            return new Array()
-        })
-    });
-
-    var options = {
-        showLine: false,
-
-        axisY: {
-            showLabel: false,
-            showGrid: false
-        },
-        axisX: {
-            showLabel: false,
-            showGrid: false
-        }
-    };
-
-    var responsiveOptions = [
-        ['screen and (min-width: 640px)', {
-            axisX: {
-                labelInterpolationFnc: function (value, index) {
-                    return index % 4 === 0 ? 'W' + value : null;
-                }
-            }
-        }]
-    ];
-
-    new Chartist.Line('.ct-chart-scatter-chart-widget', data, options, responsiveOptions);
-
-    var data = {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        series: [
-            [5, 4, 3, 7, 5, 10, 3, 4, 8, 10, 6, 8],
-            [3, 2, 9, 5, 4, 6, 4, 6, 7, 8, 7, 4]
-        ]
-    };
-
-    var options = {
-        seriesBarDistance: 3,
-        axisY: {
-            showLabel: false,
-            showGrid: false
-        },
-        axisX: {
-            showLabel: false,
-            showGrid: false
-        }
-    };
-
-    var responsiveOptions = [
-        ['screen and (max-width: 640px)', {
-            seriesBarDistance: 5,
-            axisX: {
-                labelInterpolationFnc: function (value) {
-                    return value[0];
-                }
-            }
-        }]
-    ];
-    new Chartist.Bar('.ct-chart-histo-chart-widget', data, options);
     return content;
 }
-function windowGaugeSettings(content, options) {
+//
+// Gauge Settings Edit Window.
+//
 
-    content.id = 'window_content_block';
+function windowGaugeSettings(content, options) {
 
     // Find the current gauge.
     let gauge = currentProjectData.widgets.find((widget) => widget.id === options);
 
     // Scale of the gauge.
     let scale = 1;
+
     // Build an list of options whereas the values are variables that are numbers.
     let validVariablesForGauge = "";
     if (currentProjectData.hasOwnProperty('variables')) {
@@ -2623,12 +2967,15 @@ function windowGaugeSettings(content, options) {
             }
         }
     }
+
     let hideValue = '';
     let hideTopTitle = '';
     if(gauge.hide === 'true'){
         hideValue= "checked";
         hideTopTitle = "dn";
     }
+
+    content.id = 'window_content_block';
     content.innerHTML = `
         <i style="color: red; top: 5px; right: 0;" class="por fs125 hc hp fa fa-trash-alt" onclick="removeGaugeWidget('${gauge.id}')"></i> 
         <div class="c ac jc">
@@ -2688,7 +3035,10 @@ function windowGaugeSettings(content, options) {
 
 
 function windowDataSettings(content, options){
+
+    // Find the widget.
     let dataWidget = currentProjectData.widgets.find((widget) => widget.id === options);
+
     // Build an list of options whereas the values are variables that are numbers.
     let validVariablesForGauge = "";
     if (currentProjectData.hasOwnProperty('variables')) {
@@ -2705,14 +3055,16 @@ function windowDataSettings(content, options){
             }
         }
     }
+
     let hideValue = '';
     let hideTopTitle = '';
     if(dataWidget.hide === 'true'){
         hideValue= "checked";
         hideTopTitle = "dn";
     }
+
     content.innerHTML = `
-        <i style="color: red; top: 5px; right: 0;" class="por fs125 hc hp fa fa-trash-alt" onclick="removeGaugeWidget('${dataWidget.id}')"></i>
+        <i style="color: red; top: 5px; right: 0;" class="por fs125 hc hp fa fa-trash-alt" onclick="removeDataWidget('${dataWidget.id}')"></i>
         <div class="c ac jc">
             <h2 class=" mb1"  id="gauge_title">${dataWidget.title}</h2>
             <h3 class="m0 ${hideTopTitle}" style="font-size: 0.8rem;" id="variable_title">${dataWidget.variable}</h3>
@@ -2721,29 +3073,362 @@ function windowDataSettings(content, options){
                 <h1 class="m0" id="units">${dataWidget.units}</h1>
             </div> 
             <div>${new Date().toLocaleString()}</div>
-              <div class="r mt4 mb3">Variable:&nbsp;            
-            <select value="${dataWidget.variable}" oninput="variableSettings()" id="${dataWidget.id}_variable_title_input">
-                <option disabled value="">Select a Variable</option>
-                ${validVariablesForGauge}
-            </select>
-            &nbsp;Hide: 
-            <input id="gauge_variable_hide" ${hideValue} oninput="gaugeHideVariableName()" style="width: 20px;" type="checkbox">
-        </div>
-        <div class="c jc afe p3 pt0">
-            <div class="mb2">Title: <input id="gauge_title_input" onkeyup="gaugeSettingsTitle()" type="text" value="${dataWidget.title}"></div>
-        </div>        
-          <div class="r mb2">
+            <div class="r mt4 mb3">Variable:&nbsp;            
+                <select value="${dataWidget.variable}" oninput="variableSettings()" id="${dataWidget.id}_variable_title_input">
+                    <option disabled value="">Select a Variable</option>
+                    ${validVariablesForGauge}
+                </select>
+                &nbsp;Hide: 
+                <input id="gauge_variable_hide" ${hideValue} oninput="gaugeHideVariableName()" style="width: 20px;" type="checkbox">
+            </div>
+            <div class="c jc afe p3 pt0">
+                <div class="mb2">Title: <input id="gauge_title_input" onkeyup="gaugeSettingsTitle()" type="text" value="${dataWidget.title}"></div>
+            </div>        
+            <div class="r mb2">
                 Units:&nbsp;
                 ${unitsList('settings_variable_units', " unitSettings(this)", dataWidget.units)}
             </div>
-              <div class="r">
-            <button onclick="windowSwitcher('none')">Cancel</button>
-            <button onclick="updateDataWidget('${dataWidget.id}')"> &nbsp;Save&nbsp;</button>
-       </div>
-        </div> 
-     
-      
-      
+            <div class="r">
+                <button onclick="windowSwitcher('none')">Cancel</button>
+                <button onclick="updateDataWidget('${dataWidget.id}')"> &nbsp;Save&nbsp;</button>
+            </div>
+        </div>
     `;
     return content;
 }
+function windowWidgetLineGraph(content, options){
+    content.classList.add('widget-plot-graph-settings');
+    let validScatterChart = "";
+    if (currentProjectData.hasOwnProperty('charts')) {
+        let charts = currentProjectData['charts'];
+        for (let chart in charts) {
+            if(charts.hasOwnProperty(chart)){
+                if (charts[chart].type === "LINE") {
+                    validScatterChart += `<option value="${charts[chart].name}">${charts[chart].name}</option>`;
+                }
+            }
+        }
+    }
+    let defaultColor = [
+        '#ff0000',
+        '#0000ff',
+        '#00ff00',
+        '#fff000',
+        '#ff7902'
+    ];
+    content.innerHTML =
+        `<div class="c ac jc">
+            <h2 class="mb1"  id="gauge_title">Line Graph</h2> 
+            <h3 class="m0" style="font-size: 0.8rem;" id="variable_title"></h3> 
+            <div>
+                <div id="new_y_title_units" class="ct-pl-y-title-units"></div>
+                <div id="new_y_title" class="ct-pl-y-title fs15">y</div>
+                <div class="ct-widget-line-graph-settings"></div>
+                <div id="new_x_title_units" class="ct-pl-x-title-units"></div>
+                <div id="new_x_title" class="ct-pl-x-title tac fs15">x</div>
+            </div>
+            <div class="c jc afe p3 pt0">
+                <div class="mb2">Title: <input id="gauge_title_input" onkeyup="gaugeSettingsTitle()" type="text" value="Line Graph"></div>
+                <div class="mb2">X Title: <input id = 'x_axis_title' onkeyup="labelUpdate(this, 'new_x_title')" type="text" value="x"></div>
+                <div class="mb2">Y Title: <input id = 'y_axis_title' onkeyup="labelUpdate(this, 'new_y_title')" type="text" value="y"></div>
+            </div>
+            <div>
+               <div class="r mb2">
+                    X Axis Units:&nbsp;
+                    ${unitsList('x_axis_units', "unitSettings(this, 'new_x_title_units')")}
+               </div>
+               <div class="r mb2 mt4">
+                    Y Axis Units:&nbsp;
+                    ${unitsList('y_axis_units', " unitSettings(this, 'new_y_title_units')")}
+               </div>
+               
+               <div class="c ac jc" id="series_list">
+                   <div class="r ac mt4 mb3">Series 1:&nbsp;
+                            
+                       <select id="series_0">
+                            <optgroup>
+                            <option value="">Select a data set</option>
+                                ${validScatterChart}
+                            </optgroup>
+                       </select>         
+                       <input id = 'series_0_color' value = "${defaultColor[0]}" type="color">        
+                   </div>
+
+                </div>
+               <div id="series_add_button" onclick="addSeries('series_list')" class="r ac jc hp hc fa fa-plus mb3 fs125">&nbsp;&nbsp;<b class="">Add Series</b></div>
+
+            </div>
+            <div class="r">
+                <button onclick="windowSwitcher('widget_selection')">Cancel</button>
+                <button onclick="newPlotWidget('', 'line', document.getElementById('series_list').children.length); "> &nbsp;&nbsp;Add&nbsp;&nbsp;</button>
+            </div>
+        </div>
+    `;
+    return content;
+}
+
+
+function drawLineGraphWindow(){
+    var times = function (n) {
+        return Array.apply(null, new Array(n));
+    };
+
+    var data = times(5).map(Math.random).reduce(function (data, rnd, index) {
+        data.labels.push(index + 1);
+        data.series.forEach(function (series) {
+            series.push(Math.random() * 100)
+        });
+
+        return data;
+    }, {
+        labels: [],
+        series: times(4).map(function () {
+            return new Array()
+        })
+    });
+
+    var options = {
+        // showLine: false,
+        fullWidth: true,
+        chartPadding: {
+            right: 10
+        },
+        low: 0,
+        axisY: {
+            showLabel: true,
+            showGrid: true
+        },
+        axisX: {
+            showLabel: true,
+            showGrid: true,
+        }
+    };
+
+    var responsiveOptions = [
+        ['screen and (min-width: 640px)', {
+            axisX: {
+                labelInterpolationFnc: function (value, index) {
+                    return index % 4 === 0 ? 'W' + value : null;
+                }
+            }
+        }]
+    ];
+
+    new Chartist.Line('.ct-widget-line-graph-settings', data, options, responsiveOptions);
+
+}
+
+function windowWidgetPlotGraph(content, options){
+    content.classList.add('widget-plot-graph-settings');
+
+    let validScatterChart = "";
+    if (currentProjectData.hasOwnProperty('charts')) {
+        let charts = currentProjectData['charts'];
+        for (let chart in charts) {
+            if(charts.hasOwnProperty(chart)){
+                if (charts[chart].type === "SCATTER") {
+                    validScatterChart += `<option value="${charts[chart].name}">${charts[chart].name}</option>`;
+                }
+            }
+        }
+    }
+
+    let defaultColor = [
+        '#ff0000',
+        '#0000ff',
+        '#00ff00',
+        '#fff000',
+        '#ff7902'
+    ];
+    content.innerHTML =
+        `<div class="c ac jc">
+            <h2 class="mb1"  id="gauge_title">Scatter Plot</h2> 
+            <h3 class="m0" style="font-size: 0.8rem;" id="variable_title"></h3> 
+            <div>
+                <div id="new_y_title_units" class="ct-pl-y-title-units"></div>
+                <div id="new_y_title" class="ct-pl-y-title fs15">y</div>
+                <div class="ct-widget-plot-graph-settings"></div>
+                <div id="new_x_title_units" class="ct-pl-x-title-units"></div>
+                <div id="new_x_title" class="ct-pl-x-title tac fs15">x</div>
+            </div>
+            <div class="c jc afe p3 pt0">
+                <div class="mb2">Title: <input id="gauge_title_input" onkeyup="gaugeSettingsTitle()" type="text" value="Scatter Plot"></div>
+                <div class="mb2">X Title: <input id = 'x_axis_title' onkeyup="labelUpdate(this, 'new_x_title')" type="text" value="x"></div>
+                <div class="mb2">Y Title: <input id = 'y_axis_title' onkeyup="labelUpdate(this, 'new_y_title')" type="text" value="y"></div>
+            </div>
+            <div>
+               <div class="r mb2">
+                    X Axis Units:&nbsp;
+                    ${unitsList('x_axis_units', "unitSettings(this, 'new_x_title_units')")}
+               </div>
+               <div class="r mb2 mt4">
+                    Y Axis Units:&nbsp;
+                    ${unitsList('y_axis_units', " unitSettings(this, 'new_y_title_units')")}
+               </div>
+               
+               <div class="c ac jc" id="series_list">
+                   <div class="r ac mt4 mb3">Series 1:&nbsp;
+                            
+                       <select id="series_0">
+                            <optgroup>
+                            <option value="">Select a data set</option>
+                                ${validScatterChart}
+                            </optgroup>
+                       </select>         
+                       <input id = 'series_0_color' value = "${defaultColor[0]}" type="color">        
+                   </div>
+
+                </div>
+               <div id="series_add_button" onclick="addSeries('series_list')" class="r ac jc hp hc fa fa-plus mb3 fs125">&nbsp;&nbsp;<b class="">Add Series</b></div>
+
+            </div>
+            <div class="r">
+                <button onclick="windowSwitcher('widget_selection')">Cancel</button>
+                <button onclick="newPlotWidget('', 'scatter', document.getElementById('series_list').children.length); "> &nbsp;&nbsp;Add&nbsp;&nbsp;</button>
+            </div>
+        </div>
+    `;
+    return content;
+}
+
+
+function addSeries(id){
+
+    let defaultColor = [
+        '#ff0000',
+        '#0000ff',
+        '#00ff00',
+        '#fff000',
+        '#ff7902'
+    ];
+
+    let series = document.getElementById(id);
+
+    let validScatterChart = "";
+
+    if (currentProjectData.hasOwnProperty('charts')) {
+        let charts = currentProjectData['charts'];
+        for (let chart in charts) {
+            if(charts.hasOwnProperty(chart)){
+                if (charts[chart].type === "SCATTER") {
+                    validScatterChart += `<option value="${charts[chart].name}">${charts[chart].name}</option>`;
+                }
+            }
+        }
+    }
+    series.innerHTML =  series.innerHTML + `
+    <div class="r ac mt1 mb3">Series ${series.children.length+1}:&nbsp;
+        <select id="series_${series.children.length}">
+            <optgroup value="Variables">
+                <option value="">Select a data set</option>
+                ${validScatterChart}
+                <input id = 'series_${series.children.length}_color' value = "${defaultColor[series.children.length]}"  type="color">
+            </optgroup>
+        </select>
+    </div>`;
+    if(series.children.length >= 5){
+        document.getElementById('series_add_button').classList.add('dn');
+    }
+    else{
+        document.getElementById('series_add_button').classList.remove('dn');
+    }
+}
+function labelUpdate(src_el, target_id){
+    document.getElementById(target_id).innerText = src_el.value;
+}
+
+function drawPLotWindow(){
+    var times = function (n) {
+        return Array.apply(null, new Array(n));
+    };
+
+    var data = times(5).map(Math.random).reduce(function (data, rnd, index) {
+        data.labels.push(index + 1);
+        data.series.forEach(function (series) {
+            series.push(Math.random() * 100)
+        });
+
+        return data;
+    }, {
+        labels: [],
+        series: times(4).map(function () {
+            return new Array()
+        })
+    });
+
+    var options = {
+        showLine: false,
+        fullWidth: true,
+        chartPadding: {
+            right: 10
+        },
+        low: 0,
+        axisY: {
+            showLabel: true,
+            showGrid: true
+        },
+        axisX: {
+            showLabel: true,
+            showGrid: true,
+        }
+    };
+
+    var responsiveOptions = [
+        ['screen and (min-width: 640px)', {
+            axisX: {
+                labelInterpolationFnc: function (value, index) {
+                    return index % 4 === 0 ? 'W' + value : null;
+                }
+            }
+        }]
+    ];
+
+    new Chartist.Line('.ct-widget-plot-graph-settings', data, options, responsiveOptions);
+
+}
+
+//
+// Scatter Plot Settings Edit Window.
+//
+
+function windowScatterSettings(content, options) {
+
+    let plot = currentProjectData.widgets.find((widget) => widget.id === options);
+
+    content.id = 'window_content_block';
+    content.innerHTML = `
+         <i style="color: red; top: 5px; right: 0;" class="por fs125 hc hp fa fa-trash-alt" onclick="removePlotWidget('${options}')"></i> 
+         <div class="c ac jc">
+             <h2 class=" mb1"  id="gauge_title">${plot.title}</h2>
+             <div>
+                <div id="new_y_title_units" class="ct-pl-y-title-units">${plot.yAxisUnits}</div>
+                <div id="new_y_title" class="ct-pl-y-title fs15">${plot.yAxisTitle}</div>
+                <div class="ct-widget-plot-graph-settings"></div>
+                <div id="new_x_title_units" class="ct-pl-x-title-units">${plot.xAxisUnits}</div>
+                <div id="new_x_title" class="ct-pl-x-title tac fs15">${plot.xAxisTitle}</div>
+            </div>
+            <div class="c jc afe p3 pt0">
+                <div class="mb2">Title: <input id="gauge_title_input" onkeyup="gaugeSettingsTitle()" type="text" value="${plot.title}"></div>
+                <div class="mb2">X Title: <input id = 'x_axis_title' onkeyup="labelUpdate(this, 'new_x_title')" type="text" value="${plot.xAxisTitle}"></div>
+                <div class="mb2">Y Title: <input id = 'y_axis_title' onkeyup="labelUpdate(this, 'new_y_title')" type="text" value="${plot.yAxisTitle}"></div>
+            </div>
+            <div>
+                <div class="r mb2">
+                    X Axis Units:&nbsp; 
+                    ${unitsList('x_axis_units', "unitSettings(this, 'new_x_title_units')", `${plot.xAxisUnits}`)}
+                </div>
+                <div class="r mb2 mt4">
+                    Y Axis Units:&nbsp;
+                    ${unitsList('y_axis_units', " unitSettings(this, 'new_y_title_units')", `${plot.yAxisUnits}`)}
+                </div>
+            </div>
+            <div class="r">
+                <button onclick="windowSwitcher('none')">Cancel</button>
+                <button onclick="updatePlotWidget('${plot.id}','scatter')">&nbsp;Save&nbsp;</button>
+             </div>
+        </div>
+    `;
+
+    return content;
+}
+

@@ -23,6 +23,8 @@
   "dependencies": {
     "@babel/runtime": "^7.5.5",
     "body-parser": "^1.19.0",
+    "chartist-plugin-tooltip": "0.0.11",
+    "chartist-plugin-tooltips": "0.0.17",
     "chokidar": "^3.0.2",
     "express": "^4.17.1",
     "express-fileupload": "^1.1.6-alpha.5",

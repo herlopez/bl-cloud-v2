@@ -2,34 +2,48 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f8dc789a-0ee8-4036-b494-978e5ba3fd15" name="Default Changelist" comment="styling">
-      <change afterPath="$PROJECT_DIR$/app/UI/windows/window-data-settings.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/UI/windows/window-delete-project.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/UI/windows/window-double-check.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/UI/windows/window-gauge-settings.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/UI/windows/window-new-key.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/UI/windows/window-new-project.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/UI/windows/window-new-variable.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/UI/windows/window-profile-settings.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/UI/windows/window-widget-data.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/UI/windows/window-widget-gauge.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/UI/windows/window-widget-selection.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/discord.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/UI/windows/window-scatter-settings.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/UI/windows/window-widget-line-graph.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/UI/windows/window-widget-plot-graph.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sass/_charts.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/cloud.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/cloud.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/UI/functions/project.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/functions/project.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/UI/functions/projects.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/functions/projects.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/UI/message-processor.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/message-processor.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/UI/tools.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/tools.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/UI/views/project.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/views/project.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/UI/window-switcher.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/window-switcher.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/UI/windows/window-data-settings.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/windows/window-data-settings.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/UI/windows/window-gauge-settings.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/windows/window-gauge-settings.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/UI/windows/window-widget-selection.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/windows/window-widget-selection.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/server/database.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/server/database.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bower_components/chartist/.bower.json" beforeDir="false" afterPath="$PROJECT_DIR$/bower_components/chartist/.bower.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bower_components/chartist/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/bower_components/chartist/CHANGELOG.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bower_components/chartist/bower.json" beforeDir="false" afterPath="$PROJECT_DIR$/bower_components/chartist/bower.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bower_components/chartist/dist/chartist.css" beforeDir="false" afterPath="$PROJECT_DIR$/bower_components/chartist/dist/chartist.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bower_components/chartist/dist/chartist.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/bower_components/chartist/dist/chartist.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bower_components/chartist/dist/chartist.js" beforeDir="false" afterPath="$PROJECT_DIR$/bower_components/chartist/dist/chartist.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bower_components/chartist/dist/chartist.min.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/bower_components/chartist/dist/chartist.min.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bower_components/chartist/dist/scss/chartist.scss" beforeDir="false" afterPath="$PROJECT_DIR$/bower_components/chartist/dist/scss/chartist.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bower_components/chartist/dist/scss/settings/_chartist-settings.scss" beforeDir="false" afterPath="$PROJECT_DIR$/bower_components/chartist/dist/scss/settings/_chartist-settings.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bower_components/chartist/package-lock.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/gulpfile.js" beforeDir="false" afterPath="$PROJECT_DIR$/gulpfile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/main.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/message-processor.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/message-processor.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/project.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/project.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/projects.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/projects.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/tools.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/tools.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/window-data-settings.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/window-data-settings.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/window-gauge-settings.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/window-gauge-settings.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/window-switcher.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/window-switcher.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/window-widget-selection.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/window-widget-selection.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sass/_app.scss" beforeDir="false" afterPath="$PROJECT_DIR$/sass/_app.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sass/main.scss" beforeDir="false" afterPath="$PROJECT_DIR$/sass/main.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/parts/head.pug" beforeDir="false" afterPath="$PROJECT_DIR$/views/parts/head.pug" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -63,40 +77,6 @@
       </list>
     </option>
   </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>create</find>
-      <find>password</find>
-      <find>pencil</find>
-      <find>penci</find>
-      <find>user_name</find>
-      <find>f</find>
-      <find>tim</find>
-      <find>fa-</find>
-      <find>displayNa</find>
-      <find>displayN</find>
-      <find>&quot;app/UI/message-processor.js&quot;</find>
-      <find>var</find>
-      <find>200</find>
-      <find>time</find>
-      <find>new</find>
-      <find>is to</find>
-      <find>000000</find>
-      <find>w70</find>
-      <find>list</find>
-      <find>lis</find>
-      <find>font</find>
-      <find>to</find>
-      <find>load</find>
-      <find>hea</find>
-      <find>m4</find>
-      <find>em;</find>
-      <find>3em</find>
-      <find>rrlg</find>
-      <find>wrap</find>
-      <find>rml</find>
-    </findStrings>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -115,10 +95,17 @@
   <component name="ProjectLevelVcsManager">
     <OptionsSetting value="false" id="Update" />
   </component>
+  <component name="ProjectViewState">
+    <option name="flattenPackages" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="DatabaseDriversLRU" value="mariadb" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
     <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
@@ -145,7 +132,7 @@
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Language Defaults" />
     <property name="two.files.diff.last.used.file" value="$APPLICATION_CONFIG_DIR$/scratches/scratch_2.html" />
   </component>
   <component name="RecentsManager">
@@ -168,15 +155,15 @@
       <select />
     </treeState>
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
+  <component name="ServiceViewManager">
+    <option name="viewStates">
       <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
       </list>
     </option>
   </component>
@@ -251,7 +238,15 @@
       <workItem from="1574339751362" duration="576000" />
       <workItem from="1574340661373" duration="3683000" />
       <workItem from="1577199714298" duration="171000" />
-      <workItem from="1577509153004" duration="9553000" />
+      <workItem from="1577509153004" duration="20475000" />
+      <workItem from="1578009535740" duration="2909000" />
+      <workItem from="1578317425065" duration="17710000" />
+      <workItem from="1578519795544" duration="225000" />
+      <workItem from="1578520440484" duration="28947000" />
+      <workItem from="1578770710128" duration="152000" />
+      <workItem from="1578771052354" duration="288000" />
+      <workItem from="1578771388078" duration="801000" />
+      <workItem from="1578772457798" duration="7499000" />
     </task>
     <task id="LOCAL-00001" summary="=MQTT Implementation">
       <created>1568726588352</created>
@@ -278,7 +273,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
@@ -289,6 +286,24 @@
     <MESSAGE value="=MQTT Implementation" />
     <MESSAGE value="styling" />
     <option name="LAST_COMMIT_MESSAGE" value="styling" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="496" y="328" key="SettingsEditor" timestamp="1578773596607">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="496" y="328" key="SettingsEditor/0.0.1680.1050@0.0.1680.1050" timestamp="1578773596607" />
+    <state x="382" y="155" key="SettingsEditor/0.23.1680.1027@0.23.1680.1027" timestamp="1578771366416" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/public/js/project.js</url>
+          <line>225</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />

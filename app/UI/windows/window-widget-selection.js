@@ -34,11 +34,11 @@ function windowWidgetSelection(content) {
 <!--                        <h2>Pie Chart</h2>-->
 <!--                    </div>-->
                 <div class="c ac jc">   
-                    <button class="bbutton"><div class="ct-chart-line-chart-widget"></div></button>
+                    <button onclick = "windowSwitcher('line_graph')" class="bbutton"><div class="ct-chart-line-chart-widget"></div></button>
                     <h2>Line Graph</h2>
                 </div>
                 <div class="c ac jc">
-                    <button class="bbutton"><div class="ct-chart-scatter-chart-widget"></div></button>
+                    <button onclick = "windowSwitcher('plot_graph')" class="bbutton"><div class="ct-chart-scatter-chart-widget"></div></button>
                     <h2>Scatter Plot</h2>
                 </div>
 <!--                    <div class="c ac jc">-->
@@ -54,107 +54,6 @@ function windowWidgetSelection(content) {
                 <button onclick="windowSwitcher('none')">Cancel</button>
             </div>
         </div>`;
-    new Chartist.Pie('.ct-chart-pie-widget', {
-        series: [5, 10, 20, 25, 40, 100]
-    }, {
-        donut: true,
-        donutWidth: 15,
-        donutSolid: true,
-        startAngle: 270,
-        showLabel: false
-    });
-    new Chartist.Line('.ct-chart-line-chart-widget', {
-        series: [
-            [1, 5, 2, 5, 4, 3],
-            [2, 3, 4, 8, 1, 2],
-            [5, 4, 3, 2, 1, 0.5]
-        ]
-    }, {
-        fullWidth: true,
-        showPoint: false,
-        axisY: {
-            showLabel: false,
-            showGrid: false
-        },
-        axisX: {
-            showLabel: false,
-            showGrid: false
-        }
 
-    });
-    var times = function (n) {
-        return Array.apply(null, new Array(n));
-    };
-
-    var data = times(5).map(Math.random).reduce(function (data, rnd, index) {
-        data.labels.push(index + 1);
-        data.series.forEach(function (series) {
-            series.push(Math.random() * 100)
-        });
-
-        return data;
-    }, {
-        labels: [],
-        series: times(4).map(function () {
-            return new Array()
-        })
-    });
-
-    var options = {
-        showLine: false,
-
-        axisY: {
-            showLabel: false,
-            showGrid: false
-        },
-        axisX: {
-            showLabel: false,
-            showGrid: false
-        }
-    };
-
-    var responsiveOptions = [
-        ['screen and (min-width: 640px)', {
-            axisX: {
-                labelInterpolationFnc: function (value, index) {
-                    return index % 4 === 0 ? 'W' + value : null;
-                }
-            }
-        }]
-    ];
-
-    new Chartist.Line('.ct-chart-scatter-chart-widget', data, options, responsiveOptions);
-
-    var data = {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        series: [
-            [5, 4, 3, 7, 5, 10, 3, 4, 8, 10, 6, 8],
-            [3, 2, 9, 5, 4, 6, 4, 6, 7, 8, 7, 4]
-        ]
-    };
-
-    var options = {
-        seriesBarDistance: 3,
-        axisY: {
-            showLabel: false,
-            showGrid: false
-        },
-        axisX: {
-            showLabel: false,
-            showGrid: false
-        }
-    };
-
-    var responsiveOptions = [
-        ['screen and (max-width: 640px)', {
-            seriesBarDistance: 5,
-            axisX: {
-                labelInterpolationFnc: function (value) {
-                    return value[0];
-                }
-            }
-        }]
-    ];
-    new Chartist.Bar('.ct-chart-histo-chart-widget', data, options);
     return content;
 }
