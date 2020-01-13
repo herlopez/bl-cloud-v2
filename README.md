@@ -43,7 +43,7 @@ Step 6: In your browser: http://localhost:3000/
     *  [Delete Chart](#head_erase_chart)
     *  [Delete Chart Data](#head_erase_chart_data)
     *  [Add Chart Point](#head_add_chart_point)
-    *  [Get_Chart_Data](#head_get_chart_data)
+    *  [Get Chart Data](#head_get_chart_data)
     *  [Get All Charts](#head_get_all_charts)
 
  
@@ -1590,7 +1590,7 @@ Get the data from a specific chart.
 
 |Command            |Parameters|Type     |Description                           |
 |-------------------|----------|---------|--------------------------------------|
-|**GET_CHART_DATA**   |   name   |  string |      Name of the chart to pull data from   |
+|**GET_CHART_DATA**   |   name   |  string |      Name of the chart to get data from   |
 
 ##### Example
 
@@ -1601,8 +1601,8 @@ Get the data from a specific chart.
   "name: : "Temperature Logging"
 }
 
-
-```json
+*Response*
+```
 {
     "meta": {
         "version": 0,
@@ -1633,66 +1633,6 @@ Get the data from a specific chart.
             "timestamp": 1578798144404,
             "id": "15787981444049qvfchck5afngr8",
             "value": 28
-        },
-        {
-            "entry": 5,
-            "timestamp": 1578798150542,
-            "id": "15787981505429qvfchck5afnlhq",
-            "value": 32
-        },
-        {
-            "entry": 6,
-            "timestamp": 1578798153931,
-            "id": "15787981539319qvfchck5afno3v",
-            "value": 45
-        },
-        {
-            "entry": 7,
-            "timestamp": 1578798157701,
-            "id": "15787981577019qvfchck5afnr0l",
-            "value": 30
-        },
-        {
-            "entry": 8,
-            "timestamp": 1578798161021,
-            "id": "15787981610219qvfchck5afntkt",
-            "value": 24
-        },
-        {
-            "entry": 9,
-            "timestamp": 1578798165008,
-            "id": "15787981650089qvfchck5afnwnk",
-            "value": 22
-        },
-        {
-            "entry": 10,
-            "timestamp": 1578798165628,
-            "id": "15787981656289qvfchck5afnx4s",
-            "value": 22
-        },
-        {
-            "entry": 11,
-            "timestamp": 1578798166325,
-            "id": "15787981663259qvfchck5afnxo5",
-            "value": 22
-        },
-        {
-            "entry": 12,
-            "timestamp": 1578798167037,
-            "id": "15787981670379qvfchck5afny7x",
-            "value": 22
-        },
-        {
-            "entry": 13,
-            "timestamp": 1578798167734,
-            "id": "15787981677349qvfchck5afnyra",
-            "value": 22
-        },
-        {
-            "entry": 14,
-            "timestamp": 1578798168456,
-            "id": "15787981684569qvfchck5afnzbc",
-            "value": 22
         }
     ]
 }
