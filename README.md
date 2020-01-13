@@ -1600,7 +1600,7 @@ Get the data from a specific chart.
   "cmd": "GET_ALL_CHARTS"
   "name: : "Temperature Logging"
 }
-
+```
 *Response*
 ```
 {
