@@ -30,16 +30,14 @@ function windowProfileSettings(content) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                console.log("Save");
-
                 if (!(user.displayName === displayNameInput.value)) {
-                  _context.next = 3;
+                  _context.next = 2;
                   break;
                 }
 
                 throw new Error('none');
 
-              case 3:
+              case 2:
                 user.updateProfile({
                   displayName: displayNameInput.value
                 }).then(function () {
@@ -49,7 +47,7 @@ function windowProfileSettings(content) {
                   throw error;
                 });
 
-              case 4:
+              case 3:
               case "end":
                 return _context.stop();
             }

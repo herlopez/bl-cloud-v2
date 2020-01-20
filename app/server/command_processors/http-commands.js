@@ -70,11 +70,16 @@ function commandProcessor(message, callback, server) {
             callback.send(eraseChartData);
             break;
 
+
         case 'ADD_CHART_POINT':
         case 'ADD_DATA_POINT':
             let addChartDataPointData = databaseFunctions.addDataPoint(message);
             if(!addChartDataPointData.hasOwnProperty('error')) databaseFunctions.notifyClients(server, message.key, 'ADD_DATA_POINT_CB', addChartDataPointData);
             callback.send(addChartDataPointData);
+            break;
+
+        case 'GET_DATA_POINT':
+            callback.send(databaseFunctions.getDataPoint(message));
             break;
 
         case 'GET_ALL_CHARTS':

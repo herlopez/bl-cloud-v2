@@ -40,62 +40,131 @@ function windowSwitcher(targetWindow, options) {
     let windowContent = document.createElement('div');
     windowContent.id = 'window_content_block';
 
-    let content = "";
-
     switch (targetWindow) {
-
         case 'none':
             windowHide();
             break;
         case 'widget_selection':
-            content = windowWidgetSelection(windowContent);
+            windowContent.innerHTML = WidgetSelectionWindow();
             break;
         case 'double_check':
-            content = windowDoubleCheck(windowContent, options);
+            windowContent.innerHTML = DoubleCheckWindow(options);
             break;
         case 'deleteProject':
-            content = windowDeleteProject(windowContent);
+            windowContent.innerHTML = windowDeleteProject();
             break;
         case 'newKey':
-            content = windowNewKey(windowContent);
-            break;
-        case 'data':
-            content = windowWidgetData(windowContent);
-            break;
-        case 'gauge':
-            content = windowWidgetGauge(windowContent);
+            windowContent.innerHTML = windowNewKey();
             break;
         case 'new_variable':
-            content = windowNewVariable(windowContent);
+            windowContent.innerHTML = WindowNewVariable();
+            windowContent.addEventListener('submit', (e) => {
+                createVariable(document.getElementById('project').value, currentUid);
+                getProjects(currentUid);
+                e.preventDefault();
+            });
             break;
         case 'new_project':
-            content = windowNewProject(windowContent);
-            break;
-        case 'scatter_plot_settings':
-            content = windowScatterSettings(windowContent,options);
+            windowContent.innerHTML = WindowNewProject();
+            windowContent.addEventListener('submit', (e) => {
+                createProject(document.getElementById('project').value, document.getElementById('desc').value, document.querySelector('input[name="access"]:checked').value, document.getElementById('color').value, currentUid);
+                e.preventDefault();
+            });
             break;
         case 'profile_settings':
-            content = windowProfileSettings(windowContent);
-            break;
+            window.appendChild(windowProfileSettings(windowContent));
+            return;
         case 'gauge_settings':
-            content = windowGaugeSettings(windowContent, options);
+            windowContent.innerHTML = EditGaugeWidgetWindow(options);
             break;
         case 'data_settings':
-            content = windowDataSettings(windowContent, options);
+            windowContent.innerHTML = EditDataWidgetWindow(options);
+            break;
+        case 'edit_line_graph':
+            windowContent.innerHTML = EditLineGraphWidgetWindow(options);
+            break;
+        case 'scatter_plot_settings':
+            windowContent.innerHTML = EditScatterPlotWidgetWindow(options);
+            break;
+        case 'data':
+            windowContent.innerHTML = CreateDataWidgetWindow();
+            break;
+        case 'gauge':
+            windowContent.innerHTML = CreateGaugeWidgetWindow();
             break;
         case 'line_graph':
-            content = windowWidgetLineGraph(windowContent, options);
+            windowContent.innerHTML = CreateLineGraphWidgetWindow();
             break;
         case 'plot_graph':
-            content = windowWidgetPlotGraph(windowContent, options);
+            windowContent.innerHTML = CreateScatterPlotWidgetWindow();
             break;
         default:
             windowHide();
             break;
     }
-    window.appendChild(content);
-    drawPLotWindow()
+
+    window.appendChild(windowContent);
+
+    drawPLotWindow();
     drawLineGraphWindow();
+
+
+
+    let times = function (n) {
+        return Array.apply(null, new Array(n));
+    };
+
+    let data = times(5).map(Math.random).reduce(function (data, rnd, index) {
+        data.labels.push(index + 1);
+        data.series.forEach(function (series) {
+            series.push(Math.random() * 100)
+        });
+
+        return data;
+    }, {
+        labels: [],
+        series: times(4).map(function () {
+            return new Array()
+        })
+    });
+
+    new Chartist.Line('.ct-chart-scatter-chart-widget', data, {
+        showLine: false,
+
+        axisY: {
+            showLabel: false,
+            showGrid: false
+        },
+        axisX: {
+            showLabel: false,
+            showGrid: false
+        }
+    }, [
+        ['screen and (min-width: 640px)', {
+            axisX: {
+                labelInterpolationFnc: function (value, index) {
+                    return index % 4 === 0 ? 'W' + value : null;
+                }
+            }
+        }]
+    ]);
+    new Chartist.Bar('.ct-chart-histo-chart-widget', {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        series: [
+            [5, 4, 3, 7, 5, 10, 3, 4, 8, 10, 6, 8],
+            [3, 2, 9, 5, 4, 6, 4, 6, 7, 8, 7, 4]
+        ]
+    }, {
+        seriesBarDistance: 3,
+        axisY: {
+            showLabel: false,
+            showGrid: false
+        },
+        axisX: {
+            showLabel: false,
+            showGrid: false
+        }
+    });
     new Chartist.Pie('.ct-chart-pie-widget', {
         series: [5, 10, 20, 25, 40, 100]
     }, {
@@ -124,80 +193,6 @@ function windowSwitcher(targetWindow, options) {
         }
 
     });
-    var times = function (n) {
-        return Array.apply(null, new Array(n));
-    };
-
-    var data = times(5).map(Math.random).reduce(function (data, rnd, index) {
-        data.labels.push(index + 1);
-        data.series.forEach(function (series) {
-            series.push(Math.random() * 100)
-        });
-
-        return data;
-    }, {
-        labels: [],
-        series: times(4).map(function () {
-            return new Array()
-        })
-    });
-
-    var options = {
-        showLine: false,
-
-        axisY: {
-            showLabel: false,
-            showGrid: false
-        },
-        axisX: {
-            showLabel: false,
-            showGrid: false
-        }
-    };
-
-    var responsiveOptions = [
-        ['screen and (min-width: 640px)', {
-            axisX: {
-                labelInterpolationFnc: function (value, index) {
-                    return index % 4 === 0 ? 'W' + value : null;
-                }
-            }
-        }]
-    ];
-
-    new Chartist.Line('.ct-chart-scatter-chart-widget', data, options, responsiveOptions);
-
-    var data = {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        series: [
-            [5, 4, 3, 7, 5, 10, 3, 4, 8, 10, 6, 8],
-            [3, 2, 9, 5, 4, 6, 4, 6, 7, 8, 7, 4]
-        ]
-    };
-
-    var options = {
-        seriesBarDistance: 3,
-        axisY: {
-            showLabel: false,
-            showGrid: false
-        },
-        axisX: {
-            showLabel: false,
-            showGrid: false
-        }
-    };
-
-    var responsiveOptions = [
-        ['screen and (max-width: 640px)', {
-            seriesBarDistance: 5,
-            axisX: {
-                labelInterpolationFnc: function (value) {
-                    return value[0];
-                }
-            }
-        }]
-    ];
-    new Chartist.Bar('.ct-chart-histo-chart-widget', data, options);
 }
 
 function gaugeHideVariableName() {
@@ -256,24 +251,35 @@ function newPlotWidget(id, type, seriesCount){
             color: document.getElementById(`series_${i}_color`).value,
         }
     }
+    let xAxisTitle = 'nothing';
+    let xAxisUnits = '';
+    if(type === 'scatter'){
+        xAxisTitle = document.getElementById('x_axis_title').value;
+        xAxisUnits = document.getElementById('x_axis_units').value;
+    }
     addWidget(currentUid, currentProject, {
         type: type,
         hide:'false',
         title: `${document.getElementById('gauge_title').innerText}`,
-        xAxisTitle: `${document.getElementById('x_axis_title').value}`,
-        xAxisUnits: `${document.getElementById('x_axis_units').value}`,
+        xAxisTitle: xAxisTitle,
+        xAxisUnits: xAxisUnits,
         yAxisTitle: `${document.getElementById('y_axis_title').value}`,
         yAxisUnits: `${document.getElementById('y_axis_units').value}`,
         series: series
     });
 }
 function updatePlotWidget(id, type){
+    let xAxisTitle, xAxisUnits = 'nothing';
+    if(type === 'scatter'){
+        xAxisTitle = document.getElementById('x_axis_title').value;
+        xAxisUnits = document.getElementById('x_axis_units').value;
+    }
     updateWidget(currentUid, currentProject, {
         type: type,
         hide: 'false',
         title: `${document.getElementById('gauge_title').innerText}`,
-        xAxisTitle: `${document.getElementById('x_axis_title').value}`,
-        xAxisUnits: `${document.getElementById('x_axis_units').value}`,
+        xAxisTitle: xAxisTitle,
+        xAxisUnits: xAxisUnits,
         yAxisTitle: `${document.getElementById('y_axis_title').value}`,
         yAxisUnits: `${document.getElementById('y_axis_units').value}`,
         id: id,

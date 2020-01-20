@@ -1,5 +1,7 @@
-function windowWidgetData(content) {
-    content.classList.add('widget-data-settings');
+/**
+ * @return {string}
+ */
+function CreateDataWidgetWindow() {
     let validVariablesForData = '';
     if (currentProjectData.hasOwnProperty('variables')) {
         let variables = currentProjectData['variables'];
@@ -11,8 +13,8 @@ function windowWidgetData(content) {
             }
         }
     }
-    content.innerHTML = `
-        <div class="c ac jc">
+    return `
+        <div class="widget-data-settings c ac jc">
             <h2 class=" mb1"  id="gauge_title">Data Point</h2>
             <h3 class="m0" style="font-size: 0.8rem;" id="variable_title"></h3>
             <div style="" class="r ac jc">
@@ -47,7 +49,6 @@ function windowWidgetData(content) {
             </div>
         </div>      
     `;
-    return content;
 }
 
 

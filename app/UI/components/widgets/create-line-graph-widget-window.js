@@ -1,5 +1,8 @@
-function windowWidgetLineGraph(content, options){
-    content.classList.add('widget-plot-graph-settings');
+/**
+ * @return {string}
+ */
+function CreateLineGraphWidgetWindow(){
+
     let validScatterChart = "";
     if (currentProjectData.hasOwnProperty('charts')) {
         let charts = currentProjectData['charts'];
@@ -11,6 +14,7 @@ function windowWidgetLineGraph(content, options){
             }
         }
     }
+
     let defaultColor = [
         '#ff0000',
         '#0000ff',
@@ -18,27 +22,24 @@ function windowWidgetLineGraph(content, options){
         '#fff000',
         '#ff7902'
     ];
-    content.innerHTML =
-        `<div class="c ac jc">
+
+    return `
+        <div class="widget-plot-graph-settings c ac jc">
             <h2 class="mb1"  id="gauge_title">Line Graph</h2> 
             <h3 class="m0" style="font-size: 0.8rem;" id="variable_title"></h3> 
             <div>
                 <div id="new_y_title_units" class="ct-pl-y-title-units"></div>
                 <div id="new_y_title" class="ct-pl-y-title fs15">y</div>
                 <div class="ct-widget-line-graph-settings"></div>
-                <div id="new_x_title_units" class="ct-pl-x-title-units"></div>
-                <div id="new_x_title" class="ct-pl-x-title tac fs15">x</div>
+     
             </div>
             <div class="c jc afe p3 pt0">
                 <div class="mb2">Title: <input id="gauge_title_input" onkeyup="gaugeSettingsTitle()" type="text" value="Line Graph"></div>
-                <div class="mb2">X Title: <input id = 'x_axis_title' onkeyup="labelUpdate(this, 'new_x_title')" type="text" value="x"></div>
+                
                 <div class="mb2">Y Title: <input id = 'y_axis_title' onkeyup="labelUpdate(this, 'new_y_title')" type="text" value="y"></div>
             </div>
             <div>
-               <div class="r mb2">
-                    X Axis Units:&nbsp;
-                    ${unitsList('x_axis_units', "unitSettings(this, 'new_x_title_units')")}
-               </div>
+              
                <div class="r mb2 mt4">
                     Y Axis Units:&nbsp;
                     ${unitsList('y_axis_units', " unitSettings(this, 'new_y_title_units')")}
@@ -66,7 +67,6 @@ function windowWidgetLineGraph(content, options){
             </div>
         </div>
     `;
-    return content;
 }
 
 

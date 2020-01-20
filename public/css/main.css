@@ -1835,3 +1835,41 @@ footer {
   .ct-legend .ct-series-0:before {
     background-color: red;
     border-color: red; }
+
+.chartist-tooltip {
+  position: absolute;
+  display: inline-block;
+  min-width: 5em;
+  padding: .5em;
+  background: #F4C63D;
+  color: #453D3F;
+  font-weight: 700;
+  text-align: left;
+  pointer-events: none;
+  z-index: 1; }
+
+.chartist-tooltip:after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  margin-left: -15px;
+  border: 15px solid transparent;
+  border-top-color: #F4C63D; }
+
+.chartist-tooltip {
+  display: none; }
+
+.my-cool-point {
+  fill-opacity: 1 !important;
+  stroke-width: 0px;
+  stroke: red;
+  -webkit-transition: all 0.2s linear;
+  transition: all 0.2s linear; }
+
+.my-cool-point:hover {
+  r: 7;
+  stroke-opacity: 0.2;
+  stroke-width: 20px; }

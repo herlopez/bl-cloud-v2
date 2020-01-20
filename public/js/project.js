@@ -2,13 +2,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var currentProjectData; // Populate the content of a project.
-
 function paintProject(data) {
-  currentProjectData = data;
-  currentProject = data.id;
-  currentKey = data.key;
-
   switch (projectTab) {
     case 'dashboard':
       paintDashboardTab(data);
@@ -75,7 +69,7 @@ function paintDashboardTab(data) {
             rightPar = ")";
           }
 
-          div.innerHTML = "\n\n                        <i onclick=\"windowSwitcher('line_graph_settings','".concat(div.id, "')\" style=\"position: absolute; transform: translate(262px, -10px)\" class=\"hc p3 hac fa fa-ellipsis-v\"></i>\n                        <h2 style=\"").concat(mb, "\" id=\"").concat(div.id, "_title\">").concat(widgets[widget].title, "</h2>\n                        <p style=\"transform: translate(-40px,94px) rotate(-90deg); position: absolute; transform-origin-x: 95px; text-align: center; transform-origin-y: 59px; width: 280px;\" class=\"mt0\">").concat(widgets[widget].yAxisTitle, " <i>").concat(leftPar).concat(widgets[widget].yAxisUnits).concat(rightPar, "</i></p>\n                        <div class=\"ct-").concat(div.id, "-plot\"></div>\n                        <p class=\"mt0 mb1\">").concat(widgets[widget].xAxisTitle, " <i>").concat(leftPar).concat(widgets[widget].xAxisUnits).concat(rightPar, "</i></p>\n                        <style id=\"").concat(div.id, "_plot_styles\">\n                      \n                        </style>\n                        <i style=\"position: absolute; transform: translate(250px,-230px);\" onclick=\"resetFnc && resetFnc();\" class=\"hp hc fas fa-search-minus\" id=\"reset-zoom-btn\"></i>\n                        <div class =\"r jc ac m2\" id=\"").concat(div.id, "_plot_legend\"></div>\n                        \n                    ");
+          div.innerHTML = "\n\n                        <i onclick=\"windowSwitcher('edit_line_graph','".concat(div.id, "')\" style=\"position: absolute; transform: translate(262px, -10px)\" class=\"hc p3 hac fa fa-ellipsis-v\"></i>\n                        <h2 style=\"").concat(mb, "\" id=\"").concat(div.id, "_title\">").concat(widgets[widget].title, "</h2>\n                        <p style=\"transform: translate(-40px,94px) rotate(-90deg); position: absolute; transform-origin-x: 95px; text-align: center; transform-origin-y: 59px; width: 280px;\" class=\"mt0\">").concat(widgets[widget].yAxisTitle, " <i>").concat(leftPar).concat(widgets[widget].yAxisUnits).concat(rightPar, "</i></p>\n                        <div class=\"ct-").concat(div.id, "-plot\"></div>\n<!--                        <p class=\"mt0 mb1\">").concat(widgets[widget].xAxisTitle, " <i>").concat(leftPar).concat(widgets[widget].xAxisUnits).concat(rightPar, "</i></p>-->\n                        <style id=\"").concat(div.id, "_plot_styles\"></style>\n                        <i style=\"position: absolute; transform: translate(250px,-230px);\" onclick=\"resetFnc && resetFnc();\" class=\"hp hc fas fa-search-minus\" id=\"reset-zoom-btn\"></i>\n                        <div class =\"r jc ac m2\" id=\"").concat(div.id, "_plot_legend\"></div>\n                    ");
           dashboard.appendChild(div);
           drawLineGraph(".ct-".concat(div.id, "-plot"), div.id);
         }
@@ -93,7 +87,7 @@ function paintDashboardTab(data) {
             _rightPar = ")";
           }
 
-          div.innerHTML = "\n\n                        <i  onclick=\"windowSwitcher('scatter_plot_settings','".concat(div.id, "')\" style=\"position: absolute; transform: translate(262px, -10px)\" class=\"hc p3 hac fa fa-ellipsis-v\"></i>\n                        <h2 style=\"").concat(mb, "\" id=\"").concat(div.id, "_title\">").concat(widgets[widget].title, "</h2>\n                        <p style=\"transform: translate(-40px,94px) rotate(-90deg); position: absolute; transform-origin-x: 95px; text-align: center; transform-origin-y: 59px; width: 280px;\" class=\"mt0\">").concat(widgets[widget].yAxisTitle, " <i>").concat(_leftPar).concat(widgets[widget].yAxisUnits).concat(_rightPar, "</i></p>\n                        <div class=\"ct-").concat(div.id, "-plot\"></div>\n                        <p class=\"mt0 mb1\">").concat(widgets[widget].xAxisTitle, " <i>").concat(_leftPar).concat(widgets[widget].xAxisUnits).concat(_rightPar, "</i></p>\n                        <style id=\"").concat(div.id, "_plot_styles\">\n                        \n                        </style>\n                        <i style=\"position: absolute; transform: translate(250px,-230px);\" onclick=\"resetFnc && resetFnc();\" class=\"hp hc fas fa-search-minus\" id=\"reset-zoom-btn\"></i>\n                        <div class =\"r jc ac m2\" id=\"").concat(div.id, "_plot_legend\"></div>\n                        \n                    ");
+          div.innerHTML = "\n                        <i  onclick=\"windowSwitcher('scatter_plot_settings','".concat(div.id, "')\" style=\"position: absolute; transform: translate(262px, -10px)\" class=\"hc p3 hac fa fa-ellipsis-v\"></i>\n                        <h2 style=\"").concat(mb, "\" id=\"").concat(div.id, "_title\">").concat(widgets[widget].title, "</h2>\n                        <p style=\"transform: translate(-40px,94px) rotate(-90deg); position: absolute; transform-origin-x: 95px; text-align: center; transform-origin-y: 59px; width: 280px;\" class=\"mt0\">").concat(widgets[widget].yAxisTitle, " <i>").concat(_leftPar).concat(widgets[widget].yAxisUnits).concat(_rightPar, "</i></p>\n                        <div class=\"ct-").concat(div.id, "-plot\"></div>\n                        <p class=\"mt0 mb1\">").concat(widgets[widget].xAxisTitle, " <i>").concat(_leftPar).concat(widgets[widget].xAxisUnits).concat(_rightPar, "</i></p>\n                        <style id=\"").concat(div.id, "_plot_styles\">\n                        \n                        </style>\n                        <i style=\"position: absolute; transform: translate(250px,-230px);\" onclick=\"resetFnc && resetFnc();\" class=\"hp hc fas fa-search-minus\" id=\"reset-zoom-btn\"></i>\n                        <div class =\"r jc ac m2\" id=\"").concat(div.id, "_plot_legend\"></div>\n                    ");
           dashboard.appendChild(div);
           drawScatterPLot(".ct-".concat(div.id, "-plot"), div.id);
         }
@@ -174,7 +168,7 @@ function paintChartsTab(data) {
 
 function paintSettingsTab(data) {
   var contentBox = document.getElementById('content_box');
-  contentBox.innerHTML = "\n        <div id= \"PROJECT_SETTINGS_TAB\" class=\"p3 m0 ml1 c\">\n            <h1 class=\"mb1 cw\">Project Settings</h1>\n            <hr class=\"w100\">\n            <div class=\"r\">\n                <h2 class=\"cw mb3\">Your Project Key: </h2>\n            </div>\n            <div class=\"r ac fww\">\n                <input class=\"m0\"  disabled value=\" ".concat(currentProjectData.key, "\">\n                <button onclick=\"copyToClip('").concat(currentProjectData.key, "')\" style=\"color: white;\" class=\"fa fa-copy my2 mx2\"></button>\n                <button onclick=\"windowSwitcher('newKey')\" title= \"Generate New Project Key\" style=\"color: white; background: #8c2726;\" class=\"fa fa-redo mb0 my2 mx0\"></button>\n                <p id=\"clip_message\" style=\"transition: all 4s ease-in-out; color:orange; transform: translateY(20px); \" class=\"ml3 dn\">Copied to Clipboard!</p>\n            </div>\n            <div id=\"project_settings_project_name\" class=\"\">\n                <h2 class=\"cw mb3\">Project Name: </h2>\n            </div>\n            <div id=\"project_settings_project_desc\" class=\"\">\n                <h2 class=\"cw mb3\">Project Description: </h2>\n            </div>\n            <div class=\"r ac\">\n                <button class=\"ml0 mt4 mb1\">Export Project Data</button>\n            </div>\n            <div class=\"r ac\">\n                <button onclick=\"windowSwitcher('deleteProject')\" style=\"background: #8c2726;\" class=\"ml0 mt4\">Delete Project</button>\n            </div>\n        </div>");
+  contentBox.innerHTML = "\n        <div id= \"PROJECT_SETTINGS_TAB\" class=\"p3 m0 ml1 c\">\n            <h1 class=\"mb1 cw\">Project Settings</h1>\n            <hr class=\"w100\">\n            <div class=\"r\">\n                <h2 class=\"cw mb3\">Your Project Key: </h2>\n            </div>\n            <div class=\"r ac fww\">\n                <input class=\"m0\"  disabled value=\" ".concat(currentProjectData.key, "\">\n                <button onclick=\"copyToClip('").concat(currentProjectData.key, "')\" style=\"color: white;\" class=\"fa fa-copy my2 mx2\"></button>\n                <button onclick=\"windowSwitcher('newKey')\" title= \"Generate New Project Key\" style=\"color: white; background: #8c2726;\" class=\"fa fa-redo mb0 my2 mx0\"></button>\n                <p id=\"clip_message\" style=\"transition: all 4s ease-in-out; color:orange; transform: translateY(20px); \" class=\"ml3 dn\">Copied to Clipboard!</p>\n            </div>\n            <div id=\"project_settings_project_name\" class=\"\">\n                <h2 class=\"cw mb3\">Project Name: </h2>\n            </div>\n            <div id=\"project_settings_project_desc\" class=\"\">\n                <h2 class=\"cw mb3\">Project Description: </h2>\n            </div>\n            <div class=\"r ac\">\n                <a href=\"/data?key=").concat(currentProjectData.key, "\"><button class=\"ml0 mt4 mb1\">Download Project Data</button></a>\n            </div>\n            <div class=\"r ac\">\n                <button onclick=\"windowSwitcher('deleteProject')\" style=\"background: #8c2726;\" class=\"ml0 mt4\">Delete Project</button>\n            </div>\n        </div>");
   var projectName = input(document.getElementById('project_settings_project_name'), {
     type: 'text',
     edit: true,
@@ -426,23 +420,21 @@ function variableSave(id, old, key) {
 
 function drawLineGraph(classID, targetID) {
   var data = {
-    labels: [],
+    labels: ['Jan', 'Mar', 'Jun'],
     series: []
-  };
+  }; // Find the widget that corresponds to the id.
+
   var widget = currentProjectData.widgets.find(function (widget) {
     return widget.id === targetID;
   });
   var targetSeries = widget.series;
-  console.log('Line Graph TargetSeries', widget, currentProjectData);
   var index = 0;
   var seriesTitles = [];
 
   var _loop = function _loop(targetSerie) {
-    console.log('targetSerie', targetSeries[targetSerie], targetSeries[targetSerie].name, currentProjectData.charts);
     var chartData = currentProjectData.charts.find(function (chart) {
       return chart.name === targetSeries[targetSerie].name;
     });
-    console.log('Chart Data:  ', chartData);
     var seriesData = [];
     var alphaMap = ['a', 'b', 'c', 'd', 'e', 'f'];
     var legend = document.getElementById("".concat(targetID, "_plot_legend"));
@@ -455,7 +447,8 @@ function drawLineGraph(classID, targetID) {
       for (var point in dataPoints) {
         seriesData.push({
           x: dataPoints[point].entry,
-          y: dataPoints[point].value
+          y: dataPoints[point].value,
+          time: "Time: ".concat(new Date(dataPoints[point].timestamp), " <br> Value: ").concat(dataPoints[point].value)
         });
         document.getElementById("".concat(targetID, "_plot_styles")).innerHTML = document.getElementById("".concat(targetID, "_plot_styles")).innerHTML + "".concat(classID, " .ct-series-").concat(alphaMap[index], " .ct-line,\n                     ").concat(classID, " .ct-series-").concat(alphaMap[index], " .ct-point {\n                      stroke: ").concat(targetSeries[targetSerie].color, ";\n                    }");
       }
@@ -467,14 +460,14 @@ function drawLineGraph(classID, targetID) {
 
   for (var targetSerie in targetSeries) {
     _loop(targetSerie);
-  }
+  } // data.labels = [targetLabels[0], targetLabels[Math.ceil(targetLabels.length/3)], targetLabels[Math.ceil((targetLabels.length/3)*2)], targetLabels[Math.ceil(targetLabels.length)]];
 
-  console.log('Line Graph Data:  ', data.series);
+
   var options = {
     width: '90%',
     height: '220px',
     showArea: true,
-    showPoint: false,
+    showPoint: true,
     chartPadding: {
       right: 30
     },
@@ -487,17 +480,17 @@ function drawLineGraph(classID, targetID) {
       showLabel: true,
       showGrid: true,
       type: Chartist.AutoScaleAxis,
-      onlyInteger: true // type: Chartist.FixedScaleAxis,
-      // divisor: 1,
-      // // ticks: [
-      // //     new Date("2018-08-29 06:01:52"),
-      // //     new Date("2018-08-29 06:01:53"),
-      // //     new Date("2018-08-29 06:01:55"),
-      // //     new Date("2018-08-29 06:01:59")
-      // // ],
+      onlyInteger: true //
+      // type: Chartist.FixedScaleAxis,
+      // divisor: 5,
 
     },
-    plugins: [Chartist.plugins.zoom({
+    plugins: [Chartist.plugins.tooltip({
+      pointClass: 'my-cool-point',
+      "class": "tooltip-".concat(widget.id),
+      appendToBody: false,
+      anchorToPoint: true
+    }), Chartist.plugins.zoom({
       onZoom: onZoom,
       resetOnRightMouseBtn: true // If set to true, a right click in the zoom area, will reset zoom.
 
@@ -510,8 +503,39 @@ function drawLineGraph(classID, targetID) {
       }
     }
   }]];
-  new Chartist.Line(classID, data, options, responsiveOptions);
+  var plot = new Chartist.Line(classID, data, options, responsiveOptions);
+  plot.on('draw', function (data) {
+    if (data.type === 'point') {
+      var circle = new Chartist.Svg('circle', {
+        cx: [data.x],
+        cy: [data.y],
+        r: [5],
+        'ct:value': data.series[data.index].time,
+        'ct:meta': data.meta,
+        "class": 'my-cool-point'
+      }, 'ct-area');
+      data.element.replace(circle);
+    }
+  });
+  plot.container.addEventListener('mouseenter', function (e) {
+    var x, i;
+    x = document.querySelectorAll(".tooltip-".concat(widget.id));
+
+    for (i = 0; i < x.length; i++) {
+      x[i].style.display = "block";
+    }
+  });
+  plot.container.addEventListener('mouseleave', function (e) {
+    var x, i;
+    x = document.querySelectorAll(".chartist-tooltip");
+
+    for (i = 0; i < x.length; i++) {
+      x[i].style.display = "none";
+    }
+  });
 }
+
+var resetFnc;
 
 function drawScatterPLot(classID, targetID) {
   // var times = function (n) {
@@ -533,16 +557,13 @@ function drawScatterPLot(classID, targetID) {
     return widget.id === targetID;
   });
   var targetSeries = widget.series;
-  console.log('targetSeries', targetSeries, currentProjectData);
   var index = 0;
   var seriesTitles = [];
 
   var _loop2 = function _loop2(targetSerie) {
-    console.log('targetSerie', targetSeries[targetSerie], targetSeries[targetSerie].name, currentProjectData.charts);
     var chartData = currentProjectData.charts.find(function (chart) {
       return chart.name === targetSeries[targetSerie].name;
     });
-    console.log('Chart Data:  ', chartData);
     var seriesData = [];
     var alphaMap = ['a', 'b', 'c', 'd', 'e', 'f'];
     var legend = document.getElementById("".concat(targetID, "_plot_legend"));
@@ -605,8 +626,6 @@ function drawScatterPLot(classID, targetID) {
   }]];
   new Chartist.Line(classID, data, options, responsiveOptions);
 }
-
-var resetFnc;
 
 function onZoom(chart, reset) {
   resetFnc = reset;

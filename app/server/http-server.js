@@ -3,6 +3,7 @@ let path = require('path');
 let app = express();
 let pug = require('pug');
 let fs = require('fs');
+let db = require('./database.js');
 
 let processor = require('./message-processor.js');
 let bodyParser = require('body-parser');
@@ -21,6 +22,43 @@ function startHttpServer(port, wss){
     });
     app.get('/app', (req, res)=> {
         res.render('app');
+    });
+    app.get('/data', (req, res) =>{
+        const search_params = new URLSearchParams(req.url);
+        console.log(search_params, search_params.get('/data?key'));
+        const file = '/tmp/data.csv';
+        let msg = {};
+        msg.id = search_params.get('/data?key');
+        let projectData = db.rawProjectData().data.find(project => project.key === msg.id)
+        let projectDataCSV = '';
+        let charts = projectData['charts'];
+        projectDataCSV += 'Chart Name,Chart Type,Chart ID,Entries,Timestamp,X/Value, Y';
+        for(let chart in charts){
+            console.log(charts[chart]);
+            let x = charts[chart];
+            projectDataCSV += `\n${x.name},${x.type},${x.id},,,,`;
+            console.log(x);
+            let points = x.data;
+            if(x.type === 'LINE') {
+                for (let point in points) {
+                    projectDataCSV += `\n,,,${points[point].entry},${points[point].timestamp},${points[point].value}`;
+                }
+            }
+            if(x.type === 'SCATTER') {
+                for (let point in points) {
+                    projectDataCSV += `\n,,,${points[point].entry},${points[point].timestamp},${points[point].x},${points[point].y}`;
+                }
+            }
+        }
+        fs.writeFileSync(file, projectDataCSV, 'utf8', function (err) {
+            if (err) {
+                console.log('Some error occured - file either not saved or corrupted file saved.');
+            } else{
+                console.log('It\'s saved!');
+            }
+        });
+        res.download(file);
+
     });
     app.get('/documentation', (req, res) => {
         res.redirect('https://github.com/Brilliant-Labs/cloud/blob/master/README.md');

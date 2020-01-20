@@ -186,9 +186,11 @@ function unitsList(id = "", onInput = ()=>{},  value=''){
         </select>
     `;
 }
-
 let ws, wsHandler;
-let currentView, currentProject, currentWindow;
+let currentProjectData;
+let currentView;
+let currentProject;
+let currentWindow;
 let currentUid = null;
 let currentId = null;
 let projectTab =  null;
@@ -1119,62 +1121,131 @@ function windowSwitcher(targetWindow, options) {
     let windowContent = document.createElement('div');
     windowContent.id = 'window_content_block';
 
-    let content = "";
-
     switch (targetWindow) {
-
         case 'none':
             windowHide();
             break;
         case 'widget_selection':
-            content = windowWidgetSelection(windowContent);
+            windowContent.innerHTML = WidgetSelectionWindow();
             break;
         case 'double_check':
-            content = windowDoubleCheck(windowContent, options);
+            windowContent.innerHTML = DoubleCheckWindow(options);
             break;
         case 'deleteProject':
-            content = windowDeleteProject(windowContent);
+            windowContent.innerHTML = windowDeleteProject();
             break;
         case 'newKey':
-            content = windowNewKey(windowContent);
-            break;
-        case 'data':
-            content = windowWidgetData(windowContent);
-            break;
-        case 'gauge':
-            content = windowWidgetGauge(windowContent);
+            windowContent.innerHTML = windowNewKey();
             break;
         case 'new_variable':
-            content = windowNewVariable(windowContent);
+            windowContent.innerHTML = WindowNewVariable();
+            windowContent.addEventListener('submit', (e) => {
+                createVariable(document.getElementById('project').value, currentUid);
+                getProjects(currentUid);
+                e.preventDefault();
+            });
             break;
         case 'new_project':
-            content = windowNewProject(windowContent);
-            break;
-        case 'scatter_plot_settings':
-            content = windowScatterSettings(windowContent,options);
+            windowContent.innerHTML = WindowNewProject();
+            windowContent.addEventListener('submit', (e) => {
+                createProject(document.getElementById('project').value, document.getElementById('desc').value, document.querySelector('input[name="access"]:checked').value, document.getElementById('color').value, currentUid);
+                e.preventDefault();
+            });
             break;
         case 'profile_settings':
-            content = windowProfileSettings(windowContent);
-            break;
+            window.appendChild(windowProfileSettings(windowContent));
+            return;
         case 'gauge_settings':
-            content = windowGaugeSettings(windowContent, options);
+            windowContent.innerHTML = EditGaugeWidgetWindow(options);
             break;
         case 'data_settings':
-            content = windowDataSettings(windowContent, options);
+            windowContent.innerHTML = EditDataWidgetWindow(options);
+            break;
+        case 'edit_line_graph':
+            windowContent.innerHTML = EditLineGraphWidgetWindow(options);
+            break;
+        case 'scatter_plot_settings':
+            windowContent.innerHTML = EditScatterPlotWidgetWindow(options);
+            break;
+        case 'data':
+            windowContent.innerHTML = CreateDataWidgetWindow();
+            break;
+        case 'gauge':
+            windowContent.innerHTML = CreateGaugeWidgetWindow();
             break;
         case 'line_graph':
-            content = windowWidgetLineGraph(windowContent, options);
+            windowContent.innerHTML = CreateLineGraphWidgetWindow();
             break;
         case 'plot_graph':
-            content = windowWidgetPlotGraph(windowContent, options);
+            windowContent.innerHTML = CreateScatterPlotWidgetWindow();
             break;
         default:
             windowHide();
             break;
     }
-    window.appendChild(content);
-    drawPLotWindow()
+
+    window.appendChild(windowContent);
+
+    drawPLotWindow();
     drawLineGraphWindow();
+
+
+
+    let times = function (n) {
+        return Array.apply(null, new Array(n));
+    };
+
+    let data = times(5).map(Math.random).reduce(function (data, rnd, index) {
+        data.labels.push(index + 1);
+        data.series.forEach(function (series) {
+            series.push(Math.random() * 100)
+        });
+
+        return data;
+    }, {
+        labels: [],
+        series: times(4).map(function () {
+            return new Array()
+        })
+    });
+
+    new Chartist.Line('.ct-chart-scatter-chart-widget', data, {
+        showLine: false,
+
+        axisY: {
+            showLabel: false,
+            showGrid: false
+        },
+        axisX: {
+            showLabel: false,
+            showGrid: false
+        }
+    }, [
+        ['screen and (min-width: 640px)', {
+            axisX: {
+                labelInterpolationFnc: function (value, index) {
+                    return index % 4 === 0 ? 'W' + value : null;
+                }
+            }
+        }]
+    ]);
+    new Chartist.Bar('.ct-chart-histo-chart-widget', {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        series: [
+            [5, 4, 3, 7, 5, 10, 3, 4, 8, 10, 6, 8],
+            [3, 2, 9, 5, 4, 6, 4, 6, 7, 8, 7, 4]
+        ]
+    }, {
+        seriesBarDistance: 3,
+        axisY: {
+            showLabel: false,
+            showGrid: false
+        },
+        axisX: {
+            showLabel: false,
+            showGrid: false
+        }
+    });
     new Chartist.Pie('.ct-chart-pie-widget', {
         series: [5, 10, 20, 25, 40, 100]
     }, {
@@ -1203,80 +1274,6 @@ function windowSwitcher(targetWindow, options) {
         }
 
     });
-    var times = function (n) {
-        return Array.apply(null, new Array(n));
-    };
-
-    var data = times(5).map(Math.random).reduce(function (data, rnd, index) {
-        data.labels.push(index + 1);
-        data.series.forEach(function (series) {
-            series.push(Math.random() * 100)
-        });
-
-        return data;
-    }, {
-        labels: [],
-        series: times(4).map(function () {
-            return new Array()
-        })
-    });
-
-    var options = {
-        showLine: false,
-
-        axisY: {
-            showLabel: false,
-            showGrid: false
-        },
-        axisX: {
-            showLabel: false,
-            showGrid: false
-        }
-    };
-
-    var responsiveOptions = [
-        ['screen and (min-width: 640px)', {
-            axisX: {
-                labelInterpolationFnc: function (value, index) {
-                    return index % 4 === 0 ? 'W' + value : null;
-                }
-            }
-        }]
-    ];
-
-    new Chartist.Line('.ct-chart-scatter-chart-widget', data, options, responsiveOptions);
-
-    var data = {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        series: [
-            [5, 4, 3, 7, 5, 10, 3, 4, 8, 10, 6, 8],
-            [3, 2, 9, 5, 4, 6, 4, 6, 7, 8, 7, 4]
-        ]
-    };
-
-    var options = {
-        seriesBarDistance: 3,
-        axisY: {
-            showLabel: false,
-            showGrid: false
-        },
-        axisX: {
-            showLabel: false,
-            showGrid: false
-        }
-    };
-
-    var responsiveOptions = [
-        ['screen and (max-width: 640px)', {
-            seriesBarDistance: 5,
-            axisX: {
-                labelInterpolationFnc: function (value) {
-                    return value[0];
-                }
-            }
-        }]
-    ];
-    new Chartist.Bar('.ct-chart-histo-chart-widget', data, options);
 }
 
 function gaugeHideVariableName() {
@@ -1335,24 +1332,35 @@ function newPlotWidget(id, type, seriesCount){
             color: document.getElementById(`series_${i}_color`).value,
         }
     }
+    let xAxisTitle = 'nothing';
+    let xAxisUnits = '';
+    if(type === 'scatter'){
+        xAxisTitle = document.getElementById('x_axis_title').value;
+        xAxisUnits = document.getElementById('x_axis_units').value;
+    }
     addWidget(currentUid, currentProject, {
         type: type,
         hide:'false',
         title: `${document.getElementById('gauge_title').innerText}`,
-        xAxisTitle: `${document.getElementById('x_axis_title').value}`,
-        xAxisUnits: `${document.getElementById('x_axis_units').value}`,
+        xAxisTitle: xAxisTitle,
+        xAxisUnits: xAxisUnits,
         yAxisTitle: `${document.getElementById('y_axis_title').value}`,
         yAxisUnits: `${document.getElementById('y_axis_units').value}`,
         series: series
     });
 }
 function updatePlotWidget(id, type){
+    let xAxisTitle, xAxisUnits = 'nothing';
+    if(type === 'scatter'){
+        xAxisTitle = document.getElementById('x_axis_title').value;
+        xAxisUnits = document.getElementById('x_axis_units').value;
+    }
     updateWidget(currentUid, currentProject, {
         type: type,
         hide: 'false',
         title: `${document.getElementById('gauge_title').innerText}`,
-        xAxisTitle: `${document.getElementById('x_axis_title').value}`,
-        xAxisUnits: `${document.getElementById('x_axis_units').value}`,
+        xAxisTitle: xAxisTitle,
+        xAxisUnits: xAxisUnits,
         yAxisTitle: `${document.getElementById('y_axis_title').value}`,
         yAxisUnits: `${document.getElementById('y_axis_units').value}`,
         id: id,
@@ -1637,6 +1645,9 @@ function messageProcessor(message, callback) {
             case 'GET_PROJECT':
                 try{
                     message = message['results'][0];
+                    currentProjectData = message;
+                    currentProject = message.id;
+                    currentKey = message.key;
                     paintProject(message);
                 }catch (e) {
                     console.log(e);
@@ -1837,15 +1848,7 @@ function projectSearch() {
 }
 
 
-let currentProjectData;
-
-// Populate the content of a project.
 function paintProject(data) {
-
-    currentProjectData = data;
-    currentProject = data.id;
-    currentKey = data.key;
-
     switch (projectTab) {
         case 'dashboard':
             paintDashboardTab(data);
@@ -1863,7 +1866,6 @@ function paintProject(data) {
             paintDashboardTab(data);
             break;
     }
-
 }
 
 
@@ -1902,7 +1904,6 @@ function paintDashboardTab(data) {
                 let display = "inherit";
                 let mb = 'margin-bottom: 5px; margin-top: 8px;';
 
-
                 if (widgets[widget].type === 'line') {
                     div.style.height = "325px";
                     div.style.minWidth = "632px";
@@ -1917,17 +1918,14 @@ function paintDashboardTab(data) {
                     }
                     div.innerHTML = `
 
-                        <i onclick="windowSwitcher('line_graph_settings','${div.id}')" style="position: absolute; transform: translate(262px, -10px)" class="hc p3 hac fa fa-ellipsis-v"></i>
+                        <i onclick="windowSwitcher('edit_line_graph','${div.id}')" style="position: absolute; transform: translate(262px, -10px)" class="hc p3 hac fa fa-ellipsis-v"></i>
                         <h2 style="${mb}" id="${div.id}_title">${widgets[widget].title}</h2>
                         <p style="transform: translate(-40px,94px) rotate(-90deg); position: absolute; transform-origin-x: 95px; text-align: center; transform-origin-y: 59px; width: 280px;" class="mt0">${widgets[widget].yAxisTitle} <i>${leftPar}${widgets[widget].yAxisUnits}${rightPar}</i></p>
                         <div class="ct-${div.id}-plot"></div>
-                        <p class="mt0 mb1">${widgets[widget].xAxisTitle} <i>${leftPar}${widgets[widget].xAxisUnits}${rightPar}</i></p>
-                        <style id="${div.id}_plot_styles">
-                      
-                        </style>
+<!--                        <p class="mt0 mb1">${widgets[widget].xAxisTitle} <i>${leftPar}${widgets[widget].xAxisUnits}${rightPar}</i></p>-->
+                        <style id="${div.id}_plot_styles"></style>
                         <i style="position: absolute; transform: translate(250px,-230px);" onclick="resetFnc && resetFnc();" class="hp hc fas fa-search-minus" id="reset-zoom-btn"></i>
                         <div class ="r jc ac m2" id="${div.id}_plot_legend"></div>
-                        
                     `;
                     dashboard.appendChild(div);
                     drawLineGraph(`.ct-${div.id}-plot`, div.id)
@@ -1940,13 +1938,11 @@ function paintDashboardTab(data) {
                     div.style.paddingRight = "2px";
                     let leftPar = "";
                     let rightPar = "";
-
                     if (widgets[widget].xAxisUnits !== "") {
                         leftPar = "(";
                         rightPar = ")";
                     }
                     div.innerHTML = `
-
                         <i  onclick="windowSwitcher('scatter_plot_settings','${div.id}')" style="position: absolute; transform: translate(262px, -10px)" class="hc p3 hac fa fa-ellipsis-v"></i>
                         <h2 style="${mb}" id="${div.id}_title">${widgets[widget].title}</h2>
                         <p style="transform: translate(-40px,94px) rotate(-90deg); position: absolute; transform-origin-x: 95px; text-align: center; transform-origin-y: 59px; width: 280px;" class="mt0">${widgets[widget].yAxisTitle} <i>${leftPar}${widgets[widget].yAxisUnits}${rightPar}</i></p>
@@ -1957,7 +1953,6 @@ function paintDashboardTab(data) {
                         </style>
                         <i style="position: absolute; transform: translate(250px,-230px);" onclick="resetFnc && resetFnc();" class="hp hc fas fa-search-minus" id="reset-zoom-btn"></i>
                         <div class ="r jc ac m2" id="${div.id}_plot_legend"></div>
-                        
                     `;
                     dashboard.appendChild(div);
 
@@ -1968,14 +1963,16 @@ function paintDashboardTab(data) {
                         display = "none";
                         mb = '';
                     }
+
                     let range = Math.abs(widgets[widget].min - widgets[widget].max);
                     let tic = 270 / range;
                     let angle = Math.floor(270 / (range - data['variables'][widgets[widget].variable]));
                     angle = ((data['variables'][widgets[widget].variable] - widgets[widget].min) * tic) - 135;
+
                     if (angle > 135) angle = 135;
                     if (angle < -135) angle = -135;
-                    div.innerHTML =
-                        `<i  onclick="windowSwitcher('gauge_settings','${div.id}')" style="position: absolute; transform: translate(109px, -5px)" class="hc p3 hac fa fa-ellipsis-v"></i>` +
+
+                    div.innerHTML =  `<i  onclick="windowSwitcher('gauge_settings','${div.id}')" style="position: absolute; transform: translate(109px, -5px)" class="hc p3 hac fa fa-ellipsis-v"></i>` +
                         `<h2 style="${mb}" id="${div.id}_title">${widgets[widget].title}</h2>` +
                         `<h3  id="${div.id}_variable_title" style="font-size:14px; display:${display};" class="m0 mb3 p0" >${widgets[widget].variable}</h3>` +
                         `<svg height="${200 * mod}" width="${200 * mod}">` +
@@ -2113,7 +2110,7 @@ function paintSettingsTab(data) {
                 <h2 class="cw mb3">Project Description: </h2>
             </div>
             <div class="r ac">
-                <button class="ml0 mt4 mb1">Export Project Data</button>
+                <a href="/data?key=${currentProjectData.key}"><button class="ml0 mt4 mb1">Download Project Data</button></a>
             </div>
             <div class="r ac">
                 <button onclick="windowSwitcher('deleteProject')" style="background: #8c2726;" class="ml0 mt4">Delete Project</button>
@@ -2144,12 +2141,10 @@ function paintSettingsTab(data) {
     })
 }
 
-
 function createVariable(name, uid) {
     console.log('Creating Var: ', name, uid);
     ws.send(`{"cmd":"CREATE_VARIABLE", "key":"${currentKey}", "name":"${name}", "onSuccess":"console.log('Success!'); windowSwitcher('none'); getProject(currentUid, currentId);", "onError":""}`);
 }
-
 
 function updateProject(project, id) {
     let variables = document.getElementById('variables');
@@ -2180,7 +2175,6 @@ function updateProject(project, id) {
     }
 
 }
-
 
 function copyToClip(val) {
     let clipMessage = document.getElementById('clip_message');
@@ -2356,23 +2350,21 @@ function variableSave(id, old, key) {
 }
 
 function drawLineGraph(classID, targetID){
+
     let data = {
-        labels: [],
+        labels: ['Jan', 'Mar', 'Jun'],
         series: []
     };
+
+    // Find the widget that corresponds to the id.
     let widget = currentProjectData.widgets.find((widget) => widget.id === targetID);
 
-
     let targetSeries = widget.series;
-    console.log('Line Graph TargetSeries', widget, currentProjectData)
 
     let index = 0;
     let seriesTitles = [];
-
     for (let targetSerie in targetSeries) {
-        console.log('targetSerie', targetSeries[targetSerie], targetSeries[targetSerie].name, currentProjectData.charts)
         let chartData = currentProjectData.charts.find((chart) => chart.name === targetSeries[targetSerie].name);
-        console.log('Chart Data:  ', chartData)
         let seriesData = [];
         let alphaMap = ['a', 'b', 'c', 'd', 'e', 'f'];
         let legend = document.getElementById(`${targetID}_plot_legend`);
@@ -2382,7 +2374,7 @@ function drawLineGraph(classID, targetID){
 
             let dataPoints = chartData.data;
             for (let point in dataPoints) {
-                seriesData.push({x: dataPoints[point].entry, y: dataPoints[point].value});
+                seriesData.push({x: dataPoints[point].entry, y: dataPoints[point].value, time: `Time: ${new Date(dataPoints[point].timestamp)} <br> Value: ${dataPoints[point].value}`});
                 document.getElementById(`${targetID}_plot_styles`).innerHTML = document.getElementById(`${targetID}_plot_styles`).innerHTML +
                     `${classID} .ct-series-${alphaMap[index]} .ct-line,
                      ${classID} .ct-series-${alphaMap[index]} .ct-point {
@@ -2393,14 +2385,13 @@ function drawLineGraph(classID, targetID){
             data.series.push(seriesData)
         }
     }
-
-    console.log('Line Graph Data:  ', data.series)
+    // data.labels = [targetLabels[0], targetLabels[Math.ceil(targetLabels.length/3)], targetLabels[Math.ceil((targetLabels.length/3)*2)], targetLabels[Math.ceil(targetLabels.length)]];
     var options = {
-
         width: '90%',
+
         height: '220px',
         showArea: true,
-        showPoint: false,
+        showPoint: true,
         chartPadding: {
             right: 30
         },
@@ -2414,17 +2405,16 @@ function drawLineGraph(classID, targetID){
             showGrid: true,
             type: Chartist.AutoScaleAxis,
             onlyInteger: true,
-
+            //
             // type: Chartist.FixedScaleAxis,
-            // divisor: 1,
-            // // ticks: [
-            // //     new Date("2018-08-29 06:01:52"),
-            // //     new Date("2018-08-29 06:01:53"),
-            // //     new Date("2018-08-29 06:01:55"),
-            // //     new Date("2018-08-29 06:01:59")
-            // // ],
+            // divisor: 5,
         },
         plugins: [
+            Chartist.plugins.tooltip({
+                pointClass: 'my-cool-point',
+                class: `tooltip-${widget.id}`,
+                appendToBody: false, anchorToPoint: true,
+            }),
             Chartist.plugins.zoom({
                 onZoom: onZoom,
                 resetOnRightMouseBtn: true  // If set to true, a right click in the zoom area, will reset zoom.
@@ -2443,8 +2433,39 @@ function drawLineGraph(classID, targetID){
     ];
 
 
-    new Chartist.Line(classID, data, options, responsiveOptions);
+    let plot = new Chartist.Line(classID, data, options, responsiveOptions);
+    plot.on('draw', function(data) {
+        if(data.type === 'point') {
+            var circle = new Chartist.Svg('circle', {
+                cx: [data.x],
+                cy: [data.y],
+                r: [5],
+                'ct:value': data.series[data.index].time,
+                'ct:meta': data.meta,
+                class: 'my-cool-point',
+            }, 'ct-area');
+            data.element.replace(circle);
+        }
+    });
+
+    plot.container.addEventListener('mouseenter', function(e){
+        let x, i;
+        x = document.querySelectorAll(`.tooltip-${widget.id}`);
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "block";
+        }
+    });
+
+    plot.container.addEventListener('mouseleave', function(e){
+        let x, i;
+        x = document.querySelectorAll(".chartist-tooltip");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+    });
 }
+
+var resetFnc;
 
 function drawScatterPLot(classID, targetID) {
     // var times = function (n) {
@@ -2469,13 +2490,10 @@ function drawScatterPLot(classID, targetID) {
 
 
     let targetSeries = widget.series;
-    console.log('targetSeries', targetSeries, currentProjectData)
     let index = 0;
     let seriesTitles = [];
     for (let targetSerie in targetSeries) {
-        console.log('targetSerie', targetSeries[targetSerie], targetSeries[targetSerie].name, currentProjectData.charts)
         let chartData = currentProjectData.charts.find((chart) => chart.name === targetSeries[targetSerie].name);
-        console.log('Chart Data:  ', chartData)
         let seriesData = [];
         let alphaMap = ['a', 'b', 'c', 'd', 'e', 'f'];
         let legend = document.getElementById(`${targetID}_plot_legend`);
@@ -2526,10 +2544,7 @@ function drawScatterPLot(classID, targetID) {
             Chartist.plugins.zoom({
                 onZoom: onZoom,
                 resetOnRightMouseBtn: true  // If set to true, a right click in the zoom area, will reset zoom.
-            }),
-            // Chartist.plugins.legend({
-            //     legendNames: seriesTitles,
-            // })
+            })
         ],
     };
 
@@ -2548,192 +2563,53 @@ function drawScatterPLot(classID, targetID) {
 
 }
 
-var resetFnc;
-
 function onZoom(chart, reset) {
     resetFnc = reset;
 }
 
 
 
-function windowDoubleCheck(content, options){
-    content.classList.add('c');
-    content.classList.add('ac');
-    content.classList.add('jc');
-    content.style.maxWidth = '500px';
-    content.innerHTML= `
-        <h2 style="text-align:center;">ARE YOU SURE YOU WANT TO <u style="color: red;">DELETE</u> THIS VARIABLE?<br>
+
+/**
+ * @return {string}
+ */
+function DoubleCheckWindow(options){
+    return `
+        <h2 style="max-width:500px; text-align:center;">ARE YOU SURE YOU WANT TO <u style="color: red;">DELETE</u> THIS VARIABLE?<br>
         <div class="r ac jc">
             <button onclick="windowSwitcher('none')">Cancel</button>
             <button onclick ="deleteVariable('${currentUid}','${currentKey}','${options}')" style="background: #8c2726;">DELETE</button>
         </div>
-    `;
-    return content;
-}
-function windowDeleteProject(content){
-    content.classList.add('c');
-    content.classList.add('ac');
-    content.classList.add('jc');
-    content.style.maxWidth = '500px';
-    content.innerHTML= `
-        <h2 style="text-align:center;">ARE YOU SURE YOU WANT TO <u style='color: red;'>DELETE</u> THIS PROJECT?<br><br> <u style="color: red;">All data</u> tied to this project will be lost if deleted.</h2>
+    `;}
+
+function windowDeleteProject(){
+    return `
+        <h2 style="max-width: 500px; text-align:center;">ARE YOU SURE YOU WANT TO <u style='color: red;'>DELETE</u> THIS PROJECT?<br><br> <u style="color: red;">All data</u> tied to this project will be lost if deleted.</h2>
         <div class="r ac jc">
             <button onclick="windowSwitcher('none')">Cancel</button>
             <button onclick ="deleteProject(currentUid, currentId)" style="background: #8c2726;">DELETE</button>
         </div>
     `;
-    return content;
 }
 
-function windowNewKey(content) {
-    content.classList.add('c');
-    content.classList.add('ac');
-    content.classList.add('jc');
-    content.style.maxWidth = '500px';
-    content.innerHTML = `
-        <h2>Are you sure you want to generate a new project key? <u style='color: red;'>All devices</u> using this key will need to have the new key implemented for all the devices connected to this project to continue functioning.</h2>
-        <div class="r ac jc">
-            <button onclick="windowSwitcher('none')">Cancel</button>
-            <button onclick ="newProjectKey('${currentUid}', '${currentId}')" style="background: #8c2726;">New Key</button>
+function windowNewKey() {
+    return `
+        <div style="max-width: 500px;">
+           <h2>Are you sure you want to generate a new project key? <u style='color: red;'>All devices</u> using this key will need to have the new key implemented for all the devices connected to this project to continue functioning.</h2>
+            <div class="r ac jc">
+                <button onclick="windowSwitcher('none')">Cancel</button>
+                <button onclick ="newProjectKey('${currentUid}', '${currentId}')" style="background: #8c2726;">New Key</button>
+            </div>
         </div>
     `;
-    return content;
 }
-function windowWidgetData(content) {
-    content.classList.add('widget-data-settings');
-    let validVariablesForData = '';
-    if (currentProjectData.hasOwnProperty('variables')) {
-        let variables = currentProjectData['variables'];
-        for (let variable in variables) {
-            if (variables.hasOwnProperty(variable)) {
-                if (variable !== 'default') {
-                    validVariablesForData += `<option value="${variable}">${variable}</option>`;
-                }
-            }
-        }
-    }
-    content.innerHTML = `
-        <div class="c ac jc">
-            <h2 class=" mb1"  id="gauge_title">Data Point</h2>
-            <h3 class="m0" style="font-size: 0.8rem;" id="variable_title"></h3>
-            <div style="" class="r ac jc">
-                <h1 id="value">50</h1>
-                <h1 class="m0" id="units"></h1>
-            </div>
-            <div>
-                ${new Date().toLocaleString()}
-            </div>
-            <div class="r mt4 mb3">Variable:&nbsp;
-                <select oninput="variableSettings()" id="variable_title_input">
-                    <optgroup value="Variables">
-                        <option value="">Select a Variable</option>
-                        ${validVariablesForData}
-                    </optgroup>
-                </select>
-                &nbsp;Hide: 
-                <input id="gauge_variable_hide" oninput="gaugeHideVariableName()" style="width: 20px;" type="checkbox">
-            </div>
-            <div class="c jc afe p3 py0">
-                <div class="mb2">
-                    Title: <input id="gauge_title_input" onkeyup="gaugeSettingsTitle()" type="text" value="Data Point">
-                </div>
-            </div>
-            <div class="r mb2 mt0">
-               Units:&nbsp;
-               ${unitsList('', " unitSettings(this)")}
-            </div>
-            <div class="r">
-                <button onclick="windowSwitcher('widget_selection')">Cancel</button>
-                <button onclick="newDataWidget()"> &nbsp;&nbsp;Add&nbsp;&nbsp;</button>
-            </div>
-        </div>      
-    `;
-    return content;
-}
-
-
-
-function windowWidgetGauge(content){
-
-    content.classList.add('widget-gauge-settings');
-
-    // Scale of the gauge.
-    let scale = 1;
-
-    // Build an list of options whereas the values are variables that are numbers.
-    let validVariablesForGauge = "";
-    if (currentProjectData.hasOwnProperty('variables')) {
-        let variables = currentProjectData['variables'];
-        for (let variable in variables) {
-            if(variables.hasOwnProperty(variable)){
-                if (typeof variables[variable] === "number" && variable !== 'default') {
-                    validVariablesForGauge += `<option value="${variable}">${variable}</option>`;
-                }
-            }
-        }
-    }
-    // The content of the window.
-    content.innerHTML =
-        `<div class="c ac jc">
-            <h2 class="mb1"  id="gauge_title">Gauge</h2> 
-            <h3 class="m0" style="font-size: 0.8rem;" id="variable_title"></h3> 
-            <svg class="mt2" height="${200 * scale}" width="${200 * scale}">
-                <circle cx= "${100 * scale}" cy= "${100 * scale}" r="${5 * scale}" fill="#ffffff"/>
-                <path id="gauge_color_1" fill="#0D790A" d="M${29.29 * scale},${170.71 * scale}           A ${100 * scale} ${100 * scale} 0 0 1 ${0 * scale} ${102.5 * scale}                 L ${20 * scale} ${102.5 * scale}               A ${80 * scale} ${80 * scale} 0 0 0 ${43.432 * scale} ${156.568 * scale}"/>
-                <path id="gauge_color_2" fill="#0D790A" d="M${0 * scale},${97.5 * scale}                 A ${100 * scale} ${100 * scale} 0 0 1 ${27.592735 * scale} ${31.12827 * scale}      L ${41.6915 * scale} ${45.227 * scale}         A ${80 * scale} ${80 * scale} 0 0 0 ${20 * scale} ${97.5 * scale} "/>
-                <path id="gauge_color_3" fill="#F3B820" d="M${31.05709 * scale}, ${27.521555 * scale}    A ${100 * scale} ${100 * scale} 0 0 1 ${97.5 * scale} ${0 * scale}                  L ${97.5 * scale} ${20 * scale}                A ${80 * scale} ${80 * scale} 0 0 0 ${45.226855 * scale} ${41.6915 * scale}"/>
-                <path id="gauge_color_4" fill="#F3B820" d="M${102.5 * scale},${0 * scale}                A ${100 * scale} ${100 * scale} 0 0 1 ${168.94291 * scale} ${27.521555 * scale}     L ${154.773145 * scale} ${41.6915 * scale}     A ${80 * scale} ${80 * scale} 0 0 0 ${102.5 * scale} ${20 * scale}"/>
-                <path id="gauge_color_5" fill="#D20303" d="M${172.407265 * scale},${31.12827 * scale}    A ${100 * scale} ${100 * scale} 0 0 1 ${200 * scale} ${97.5 * scale}                L ${180 * scale} ${97.5 * scale}               A ${80 * scale} ${80 * scale} 0 0 0 ${158.3085 * scale} ${45.227 * scale}"/>
-                <path id="gauge_color_6" fill="#D20303" d="M${200 * scale},${102.5 * scale}              A ${100 * scale} ${100 * scale} 0 0 1 ${170.71 * scale} ${170.71 * scale}           L ${156.568 * scale} ${156.568 * scale}        A ${80 * scale} ${80 * scale} 0 0 0 ${180 * scale} ${102.5 * scale}"/>
-                <path style="transform-origin: ${100 * scale}px ${100 * scale}px;" fill="#707070" d="M${95 * scale},${110 * scale} L ${105 * scale} ${110 * scale} L ${102 * scale} ${95 * scale} L ${100 * scale} ${3 * scale} L ${98 * scale} ${95 * scale}"/>
-            </svg> 
-            <div style="transform: translateY(-20px);" class="r ac jc"> 
-                <h2 id="gauge_min_value" class="m0 mr5" >0</h2> 
-                <h2 id="gauge_max_value" class="m0 ml5" >100</h2> 
-            </div> 
-            <div style="transform: translateY(-40px);" class="r ac jc"> 
-                <h1 id="value">50</h1> 
-                <h1 class="m0" id="units"></h1> 
-            </div> 
-            <div class="r mb3">Variable:&nbsp;            
-                <select oninput="variableSettings()" id="variable_title_input">
-                    <optgroup value="Variables">
-                    <option value="">Select a Variable</option>
-                        ${validVariablesForGauge}
-                    </optgroup>
-                </select>
-                &nbsp;Hide: 
-                <input id="gauge_variable_hide" oninput="gaugeHideVariableName()" style="width: 20px;" type="checkbox">
-            </div>
-            <div class="c jc afe p3 pt0">
-                <div class="mb2">Title: <input id="gauge_title_input" onkeyup="gaugeSettingsTitle()" type="text" value="Gauge"></div>
-                <div class="mb2">Min Value: <input type="number" onkeyup="minSettings(this)" onchange="minSettings(this)" value="0"></div>
-                <div class="mb2">Max Value: <input type="number" onkeyup="maxSettings(this)" onchange="maxSettings(this)" value="100"></div>
-            </div>
-            <div class="r jc ac">
-                <input id="color1" oninput="gaugeColorSettings(this, 1)"  style="background: transparent;" class="mx3" type="color" value="#0D790A">
-                <input id="color2" oninput="gaugeColorSettings(this, 2)" style="background: transparent;" class="mx3" type="color" value="#0D790A">
-                <input id="color3" oninput="gaugeColorSettings(this, 3)" style="background: transparent;" class="mx3" type="color" value="#F3B820">
-                <input id="color4" oninput="gaugeColorSettings(this, 4)" style="background: transparent;" class="mx3" type="color" value="#F3B820">
-                <input id="color5" oninput="gaugeColorSettings(this, 5)" style="background: transparent;" class="mx3" type="color" value="#D20303">
-                <input id="color6" oninput="gaugeColorSettings(this, 6)" style="background: transparent;" class="mx3" type="color" value="#D20303">
-            </div>
-            <div class="r mb2 mt4">
-                Units:&nbsp;
-                ${unitsList('', " unitSettings(this)")}
-            </div>
-            <div class="r">
-                <button onclick="windowSwitcher('widget_selection')">Cancel</button>
-                <button onclick="newGaugeWidget(); "> &nbsp;&nbsp;Add&nbsp;&nbsp;</button>
-            </div>
-        </div>
-        `;
-
-    return content;
-}
-function windowNewVariable(content){
-    content.classList.add('new-variable');
-    content.innerHTML = `
+/**
+ * New Variable Window
+ * @function WindowNewVariable
+ * @return {string}
+ */
+function WindowNewVariable(){
+    return `
         <form id="new_variable">
             <h2>Create a New Variable</h2>
             <p>Variable Name:</p>
@@ -2744,17 +2620,15 @@ function windowNewVariable(content){
             </div>
         </form>
     `;
-    content.addEventListener('submit', (e) => {
-        createVariable(document.getElementById('project').value, currentUid);
-        getProjects(currentUid);
-        e.preventDefault();    //stop form from submitting
-    });
-    return content;
 }
-        
 
-function windowNewProject(content){
-    content.innerHTML = `
+/**
+ * New Project Window
+ * @function WindowNewProject
+ * @return {string}
+ */
+function WindowNewProject(){
+    return `
         <form id="create_project"> 
             <h2>Create a New Project</h2>
             <p>Project Name:</p>
@@ -2773,11 +2647,6 @@ function windowNewProject(content){
             </div>
         </form>
     `;
-    content.addEventListener('submit', (e) => {
-        createProject(document.getElementById('project').value, document.getElementById('desc').value, document.querySelector('input[name="access"]:checked').value, document.getElementById('color').value, currentUid);
-        e.preventDefault();    //stop form from submitting
-    });
-    return content;
 }
 function windowProfileSettings(content) {
 
@@ -2803,7 +2672,6 @@ function windowProfileSettings(content) {
         required: true,
         disabled: true,
         onSave: async () => {
-            console.log("Save");
             if (user.displayName === displayNameInput.value) {
                 throw new Error('none');
             }
@@ -2879,76 +2747,113 @@ function windowProfileSettings(content) {
     content.appendChild(closeContent);
     return content;
 }
-function windowWidgetSelection(content) {
-    content.classList.add('widget-selection');
-    let mod = 0.7;
-    content.innerHTML = `
-        <h2 class="mb0">Add Widget</h2>
-        <hr>
-        <div class="c ac jc">
-            <div class="r ac jc" style="flex-wrap: wrap; max-width: 1345px;"> 
-                <div class="c ac jc"> 
-                    <button onclick="windowSwitcher('gauge')" class="bbutton"> 
-                        <svg height="${200 * mod}" width="${200 * mod}">
-                            <circle cx= "${100 * mod}" cy= "${100 * mod}" r="${5 * mod}" fill="#ffffff"/>
-                            <path fill="#0D790A" d="M${29.29 * mod},${170.71 * mod}           A ${100 * mod} ${100 * mod} 0 0 1 ${0 * mod} ${102.5 * mod}                 L ${20 * mod} ${102.5 * mod}               A ${80 * mod} ${80 * mod} 0 0 0 ${43.432 * mod} ${156.568 * mod}"/>
-                            <path fill="#0D790A" d="M${0 * mod},${97.5 * mod}                 A ${100 * mod} ${100 * mod} 0 0 1 ${27.592735 * mod} ${31.12827 * mod}      L ${41.6915 * mod} ${45.227 * mod}         A ${80 * mod} ${80 * mod} 0 0 0 ${20 * mod} ${97.5 * mod} "/>
-                            <path fill="#F3B820" d="M${31.05709 * mod}, ${27.521555 * mod}    A ${100 * mod} ${100 * mod} 0 0 1 ${97.5 * mod} ${0 * mod}                  L ${97.5 * mod} ${20 * mod}                A ${80 * mod} ${80 * mod} 0 0 0 ${45.226855 * mod} ${41.6915 * mod}"/>
-                            <path fill="#F3B820" d="M${102.5 * mod},${0 * mod}                A ${100 * mod} ${100 * mod} 0 0 1 ${168.94291 * mod} ${27.521555 * mod}     L ${154.773145 * mod} ${41.6915 * mod}     A ${80 * mod} ${80 * mod} 0 0 0 ${102.5 * mod} ${20 * mod}"/>
-                            <path fill="#D20303" d="M${172.407265 * mod},${31.12827 * mod}    A ${100 * mod} ${100 * mod} 0 0 1 ${200 * mod} ${97.5 * mod}                L ${180 * mod} ${97.5 * mod}               A ${80 * mod} ${80 * mod} 0 0 0 ${158.3085 * mod} ${45.227 * mod}"/>
-                            <path fill="#D20303" d="M${200 * mod},${102.5 * mod}              A ${100 * mod} ${100 * mod} 0 0 1 ${170.71 * mod} ${170.71 * mod}           L ${156.568 * mod} ${156.568 * mod}        A ${80 * mod} ${80 * mod} 0 0 0 ${180 * mod} ${102.5 * mod}"/>
-                            <path style="transform-origin: ${100 * mod}px ${100 * mod}px;" fill="#707070" d="M${95 * mod},${110 * mod} L ${105 * mod} ${110 * mod} L ${102 * mod} ${95 * mod} L ${100 * mod} ${3 * mod} L ${98 * mod} ${95 * mod}"/>
-                        </svg> 
-                    </button> 
-                    <h2>Gauge</h2> 
-                </div> 
-                <div class="c ac jc">
-                    <button onclick = "windowSwitcher('data')" class="bbutton"><div class="c"><h3>Temperature</h3><h1>24</h1><p>2019-10-26 12:48:01</p></div></button>
-                    <h2>Data Block</h2>
+/**
+ * Widget Selection Window.
+ * @function WidgetSelectionWindow
+ * @return {string}
+ */
+function WidgetSelectionWindow() {
+    return `
+        <div class="widget-selection">
+            <h2 class="mb0">Add Widget</h2>
+            <hr>
+            <div class="c ac jc">
+                <div class="r ac jc" style="flex-wrap: wrap; max-width: 1345px;"> 
+                    <div class="c ac jc"> 
+                        <button onclick="windowSwitcher('gauge')" class="bbutton"> 
+                            <svg height="${200 * 0.7}" width="${200 * 0.7}">
+                                <circle cx= "${100 * 0.7}" cy= "${100 * 0.7}" r="${5 * 0.7}" fill="#ffffff"/>
+                                <path fill="#0D790A" d="M${29.29 * 0.7},${170.71 * 0.7}           A ${100 * 0.7} ${100 * 0.7} 0 0 1 ${0 * 0.7} ${102.5 * 0.7}                 L ${20 * 0.7} ${102.5 * 0.7}               A ${80 * 0.7} ${80 * 0.7} 0 0 0 ${43.432 * 0.7} ${156.568 * 0.7}"/>
+                                <path fill="#0D790A" d="M${0 * 0.7},${97.5 * 0.7}                 A ${100 * 0.7} ${100 * 0.7} 0 0 1 ${27.592735 * 0.7} ${31.12827 * 0.7}      L ${41.6915 * 0.7} ${45.227 * 0.7}         A ${80 * 0.7} ${80 * 0.7} 0 0 0 ${20 * 0.7} ${97.5 * 0.7} "/>
+                                <path fill="#F3B820" d="M${31.05709 * 0.7}, ${27.521555 * 0.7}    A ${100 * 0.7} ${100 * 0.7} 0 0 1 ${97.5 * 0.7} ${0 * 0.7}                  L ${97.5 * 0.7} ${20 * 0.7}                A ${80 * 0.7} ${80 * 0.7} 0 0 0 ${45.226855 * 0.7} ${41.6915 * 0.7}"/>
+                                <path fill="#F3B820" d="M${102.5 * 0.7},${0 * 0.7}                A ${100 * 0.7} ${100 * 0.7} 0 0 1 ${168.94291 * 0.7} ${27.521555 * 0.7}     L ${154.773145 * 0.7} ${41.6915 * 0.7}     A ${80 * 0.7} ${80 * 0.7} 0 0 0 ${102.5 * 0.7} ${20 * 0.7}"/>
+                                <path fill="#D20303" d="M${172.407265 * 0.7},${31.12827 * 0.7}    A ${100 * 0.7} ${100 * 0.7} 0 0 1 ${200 * 0.7} ${97.5 * 0.7}                L ${180 * 0.7} ${97.5 * 0.7}               A ${80 * 0.7} ${80 * 0.7} 0 0 0 ${158.3085 * 0.7} ${45.227 * 0.7}"/>
+                                <path fill="#D20303" d="M${200 * 0.7},${102.5 * 0.7}              A ${100 * 0.7} ${100 * 0.7} 0 0 1 ${170.71 * 0.7} ${170.71 * 0.7}           L ${156.568 * 0.7} ${156.568 * 0.7}        A ${80 * 0.7} ${80 * 0.7} 0 0 0 ${180 * 0.7} ${102.5 * 0.7}"/>
+                                <path style="transform-origin: ${100 * 0.7}px ${100 * 0.7}px;" fill="#707070" d="M${95 * 0.7},${110 * 0.7} L ${105 * 0.7} ${110 * 0.7} L ${102 * 0.7} ${95 * 0.7} L ${100 * 0.7} ${3 * 0.7} L ${98 * 0.7} ${95 * 0.7}"/>
+                            </svg> 
+                        </button> 
+                        <h2>Gauge</h2> 
+                    </div> 
+                    <div class="c ac jc">
+                        <button onclick = "windowSwitcher('data')" class="bbutton"><div class="c"><h3>Temperature</h3><h1>24</h1><p>2019-10-26 12:48:01</p></div></button>
+                        <h2>Data Block</h2>
+                    </div>
+                    <div class="c ac jc">   
+                        <button onclick = "windowSwitcher('line_graph')" class="bbutton"><div class="ct-chart-line-chart-widget"></div></button>
+                        <h2>Line Graph</h2>
+                    </div>
+                    <div class="c ac jc">
+                        <button onclick = "windowSwitcher('plot_graph')" class="bbutton"><div class="ct-chart-scatter-chart-widget"></div></button>
+                        <h2>Scatter Plot</h2>
+                    </div>
                 </div>
-<!--                    <div class="c ac jc">-->
-<!--                        <button class="bbutton"><input class="slider" type="range"></button>-->
-<!--                        <h2>Slider</h2>-->
-<!--                    </div>-->
-<!--                    <div class="c ac jc">-->
-<!--                        <button class="bbutton"><div class="ct-chart-pie-widget"></div></button>-->
-<!--                        <h2>Pie Chart</h2>-->
-<!--                    </div>-->
-                <div class="c ac jc">   
-                    <button onclick = "windowSwitcher('line_graph')" class="bbutton"><div class="ct-chart-line-chart-widget"></div></button>
-                    <h2>Line Graph</h2>
+                <div class="r">
+                    <button onclick="windowSwitcher('none')">Cancel</button>
                 </div>
-                <div class="c ac jc">
-                    <button onclick = "windowSwitcher('plot_graph')" class="bbutton"><div class="ct-chart-scatter-chart-widget"></div></button>
-                    <h2>Scatter Plot</h2>
+            </div>
+        </div>
+    `;
+
+}
+/**
+ * @return {string}
+ */
+function CreateDataWidgetWindow() {
+    let validVariablesForData = '';
+    if (currentProjectData.hasOwnProperty('variables')) {
+        let variables = currentProjectData['variables'];
+        for (let variable in variables) {
+            if (variables.hasOwnProperty(variable)) {
+                if (variable !== 'default') {
+                    validVariablesForData += `<option value="${variable}">${variable}</option>`;
+                }
+            }
+        }
+    }
+    return `
+        <div class="widget-data-settings c ac jc">
+            <h2 class=" mb1"  id="gauge_title">Data Point</h2>
+            <h3 class="m0" style="font-size: 0.8rem;" id="variable_title"></h3>
+            <div style="" class="r ac jc">
+                <h1 id="value">50</h1>
+                <h1 class="m0" id="units"></h1>
+            </div>
+            <div>
+                ${new Date().toLocaleString()}
+            </div>
+            <div class="r mt4 mb3">Variable:&nbsp;
+                <select oninput="variableSettings()" id="variable_title_input">
+                    <optgroup value="Variables">
+                        <option value="">Select a Variable</option>
+                        ${validVariablesForData}
+                    </optgroup>
+                </select>
+                &nbsp;Hide: 
+                <input id="gauge_variable_hide" oninput="gaugeHideVariableName()" style="width: 20px;" type="checkbox">
+            </div>
+            <div class="c jc afe p3 py0">
+                <div class="mb2">
+                    Title: <input id="gauge_title_input" onkeyup="gaugeSettingsTitle()" type="text" value="Data Point">
                 </div>
-<!--                    <div class="c ac jc">-->
-<!--                        <button class="bbutton"><div class="mr3 ct-chart-histo-chart-widget"></div></button>-->
-<!--                        <h2>Bar Graph</h2>-->
-<!--                    </div>-->
-<!--                    <div class="c ac jc">-->
-<!--                        <button class="bbutton"></button>-->
-<!--                        <h2>Raw Data</h2>-->
-<!--                    </div>-->
+            </div>
+            <div class="r mb2 mt0">
+               Units:&nbsp;
+               ${unitsList('', " unitSettings(this)")}
             </div>
             <div class="r">
-                <button onclick="windowSwitcher('none')">Cancel</button>
+                <button onclick="windowSwitcher('widget_selection')">Cancel</button>
+                <button onclick="newDataWidget()"> &nbsp;&nbsp;Add&nbsp;&nbsp;</button>
             </div>
-        </div>`;
-
-    return content;
+        </div>      
+    `;
 }
-//
-// Gauge Settings Edit Window.
-//
 
-function windowGaugeSettings(content, options) {
 
-    // Find the current gauge.
-    let gauge = currentProjectData.widgets.find((widget) => widget.id === options);
 
-    // Scale of the gauge.
-    let scale = 1;
+/**
+ * @return {string}
+ */
+function CreateGaugeWidgetWindow(){
 
     // Build an list of options whereas the values are variables that are numbers.
     let validVariablesForGauge = "";
@@ -2957,147 +2862,74 @@ function windowGaugeSettings(content, options) {
         for (let variable in variables) {
             if(variables.hasOwnProperty(variable)){
                 if (typeof variables[variable] === "number" && variable !== 'default') {
-                    if(variable ===gauge.variable){
-                        validVariablesForGauge += `<option selected value="${variable}">${variable}</option>`;
-                    }
-                    else{
-                        validVariablesForGauge += `<option value="${variable}">${variable}</option>`;
-                    }
+                    validVariablesForGauge += `<option value="${variable}">${variable}</option>`;
                 }
             }
         }
     }
 
-    let hideValue = '';
-    let hideTopTitle = '';
-    if(gauge.hide === 'true'){
-        hideValue= "checked";
-        hideTopTitle = "dn";
-    }
-
-    content.id = 'window_content_block';
-    content.innerHTML = `
-        <i style="color: red; top: 5px; right: 0;" class="por fs125 hc hp fa fa-trash-alt" onclick="removeGaugeWidget('${gauge.id}')"></i> 
-        <div class="c ac jc">
-            <h2 class=" mb1"  id="gauge_title">${gauge.title}</h2>
-            <h3 class="m0 ${hideTopTitle}" style="font-size: 0.8rem;" id="variable_title">${gauge.variable}</h3> 
-            <svg class="mt2" height="${200 * scale}" width="${200 * scale}">
-                <circle cx= "${100 * scale}" cy= "${100 * scale}" r="${5 * scale}" fill="#ffffff"/>
-                <path id="gauge_color_1" fill="${gauge.color1}" d="M${29.29 * scale},${170.71 * scale}           A ${100 * scale} ${100 * scale} 0 0 1 ${0 * scale} ${102.5 * scale}                 L ${20 * scale} ${102.5 * scale}               A ${80 * scale} ${80 * scale} 0 0 0 ${43.432 * scale} ${156.568 * scale}"/>
-                <path id="gauge_color_2" fill="${gauge.color2}" d="M${0 * scale},${97.5 * scale}                 A ${100 * scale} ${100 * scale} 0 0 1 ${27.592735 * scale} ${31.12827 * scale}      L ${41.6915 * scale} ${45.227 * scale}         A ${80 * scale} ${80 * scale} 0 0 0 ${20 * scale} ${97.5 * scale} "/>
-                <path id="gauge_color_3" fill="${gauge.color3}" d="M${31.05709 * scale}, ${27.521555 * scale}    A ${100 * scale} ${100 * scale} 0 0 1 ${97.5 * scale} ${0 * scale}                  L ${97.5 * scale} ${20 * scale}                A ${80 * scale} ${80 * scale} 0 0 0 ${45.226855 * scale} ${41.6915 * scale}"/>
-                <path id="gauge_color_4" fill="${gauge.color4}" d="M${102.5 * scale},${0 * scale}                A ${100 * scale} ${100 * scale} 0 0 1 ${168.94291 * scale} ${27.521555 * scale}     L ${154.773145 * scale} ${41.6915 * scale}     A ${80 * scale} ${80 * scale} 0 0 0 ${102.5 * scale} ${20 * scale}"/>
-                <path id="gauge_color_5" fill="${gauge.color5}" d="M${172.407265 * scale},${31.12827 * scale}    A ${100 * scale} ${100 * scale} 0 0 1 ${200 * scale} ${97.5 * scale}                L ${180 * scale} ${97.5 * scale}               A ${80 * scale} ${80 * scale} 0 0 0 ${158.3085 * scale} ${45.227 * scale}"/>
-                <path id="gauge_color_6" fill="${gauge.color6}" d="M${200 * scale},${102.5 * scale}              A ${100 * scale} ${100 * scale} 0 0 1 ${170.71 * scale} ${170.71 * scale}           L ${156.568 * scale} ${156.568 * scale}        A ${80 * scale} ${80 * scale} 0 0 0 ${180 * scale} ${102.5 * scale}"/>
-                <path style="transform-origin: ${100 * scale}px ${100 * scale}px;" fill="#707070" d="M${95 * scale},${110 * scale} L ${105 * scale} ${110 * scale} L ${102 * scale} ${95 * scale} L ${100 * scale} ${3 * scale} L ${98 * scale} ${95 * scale}"/>
+    // The content of the window.
+    return `
+        <div class="widget-gauge-settings c ac jc">
+            <h2 class="mb1"  id="gauge_title">Gauge</h2> 
+            <h3 class="m0" style="font-size: 0.8rem;" id="variable_title"></h3> 
+            <svg class="mt2" height="${200 * 1}" width="${200 * 1}">
+                <circle cx= "${100 * 1}" cy= "${100 * 1}" r="${5 * 1}" fill="#ffffff"/>
+                <path id="gauge_color_1" fill="#0D790A" d="M${29.29 * 1},${170.71 * 1}           A ${100 * 1} ${100 * 1} 0 0 1 ${0 * 1} ${102.5 * 1}                 L ${20 * 1} ${102.5 * 1}               A ${80 * 1} ${80 * 1} 0 0 0 ${43.432 * 1} ${156.568 * 1}"/>
+                <path id="gauge_color_2" fill="#0D790A" d="M${0 * 1},${97.5 * 1}                 A ${100 * 1} ${100 * 1} 0 0 1 ${27.592735 * 1} ${31.12827 * 1}      L ${41.6915 * 1} ${45.227 * 1}         A ${80 * 1} ${80 * 1} 0 0 0 ${20 * 1} ${97.5 * 1} "/>
+                <path id="gauge_color_3" fill="#F3B820" d="M${31.05709 * 1}, ${27.521555 * 1}    A ${100 * 1} ${100 * 1} 0 0 1 ${97.5 * 1} ${0 * 1}                  L ${97.5 * 1} ${20 * 1}                A ${80 * 1} ${80 * 1} 0 0 0 ${45.226855 * 1} ${41.6915 * 1}"/>
+                <path id="gauge_color_4" fill="#F3B820" d="M${102.5 * 1},${0 * 1}                A ${100 * 1} ${100 * 1} 0 0 1 ${168.94291 * 1} ${27.521555 * 1}     L ${154.773145 * 1} ${41.6915 * 1}     A ${80 * 1} ${80 * 1} 0 0 0 ${102.5 * 1} ${20 * 1}"/>
+                <path id="gauge_color_5" fill="#D20303" d="M${172.407265 * 1},${31.12827 * 1}    A ${100 * 1} ${100 * 1} 0 0 1 ${200 * 1} ${97.5 * 1}                L ${180 * 1} ${97.5 * 1}               A ${80 * 1} ${80 * 1} 0 0 0 ${158.3085 * 1} ${45.227 * 1}"/>
+                <path id="gauge_color_6" fill="#D20303" d="M${200 * 1},${102.5 * 1}              A ${100 * 1} ${100 * 1} 0 0 1 ${170.71 * 1} ${170.71 * 1}           L ${156.568 * 1} ${156.568 * 1}        A ${80 * 1} ${80 * 1} 0 0 0 ${180 * 1} ${102.5 * 1}"/>
+                <path style="transform-origin: ${100 * 1}px ${100 * 1}px;" fill="#707070" d="M${95 * 1},${110 * 1} L ${105 * 1} ${110 * 1} L ${102 * 1} ${95 * 1} L ${100 * 1} ${3 * 1} L ${98 * 1} ${95 * 1}"/>
             </svg> 
             <div style="transform: translateY(-20px);" class="r ac jc"> 
-                <h2 id="gauge_min_value" class="m0 mr5" >${gauge.min}</h2> 
-                <h2 id="gauge_max_value" class="m0 ml5" >${gauge.max}</h2> 
+                <h2 id="gauge_min_value" class="m0 mr5" >0</h2> 
+                <h2 id="gauge_max_value" class="m0 ml5" >100</h2> 
             </div> 
             <div style="transform: translateY(-40px);" class="r ac jc"> 
-                <h1 id="value">${currentProjectData.variables[gauge.variable]}</h1> 
-                <h1 class="m0" id="units">${gauge.units}</h1> 
+                <h1 id="value">50</h1> 
+                <h1 class="m0" id="units"></h1> 
             </div> 
-             <div class="r mb3">Variable:&nbsp;            
-                <select value="${gauge.variable}" oninput="variableSettings()" id="${gauge.id}_variable_title_input">
-                    <option disabled value="">Select a Variable</option>
-                    ${validVariablesForGauge}
+            <div class="r mb3">Variable:&nbsp;            
+                <select oninput="variableSettings()" id="variable_title_input">
+                    <optgroup value="Variables">
+                    <option value="">Select a Variable</option>
+                        ${validVariablesForGauge}
+                    </optgroup>
                 </select>
                 &nbsp;Hide: 
-                <input id="gauge_variable_hide" ${hideValue} oninput="gaugeHideVariableName()" style="width: 20px;" type="checkbox">
+                <input id="gauge_variable_hide" oninput="gaugeHideVariableName()" style="width: 20px;" type="checkbox">
             </div>
             <div class="c jc afe p3 pt0">
-                <div class="mb2">Title: <input id="gauge_title_input" onkeyup="gaugeSettingsTitle()" type="text" value="${gauge.title}"></div>
-                <div class="mb2">Min Value: <input type="number" onkeyup="minSettings(this)" onchange="minSettings(this)" value="${gauge.min}"></div>
-                <div class="mb2">Max Value: <input type="number" onkeyup="maxSettings(this)" onchange="maxSettings(this)" value="${gauge.max}"></div>
+                <div class="mb2">Title: <input id="gauge_title_input" onkeyup="gaugeSettingsTitle()" type="text" value="Gauge"></div>
+                <div class="mb2">Min Value: <input type="number" onkeyup="minSettings(this)" onchange="minSettings(this)" value="0"></div>
+                <div class="mb2">Max Value: <input type="number" onkeyup="maxSettings(this)" onchange="maxSettings(this)" value="100"></div>
             </div>
             <div class="r jc ac">
-                <input id="color1" oninput="gaugeColorSettings(this, 1)"  style="background: transparent;" class="mx3" type="color" value="${gauge.color1}">
-                <input id="color2" oninput="gaugeColorSettings(this, 2)" style="background: transparent;" class="mx3" type="color" value="${gauge.color2}">
-                <input id="color3" oninput="gaugeColorSettings(this, 3)" style="background: transparent;" class="mx3" type="color" value="${gauge.color3}">
-                <input id="color4" oninput="gaugeColorSettings(this, 4)" style="background: transparent;" class="mx3" type="color" value="${gauge.color4}">
-                <input id="color5" oninput="gaugeColorSettings(this, 5)" style="background: transparent;" class="mx3" type="color" value="${gauge.color5}">
-                <input id="color6" oninput="gaugeColorSettings(this, 6)" style="background: transparent;" class="mx3" type="color" value="${gauge.color6}">
+                <input id="color1" oninput="gaugeColorSettings(this, 1)"  style="background: transparent;" class="mx3" type="color" value="#0D790A">
+                <input id="color2" oninput="gaugeColorSettings(this, 2)" style="background: transparent;" class="mx3" type="color" value="#0D790A">
+                <input id="color3" oninput="gaugeColorSettings(this, 3)" style="background: transparent;" class="mx3" type="color" value="#F3B820">
+                <input id="color4" oninput="gaugeColorSettings(this, 4)" style="background: transparent;" class="mx3" type="color" value="#F3B820">
+                <input id="color5" oninput="gaugeColorSettings(this, 5)" style="background: transparent;" class="mx3" type="color" value="#D20303">
+                <input id="color6" oninput="gaugeColorSettings(this, 6)" style="background: transparent;" class="mx3" type="color" value="#D20303">
             </div>
-             <div class="r mb2 mt4">
+            <div class="r mb2 mt4">
                 Units:&nbsp;
-                ${unitsList('settings_variable_units', " unitSettings(this)", gauge.units)}
+                ${unitsList('', " unitSettings(this)")}
             </div>
             <div class="r">
-                <button onclick="windowSwitcher('none')">Cancel</button>
-                <button onclick="updateGaugeWidget('${gauge.id}')"> &nbsp;Save&nbsp;</button>
+                <button onclick="windowSwitcher('widget_selection')">Cancel</button>
+                <button onclick="newGaugeWidget(); "> &nbsp;&nbsp;Add&nbsp;&nbsp;</button>
             </div>
         </div>
     `;
-    return content;
 }
+/**
+ * @return {string}
+ */
+function CreateLineGraphWidgetWindow(){
 
-
-function windowDataSettings(content, options){
-
-    // Find the widget.
-    let dataWidget = currentProjectData.widgets.find((widget) => widget.id === options);
-
-    // Build an list of options whereas the values are variables that are numbers.
-    let validVariablesForGauge = "";
-    if (currentProjectData.hasOwnProperty('variables')) {
-        let variables = currentProjectData['variables'];
-        for (let variable in variables) {
-            if(variables.hasOwnProperty(variable)){
-                if (variable !== 'default') {
-                    if (variable === dataWidget.variable) {
-                        validVariablesForGauge += `<option selected value="${variable}">${variable}</option>`;
-                    } else {
-                        validVariablesForGauge += `<option value="${variable}">${variable}</option>`;
-                    }
-                }
-            }
-        }
-    }
-
-    let hideValue = '';
-    let hideTopTitle = '';
-    if(dataWidget.hide === 'true'){
-        hideValue= "checked";
-        hideTopTitle = "dn";
-    }
-
-    content.innerHTML = `
-        <i style="color: red; top: 5px; right: 0;" class="por fs125 hc hp fa fa-trash-alt" onclick="removeDataWidget('${dataWidget.id}')"></i>
-        <div class="c ac jc">
-            <h2 class=" mb1"  id="gauge_title">${dataWidget.title}</h2>
-            <h3 class="m0 ${hideTopTitle}" style="font-size: 0.8rem;" id="variable_title">${dataWidget.variable}</h3>
-            <div style="" class="r ac jc">
-                <h1 id="value">${currentProjectData.variables[dataWidget.variable]}</h1>
-                <h1 class="m0" id="units">${dataWidget.units}</h1>
-            </div> 
-            <div>${new Date().toLocaleString()}</div>
-            <div class="r mt4 mb3">Variable:&nbsp;            
-                <select value="${dataWidget.variable}" oninput="variableSettings()" id="${dataWidget.id}_variable_title_input">
-                    <option disabled value="">Select a Variable</option>
-                    ${validVariablesForGauge}
-                </select>
-                &nbsp;Hide: 
-                <input id="gauge_variable_hide" ${hideValue} oninput="gaugeHideVariableName()" style="width: 20px;" type="checkbox">
-            </div>
-            <div class="c jc afe p3 pt0">
-                <div class="mb2">Title: <input id="gauge_title_input" onkeyup="gaugeSettingsTitle()" type="text" value="${dataWidget.title}"></div>
-            </div>        
-            <div class="r mb2">
-                Units:&nbsp;
-                ${unitsList('settings_variable_units', " unitSettings(this)", dataWidget.units)}
-            </div>
-            <div class="r">
-                <button onclick="windowSwitcher('none')">Cancel</button>
-                <button onclick="updateDataWidget('${dataWidget.id}')"> &nbsp;Save&nbsp;</button>
-            </div>
-        </div>
-    `;
-    return content;
-}
-function windowWidgetLineGraph(content, options){
-    content.classList.add('widget-plot-graph-settings');
     let validScatterChart = "";
     if (currentProjectData.hasOwnProperty('charts')) {
         let charts = currentProjectData['charts'];
@@ -3109,6 +2941,7 @@ function windowWidgetLineGraph(content, options){
             }
         }
     }
+
     let defaultColor = [
         '#ff0000',
         '#0000ff',
@@ -3116,27 +2949,24 @@ function windowWidgetLineGraph(content, options){
         '#fff000',
         '#ff7902'
     ];
-    content.innerHTML =
-        `<div class="c ac jc">
+
+    return `
+        <div class="widget-plot-graph-settings c ac jc">
             <h2 class="mb1"  id="gauge_title">Line Graph</h2> 
             <h3 class="m0" style="font-size: 0.8rem;" id="variable_title"></h3> 
             <div>
                 <div id="new_y_title_units" class="ct-pl-y-title-units"></div>
                 <div id="new_y_title" class="ct-pl-y-title fs15">y</div>
                 <div class="ct-widget-line-graph-settings"></div>
-                <div id="new_x_title_units" class="ct-pl-x-title-units"></div>
-                <div id="new_x_title" class="ct-pl-x-title tac fs15">x</div>
+     
             </div>
             <div class="c jc afe p3 pt0">
                 <div class="mb2">Title: <input id="gauge_title_input" onkeyup="gaugeSettingsTitle()" type="text" value="Line Graph"></div>
-                <div class="mb2">X Title: <input id = 'x_axis_title' onkeyup="labelUpdate(this, 'new_x_title')" type="text" value="x"></div>
+                
                 <div class="mb2">Y Title: <input id = 'y_axis_title' onkeyup="labelUpdate(this, 'new_y_title')" type="text" value="y"></div>
             </div>
             <div>
-               <div class="r mb2">
-                    X Axis Units:&nbsp;
-                    ${unitsList('x_axis_units', "unitSettings(this, 'new_x_title_units')")}
-               </div>
+              
                <div class="r mb2 mt4">
                     Y Axis Units:&nbsp;
                     ${unitsList('y_axis_units', " unitSettings(this, 'new_y_title_units')")}
@@ -3164,7 +2994,6 @@ function windowWidgetLineGraph(content, options){
             </div>
         </div>
     `;
-    return content;
 }
 
 
@@ -3218,8 +3047,10 @@ function drawLineGraphWindow(){
 
 }
 
-function windowWidgetPlotGraph(content, options){
-    content.classList.add('widget-plot-graph-settings');
+/**
+ * @return {string}
+ */
+function CreateScatterPlotWidgetWindow(){
 
     let validScatterChart = "";
     if (currentProjectData.hasOwnProperty('charts')) {
@@ -3240,8 +3071,9 @@ function windowWidgetPlotGraph(content, options){
         '#fff000',
         '#ff7902'
     ];
-    content.innerHTML =
-        `<div class="c ac jc">
+
+    return `
+        <div class="widget-plot-graph-settings c ac jc">
             <h2 class="mb1"  id="gauge_title">Scatter Plot</h2> 
             <h3 class="m0" style="font-size: 0.8rem;" id="variable_title"></h3> 
             <div>
@@ -3257,30 +3089,26 @@ function windowWidgetPlotGraph(content, options){
                 <div class="mb2">Y Title: <input id = 'y_axis_title' onkeyup="labelUpdate(this, 'new_y_title')" type="text" value="y"></div>
             </div>
             <div>
-               <div class="r mb2">
+                <div class="r mb2">
                     X Axis Units:&nbsp;
                     ${unitsList('x_axis_units', "unitSettings(this, 'new_x_title_units')")}
-               </div>
-               <div class="r mb2 mt4">
+                </div>
+                <div class="r mb2 mt4">
                     Y Axis Units:&nbsp;
                     ${unitsList('y_axis_units', " unitSettings(this, 'new_y_title_units')")}
-               </div>
-               
-               <div class="c ac jc" id="series_list">
-                   <div class="r ac mt4 mb3">Series 1:&nbsp;
-                            
-                       <select id="series_0">
+                </div>
+                <div class="c ac jc" id="series_list">
+                    <div class="r ac mt4 mb3">Series 1:&nbsp;
+                        <select id="series_0">
                             <optgroup>
-                            <option value="">Select a data set</option>
+                                <option value="">Select a data set</option>
                                 ${validScatterChart}
                             </optgroup>
-                       </select>         
-                       <input id = 'series_0_color' value = "${defaultColor[0]}" type="color">        
-                   </div>
-
+                        </select>         
+                        <input id = 'series_0_color' value = "${defaultColor[0]}" type="color">        
+                    </div>
                 </div>
-               <div id="series_add_button" onclick="addSeries('series_list')" class="r ac jc hp hc fa fa-plus mb3 fs125">&nbsp;&nbsp;<b class="">Add Series</b></div>
-
+                <div id="series_add_button" onclick="addSeries('series_list')" class="r ac jc hp hc fa fa-plus mb3 fs125">&nbsp;&nbsp;<b class="">Add Series</b></div>
             </div>
             <div class="r">
                 <button onclick="windowSwitcher('widget_selection')">Cancel</button>
@@ -3288,7 +3116,6 @@ function windowWidgetPlotGraph(content, options){
             </div>
         </div>
     `;
-    return content;
 }
 
 
@@ -3336,7 +3163,6 @@ function addSeries(id){
 function labelUpdate(src_el, target_id){
     document.getElementById(target_id).innerText = src_el.value;
 }
-
 function drawPLotWindow(){
     var times = function (n) {
         return Array.apply(null, new Array(n));
@@ -3387,48 +3213,251 @@ function drawPLotWindow(){
 
 }
 
-//
-// Scatter Plot Settings Edit Window.
-//
+/**
+ * Data Widget Edit Window.
+ * @function EditDataWidgetWindow
+ * @param {string} widgetId - Widget Id.
+ * @return {string}
+ */
+function EditDataWidgetWindow(widgetId){
 
-function windowScatterSettings(content, options) {
+    let widget = currentProjectData.widgets.find((widget) => widget.id === widgetId);
 
-    let plot = currentProjectData.widgets.find((widget) => widget.id === options);
+    // Build an list of options whereas the values are variables that are numbers.
+    let validVariablesForGauge = "";
+    if (currentProjectData.hasOwnProperty('variables')) {
+        let variables = currentProjectData['variables'];
+        for (let variable in variables) {
+            if(variables.hasOwnProperty(variable)){
+                if (variable !== 'default') {
+                    if (variable === widget.variable) {
+                        validVariablesForGauge += `<option selected value="${variable}">${variable}</option>`;
+                    } else {
+                        validVariablesForGauge += `<option value="${variable}">${variable}</option>`;
+                    }
+                }
+            }
+        }
+    }
 
-    content.id = 'window_content_block';
-    content.innerHTML = `
-         <i style="color: red; top: 5px; right: 0;" class="por fs125 hc hp fa fa-trash-alt" onclick="removePlotWidget('${options}')"></i> 
-         <div class="c ac jc">
-             <h2 class=" mb1"  id="gauge_title">${plot.title}</h2>
-             <div>
-                <div id="new_y_title_units" class="ct-pl-y-title-units">${plot.yAxisUnits}</div>
-                <div id="new_y_title" class="ct-pl-y-title fs15">${plot.yAxisTitle}</div>
-                <div class="ct-widget-plot-graph-settings"></div>
-                <div id="new_x_title_units" class="ct-pl-x-title-units">${plot.xAxisUnits}</div>
-                <div id="new_x_title" class="ct-pl-x-title tac fs15">${plot.xAxisTitle}</div>
+    let hideValue = '';
+    let hideTopTitle = '';
+    if(widget.hide === 'true'){
+        hideValue= "checked";
+        hideTopTitle = "dn";
+    }
+
+    return `
+        <i style="color: red; top: 5px; right: 0;" class="por fs125 hc hp fa fa-trash-alt" onclick="removeDataWidget('${widget.id}')"></i>
+        <div class="c ac jc">
+            <h2 class=" mb1"  id="gauge_title">${widget.title}</h2>
+            <h3 class="m0 ${hideTopTitle}" style="font-size: 0.8rem;" id="variable_title">${widget.variable}</h3>
+            <div style="" class="r ac jc">
+                <h1 id="value">${currentProjectData.variables[widget.variable]}</h1>
+                <h1 class="m0" id="units">${widget.units}</h1>
+            </div> 
+            <div>${new Date().toLocaleString()}</div>
+            <div class="r mt4 mb3">Variable:&nbsp;            
+                <select value="${widget.variable}" oninput="variableSettings()" id="${widget.id}_variable_title_input">
+                    <option disabled value="">Select a Variable</option>
+                    ${validVariablesForGauge}
+                </select>
+                &nbsp;Hide: 
+                <input id="gauge_variable_hide" ${hideValue} oninput="gaugeHideVariableName()" style="width: 20px;" type="checkbox">
             </div>
             <div class="c jc afe p3 pt0">
-                <div class="mb2">Title: <input id="gauge_title_input" onkeyup="gaugeSettingsTitle()" type="text" value="${plot.title}"></div>
-                <div class="mb2">X Title: <input id = 'x_axis_title' onkeyup="labelUpdate(this, 'new_x_title')" type="text" value="${plot.xAxisTitle}"></div>
-                <div class="mb2">Y Title: <input id = 'y_axis_title' onkeyup="labelUpdate(this, 'new_y_title')" type="text" value="${plot.yAxisTitle}"></div>
+                <div class="mb2">Title: <input id="gauge_title_input" onkeyup="gaugeSettingsTitle()" type="text" value="${widget.title}"></div>
+            </div>        
+            <div class="r mb2">
+                Units:&nbsp;
+                ${unitsList('settings_variable_units', " unitSettings(this)", widget.units)}
+            </div>
+            <div class="r">
+                <button onclick="windowSwitcher('none')">Cancel</button>
+                <button onclick="updateDataWidget('${widget.id}')"> &nbsp;Save&nbsp;</button>
+            </div>
+        </div>
+    `;
+}
+/**
+ * Gauge Widget Edit Window.
+ * @function EditGaugeWidgetWindow
+ * @param {string} widgetId - Widget Id.
+ * @return {string}
+ */
+function EditGaugeWidgetWindow(widgetId) {
+
+    let widget = currentProjectData.widgets.find((widget) => widget.id === widgetId);
+
+    // Scale of the widget.
+    let scale = 1;
+
+    // Build an list of options whereas the values are variables that are numbers.
+    let validVariablesForGauge = "";
+    if (currentProjectData.hasOwnProperty('variables')) {
+        let variables = currentProjectData['variables'];
+        for (let variable in variables) {
+            if(variables.hasOwnProperty(variable)){
+                if (typeof variables[variable] === "number" && variable !== 'default') {
+                    if(variable === widget.variable){
+                        validVariablesForGauge += `<option selected value="${variable}">${variable}</option>`;
+                    }
+                    else{
+                        validVariablesForGauge += `<option value="${variable}">${variable}</option>`;
+                    }
+                }
+            }
+        }
+    }
+
+    let hideValue = '';
+    let hideTopTitle = '';
+    if(widget.hide === 'true'){
+        hideValue= "checked";
+        hideTopTitle = "dn";
+    }
+
+    return `
+        <i style="color: red; top: 5px; right: 0;" class="por fs125 hc hp fa fa-trash-alt" onclick="removeGaugeWidget('${widget.id}')"></i> 
+        <div class="c ac jc">
+            <h2 class=" mb1"  id="gauge_title">${widget.title}</h2>
+            <h3 class="m0 ${hideTopTitle}" style="font-size: 0.8rem;" id="variable_title">${widget.variable}</h3> 
+            <svg class="mt2" height="${200 * scale}" width="${200 * scale}">
+                <circle cx= "${100 * scale}" cy= "${100 * scale}" r="${5 * scale}" fill="#ffffff"/>
+                <path id="gauge_color_1" fill="${widget.color1}" d="M${29.29 * scale},${170.71 * scale}           A ${100 * scale} ${100 * scale} 0 0 1 ${0 * scale} ${102.5 * scale}                 L ${20 * scale} ${102.5 * scale}               A ${80 * scale} ${80 * scale} 0 0 0 ${43.432 * scale} ${156.568 * scale}"/>
+                <path id="gauge_color_2" fill="${widget.color2}" d="M${0 * scale},${97.5 * scale}                 A ${100 * scale} ${100 * scale} 0 0 1 ${27.592735 * scale} ${31.12827 * scale}      L ${41.6915 * scale} ${45.227 * scale}         A ${80 * scale} ${80 * scale} 0 0 0 ${20 * scale} ${97.5 * scale} "/>
+                <path id="gauge_color_3" fill="${widget.color3}" d="M${31.05709 * scale}, ${27.521555 * scale}    A ${100 * scale} ${100 * scale} 0 0 1 ${97.5 * scale} ${0 * scale}                  L ${97.5 * scale} ${20 * scale}                A ${80 * scale} ${80 * scale} 0 0 0 ${45.226855 * scale} ${41.6915 * scale}"/>
+                <path id="gauge_color_4" fill="${widget.color4}" d="M${102.5 * scale},${0 * scale}                A ${100 * scale} ${100 * scale} 0 0 1 ${168.94291 * scale} ${27.521555 * scale}     L ${154.773145 * scale} ${41.6915 * scale}     A ${80 * scale} ${80 * scale} 0 0 0 ${102.5 * scale} ${20 * scale}"/>
+                <path id="gauge_color_5" fill="${widget.color5}" d="M${172.407265 * scale},${31.12827 * scale}    A ${100 * scale} ${100 * scale} 0 0 1 ${200 * scale} ${97.5 * scale}                L ${180 * scale} ${97.5 * scale}               A ${80 * scale} ${80 * scale} 0 0 0 ${158.3085 * scale} ${45.227 * scale}"/>
+                <path id="gauge_color_6" fill="${widget.color6}" d="M${200 * scale},${102.5 * scale}              A ${100 * scale} ${100 * scale} 0 0 1 ${170.71 * scale} ${170.71 * scale}           L ${156.568 * scale} ${156.568 * scale}        A ${80 * scale} ${80 * scale} 0 0 0 ${180 * scale} ${102.5 * scale}"/>
+                <path style="transform-origin: ${100 * scale}px ${100 * scale}px;" fill="#707070" d="M${95 * scale},${110 * scale} L ${105 * scale} ${110 * scale} L ${102 * scale} ${95 * scale} L ${100 * scale} ${3 * scale} L ${98 * scale} ${95 * scale}"/>
+            </svg> 
+            <div style="transform: translateY(-20px);" class="r ac jc"> 
+                <h2 id="gauge_min_value" class="m0 mr5" >${widget.min}</h2> 
+                <h2 id="gauge_max_value" class="m0 ml5" >${widget.max}</h2> 
+            </div> 
+            <div style="transform: translateY(-40px);" class="r ac jc"> 
+                <h1 id="value">${currentProjectData.variables[widget.variable]}</h1> 
+                <h1 class="m0" id="units">${widget.units}</h1> 
+            </div> 
+             <div class="r mb3">Variable:&nbsp;            
+                <select value="${widget.variable}" oninput="variableSettings()" id="${widget.id}_variable_title_input">
+                    <option disabled value="">Select a Variable</option>
+                    ${validVariablesForGauge}
+                </select>
+                &nbsp;Hide: 
+                <input id="gauge_variable_hide" ${hideValue} oninput="gaugeHideVariableName()" style="width: 20px;" type="checkbox">
+            </div>
+            <div class="c jc afe p3 pt0">
+                <div class="mb2">Title: <input id="gauge_title_input" onkeyup="gaugeSettingsTitle()" type="text" value="${widget.title}"></div>
+                <div class="mb2">Min Value: <input type="number" onkeyup="minSettings(this)" onchange="minSettings(this)" value="${widget.min}"></div>
+                <div class="mb2">Max Value: <input type="number" onkeyup="maxSettings(this)" onchange="maxSettings(this)" value="${widget.max}"></div>
+            </div>
+            <div class="r jc ac">
+                <input id="color1" oninput="gaugeColorSettings(this, 1)"  style="background: transparent;" class="mx3" type="color" value="${widget.color1}">
+                <input id="color2" oninput="gaugeColorSettings(this, 2)" style="background: transparent;" class="mx3" type="color" value="${widget.color2}">
+                <input id="color3" oninput="gaugeColorSettings(this, 3)" style="background: transparent;" class="mx3" type="color" value="${widget.color3}">
+                <input id="color4" oninput="gaugeColorSettings(this, 4)" style="background: transparent;" class="mx3" type="color" value="${widget.color4}">
+                <input id="color5" oninput="gaugeColorSettings(this, 5)" style="background: transparent;" class="mx3" type="color" value="${widget.color5}">
+                <input id="color6" oninput="gaugeColorSettings(this, 6)" style="background: transparent;" class="mx3" type="color" value="${widget.color6}">
+            </div>
+             <div class="r mb2 mt4">
+                Units:&nbsp;
+                ${unitsList('settings_variable_units', " unitSettings(this)", widget.units)}
+            </div>
+            <div class="r">
+                <button onclick="windowSwitcher('none')">Cancel</button>
+                <button onclick="updateGaugeWidget('${widget.id}')"> &nbsp;Save&nbsp;</button>
+            </div>
+        </div>
+    `;
+}
+
+
+/**
+ * Line Graph Edit Window.
+ * @function EditLineGraphWidgetWindow
+ * @param {string} widgetId - Widget Id.
+ * @return {string}
+ */
+function EditLineGraphWidgetWindow(widgetId){
+
+    let widget = currentProjectData.widgets.find((widget) => widget.id === widgetId);
+
+    return `
+        <i style="color: red; top: 5px; right: 0;" class="por fs125 hc hp fa fa-trash-alt" onclick="removePlotWidget('${widgetId}')"></i> 
+        <div class="c ac jc">
+            <h2 class=" mb1"  id="gauge_title">${widget.title}</h2>
+            <div>
+                <div id="new_y_title_units" class="ct-pl-y-title-units">${widget.yAxisUnits}</div>
+                <div id="new_y_title" class="ct-pl-y-title fs15">${widget.yAxisTitle}</div>
+                <div class="ct-widget-line-graph-settings"></div>
+       
+            </div>
+            <div class="c jc afe p3 pt0">
+                <div class="mb2">
+                    Title: 
+                    <input id="gauge_title_input" onkeyup="gaugeSettingsTitle()" type="text" value="${widget.title}">
+                </div>
+                <div class="mb2">
+                    Y Title: 
+                    <input id = 'y_axis_title' onkeyup="labelUpdate(this, 'new_y_title')" type="text" value="${widget.yAxisTitle}">
+                </div>
             </div>
             <div>
-                <div class="r mb2">
-                    X Axis Units:&nbsp; 
-                    ${unitsList('x_axis_units', "unitSettings(this, 'new_x_title_units')", `${plot.xAxisUnits}`)}
-                </div>
                 <div class="r mb2 mt4">
                     Y Axis Units:&nbsp;
-                    ${unitsList('y_axis_units', " unitSettings(this, 'new_y_title_units')", `${plot.yAxisUnits}`)}
+                    ${unitsList('y_axis_units', " unitSettings(this, 'new_y_title_units')", `${widget.yAxisUnits}`)}
                 </div>
             </div>
             <div class="r">
                 <button onclick="windowSwitcher('none')">Cancel</button>
-                <button onclick="updatePlotWidget('${plot.id}','scatter')">&nbsp;Save&nbsp;</button>
+                <button onclick="updatePlotWidget('${widget.id}','line')">&nbsp;Save&nbsp;</button>
+            </div>
+        </div>
+    `;
+}
+/**
+ * Scatter Plot Edit Window.
+ * @function EditScatterPlotWidgetWindow
+ * @param {string} widgetId - Widget Id.
+ * @return {string}
+ */
+function EditScatterPlotWidgetWindow(widgetId) {
+
+    let widget = currentProjectData.widgets.find((widget) => widget.id === widgetId);
+
+    return `
+         <i style="color: red; top: 5px; right: 0;" class="por fs125 hc hp fa fa-trash-alt" onclick="removePlotWidget('${widgetId}')"></i> 
+         <div class="c ac jc">
+             <h2 class=" mb1"  id="gauge_title">${widget.title}</h2>
+             <div>
+                <div id="new_y_title_units" class="ct-pl-y-title-units">${widget.yAxisUnits}</div>
+                <div id="new_y_title" class="ct-pl-y-title fs15">${widget.yAxisTitle}</div>
+                <div class="ct-widget-plot-graph-settings"></div>
+                <div id="new_x_title_units" class="ct-pl-x-title-units">${widget.xAxisUnits}</div>
+                <div id="new_x_title" class="ct-pl-x-title tac fs15">${widget.xAxisTitle}</div>
+            </div>
+            <div class="c jc afe p3 pt0">
+                <div class="mb2">Title: <input id="gauge_title_input" onkeyup="gaugeSettingsTitle()" type="text" value="${widget.title}"></div>
+                <div class="mb2">X Title: <input id = 'x_axis_title' onkeyup="labelUpdate(this, 'new_x_title')" type="text" value="${widget.xAxisTitle}"></div>
+                <div class="mb2">Y Title: <input id = 'y_axis_title' onkeyup="labelUpdate(this, 'new_y_title')" type="text" value="${widget.yAxisTitle}"></div>
+            </div>
+            <div>
+                <div class="r mb2">
+                    X Axis Units:&nbsp; 
+                    ${unitsList('x_axis_units', "unitSettings(this, 'new_x_title_units')", `${widget.xAxisUnits}`)}
+                </div>
+                <div class="r mb2 mt4">
+                    Y Axis Units:&nbsp;
+                    ${unitsList('y_axis_units', "unitSettings(this, 'new_y_title_units')", `${widget.yAxisUnits}`)}
+                </div>
+            </div>
+            <div class="r">
+                <button onclick="windowSwitcher('none')">Cancel</button>
+                <button onclick="updatePlotWidget('${widget.id}','scatter')">&nbsp;Save&nbsp;</button>
              </div>
         </div>
     `;
-
-    return content;
 }
 

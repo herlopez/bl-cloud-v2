@@ -1,5 +1,7 @@
-function windowWidgetPlotGraph(content, options){
-    content.classList.add('widget-plot-graph-settings');
+/**
+ * @return {string}
+ */
+function CreateScatterPlotWidgetWindow(){
 
     let validScatterChart = "";
     if (currentProjectData.hasOwnProperty('charts')) {
@@ -20,8 +22,9 @@ function windowWidgetPlotGraph(content, options){
         '#fff000',
         '#ff7902'
     ];
-    content.innerHTML =
-        `<div class="c ac jc">
+
+    return `
+        <div class="widget-plot-graph-settings c ac jc">
             <h2 class="mb1"  id="gauge_title">Scatter Plot</h2> 
             <h3 class="m0" style="font-size: 0.8rem;" id="variable_title"></h3> 
             <div>
@@ -37,30 +40,26 @@ function windowWidgetPlotGraph(content, options){
                 <div class="mb2">Y Title: <input id = 'y_axis_title' onkeyup="labelUpdate(this, 'new_y_title')" type="text" value="y"></div>
             </div>
             <div>
-               <div class="r mb2">
+                <div class="r mb2">
                     X Axis Units:&nbsp;
                     ${unitsList('x_axis_units', "unitSettings(this, 'new_x_title_units')")}
-               </div>
-               <div class="r mb2 mt4">
+                </div>
+                <div class="r mb2 mt4">
                     Y Axis Units:&nbsp;
                     ${unitsList('y_axis_units', " unitSettings(this, 'new_y_title_units')")}
-               </div>
-               
-               <div class="c ac jc" id="series_list">
-                   <div class="r ac mt4 mb3">Series 1:&nbsp;
-                            
-                       <select id="series_0">
+                </div>
+                <div class="c ac jc" id="series_list">
+                    <div class="r ac mt4 mb3">Series 1:&nbsp;
+                        <select id="series_0">
                             <optgroup>
-                            <option value="">Select a data set</option>
+                                <option value="">Select a data set</option>
                                 ${validScatterChart}
                             </optgroup>
-                       </select>         
-                       <input id = 'series_0_color' value = "${defaultColor[0]}" type="color">        
-                   </div>
-
+                        </select>         
+                        <input id = 'series_0_color' value = "${defaultColor[0]}" type="color">        
+                    </div>
                 </div>
-               <div id="series_add_button" onclick="addSeries('series_list')" class="r ac jc hp hc fa fa-plus mb3 fs125">&nbsp;&nbsp;<b class="">Add Series</b></div>
-
+                <div id="series_add_button" onclick="addSeries('series_list')" class="r ac jc hp hc fa fa-plus mb3 fs125">&nbsp;&nbsp;<b class="">Add Series</b></div>
             </div>
             <div class="r">
                 <button onclick="windowSwitcher('widget_selection')">Cancel</button>
@@ -68,7 +67,6 @@ function windowWidgetPlotGraph(content, options){
             </div>
         </div>
     `;
-    return content;
 }
 
 
@@ -116,7 +114,6 @@ function addSeries(id){
 function labelUpdate(src_el, target_id){
     document.getElementById(target_id).innerText = src_el.value;
 }
-
 function drawPLotWindow(){
     var times = function (n) {
         return Array.apply(null, new Array(n));

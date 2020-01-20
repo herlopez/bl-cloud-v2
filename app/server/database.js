@@ -21,6 +21,9 @@ function notifyClients(server, key, cmd, data){
     });
 }
 
+function rawProjectData(){
+    return PROJECTS;
+}
 function getProject(msg){
     if(msg.hasOwnProperty('id')){
         let results = PROJECTS.find({id: msg.id});
@@ -130,6 +133,12 @@ function updateWidget(msg, uid){
             if (tools.hasError(xAxisUnitsCheck)) return xAxisUnitsCheck;
             let yAxisUnitsCheck = tools.verifyString(msg['options'], 'yAxisUnits', 200, -1);
             if (tools.hasError(yAxisUnitsCheck)) return yAxisUnitsCheck;
+            break;
+        case 'line':
+            let yLineAxisTitleCheck = tools.verifyString(msg['options'], 'yAxisTitle', 200, 0);
+            if (tools.hasError(yLineAxisTitleCheck)) return yLineAxisTitleCheck;
+            let yLineAxisUnitsCheck = tools.verifyString(msg['options'], 'yAxisUnits', 200, -1);
+            if (tools.hasError(yLineAxisUnitsCheck)) return yLineAxisUnitsCheck;
             break;
         default:
             return {error: 'Error! Invalid Widget Type'}
@@ -827,6 +836,54 @@ function getChartData(msg) {
     }
 
 }
+
+/**
+ * Get data point.
+ * @function getDataPoint
+ * @param {object} msg - Message object received.
+ * @returns {object} Data point.
+ */
+function getDataPoint(msg){
+    // Make sure the chart name is in proper format.
+    let nameCheck = tools.verifyString(msg, 'name', 200, 1);
+    if (tools.hasError(nameCheck)) return (nameCheck);
+
+    // Name can't be default.
+    if (msg.name === "default") return {error: "Chart name can't be default."};
+
+    // Find the project matching the Project Key.
+    let project = PROJECTS.findOne({key: msg.key});
+    if (project === null) return {error: `Unknown Project Key`};
+
+    if (project.charts.some(e => e.name === msg.name)) {
+        let data = project['charts'][project['charts'].findIndex(e => e.name === msg.name)];
+
+
+        console.log(project['charts'][project['charts'].findIndex(e => e.name === msg.name)])
+        let index =  data.entries;
+
+        if(msg.hasOwnProperty("index")){
+            if (typeof msg.index !== 'number')  return {error: "Index must be an integer."};
+            if(msg.index > data.entries)  return {error: "Invalid index, value to high."};
+            if(msg.index <= 0)  return {error: "Invalid index, must be superior to 0"};
+            index = msg.index;
+        }
+
+        return {
+            "meta": {
+                "version": 0,
+                "revision": 0,
+                "created": new Date().getTime()
+            },
+            "results": data.data[index -1]
+        };
+    }
+    else{
+        return {error: "Chart not found."};
+    }
+}
+
+
 /**
  * Get all charts.
  * @function getAllCharts
@@ -907,5 +964,8 @@ module.exports = {
     setProjectName,
     setProjectDescription,
     removeWidget,
+    getDataPoint,
+    rawProjectData,
     getChartType,
+    PROJECTS
 };

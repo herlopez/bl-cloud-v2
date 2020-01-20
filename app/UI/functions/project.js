@@ -1,12 +1,4 @@
-let currentProjectData;
-
-// Populate the content of a project.
 function paintProject(data) {
-
-    currentProjectData = data;
-    currentProject = data.id;
-    currentKey = data.key;
-
     switch (projectTab) {
         case 'dashboard':
             paintDashboardTab(data);
@@ -24,7 +16,6 @@ function paintProject(data) {
             paintDashboardTab(data);
             break;
     }
-
 }
 
 
@@ -63,7 +54,6 @@ function paintDashboardTab(data) {
                 let display = "inherit";
                 let mb = 'margin-bottom: 5px; margin-top: 8px;';
 
-
                 if (widgets[widget].type === 'line') {
                     div.style.height = "325px";
                     div.style.minWidth = "632px";
@@ -78,17 +68,14 @@ function paintDashboardTab(data) {
                     }
                     div.innerHTML = `
 
-                        <i onclick="windowSwitcher('line_graph_settings','${div.id}')" style="position: absolute; transform: translate(262px, -10px)" class="hc p3 hac fa fa-ellipsis-v"></i>
+                        <i onclick="windowSwitcher('edit_line_graph','${div.id}')" style="position: absolute; transform: translate(262px, -10px)" class="hc p3 hac fa fa-ellipsis-v"></i>
                         <h2 style="${mb}" id="${div.id}_title">${widgets[widget].title}</h2>
                         <p style="transform: translate(-40px,94px) rotate(-90deg); position: absolute; transform-origin-x: 95px; text-align: center; transform-origin-y: 59px; width: 280px;" class="mt0">${widgets[widget].yAxisTitle} <i>${leftPar}${widgets[widget].yAxisUnits}${rightPar}</i></p>
                         <div class="ct-${div.id}-plot"></div>
-                        <p class="mt0 mb1">${widgets[widget].xAxisTitle} <i>${leftPar}${widgets[widget].xAxisUnits}${rightPar}</i></p>
-                        <style id="${div.id}_plot_styles">
-                      
-                        </style>
+<!--                        <p class="mt0 mb1">${widgets[widget].xAxisTitle} <i>${leftPar}${widgets[widget].xAxisUnits}${rightPar}</i></p>-->
+                        <style id="${div.id}_plot_styles"></style>
                         <i style="position: absolute; transform: translate(250px,-230px);" onclick="resetFnc && resetFnc();" class="hp hc fas fa-search-minus" id="reset-zoom-btn"></i>
                         <div class ="r jc ac m2" id="${div.id}_plot_legend"></div>
-                        
                     `;
                     dashboard.appendChild(div);
                     drawLineGraph(`.ct-${div.id}-plot`, div.id)
@@ -101,13 +88,11 @@ function paintDashboardTab(data) {
                     div.style.paddingRight = "2px";
                     let leftPar = "";
                     let rightPar = "";
-
                     if (widgets[widget].xAxisUnits !== "") {
                         leftPar = "(";
                         rightPar = ")";
                     }
                     div.innerHTML = `
-
                         <i  onclick="windowSwitcher('scatter_plot_settings','${div.id}')" style="position: absolute; transform: translate(262px, -10px)" class="hc p3 hac fa fa-ellipsis-v"></i>
                         <h2 style="${mb}" id="${div.id}_title">${widgets[widget].title}</h2>
                         <p style="transform: translate(-40px,94px) rotate(-90deg); position: absolute; transform-origin-x: 95px; text-align: center; transform-origin-y: 59px; width: 280px;" class="mt0">${widgets[widget].yAxisTitle} <i>${leftPar}${widgets[widget].yAxisUnits}${rightPar}</i></p>
@@ -118,7 +103,6 @@ function paintDashboardTab(data) {
                         </style>
                         <i style="position: absolute; transform: translate(250px,-230px);" onclick="resetFnc && resetFnc();" class="hp hc fas fa-search-minus" id="reset-zoom-btn"></i>
                         <div class ="r jc ac m2" id="${div.id}_plot_legend"></div>
-                        
                     `;
                     dashboard.appendChild(div);
 
@@ -129,14 +113,16 @@ function paintDashboardTab(data) {
                         display = "none";
                         mb = '';
                     }
+
                     let range = Math.abs(widgets[widget].min - widgets[widget].max);
                     let tic = 270 / range;
                     let angle = Math.floor(270 / (range - data['variables'][widgets[widget].variable]));
                     angle = ((data['variables'][widgets[widget].variable] - widgets[widget].min) * tic) - 135;
+
                     if (angle > 135) angle = 135;
                     if (angle < -135) angle = -135;
-                    div.innerHTML =
-                        `<i  onclick="windowSwitcher('gauge_settings','${div.id}')" style="position: absolute; transform: translate(109px, -5px)" class="hc p3 hac fa fa-ellipsis-v"></i>` +
+
+                    div.innerHTML =  `<i  onclick="windowSwitcher('gauge_settings','${div.id}')" style="position: absolute; transform: translate(109px, -5px)" class="hc p3 hac fa fa-ellipsis-v"></i>` +
                         `<h2 style="${mb}" id="${div.id}_title">${widgets[widget].title}</h2>` +
                         `<h3  id="${div.id}_variable_title" style="font-size:14px; display:${display};" class="m0 mb3 p0" >${widgets[widget].variable}</h3>` +
                         `<svg height="${200 * mod}" width="${200 * mod}">` +
@@ -274,7 +260,7 @@ function paintSettingsTab(data) {
                 <h2 class="cw mb3">Project Description: </h2>
             </div>
             <div class="r ac">
-                <button class="ml0 mt4 mb1">Export Project Data</button>
+                <a href="/data?key=${currentProjectData.key}"><button class="ml0 mt4 mb1">Download Project Data</button></a>
             </div>
             <div class="r ac">
                 <button onclick="windowSwitcher('deleteProject')" style="background: #8c2726;" class="ml0 mt4">Delete Project</button>
@@ -305,12 +291,10 @@ function paintSettingsTab(data) {
     })
 }
 
-
 function createVariable(name, uid) {
     console.log('Creating Var: ', name, uid);
     ws.send(`{"cmd":"CREATE_VARIABLE", "key":"${currentKey}", "name":"${name}", "onSuccess":"console.log('Success!'); windowSwitcher('none'); getProject(currentUid, currentId);", "onError":""}`);
 }
-
 
 function updateProject(project, id) {
     let variables = document.getElementById('variables');
@@ -341,7 +325,6 @@ function updateProject(project, id) {
     }
 
 }
-
 
 function copyToClip(val) {
     let clipMessage = document.getElementById('clip_message');
@@ -517,23 +500,21 @@ function variableSave(id, old, key) {
 }
 
 function drawLineGraph(classID, targetID){
+
     let data = {
-        labels: [],
+        labels: ['Jan', 'Mar', 'Jun'],
         series: []
     };
+
+    // Find the widget that corresponds to the id.
     let widget = currentProjectData.widgets.find((widget) => widget.id === targetID);
 
-
     let targetSeries = widget.series;
-    console.log('Line Graph TargetSeries', widget, currentProjectData)
 
     let index = 0;
     let seriesTitles = [];
-
     for (let targetSerie in targetSeries) {
-        console.log('targetSerie', targetSeries[targetSerie], targetSeries[targetSerie].name, currentProjectData.charts)
         let chartData = currentProjectData.charts.find((chart) => chart.name === targetSeries[targetSerie].name);
-        console.log('Chart Data:  ', chartData)
         let seriesData = [];
         let alphaMap = ['a', 'b', 'c', 'd', 'e', 'f'];
         let legend = document.getElementById(`${targetID}_plot_legend`);
@@ -543,7 +524,7 @@ function drawLineGraph(classID, targetID){
 
             let dataPoints = chartData.data;
             for (let point in dataPoints) {
-                seriesData.push({x: dataPoints[point].entry, y: dataPoints[point].value});
+                seriesData.push({x: dataPoints[point].entry, y: dataPoints[point].value, time: `Time: ${new Date(dataPoints[point].timestamp)} <br> Value: ${dataPoints[point].value}`});
                 document.getElementById(`${targetID}_plot_styles`).innerHTML = document.getElementById(`${targetID}_plot_styles`).innerHTML +
                     `${classID} .ct-series-${alphaMap[index]} .ct-line,
                      ${classID} .ct-series-${alphaMap[index]} .ct-point {
@@ -554,14 +535,13 @@ function drawLineGraph(classID, targetID){
             data.series.push(seriesData)
         }
     }
-
-    console.log('Line Graph Data:  ', data.series)
+    // data.labels = [targetLabels[0], targetLabels[Math.ceil(targetLabels.length/3)], targetLabels[Math.ceil((targetLabels.length/3)*2)], targetLabels[Math.ceil(targetLabels.length)]];
     var options = {
-
         width: '90%',
+
         height: '220px',
         showArea: true,
-        showPoint: false,
+        showPoint: true,
         chartPadding: {
             right: 30
         },
@@ -575,17 +555,16 @@ function drawLineGraph(classID, targetID){
             showGrid: true,
             type: Chartist.AutoScaleAxis,
             onlyInteger: true,
-
+            //
             // type: Chartist.FixedScaleAxis,
-            // divisor: 1,
-            // // ticks: [
-            // //     new Date("2018-08-29 06:01:52"),
-            // //     new Date("2018-08-29 06:01:53"),
-            // //     new Date("2018-08-29 06:01:55"),
-            // //     new Date("2018-08-29 06:01:59")
-            // // ],
+            // divisor: 5,
         },
         plugins: [
+            Chartist.plugins.tooltip({
+                pointClass: 'my-cool-point',
+                class: `tooltip-${widget.id}`,
+                appendToBody: false, anchorToPoint: true,
+            }),
             Chartist.plugins.zoom({
                 onZoom: onZoom,
                 resetOnRightMouseBtn: true  // If set to true, a right click in the zoom area, will reset zoom.
@@ -604,8 +583,39 @@ function drawLineGraph(classID, targetID){
     ];
 
 
-    new Chartist.Line(classID, data, options, responsiveOptions);
+    let plot = new Chartist.Line(classID, data, options, responsiveOptions);
+    plot.on('draw', function(data) {
+        if(data.type === 'point') {
+            var circle = new Chartist.Svg('circle', {
+                cx: [data.x],
+                cy: [data.y],
+                r: [5],
+                'ct:value': data.series[data.index].time,
+                'ct:meta': data.meta,
+                class: 'my-cool-point',
+            }, 'ct-area');
+            data.element.replace(circle);
+        }
+    });
+
+    plot.container.addEventListener('mouseenter', function(e){
+        let x, i;
+        x = document.querySelectorAll(`.tooltip-${widget.id}`);
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "block";
+        }
+    });
+
+    plot.container.addEventListener('mouseleave', function(e){
+        let x, i;
+        x = document.querySelectorAll(".chartist-tooltip");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+    });
 }
+
+var resetFnc;
 
 function drawScatterPLot(classID, targetID) {
     // var times = function (n) {
@@ -630,13 +640,10 @@ function drawScatterPLot(classID, targetID) {
 
 
     let targetSeries = widget.series;
-    console.log('targetSeries', targetSeries, currentProjectData)
     let index = 0;
     let seriesTitles = [];
     for (let targetSerie in targetSeries) {
-        console.log('targetSerie', targetSeries[targetSerie], targetSeries[targetSerie].name, currentProjectData.charts)
         let chartData = currentProjectData.charts.find((chart) => chart.name === targetSeries[targetSerie].name);
-        console.log('Chart Data:  ', chartData)
         let seriesData = [];
         let alphaMap = ['a', 'b', 'c', 'd', 'e', 'f'];
         let legend = document.getElementById(`${targetID}_plot_legend`);
@@ -687,10 +694,7 @@ function drawScatterPLot(classID, targetID) {
             Chartist.plugins.zoom({
                 onZoom: onZoom,
                 resetOnRightMouseBtn: true  // If set to true, a right click in the zoom area, will reset zoom.
-            }),
-            // Chartist.plugins.legend({
-            //     legendNames: seriesTitles,
-            // })
+            })
         ],
     };
 
@@ -709,10 +713,9 @@ function drawScatterPLot(classID, targetID) {
 
 }
 
-var resetFnc;
-
 function onZoom(chart, reset) {
     resetFnc = reset;
 }
+
 
 

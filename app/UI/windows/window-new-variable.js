@@ -1,6 +1,10 @@
-function windowNewVariable(content){
-    content.classList.add('new-variable');
-    content.innerHTML = `
+/**
+ * New Variable Window
+ * @function WindowNewVariable
+ * @return {string}
+ */
+function WindowNewVariable(){
+    return `
         <form id="new_variable">
             <h2>Create a New Variable</h2>
             <p>Variable Name:</p>
@@ -11,11 +15,4 @@ function windowNewVariable(content){
             </div>
         </form>
     `;
-    content.addEventListener('submit', (e) => {
-        createVariable(document.getElementById('project').value, currentUid);
-        getProjects(currentUid);
-        e.preventDefault();    //stop form from submitting
-    });
-    return content;
 }
-        

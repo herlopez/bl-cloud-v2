@@ -22,7 +22,6 @@ function windowProfileSettings(content) {
         required: true,
         disabled: true,
         onSave: async () => {
-            console.log("Save");
             if (user.displayName === displayNameInput.value) {
                 throw new Error('none');
             }

@@ -48,6 +48,9 @@ function messageProcessor(message, callback) {
             case 'GET_PROJECT':
                 try{
                     message = message['results'][0];
+                    currentProjectData = message;
+                    currentProject = message.id;
+                    currentKey = message.key;
                     paintProject(message);
                 }catch (e) {
                     console.log(e);

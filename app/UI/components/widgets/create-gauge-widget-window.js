@@ -1,9 +1,7 @@
-function windowWidgetGauge(content){
-
-    content.classList.add('widget-gauge-settings');
-
-    // Scale of the gauge.
-    let scale = 1;
+/**
+ * @return {string}
+ */
+function CreateGaugeWidgetWindow(){
 
     // Build an list of options whereas the values are variables that are numbers.
     let validVariablesForGauge = "";
@@ -17,20 +15,21 @@ function windowWidgetGauge(content){
             }
         }
     }
+
     // The content of the window.
-    content.innerHTML =
-        `<div class="c ac jc">
+    return `
+        <div class="widget-gauge-settings c ac jc">
             <h2 class="mb1"  id="gauge_title">Gauge</h2> 
             <h3 class="m0" style="font-size: 0.8rem;" id="variable_title"></h3> 
-            <svg class="mt2" height="${200 * scale}" width="${200 * scale}">
-                <circle cx= "${100 * scale}" cy= "${100 * scale}" r="${5 * scale}" fill="#ffffff"/>
-                <path id="gauge_color_1" fill="#0D790A" d="M${29.29 * scale},${170.71 * scale}           A ${100 * scale} ${100 * scale} 0 0 1 ${0 * scale} ${102.5 * scale}                 L ${20 * scale} ${102.5 * scale}               A ${80 * scale} ${80 * scale} 0 0 0 ${43.432 * scale} ${156.568 * scale}"/>
-                <path id="gauge_color_2" fill="#0D790A" d="M${0 * scale},${97.5 * scale}                 A ${100 * scale} ${100 * scale} 0 0 1 ${27.592735 * scale} ${31.12827 * scale}      L ${41.6915 * scale} ${45.227 * scale}         A ${80 * scale} ${80 * scale} 0 0 0 ${20 * scale} ${97.5 * scale} "/>
-                <path id="gauge_color_3" fill="#F3B820" d="M${31.05709 * scale}, ${27.521555 * scale}    A ${100 * scale} ${100 * scale} 0 0 1 ${97.5 * scale} ${0 * scale}                  L ${97.5 * scale} ${20 * scale}                A ${80 * scale} ${80 * scale} 0 0 0 ${45.226855 * scale} ${41.6915 * scale}"/>
-                <path id="gauge_color_4" fill="#F3B820" d="M${102.5 * scale},${0 * scale}                A ${100 * scale} ${100 * scale} 0 0 1 ${168.94291 * scale} ${27.521555 * scale}     L ${154.773145 * scale} ${41.6915 * scale}     A ${80 * scale} ${80 * scale} 0 0 0 ${102.5 * scale} ${20 * scale}"/>
-                <path id="gauge_color_5" fill="#D20303" d="M${172.407265 * scale},${31.12827 * scale}    A ${100 * scale} ${100 * scale} 0 0 1 ${200 * scale} ${97.5 * scale}                L ${180 * scale} ${97.5 * scale}               A ${80 * scale} ${80 * scale} 0 0 0 ${158.3085 * scale} ${45.227 * scale}"/>
-                <path id="gauge_color_6" fill="#D20303" d="M${200 * scale},${102.5 * scale}              A ${100 * scale} ${100 * scale} 0 0 1 ${170.71 * scale} ${170.71 * scale}           L ${156.568 * scale} ${156.568 * scale}        A ${80 * scale} ${80 * scale} 0 0 0 ${180 * scale} ${102.5 * scale}"/>
-                <path style="transform-origin: ${100 * scale}px ${100 * scale}px;" fill="#707070" d="M${95 * scale},${110 * scale} L ${105 * scale} ${110 * scale} L ${102 * scale} ${95 * scale} L ${100 * scale} ${3 * scale} L ${98 * scale} ${95 * scale}"/>
+            <svg class="mt2" height="${200 * 1}" width="${200 * 1}">
+                <circle cx= "${100 * 1}" cy= "${100 * 1}" r="${5 * 1}" fill="#ffffff"/>
+                <path id="gauge_color_1" fill="#0D790A" d="M${29.29 * 1},${170.71 * 1}           A ${100 * 1} ${100 * 1} 0 0 1 ${0 * 1} ${102.5 * 1}                 L ${20 * 1} ${102.5 * 1}               A ${80 * 1} ${80 * 1} 0 0 0 ${43.432 * 1} ${156.568 * 1}"/>
+                <path id="gauge_color_2" fill="#0D790A" d="M${0 * 1},${97.5 * 1}                 A ${100 * 1} ${100 * 1} 0 0 1 ${27.592735 * 1} ${31.12827 * 1}      L ${41.6915 * 1} ${45.227 * 1}         A ${80 * 1} ${80 * 1} 0 0 0 ${20 * 1} ${97.5 * 1} "/>
+                <path id="gauge_color_3" fill="#F3B820" d="M${31.05709 * 1}, ${27.521555 * 1}    A ${100 * 1} ${100 * 1} 0 0 1 ${97.5 * 1} ${0 * 1}                  L ${97.5 * 1} ${20 * 1}                A ${80 * 1} ${80 * 1} 0 0 0 ${45.226855 * 1} ${41.6915 * 1}"/>
+                <path id="gauge_color_4" fill="#F3B820" d="M${102.5 * 1},${0 * 1}                A ${100 * 1} ${100 * 1} 0 0 1 ${168.94291 * 1} ${27.521555 * 1}     L ${154.773145 * 1} ${41.6915 * 1}     A ${80 * 1} ${80 * 1} 0 0 0 ${102.5 * 1} ${20 * 1}"/>
+                <path id="gauge_color_5" fill="#D20303" d="M${172.407265 * 1},${31.12827 * 1}    A ${100 * 1} ${100 * 1} 0 0 1 ${200 * 1} ${97.5 * 1}                L ${180 * 1} ${97.5 * 1}               A ${80 * 1} ${80 * 1} 0 0 0 ${158.3085 * 1} ${45.227 * 1}"/>
+                <path id="gauge_color_6" fill="#D20303" d="M${200 * 1},${102.5 * 1}              A ${100 * 1} ${100 * 1} 0 0 1 ${170.71 * 1} ${170.71 * 1}           L ${156.568 * 1} ${156.568 * 1}        A ${80 * 1} ${80 * 1} 0 0 0 ${180 * 1} ${102.5 * 1}"/>
+                <path style="transform-origin: ${100 * 1}px ${100 * 1}px;" fill="#707070" d="M${95 * 1},${110 * 1} L ${105 * 1} ${110 * 1} L ${102 * 1} ${95 * 1} L ${100 * 1} ${3 * 1} L ${98 * 1} ${95 * 1}"/>
             </svg> 
             <div style="transform: translateY(-20px);" class="r ac jc"> 
                 <h2 id="gauge_min_value" class="m0 mr5" >0</h2> 
@@ -72,7 +71,5 @@ function windowWidgetGauge(content){
                 <button onclick="newGaugeWidget(); "> &nbsp;&nbsp;Add&nbsp;&nbsp;</button>
             </div>
         </div>
-        `;
-
-    return content;
+    `;
 }

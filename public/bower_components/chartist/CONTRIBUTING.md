@@ -33,7 +33,7 @@ If you are creating a Pull Request, fork the repository and make any changes on 
 
 ### <a name="conventions"></a> Conventions
 
-Check out the [Coding Style document](CODINGSTYLE.md)
+Check out the [Coding Style document](public/bower_components/chartist/CODINGSTYLE.md)
 
 ### Grunt
 

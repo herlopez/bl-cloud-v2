@@ -1,5 +1,10 @@
-function windowNewProject(content){
-    content.innerHTML = `
+/**
+ * New Project Window
+ * @function WindowNewProject
+ * @return {string}
+ */
+function WindowNewProject(){
+    return `
         <form id="create_project"> 
             <h2>Create a New Project</h2>
             <p>Project Name:</p>
@@ -18,9 +23,4 @@ function windowNewProject(content){
             </div>
         </form>
     `;
-    content.addEventListener('submit', (e) => {
-        createProject(document.getElementById('project').value, document.getElementById('desc').value, document.querySelector('input[name="access"]:checked').value, document.getElementById('color').value, currentUid);
-        e.preventDefault();    //stop form from submitting
-    });
-    return content;
 }
