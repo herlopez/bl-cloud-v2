@@ -2,85 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f8dc789a-0ee8-4036-b494-978e5ba3fd15" name="Default Changelist" comment="styling">
-      <change afterPath="$PROJECT_DIR$/app/UI/components/widgets/edit-line-graph-widget-window.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/UI/windows/double-check-window.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/UI/windows/widget-selection-window.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/UI/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/UI/components/widgets/create-gauge-widget-window.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/components/widgets/create-gauge-widget-window.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/UI/components/widgets/edit-gauge-widget-window.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/components/widgets/edit-gauge-widget-window.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/UI/functions/project.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/functions/project.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/UI/message-processor.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/message-processor.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/UI/profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/profile.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/UI/window-switcher.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/window-switcher.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/UI/windows/window-data-settings.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/components/widgets/edit-data-widget-window.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/UI/windows/window-delete-project.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/windows/window-delete-project.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/UI/windows/window-double-check.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/UI/windows/window-gauge-settings.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/components/widgets/edit-gauge-widget-window.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/UI/windows/window-new-key.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/windows/window-new-key.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/UI/windows/window-new-project.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/windows/window-new-project.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/UI/windows/window-new-variable.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/windows/window-new-variable.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/UI/windows/window-profile-settings.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/windows/window-profile-settings.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/UI/windows/window-scatter-settings.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/components/widgets/edit-scatter-plot-widget-window.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/UI/windows/window-widget-data.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/components/widgets/create-data-widget-window.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/UI/windows/window-widget-gauge.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/components/widgets/create-gauge-widget-window.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/UI/windows/window-widget-line-graph.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/components/widgets/create-line-graph-widget-window.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/UI/windows/window-widget-plot-graph.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/components/widgets/create-scatter-plot-widget-window.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/UI/windows/window-widget-selection.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/server/command_processors/http-commands.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/server/command_processors/http-commands.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/server/database.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/server/database.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/server/http-server.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/server/http-server.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist-plugin-tooltip/.bower.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist-plugin-tooltip/.bower.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist-plugin-tooltip/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist-plugin-tooltip/CHANGELOG.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist-plugin-tooltip/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist-plugin-tooltip/LICENSE" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist-plugin-tooltip/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist-plugin-tooltip/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist-plugin-tooltip/bower.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist-plugin-tooltip/bower.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist-plugin-tooltip/dist/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist-plugin-tooltip/dist/LICENSE" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.css.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.min.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.min.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist-plugin-tooltip/tasks/aliases.yml" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist-plugin-tooltip/tasks/aliases.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist-plugin-tooltip/tasks/clean.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist-plugin-tooltip/tasks/clean.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist-plugin-tooltip/tasks/copy.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist-plugin-tooltip/tasks/copy.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist-plugin-tooltip/tasks/jasmine.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist-plugin-tooltip/tasks/jasmine.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist-plugin-tooltip/tasks/jshint.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist-plugin-tooltip/tasks/jshint.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist-plugin-tooltip/tasks/sass.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist-plugin-tooltip/tasks/sass.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist-plugin-tooltip/tasks/uglify.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist-plugin-tooltip/tasks/uglify.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist-plugin-tooltip/tasks/umd.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist-plugin-tooltip/tasks/umd.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist/.bower.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist/.bower.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist/CHANGELOG.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist/CODINGSTYLE.md" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist/CODINGSTYLE.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist/CONTRIBUTING.md" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist/CONTRIBUTING.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist/LICENSE-MIT" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist/LICENSE-MIT" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist/LICENSE-WTFPL" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist/LICENSE-WTFPL" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist/bower.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist/bower.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist/dist/chartist.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist/dist/chartist.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist/dist/chartist.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist/dist/chartist.css.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist/dist/chartist.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist/dist/chartist.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist/dist/chartist.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist/dist/chartist.min.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist/dist/chartist.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist/dist/chartist.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist/dist/chartist.min.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist/dist/chartist.min.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist/dist/scss/chartist.scss" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist/dist/scss/chartist.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bower_components/chartist/dist/scss/settings/_chartist-settings.scss" beforeDir="false" afterPath="$PROJECT_DIR$/public/bower_components/chartist/dist/scss/settings/_chartist-settings.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gulpfile.js" beforeDir="false" afterPath="$PROJECT_DIR$/gulpfile.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/main.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/BL_Flask_White.png" beforeDir="false" afterPath="$PROJECT_DIR$/public/images/BL_Flask_White.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/chartist.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/chartist.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/message-processor.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/message-processor.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/create-gauge-widget-window.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/create-gauge-widget-window.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/edit-gauge-widget-window.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/edit-gauge-widget-window.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/profile.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/project.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/project.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/window-delete-project.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/window-delete-project.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/window-new-key.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/window-new-key.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/window-new-project.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/window-new-project.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/window-new-variable.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/window-new-variable.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/window-profile-settings.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/window-profile-settings.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/window-switcher.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/window-switcher.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/window-widget-line-graph.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/window-widget-line-graph.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/window-widget-selection.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/window-widget-selection.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sass/_charts.scss" beforeDir="false" afterPath="$PROJECT_DIR$/sass/_charts.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/parts/head.pug" beforeDir="false" afterPath="$PROJECT_DIR$/views/parts/head.pug" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -143,6 +80,7 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="DatabaseDriversLRU" value="mariadb" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
@@ -152,7 +90,7 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1574344571668" />
-    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="HTML" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="Markdown&#10;HTML" />
     <property name="jsx.switch.disabled" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
@@ -170,7 +108,7 @@
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
     <property name="two.files.diff.last.used.file" value="$APPLICATION_CONFIG_DIR$/scratches/scratch_2.html" />
   </component>
   <component name="RecentsManager">
@@ -294,6 +232,9 @@
       <workItem from="1579162405480" duration="9748000" />
       <workItem from="1579237693819" duration="14564000" />
       <workItem from="1579477551900" duration="15212000" />
+      <workItem from="1580831818503" duration="4140000" />
+      <workItem from="1580941175680" duration="1013000" />
+      <workItem from="1581022624001" duration="18367000" />
     </task>
     <task id="LOCAL-00001" summary="=MQTT Implementation">
       <created>1568726588352</created>
@@ -352,12 +293,18 @@
       <screen x="1440" y="-21" width="1920" height="1057" />
     </state>
     <state x="1473" y="60" width="1787" height="876" key="DiffContextDialog/0.23.1440.877/1440.-21.1920.1057@1440.-21.1920.1057" timestamp="1579528873528" />
-    <state x="1699" y="-21" width="1350" height="1050" key="SettingsEditor" timestamp="1579533371353">
-      <screen x="1440" y="-21" width="1920" height="1057" />
+    <state x="2265" y="68" width="1350" height="1050" key="SettingsEditor" timestamp="1581367719867">
+      <screen x="1792" y="23" width="1920" height="1057" />
     </state>
     <state x="227" y="0" width="1350" height="1050" key="SettingsEditor/0.0.1680.1050@0.0.1680.1050" timestamp="1579162421349" />
     <state x="1699" y="-21" key="SettingsEditor/0.23.1440.877/1440.-21.1920.1057@1440.-21.1920.1057" timestamp="1579533371353" />
     <state x="382" y="155" key="SettingsEditor/0.23.1680.1027@0.23.1680.1027" timestamp="1578771366416" />
+    <state x="641" y="157" key="SettingsEditor/0.23.1792.1097@0.23.1792.1097" timestamp="1580833043916" />
+    <state x="2265" y="68" key="SettingsEditor/1792.23.1920.1057/0.23.1792.1097@1792.23.1920.1057" timestamp="1581367719867" />
+    <state x="2576" y="23" width="1136" height="1057" key="dock-window-1" timestamp="1581362883226">
+      <screen x="1792" y="23" width="1920" height="1057" />
+    </state>
+    <state x="2576" y="23" width="1136" height="1057" key="dock-window-1/1792.23.1920.1057/0.23.1792.1097@1792.23.1920.1057" timestamp="1581362883226" />
     <state x="431" y="275" width="1029" height="406" key="org.intellij.images.editor.actions.BackgroundImageDialog" timestamp="1579161649957">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
@@ -372,7 +319,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/public/js/project.js</url>
-          <line>236</line>
+          <line>261</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -393,13 +340,11 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/app/server/http-server.js</url>
           <line>3</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/app/server/http-server.js</url>
           <line>35</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>

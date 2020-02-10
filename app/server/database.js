@@ -109,11 +109,42 @@ function updateWidget(msg, uid){
     if(!msg['options'].hasOwnProperty('type')) return {error: 'Error! Widget Type not Defined.'};
     switch (msg['options']['type']) {
         case 'gauge':
-            if(!msg['options'].hasOwnProperty('variable') ) return{error: "No variable was provided."};
-            if(!project.hasOwnProperty('variables'))  return{error: "Error! Project has no variables."};
-            if(msg['options']['variable'] === '') return{error: "Please Select a Variable."};
-            if(!project['variables'].hasOwnProperty(msg['options']['variable'])) return{error: "Error! Project does not have this variable."};
-            if(typeof project['variables'][msg['options']['variable']] !== 'number') return{error:"Please select a variable that is an integer."};
+            // if(!msg['options'].hasOwnProperty('variable') ) return{error: "No variable was provided."};
+            // if(!project.hasOwnProperty('variables'))  return{error: "Error! Project has no variables."};
+            // if(msg['options']['variable'] === '') return{error: "Please Select a Variable."};
+            // if(!project['variables'].hasOwnProperty(msg['options']['variable'])) return{error: "Error! Project does not have this variable."};
+            // if(typeof project['variables'][msg['options']['variable']] !== 'number') return{error:"Please select a variable that is an integer."};
+            // if(!msg['options'].hasOwnProperty('min') || !msg['options'].hasOwnProperty('max')) return{error:"Error! No Min/Max options provided."};
+            // if(typeof msg['options']['min'] !== 'number'|| typeof msg['options']['max'] !== 'number') return{error:"Please provide a valid min and max value."};
+            // if(msg['options']['min'] >= msg['options']['max']) return{error:"Min value must be inferior to max value."};
+                if(!msg['options'].hasOwnProperty('variable_type') ) return{error: "No Variable / Chart  was provided."};
+            if(msg['options']['variable_type'] === 'variable'){
+                if(!msg['options'].hasOwnProperty('variable') ) return{error: "No variable was provided."};
+                if(!project.hasOwnProperty('variables'))  return{error: "Error! Project has no variables."};
+                if(msg['options']['variable'] === '') return{error: "Please Select a Variable."};
+                if(!project['variables'].hasOwnProperty(msg['options']['variable'])) return{error: "Error! Project does not have this variable."};
+                if(typeof project['variables'][msg['options']['variable']] !== 'number') return{error:"Please select a variable that is an integer."};
+            }
+            else if(msg['options']['variable_type'] === 'chart'){
+                if(!msg['options'].hasOwnProperty('variable') ) return{error: "No chart was provided."};
+                if(!project.hasOwnProperty('charts'))  return{error: "Error! Project has no charts."};
+                if(msg['options']['variable'] === '') return{error: "Please Select a Variable."};
+                //if(!project['variables'].hasOwnProperty(msg['options']['variable'])) return{error: "Error! Project does not have this variable."};
+                let storedCharts = project['charts'];
+                let chartIsFound = false;
+                for(let chart in storedCharts){
+                    if(storedCharts.hasOwnProperty(chart)){
+                        if(storedCharts[chart].name === msg['options']['variable']){
+                            chartIsFound = true;
+                            if(storedCharts[chart].type !== 'LINE') return {error: `Series ${nameIndex} chart data is not a Line Graph.`};
+                        }
+                    }
+                }
+                if(!chartIsFound) return{error: "Could not Find Chart"}
+            }
+            else{
+                return{error: "Error! Invalid variable-type."}
+            }
             if(!msg['options'].hasOwnProperty('min') || !msg['options'].hasOwnProperty('max')) return{error:"Error! No Min/Max options provided."};
             if(typeof msg['options']['min'] !== 'number'|| typeof msg['options']['max'] !== 'number') return{error:"Please provide a valid min and max value."};
             if(msg['options']['min'] >= msg['options']['max']) return{error:"Min value must be inferior to max value."};
@@ -176,11 +207,34 @@ function addWidget(msg, uid){
     switch (msg['options']['type']) {
 
         case 'gauge':
-            if(!msg['options'].hasOwnProperty('variable') ) return{error: "No variable was provided."};
-            if(!project.hasOwnProperty('variables'))  return{error: "Error! Project has no variables."};
-            if(msg['options']['variable'] === '') return{error: "Please Select a Variable."};
-            if(!project['variables'].hasOwnProperty(msg['options']['variable'])) return{error: "Error! Project does not have this variable."}
-            if(typeof project['variables'][msg['options']['variable']] !== 'number') return{error:"Please select a variable that is an integer."};
+            if(!msg['options'].hasOwnProperty('variable_type') ) return{error: "No Variable / Chart  was provided."};
+            if(msg['options']['variable_type'] === 'variable'){
+                if(!msg['options'].hasOwnProperty('variable') ) return{error: "No variable was provided."};
+                if(!project.hasOwnProperty('variables'))  return{error: "Error! Project has no variables."};
+                if(msg['options']['variable'] === '') return{error: "Please Select a Variable."};
+                if(!project['variables'].hasOwnProperty(msg['options']['variable'])) return{error: "Error! Project does not have this variable."};
+                if(typeof project['variables'][msg['options']['variable']] !== 'number') return{error:"Please select a variable that is an integer."};
+            }
+            else if(msg['options']['variable_type'] === 'chart'){
+                if(!msg['options'].hasOwnProperty('variable') ) return{error: "No chart was provided."};
+                if(!project.hasOwnProperty('charts'))  return{error: "Error! Project has no charts."};
+                if(msg['options']['variable'] === '') return{error: "Please Select a Variable."};
+                //if(!project['variables'].hasOwnProperty(msg['options']['variable'])) return{error: "Error! Project does not have this variable."};
+                let storedCharts = project['charts'];
+                let chartIsFound = false;
+                for(let chart in storedCharts){
+                    if(storedCharts.hasOwnProperty(chart)){
+                        if(storedCharts[chart].name === msg['options']['variable']){
+                            chartIsFound = true;
+                            if(storedCharts[chart].type !== 'LINE') return {error: `Series ${nameIndex} chart data is not a Line Graph.`};
+                        }
+                    }
+                }
+                if(!chartIsFound) return{error: "Could not Find Chart"}
+            }
+            else{
+                return{error: "Error! Invalid variable-type."}
+            }
             if(!msg['options'].hasOwnProperty('min') || !msg['options'].hasOwnProperty('max')) return{error:"Error! No Min/Max options provided."};
             if(typeof msg['options']['min'] !== 'number'|| typeof msg['options']['max'] !== 'number') return{error:"Please provide a valid min and max value."};
             if(msg['options']['min'] >= msg['options']['max']) return{error:"Min value must be inferior to max value."};

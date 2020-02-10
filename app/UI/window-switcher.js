@@ -211,8 +211,45 @@ function gaugeSettingsTitle() {
 
 function variableSettings() {
     let newValue = document.getElementById('variable_title_input').value;
-    document.getElementById('value').innerText = currentProjectData['variables'][newValue];
+    if(currentWindow === "gauge"){
+        let sel = document.getElementById('variable_title_input');
+        let selected = sel.options[sel.selectedIndex];
+        let varType = selected.getAttribute('variable-type');
+        if(varType === 'chart'){
+            let targetChart = currentProjectData['charts'].findIndex(w => w.name === newValue);
+            if(currentProjectData['charts'][targetChart].hasOwnProperty('data')){
+                document.getElementById('value').innerText = currentProjectData['charts'][targetChart]['data'][currentProjectData['charts'][targetChart]['data'].length-1].value;
+            }
+            else{
+                document.getElementById('value').innerText = 'No Data Yet';
+            }
+        }else{
+        document.getElementById('value').innerText = currentProjectData['variables'][newValue];
+    }
 
+    }else{
+        document.getElementById('value').innerText = currentProjectData['variables'][newValue];
+    }
+    document.getElementById('variable_title').innerText = newValue;
+}
+function variableSettingsSettings(id) {
+    let newValue = document.getElementById(id).value;
+    let sel = document.getElementById(id);
+    let selected = sel.options[sel.selectedIndex];
+    let varType = selected.getAttribute('variable-type');
+    if(varType === 'chart'){
+        let targetChart = currentProjectData['charts'].findIndex(w => w.name === newValue);
+        if(currentProjectData['charts'][targetChart].hasOwnProperty('data')){
+            document.getElementById('value').innerText = currentProjectData['charts'][targetChart]['data'][currentProjectData['charts'][targetChart]['data'].length-1].value;
+        }
+        else{
+            document.getElementById('value').innerText = 'No Data Yet';
+        }
+    }
+else{
+        document.getElementById('value').innerText = currentProjectData['variables'][newValue];
+    }
+    document.getElementById('variable_title').innerText = newValue;
 }
 
 function unitSettings(i, id = 'units') {
@@ -290,26 +327,7 @@ function removePlotWidget(id){
 }
 
 
-//
-// Gauge Widget
-//
-function newGaugeWidget() {
-    addWidget(currentUid, currentProject, {
-        type: 'gauge',
-        hide: `${document.getElementById('gauge_variable_hide').checked}`,
-        variable: `${document.getElementById('variable_title_input').value}`,
-        units: `${document.getElementById('units').innerText}`,
-        title: `${document.getElementById('gauge_title').innerText}`,
-        color1: `${document.getElementById('color1').value}`,
-        color2: `${document.getElementById('color2').value}`,
-        color3: `${document.getElementById('color3').value}`,
-        color4: `${document.getElementById('color4').value}`,
-        color5: `${document.getElementById('color5').value}`,
-        color6: `${document.getElementById('color6').value}`,
-        min: parseInt(document.getElementById('gauge_min_value').innerText),
-        max: parseInt(document.getElementById('gauge_max_value').innerText)
-    });
-}
+
 function updateGaugeWidget(id){
     updateWidget(currentUid, currentProject, {
         type: 'gauge',

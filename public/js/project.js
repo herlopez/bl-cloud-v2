@@ -39,86 +39,113 @@ function paintDashboardTab(data) {
   dashboard.innerHTML = '';
 
   if (data.hasOwnProperty('widgets')) {
-    var widgets = data['widgets'];
+    (function () {
+      var widgets = data['widgets'];
 
-    for (var widget in widgets) {
-      if (widgets.hasOwnProperty(widget)) {
-        console.log(widgets[widget]); // Widget box.
+      var _loop = function _loop(widget) {
+        if (widgets.hasOwnProperty(widget)) {
+          console.log(widgets[widget]); // Widget box.
 
-        var div = document.createElement('button');
-        div.style.height = "275px";
-        div.style.minWidth = "300px";
-        div.style.maxWidth = "300px";
-        div.id = widgets[widget].id;
-        div.style.background = "rgba(3, 4, 8, 0.46)";
-        div.borderRadius = "10px";
-        var mod = 0.7;
-        var display = "inherit";
-        var mb = 'margin-bottom: 5px; margin-top: 8px;';
+          var div = document.createElement('button');
+          div.style.height = "275px";
+          div.style.minWidth = "300px";
+          div.style.maxWidth = "300px";
+          div.id = widgets[widget].id;
+          div.style.background = "rgba(3, 4, 8, 0.46)";
+          div.borderRadius = "10px";
+          var mod = 0.7;
+          var display = "inherit";
+          var mb = 'margin-bottom: 5px; margin-top: 8px;';
 
-        if (widgets[widget].type === 'line') {
-          div.style.height = "325px";
-          div.style.minWidth = "632px";
-          div.style.maxWidth = "632px";
-          div.style.paddingRight = "2px";
-          var leftPar = "";
-          var rightPar = "";
+          if (widgets[widget].type === 'line') {
+            div.style.height = "325px";
+            div.style.minWidth = "632px";
+            div.style.maxWidth = "632px";
+            div.style.paddingRight = "2px";
+            var leftPar = "";
+            var rightPar = "";
 
-          if (widgets[widget].xAxisUnits !== "") {
-            leftPar = "(";
-            rightPar = ")";
+            if (widgets[widget].xAxisUnits !== "") {
+              leftPar = "(";
+              rightPar = ")";
+            }
+
+            div.innerHTML = "\n                        <i onclick=\"windowSwitcher('edit_line_graph','".concat(div.id, "')\" style=\"position: absolute; transform: translate(262px, -10px)\" class=\"hc p3 hac fa fa-ellipsis-v\"></i>\n                        <h2 style=\"").concat(mb, "\" id=\"").concat(div.id, "_title\">").concat(widgets[widget].title, "</h2>\n                        <p style=\"transform: translate(-40px,94px) rotate(-90deg); position: absolute; transform-origin-x: 95px; text-align: center; transform-origin-y: 59px; width: 280px;\" class=\"mt0\">").concat(widgets[widget].yAxisTitle, " <i>").concat(leftPar).concat(widgets[widget].yAxisUnits).concat(rightPar, "</i></p>\n                        <div class=\"ct-").concat(div.id, "-plot\"></div>\n                        <style id=\"").concat(div.id, "_plot_styles\"></style>\n                        <i style=\"position: absolute; transform: translate(250px,-230px);\" onclick=\"resetFnc && resetFnc();\" class=\"hp hc fas fa-search-minus\" id=\"reset-zoom-btn\"></i>\n                        <div class =\"r jc ac m2\" id=\"").concat(div.id, "_plot_legend\"></div>\n                    ");
+            dashboard.appendChild(div);
+            drawLineGraph(".ct-".concat(div.id, "-plot"), div.id);
           }
 
-          div.innerHTML = "\n\n                        <i onclick=\"windowSwitcher('edit_line_graph','".concat(div.id, "')\" style=\"position: absolute; transform: translate(262px, -10px)\" class=\"hc p3 hac fa fa-ellipsis-v\"></i>\n                        <h2 style=\"").concat(mb, "\" id=\"").concat(div.id, "_title\">").concat(widgets[widget].title, "</h2>\n                        <p style=\"transform: translate(-40px,94px) rotate(-90deg); position: absolute; transform-origin-x: 95px; text-align: center; transform-origin-y: 59px; width: 280px;\" class=\"mt0\">").concat(widgets[widget].yAxisTitle, " <i>").concat(leftPar).concat(widgets[widget].yAxisUnits).concat(rightPar, "</i></p>\n                        <div class=\"ct-").concat(div.id, "-plot\"></div>\n<!--                        <p class=\"mt0 mb1\">").concat(widgets[widget].xAxisTitle, " <i>").concat(leftPar).concat(widgets[widget].xAxisUnits).concat(rightPar, "</i></p>-->\n                        <style id=\"").concat(div.id, "_plot_styles\"></style>\n                        <i style=\"position: absolute; transform: translate(250px,-230px);\" onclick=\"resetFnc && resetFnc();\" class=\"hp hc fas fa-search-minus\" id=\"reset-zoom-btn\"></i>\n                        <div class =\"r jc ac m2\" id=\"").concat(div.id, "_plot_legend\"></div>\n                    ");
-          dashboard.appendChild(div);
-          drawLineGraph(".ct-".concat(div.id, "-plot"), div.id);
-        }
+          if (widgets[widget].type === 'scatter') {
+            div.style.height = "325px";
+            div.style.minWidth = "632px";
+            div.style.maxWidth = "632px";
+            div.style.paddingRight = "2px";
+            var _leftPar = "";
+            var _rightPar = "";
 
-        if (widgets[widget].type === 'scatter') {
-          div.style.height = "325px";
-          div.style.minWidth = "632px";
-          div.style.maxWidth = "632px";
-          div.style.paddingRight = "2px";
-          var _leftPar = "";
-          var _rightPar = "";
+            if (widgets[widget].xAxisUnits !== "") {
+              _leftPar = "(";
+              _rightPar = ")";
+            }
 
-          if (widgets[widget].xAxisUnits !== "") {
-            _leftPar = "(";
-            _rightPar = ")";
+            div.innerHTML = "\n                        <i  onclick=\"windowSwitcher('scatter_plot_settings','".concat(div.id, "')\" style=\"position: absolute; transform: translate(262px, -10px)\" class=\"hc p3 hac fa fa-ellipsis-v\"></i>\n                        <h2 style=\"").concat(mb, "\" id=\"").concat(div.id, "_title\">").concat(widgets[widget].title, "</h2>\n                        <p style=\"transform: translate(-40px,94px) rotate(-90deg); position: absolute; transform-origin-x: 95px; text-align: center; transform-origin-y: 59px; width: 280px;\" class=\"mt0\">").concat(widgets[widget].yAxisTitle, " <i>").concat(_leftPar).concat(widgets[widget].yAxisUnits).concat(_rightPar, "</i></p>\n                        <div class=\"ct-").concat(div.id, "-plot\"></div>\n                        <p class=\"mt0 mb1\">").concat(widgets[widget].xAxisTitle, " <i>").concat(_leftPar).concat(widgets[widget].xAxisUnits).concat(_rightPar, "</i></p>\n                        <style id=\"").concat(div.id, "_plot_styles\">\n                        \n                        </style>\n                        <i style=\"position: absolute; transform: translate(250px,-230px);\" onclick=\"resetFnc && resetFnc();\" class=\"hp hc fas fa-search-minus\" id=\"reset-zoom-btn\"></i>\n                        <div class =\"r jc ac m2\" id=\"").concat(div.id, "_plot_legend\"></div>\n                    ");
+            dashboard.appendChild(div);
+            drawScatterPLot(".ct-".concat(div.id, "-plot"), div.id);
           }
 
-          div.innerHTML = "\n                        <i  onclick=\"windowSwitcher('scatter_plot_settings','".concat(div.id, "')\" style=\"position: absolute; transform: translate(262px, -10px)\" class=\"hc p3 hac fa fa-ellipsis-v\"></i>\n                        <h2 style=\"").concat(mb, "\" id=\"").concat(div.id, "_title\">").concat(widgets[widget].title, "</h2>\n                        <p style=\"transform: translate(-40px,94px) rotate(-90deg); position: absolute; transform-origin-x: 95px; text-align: center; transform-origin-y: 59px; width: 280px;\" class=\"mt0\">").concat(widgets[widget].yAxisTitle, " <i>").concat(_leftPar).concat(widgets[widget].yAxisUnits).concat(_rightPar, "</i></p>\n                        <div class=\"ct-").concat(div.id, "-plot\"></div>\n                        <p class=\"mt0 mb1\">").concat(widgets[widget].xAxisTitle, " <i>").concat(_leftPar).concat(widgets[widget].xAxisUnits).concat(_rightPar, "</i></p>\n                        <style id=\"").concat(div.id, "_plot_styles\">\n                        \n                        </style>\n                        <i style=\"position: absolute; transform: translate(250px,-230px);\" onclick=\"resetFnc && resetFnc();\" class=\"hp hc fas fa-search-minus\" id=\"reset-zoom-btn\"></i>\n                        <div class =\"r jc ac m2\" id=\"").concat(div.id, "_plot_legend\"></div>\n                    ");
-          dashboard.appendChild(div);
-          drawScatterPLot(".ct-".concat(div.id, "-plot"), div.id);
-        }
+          if (widgets[widget].type === 'gauge') {
+            if (widgets[widget]['hide'] === 'true') {
+              display = "none";
+              mb = '';
+            }
 
-        if (widgets[widget].type === 'gauge') {
-          if (widgets[widget]['hide'] === 'true') {
-            display = "none";
-            mb = '';
+            var range = Math.abs(widgets[widget].min - widgets[widget].max);
+            var tic = 270 / range;
+            var angle = 0;
+            var value = 0;
+
+            if (widgets[widget].variable_type === "variable") {
+              value = data['variables'][widgets[widget].variable];
+              angle = Math.floor(270 / (range - value));
+              angle = (value - widgets[widget].min) * tic - 135;
+            } else {
+              var targetChart = data['charts'].findIndex(function (w) {
+                return w.name === widgets[widget].variable;
+              });
+
+              try {
+                if (data['charts'][targetChart].hasOwnProperty('data')) {
+                  value = data['charts'][targetChart]['data'][data['charts'][targetChart]['data'].length - 1].value;
+                  angle = Math.floor(270 / (range - value));
+                  angle = (value - widgets[widget].min) * tic - 135;
+                } else {
+                  value = "No Data";
+                }
+              } catch (e) {}
+            }
+
+            if (angle > 135) angle = 135;
+            if (angle < -135) angle = -135;
+            div.innerHTML = "<i  onclick=\"windowSwitcher('gauge_settings','".concat(div.id, "')\" style=\"position: absolute; transform: translate(109px, -5px)\" class=\"hc p3 hac fa fa-ellipsis-v\"></i>") + "<h2 style=\"".concat(mb, "\" id=\"").concat(div.id, "_title\">").concat(widgets[widget].title, "</h2>") + "<h3  id=\"".concat(div.id, "_variable_title\" style=\"font-size:14px; display:").concat(display, ";\" class=\"m0 mb3 p0\" >").concat(widgets[widget].variable, "</h3>") + "<svg height=\"".concat(200 * mod, "\" width=\"").concat(200 * mod, "\">") + "<circle cx= \"".concat(100 * mod, "\" cy= \"").concat(100 * mod, "\" r=\"").concat(5 * mod, "\" fill=\"#ffffff\"/>") + "<path fill=\"".concat(widgets[widget].color1, "\" d=\"M").concat(29.29 * mod, ",").concat(170.71 * mod, "           A ").concat(100 * mod, " ").concat(100 * mod, " 0 0 1 ").concat(0 * mod, " ").concat(102.5 * mod, "                 L ").concat(20 * mod, " ").concat(102.5 * mod, "               A ").concat(80 * mod, " ").concat(80 * mod, " 0 0 0 ").concat(43.432 * mod, " ").concat(156.568 * mod, "\"/>") + "<path fill=\"".concat(widgets[widget].color2, "\" d=\"M").concat(0 * mod, ",").concat(97.5 * mod, "                 A ").concat(100 * mod, " ").concat(100 * mod, " 0 0 1 ").concat(27.592735 * mod, " ").concat(31.12827 * mod, "      L ").concat(41.6915 * mod, " ").concat(45.227 * mod, "         A ").concat(80 * mod, " ").concat(80 * mod, " 0 0 0 ").concat(20 * mod, " ").concat(97.5 * mod, " \"/>") + "<path fill=\"".concat(widgets[widget].color3, "\" d=\"M").concat(31.05709 * mod, ", ").concat(27.521555 * mod, "    A ").concat(100 * mod, " ").concat(100 * mod, " 0 0 1 ").concat(97.5 * mod, " ").concat(0 * mod, "                  L ").concat(97.5 * mod, " ").concat(20 * mod, "                A ").concat(80 * mod, " ").concat(80 * mod, " 0 0 0 ").concat(45.226855 * mod, " ").concat(41.6915 * mod, "\"/>") + "<path fill=\"".concat(widgets[widget].color4, "\" d=\"M").concat(102.5 * mod, ",").concat(0 * mod, "                A ").concat(100 * mod, " ").concat(100 * mod, " 0 0 1 ").concat(168.94291 * mod, " ").concat(27.521555 * mod, "     L ").concat(154.773145 * mod, " ").concat(41.6915 * mod, "     A ").concat(80 * mod, " ").concat(80 * mod, " 0 0 0 ").concat(102.5 * mod, " ").concat(20 * mod, "\"/>") + "<path fill=\"".concat(widgets[widget].color5, "\" d=\"M").concat(172.407265 * mod, ",").concat(31.12827 * mod, "    A ").concat(100 * mod, " ").concat(100 * mod, " 0 0 1 ").concat(200 * mod, " ").concat(97.5 * mod, "                L ").concat(180 * mod, " ").concat(97.5 * mod, "               A ").concat(80 * mod, " ").concat(80 * mod, " 0 0 0 ").concat(158.3085 * mod, " ").concat(45.227 * mod, "\"/>") + "<path fill=\"".concat(widgets[widget].color6, "\" d=\"M").concat(200 * mod, ",").concat(102.5 * mod, "              A ").concat(100 * mod, " ").concat(100 * mod, " 0 0 1 ").concat(170.71 * mod, " ").concat(170.71 * mod, "           L ").concat(156.568 * mod, " ").concat(156.568 * mod, "        A ").concat(80 * mod, " ").concat(80 * mod, " 0 0 0 ").concat(180 * mod, " ").concat(102.5 * mod, "\"/>") + "<path style=\"transform: rotate(".concat(angle, "deg); transform-origin: ").concat(100 * mod, "px ").concat(100 * mod, "px;\" fill=\"#707070\" d=\"M").concat(95 * mod, ",").concat(110 * mod, " L ").concat(105 * mod, " ").concat(110 * mod, " L ").concat(102 * mod, " ").concat(95 * mod, " L ").concat(100 * mod, " ").concat(3 * mod, " L ").concat(98 * mod, " ").concat(95 * mod, "\"/>") + '</svg>' + '<div style="transform: translateY(-25px);" class="r ac jc">' + "<h2 id=\"".concat(div.id, "_min_title\" style=\"width: 140px; font-size: 16px;\" class=\"m0 mr5 r ac jc\" >").concat(widgets[widget].min, "</h2>") + "<h2 id=\"".concat(div.id, "_max_title\" style=\"width: 140px; font-size: 16px;\" class=\"m0 ml5 r ac jc\" >").concat(widgets[widget].max, "</h2>") + '</div>' + '<div style="transform: translateY(-40px);" class="r ac jc">' + "<h1 id=\"".concat(div.id, "_units_title\">").concat(value).concat(widgets[widget].units, "</h1>") + '</div>';
+            dashboard.appendChild(div);
           }
 
-          var range = Math.abs(widgets[widget].min - widgets[widget].max);
-          var tic = 270 / range;
-          var angle = Math.floor(270 / (range - data['variables'][widgets[widget].variable]));
-          angle = (data['variables'][widgets[widget].variable] - widgets[widget].min) * tic - 135;
-          if (angle > 135) angle = 135;
-          if (angle < -135) angle = -135;
-          div.innerHTML = "<i  onclick=\"windowSwitcher('gauge_settings','".concat(div.id, "')\" style=\"position: absolute; transform: translate(109px, -5px)\" class=\"hc p3 hac fa fa-ellipsis-v\"></i>") + "<h2 style=\"".concat(mb, "\" id=\"").concat(div.id, "_title\">").concat(widgets[widget].title, "</h2>") + "<h3  id=\"".concat(div.id, "_variable_title\" style=\"font-size:14px; display:").concat(display, ";\" class=\"m0 mb3 p0\" >").concat(widgets[widget].variable, "</h3>") + "<svg height=\"".concat(200 * mod, "\" width=\"").concat(200 * mod, "\">") + "<circle cx= \"".concat(100 * mod, "\" cy= \"").concat(100 * mod, "\" r=\"").concat(5 * mod, "\" fill=\"#ffffff\"/>") + "<path fill=\"".concat(widgets[widget].color1, "\" d=\"M").concat(29.29 * mod, ",").concat(170.71 * mod, "           A ").concat(100 * mod, " ").concat(100 * mod, " 0 0 1 ").concat(0 * mod, " ").concat(102.5 * mod, "                 L ").concat(20 * mod, " ").concat(102.5 * mod, "               A ").concat(80 * mod, " ").concat(80 * mod, " 0 0 0 ").concat(43.432 * mod, " ").concat(156.568 * mod, "\"/>") + "<path fill=\"".concat(widgets[widget].color2, "\" d=\"M").concat(0 * mod, ",").concat(97.5 * mod, "                 A ").concat(100 * mod, " ").concat(100 * mod, " 0 0 1 ").concat(27.592735 * mod, " ").concat(31.12827 * mod, "      L ").concat(41.6915 * mod, " ").concat(45.227 * mod, "         A ").concat(80 * mod, " ").concat(80 * mod, " 0 0 0 ").concat(20 * mod, " ").concat(97.5 * mod, " \"/>") + "<path fill=\"".concat(widgets[widget].color3, "\" d=\"M").concat(31.05709 * mod, ", ").concat(27.521555 * mod, "    A ").concat(100 * mod, " ").concat(100 * mod, " 0 0 1 ").concat(97.5 * mod, " ").concat(0 * mod, "                  L ").concat(97.5 * mod, " ").concat(20 * mod, "                A ").concat(80 * mod, " ").concat(80 * mod, " 0 0 0 ").concat(45.226855 * mod, " ").concat(41.6915 * mod, "\"/>") + "<path fill=\"".concat(widgets[widget].color4, "\" d=\"M").concat(102.5 * mod, ",").concat(0 * mod, "                A ").concat(100 * mod, " ").concat(100 * mod, " 0 0 1 ").concat(168.94291 * mod, " ").concat(27.521555 * mod, "     L ").concat(154.773145 * mod, " ").concat(41.6915 * mod, "     A ").concat(80 * mod, " ").concat(80 * mod, " 0 0 0 ").concat(102.5 * mod, " ").concat(20 * mod, "\"/>") + "<path fill=\"".concat(widgets[widget].color5, "\" d=\"M").concat(172.407265 * mod, ",").concat(31.12827 * mod, "    A ").concat(100 * mod, " ").concat(100 * mod, " 0 0 1 ").concat(200 * mod, " ").concat(97.5 * mod, "                L ").concat(180 * mod, " ").concat(97.5 * mod, "               A ").concat(80 * mod, " ").concat(80 * mod, " 0 0 0 ").concat(158.3085 * mod, " ").concat(45.227 * mod, "\"/>") + "<path fill=\"".concat(widgets[widget].color6, "\" d=\"M").concat(200 * mod, ",").concat(102.5 * mod, "              A ").concat(100 * mod, " ").concat(100 * mod, " 0 0 1 ").concat(170.71 * mod, " ").concat(170.71 * mod, "           L ").concat(156.568 * mod, " ").concat(156.568 * mod, "        A ").concat(80 * mod, " ").concat(80 * mod, " 0 0 0 ").concat(180 * mod, " ").concat(102.5 * mod, "\"/>") + "<path style=\"transform: rotate(".concat(angle, "deg); transform-origin: ").concat(100 * mod, "px ").concat(100 * mod, "px;\" fill=\"#707070\" d=\"M").concat(95 * mod, ",").concat(110 * mod, " L ").concat(105 * mod, " ").concat(110 * mod, " L ").concat(102 * mod, " ").concat(95 * mod, " L ").concat(100 * mod, " ").concat(3 * mod, " L ").concat(98 * mod, " ").concat(95 * mod, "\"/>") + '</svg>' + '<div style="transform: translateY(-25px);" class="r ac jc">' + "<h2 id=\"".concat(div.id, "_min_title\" style=\"width: 140px; font-size: 16px;\" class=\"m0 mr5 r ac jc\" >").concat(widgets[widget].min, "</h2>") + "<h2 id=\"".concat(div.id, "_max_title\" style=\"width: 140px; font-size: 16px;\" class=\"m0 ml5 r ac jc\" >").concat(widgets[widget].max, "</h2>") + '</div>' + '<div style="transform: translateY(-40px);" class="r ac jc">' + "<h1 id=\"".concat(div.id, "_units_title\">").concat(data['variables'][widgets[widget].variable]).concat(widgets[widget].units, "</h1>") + '</div>';
-          dashboard.appendChild(div);
-        }
+          if (widgets[widget].type === 'data') {
+            if (widgets[widget]['hide'] === 'true') {
+              display = "none";
+              mb = '';
+            }
 
-        if (widgets[widget].type === 'data') {
-          if (widgets[widget]['hide'] === 'true') {
-            display = "none";
-            mb = '';
+            div.innerHTML = "<i  onclick=\"windowSwitcher('data_settings','".concat(div.id, "')\" style=\"position: absolute; transform: translate(109px, -35px)\" class=\"hc p3 hac fa fa-ellipsis-v\"></i>") + "<h2 style=\"".concat(mb, "\" id=\"\">").concat(widgets[widget].title, "</h2>") + "<h3 style=\"font-size:14px; display:".concat(display, ";\" id=\"\" class=\"m0 mb3 p0\">").concat(widgets[widget].variable, "</h3>") + '<div style="" class="r ac jc">' + "<h1 style = \" font-size: 5rem; margin: 0; margin-bottom: 1rem;\" >".concat(data['variables'][widgets[widget].variable], "</h1>") + "<h1 style = \" font-size: 5rem; margin: 0; margin-bottom: 1rem;\"  class=\"m0\">".concat(widgets[widget].units, "</h1>") + '</div>' + "<div>".concat(new Date().toLocaleString(), "</div>");
+            dashboard.appendChild(div);
           }
-
-          div.innerHTML = "<i  onclick=\"windowSwitcher('data_settings','".concat(div.id, "')\" style=\"position: absolute; transform: translate(109px, -35px)\" class=\"hc p3 hac fa fa-ellipsis-v\"></i>") + "<h2 style=\"".concat(mb, "\" id=\"\">").concat(widgets[widget].title, "</h2>") + "<h3 style=\"font-size:14px; display:".concat(display, ";\" id=\"\" class=\"m0 mb3 p0\">").concat(widgets[widget].variable, "</h3>") + '<div style="" class="r ac jc">' + "<h1 style = \" font-size: 5rem; margin: 0; margin-bottom: 1rem;\" >".concat(data['variables'][widgets[widget].variable], "</h1>") + "<h1 style = \" font-size: 5rem; margin: 0; margin-bottom: 1rem;\"  class=\"m0\">".concat(widgets[widget].units, "</h1>") + '</div>' + "<div>".concat(new Date().toLocaleString(), "</div>");
-          dashboard.appendChild(div);
         }
+      };
+
+      for (var widget in widgets) {
+        _loop(widget);
       }
-    }
+    })();
   }
 } // Variables Tab.
 
@@ -431,7 +458,7 @@ function drawLineGraph(classID, targetID) {
   var index = 0;
   var seriesTitles = [];
 
-  var _loop = function _loop(targetSerie) {
+  var _loop2 = function _loop2(targetSerie) {
     var chartData = currentProjectData.charts.find(function (chart) {
       return chart.name === targetSeries[targetSerie].name;
     });
@@ -459,7 +486,7 @@ function drawLineGraph(classID, targetID) {
   };
 
   for (var targetSerie in targetSeries) {
-    _loop(targetSerie);
+    _loop2(targetSerie);
   } // data.labels = [targetLabels[0], targetLabels[Math.ceil(targetLabels.length/3)], targetLabels[Math.ceil((targetLabels.length/3)*2)], targetLabels[Math.ceil(targetLabels.length)]];
 
 
@@ -480,8 +507,7 @@ function drawLineGraph(classID, targetID) {
       showLabel: true,
       showGrid: true,
       type: Chartist.AutoScaleAxis,
-      onlyInteger: true //
-      // type: Chartist.FixedScaleAxis,
+      onlyInteger: true // type: Chartist.FixedScaleAxis,
       // divisor: 5,
 
     },
@@ -560,7 +586,7 @@ function drawScatterPLot(classID, targetID) {
   var index = 0;
   var seriesTitles = [];
 
-  var _loop2 = function _loop2(targetSerie) {
+  var _loop3 = function _loop3(targetSerie) {
     var chartData = currentProjectData.charts.find(function (chart) {
       return chart.name === targetSeries[targetSerie].name;
     });
@@ -587,7 +613,7 @@ function drawScatterPLot(classID, targetID) {
   };
 
   for (var targetSerie in targetSeries) {
-    _loop2(targetSerie);
+    _loop3(targetSerie);
   } // for(let widgetSeries in widgetSeries ){
   //     // data.series.push()
   // }

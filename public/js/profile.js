@@ -31,10 +31,10 @@ function initializeProfile() {
 }
 
 function setProfileInformation(user) {
-  document.getElementById('profile_image').src = "https://www.gravatar.com/avatar/".concat(MD5(user.email));
+  document.getElementById('profile_image').src = "https://www.gravatar.com/avatar/".concat(MD5(user.email), "?d=https://cloud.brilliantlabs.ca/images/BL_Flask_White.png");
   document.getElementById('profile_image').classList.remove('dn');
   document.getElementById('profile_image_sidebar').classList.remove('dn');
-  document.getElementById('profile_image_sidebar').src = "https://www.gravatar.com/avatar/".concat(MD5(user.email));
+  document.getElementById('profile_image_sidebar').src = "https://www.gravatar.com/avatar/".concat(MD5(user.email), "?d=https://cloud.brilliantlabs.ca/images/BL_Flask_White.png");
   document.getElementById('user_email').innerText = user.email;
   document.getElementById('user_name').innerText = user.displayName;
 }

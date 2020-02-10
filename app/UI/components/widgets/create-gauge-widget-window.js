@@ -10,7 +10,18 @@ function CreateGaugeWidgetWindow(){
         for (let variable in variables) {
             if(variables.hasOwnProperty(variable)){
                 if (typeof variables[variable] === "number" && variable !== 'default') {
-                    validVariablesForGauge += `<option value="${variable}">${variable}</option>`;
+                    validVariablesForGauge += `<option variable-type="variable" value="${variable}">Variable: ${variable}</option>`;
+                }
+            }
+        }
+    }
+
+    if (currentProjectData.hasOwnProperty('charts')) {
+        let charts = currentProjectData['charts'];
+        for (let chart in charts) {
+            if(charts.hasOwnProperty(chart)){
+                if (charts[chart].type === "LINE") {
+                    validVariablesForGauge += `<option variable-type="chart" value="${charts[chart].name}">Chart: ${charts[chart].name}</option>`;
                 }
             }
         }
@@ -42,7 +53,7 @@ function CreateGaugeWidgetWindow(){
             <div class="r mb3">Variable:&nbsp;            
                 <select oninput="variableSettings()" id="variable_title_input">
                     <optgroup value="Variables">
-                    <option value="">Select a Variable</option>
+                        <option value="">Select a Variable / Chart</option>
                         ${validVariablesForGauge}
                     </optgroup>
                 </select>
@@ -72,4 +83,26 @@ function CreateGaugeWidgetWindow(){
             </div>
         </div>
     `;
+}
+
+function newGaugeWidget() {
+    let sel = document.getElementById('variable_title_input');
+    var selected = sel.options[sel.selectedIndex];
+
+    addWidget(currentUid, currentProject, {
+        type: 'gauge',
+        hide: `${document.getElementById('gauge_variable_hide').checked}`,
+        variable_type: `${selected.getAttribute('variable-type')}`,
+        variable: `${document.getElementById('variable_title_input').value}`,
+        units: `${document.getElementById('units').innerText}`,
+        title: `${document.getElementById('gauge_title').innerText}`,
+        color1: `${document.getElementById('color1').value}`,
+        color2: `${document.getElementById('color2').value}`,
+        color3: `${document.getElementById('color3').value}`,
+        color4: `${document.getElementById('color4').value}`,
+        color5: `${document.getElementById('color5').value}`,
+        color6: `${document.getElementById('color6').value}`,
+        min: parseInt(document.getElementById('gauge_min_value').innerText),
+        max: parseInt(document.getElementById('gauge_max_value').innerText)
+    });
 }

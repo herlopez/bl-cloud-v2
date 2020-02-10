@@ -1066,10 +1066,10 @@ function initializeProfile(){
 }
 
 function setProfileInformation(user) {
-    document.getElementById('profile_image').src = `https://www.gravatar.com/avatar/${MD5(user.email)}`;
+    document.getElementById('profile_image').src = `https://www.gravatar.com/avatar/${MD5(user.email)}?d=https://cloud.brilliantlabs.ca/images/BL_Flask_White.png`;
     document.getElementById('profile_image').classList.remove('dn');
     document.getElementById('profile_image_sidebar').classList.remove('dn');
-    document.getElementById('profile_image_sidebar').src = `https://www.gravatar.com/avatar/${MD5(user.email)}`;
+    document.getElementById('profile_image_sidebar').src = `https://www.gravatar.com/avatar/${MD5(user.email)}?d=https://cloud.brilliantlabs.ca/images/BL_Flask_White.png`;
     document.getElementById('user_email').innerText = user.email;
     document.getElementById('user_name').innerText = user.displayName;
 }
@@ -1292,8 +1292,45 @@ function gaugeSettingsTitle() {
 
 function variableSettings() {
     let newValue = document.getElementById('variable_title_input').value;
-    document.getElementById('value').innerText = currentProjectData['variables'][newValue];
+    if(currentWindow === "gauge"){
+        let sel = document.getElementById('variable_title_input');
+        let selected = sel.options[sel.selectedIndex];
+        let varType = selected.getAttribute('variable-type');
+        if(varType === 'chart'){
+            let targetChart = currentProjectData['charts'].findIndex(w => w.name === newValue);
+            if(currentProjectData['charts'][targetChart].hasOwnProperty('data')){
+                document.getElementById('value').innerText = currentProjectData['charts'][targetChart]['data'][currentProjectData['charts'][targetChart]['data'].length-1].value;
+            }
+            else{
+                document.getElementById('value').innerText = 'No Data Yet';
+            }
+        }else{
+        document.getElementById('value').innerText = currentProjectData['variables'][newValue];
+    }
 
+    }else{
+        document.getElementById('value').innerText = currentProjectData['variables'][newValue];
+    }
+    document.getElementById('variable_title').innerText = newValue;
+}
+function variableSettingsSettings(id) {
+    let newValue = document.getElementById(id).value;
+    let sel = document.getElementById(id);
+    let selected = sel.options[sel.selectedIndex];
+    let varType = selected.getAttribute('variable-type');
+    if(varType === 'chart'){
+        let targetChart = currentProjectData['charts'].findIndex(w => w.name === newValue);
+        if(currentProjectData['charts'][targetChart].hasOwnProperty('data')){
+            document.getElementById('value').innerText = currentProjectData['charts'][targetChart]['data'][currentProjectData['charts'][targetChart]['data'].length-1].value;
+        }
+        else{
+            document.getElementById('value').innerText = 'No Data Yet';
+        }
+    }
+else{
+        document.getElementById('value').innerText = currentProjectData['variables'][newValue];
+    }
+    document.getElementById('variable_title').innerText = newValue;
 }
 
 function unitSettings(i, id = 'units') {
@@ -1371,26 +1408,7 @@ function removePlotWidget(id){
 }
 
 
-//
-// Gauge Widget
-//
-function newGaugeWidget() {
-    addWidget(currentUid, currentProject, {
-        type: 'gauge',
-        hide: `${document.getElementById('gauge_variable_hide').checked}`,
-        variable: `${document.getElementById('variable_title_input').value}`,
-        units: `${document.getElementById('units').innerText}`,
-        title: `${document.getElementById('gauge_title').innerText}`,
-        color1: `${document.getElementById('color1').value}`,
-        color2: `${document.getElementById('color2').value}`,
-        color3: `${document.getElementById('color3').value}`,
-        color4: `${document.getElementById('color4').value}`,
-        color5: `${document.getElementById('color5').value}`,
-        color6: `${document.getElementById('color6').value}`,
-        min: parseInt(document.getElementById('gauge_min_value').innerText),
-        max: parseInt(document.getElementById('gauge_max_value').innerText)
-    });
-}
+
 function updateGaugeWidget(id){
     updateWidget(currentUid, currentProject, {
         type: 'gauge',
@@ -1848,6 +1866,7 @@ function projectSearch() {
 }
 
 
+
 function paintProject(data) {
     switch (projectTab) {
         case 'dashboard':
@@ -1917,12 +1936,10 @@ function paintDashboardTab(data) {
                         rightPar = ")";
                     }
                     div.innerHTML = `
-
                         <i onclick="windowSwitcher('edit_line_graph','${div.id}')" style="position: absolute; transform: translate(262px, -10px)" class="hc p3 hac fa fa-ellipsis-v"></i>
                         <h2 style="${mb}" id="${div.id}_title">${widgets[widget].title}</h2>
                         <p style="transform: translate(-40px,94px) rotate(-90deg); position: absolute; transform-origin-x: 95px; text-align: center; transform-origin-y: 59px; width: 280px;" class="mt0">${widgets[widget].yAxisTitle} <i>${leftPar}${widgets[widget].yAxisUnits}${rightPar}</i></p>
                         <div class="ct-${div.id}-plot"></div>
-<!--                        <p class="mt0 mb1">${widgets[widget].xAxisTitle} <i>${leftPar}${widgets[widget].xAxisUnits}${rightPar}</i></p>-->
                         <style id="${div.id}_plot_styles"></style>
                         <i style="position: absolute; transform: translate(250px,-230px);" onclick="resetFnc && resetFnc();" class="hp hc fas fa-search-minus" id="reset-zoom-btn"></i>
                         <div class ="r jc ac m2" id="${div.id}_plot_legend"></div>
@@ -1966,9 +1983,26 @@ function paintDashboardTab(data) {
 
                     let range = Math.abs(widgets[widget].min - widgets[widget].max);
                     let tic = 270 / range;
-                    let angle = Math.floor(270 / (range - data['variables'][widgets[widget].variable]));
-                    angle = ((data['variables'][widgets[widget].variable] - widgets[widget].min) * tic) - 135;
-
+                    let angle  = 0;
+                    let value = 0;
+                    if(widgets[widget].variable_type === "variable"){
+                        value = data['variables'][widgets[widget].variable];
+                        angle = Math.floor(270 / (range - value));
+                        angle = ((value - widgets[widget].min) * tic) - 135;
+                    }else{
+                        let targetChart = data['charts'].findIndex(w => w.name === widgets[widget].variable);
+                        try {
+                            if (data['charts'][targetChart].hasOwnProperty('data')) {
+                                value = data['charts'][targetChart]['data'][data['charts'][targetChart]['data'].length - 1].value;
+                                angle = Math.floor(270 / (range - value));
+                                angle = ((value - widgets[widget].min) * tic) - 135;
+                            } else {
+                                value = "No Data";
+                            }
+                        }catch (e) {
+                            
+                        }
+                    }
                     if (angle > 135) angle = 135;
                     if (angle < -135) angle = -135;
 
@@ -1990,7 +2024,7 @@ function paintDashboardTab(data) {
                         `<h2 id="${div.id}_max_title" style="width: 140px; font-size: 16px;" class="m0 ml5 r ac jc" >${widgets[widget].max}</h2>` +
                         '</div>' +
                         '<div style="transform: translateY(-40px);" class="r ac jc">' +
-                        `<h1 id="${div.id}_units_title">${data['variables'][widgets[widget].variable]}${widgets[widget].units}</h1>` +
+                        `<h1 id="${div.id}_units_title">${value}${widgets[widget].units}</h1>` +
                         '</div>';
                     dashboard.appendChild(div);
 
@@ -2023,7 +2057,6 @@ function paintDashboardTab(data) {
 
 // Variables Tab.
 function paintVariableTab(data) {
-
     let project = document.getElementById('project_section_variables');
     project.classList = 'w100 c ac jc';
     project.style = {
@@ -2388,7 +2421,6 @@ function drawLineGraph(classID, targetID){
     // data.labels = [targetLabels[0], targetLabels[Math.ceil(targetLabels.length/3)], targetLabels[Math.ceil((targetLabels.length/3)*2)], targetLabels[Math.ceil(targetLabels.length)]];
     var options = {
         width: '90%',
-
         height: '220px',
         showArea: true,
         showPoint: true,
@@ -2405,7 +2437,7 @@ function drawLineGraph(classID, targetID){
             showGrid: true,
             type: Chartist.AutoScaleAxis,
             onlyInteger: true,
-            //
+
             // type: Chartist.FixedScaleAxis,
             // divisor: 5,
         },
@@ -2862,7 +2894,18 @@ function CreateGaugeWidgetWindow(){
         for (let variable in variables) {
             if(variables.hasOwnProperty(variable)){
                 if (typeof variables[variable] === "number" && variable !== 'default') {
-                    validVariablesForGauge += `<option value="${variable}">${variable}</option>`;
+                    validVariablesForGauge += `<option variable-type="variable" value="${variable}">Variable: ${variable}</option>`;
+                }
+            }
+        }
+    }
+
+    if (currentProjectData.hasOwnProperty('charts')) {
+        let charts = currentProjectData['charts'];
+        for (let chart in charts) {
+            if(charts.hasOwnProperty(chart)){
+                if (charts[chart].type === "LINE") {
+                    validVariablesForGauge += `<option variable-type="chart" value="${charts[chart].name}">Chart: ${charts[chart].name}</option>`;
                 }
             }
         }
@@ -2894,7 +2937,7 @@ function CreateGaugeWidgetWindow(){
             <div class="r mb3">Variable:&nbsp;            
                 <select oninput="variableSettings()" id="variable_title_input">
                     <optgroup value="Variables">
-                    <option value="">Select a Variable</option>
+                        <option value="">Select a Variable / Chart</option>
                         ${validVariablesForGauge}
                     </optgroup>
                 </select>
@@ -2924,6 +2967,28 @@ function CreateGaugeWidgetWindow(){
             </div>
         </div>
     `;
+}
+
+function newGaugeWidget() {
+    let sel = document.getElementById('variable_title_input');
+    var selected = sel.options[sel.selectedIndex];
+
+    addWidget(currentUid, currentProject, {
+        type: 'gauge',
+        hide: `${document.getElementById('gauge_variable_hide').checked}`,
+        variable_type: `${selected.getAttribute('variable-type')}`,
+        variable: `${document.getElementById('variable_title_input').value}`,
+        units: `${document.getElementById('units').innerText}`,
+        title: `${document.getElementById('gauge_title').innerText}`,
+        color1: `${document.getElementById('color1').value}`,
+        color2: `${document.getElementById('color2').value}`,
+        color3: `${document.getElementById('color3').value}`,
+        color4: `${document.getElementById('color4').value}`,
+        color5: `${document.getElementById('color5').value}`,
+        color6: `${document.getElementById('color6').value}`,
+        min: parseInt(document.getElementById('gauge_min_value').innerText),
+        max: parseInt(document.getElementById('gauge_max_value').innerText)
+    });
 }
 /**
  * @return {string}
@@ -3297,13 +3362,26 @@ function EditGaugeWidgetWindow(widgetId) {
     if (currentProjectData.hasOwnProperty('variables')) {
         let variables = currentProjectData['variables'];
         for (let variable in variables) {
-            if(variables.hasOwnProperty(variable)){
+            if (variables.hasOwnProperty(variable)) {
                 if (typeof variables[variable] === "number" && variable !== 'default') {
-                    if(variable === widget.variable){
-                        validVariablesForGauge += `<option selected value="${variable}">${variable}</option>`;
+                    if (variable === widget.variable) {
+                        validVariablesForGauge += `<option variable-type="variable" selected value="${variable}">Variable: ${variable}</option>`;
+                    } else {
+                        validVariablesForGauge += `<option variable-type="variable" value="${variable}">Variable: ${variable}</option>`;
                     }
-                    else{
-                        validVariablesForGauge += `<option value="${variable}">${variable}</option>`;
+                }
+            }
+        }
+    }
+    if (currentProjectData.hasOwnProperty('charts')) {
+        let charts = currentProjectData['charts'];
+        for (let chart in charts) {
+            if (charts.hasOwnProperty(chart)) {
+                if (charts[chart].type === "LINE") {
+                    if (charts[chart].name === widget.variable) {
+                        validVariablesForGauge += `<option selected variable-type="chart" value="${charts[chart].name}">Chart: ${charts[chart].name}</option>`;
+                    } else {
+                        validVariablesForGauge += `<option variable-type="chart" value="${charts[chart].name}">Chart: ${charts[chart].name}</option>`;
                     }
                 }
             }
@@ -3312,11 +3390,25 @@ function EditGaugeWidgetWindow(widgetId) {
 
     let hideValue = '';
     let hideTopTitle = '';
-    if(widget.hide === 'true'){
-        hideValue= "checked";
+    if (widget.hide === 'true') {
+        hideValue = "checked";
         hideTopTitle = "dn";
     }
+    let widgetValue = "NA";
+    if (widget.variable_type === "chart") {
+         let targetChart = currentProjectData['charts'].findIndex(w => w.name === widget.variable);
+        if (targetChart !== null) {
+            console.log(`d${targetChart}`,widget.variable, currentProjectData['charts'], currentProjectData['charts'][targetChart])
+            if (currentProjectData['charts'][targetChart].hasOwnProperty('data')) {
+                widgetValue = currentProjectData['charts'][targetChart]['data'][currentProjectData['charts'][targetChart]['data'].length - 1].value;
+            } else {
+                widgetValue = 'No Data Yet';
+            }
+        }
+    } else {
+               widgetValue = currentProjectData.variables[widget.variable];
 
+    }
     return `
         <i style="color: red; top: 5px; right: 0;" class="por fs125 hc hp fa fa-trash-alt" onclick="removeGaugeWidget('${widget.id}')"></i> 
         <div class="c ac jc">
@@ -3337,12 +3429,12 @@ function EditGaugeWidgetWindow(widgetId) {
                 <h2 id="gauge_max_value" class="m0 ml5" >${widget.max}</h2> 
             </div> 
             <div style="transform: translateY(-40px);" class="r ac jc"> 
-                <h1 id="value">${currentProjectData.variables[widget.variable]}</h1> 
+                <h1 id="value">${widgetValue}</h1> 
                 <h1 class="m0" id="units">${widget.units}</h1> 
             </div> 
              <div class="r mb3">Variable:&nbsp;            
-                <select value="${widget.variable}" oninput="variableSettings()" id="${widget.id}_variable_title_input">
-                    <option disabled value="">Select a Variable</option>
+                <select value="${widget.variable}" oninput="variableSettingsSettings(this.id)" id="${widget.id}_variable_title_input">
+                    <option disabled value="">Select a Variable / Chart</option>
                     ${validVariablesForGauge}
                 </select>
                 &nbsp;Hide: 
@@ -3372,7 +3464,27 @@ function EditGaugeWidgetWindow(widgetId) {
         </div>
     `;
 }
-
+function updateGaugeWidget(id){
+    let sel = document.getElementById(`${id}_variable_title_input`);
+    var selected = sel.options[sel.selectedIndex];
+    updateWidget(currentUid, currentProject, {
+        type: 'gauge',
+        hide: `${document.getElementById('gauge_variable_hide').checked}`,
+        variable_type: `${selected.getAttribute('variable-type')}`,
+        variable: `${document.getElementById(`${id}_variable_title_input`).value}`,
+        units: `${document.getElementById('units').innerText}`,
+        title: `${document.getElementById('gauge_title').innerText}`,
+        color1: `${document.getElementById('color1').value}`,
+        color2: `${document.getElementById('color2').value}`,
+        color3: `${document.getElementById('color3').value}`,
+        color4: `${document.getElementById('color4').value}`,
+        color5: `${document.getElementById('color5').value}`,
+        color6: `${document.getElementById('color6').value}`,
+        min: parseInt(document.getElementById('gauge_min_value').innerText),
+        max: parseInt(document.getElementById('gauge_max_value').innerText),
+        id: id
+    })
+}
 
 /**
  * Line Graph Edit Window.

@@ -207,7 +207,53 @@ function gaugeSettingsTitle() {
 
 function variableSettings() {
   var newValue = document.getElementById('variable_title_input').value;
-  document.getElementById('value').innerText = currentProjectData['variables'][newValue];
+
+  if (currentWindow === "gauge") {
+    var sel = document.getElementById('variable_title_input');
+    var selected = sel.options[sel.selectedIndex];
+    var varType = selected.getAttribute('variable-type');
+
+    if (varType === 'chart') {
+      var targetChart = currentProjectData['charts'].findIndex(function (w) {
+        return w.name === newValue;
+      });
+
+      if (currentProjectData['charts'][targetChart].hasOwnProperty('data')) {
+        document.getElementById('value').innerText = currentProjectData['charts'][targetChart]['data'][currentProjectData['charts'][targetChart]['data'].length - 1].value;
+      } else {
+        document.getElementById('value').innerText = 'No Data Yet';
+      }
+    } else {
+      document.getElementById('value').innerText = currentProjectData['variables'][newValue];
+    }
+  } else {
+    document.getElementById('value').innerText = currentProjectData['variables'][newValue];
+  }
+
+  document.getElementById('variable_title').innerText = newValue;
+}
+
+function variableSettingsSettings(id) {
+  var newValue = document.getElementById(id).value;
+  var sel = document.getElementById(id);
+  var selected = sel.options[sel.selectedIndex];
+  var varType = selected.getAttribute('variable-type');
+
+  if (varType === 'chart') {
+    var targetChart = currentProjectData['charts'].findIndex(function (w) {
+      return w.name === newValue;
+    });
+
+    if (currentProjectData['charts'][targetChart].hasOwnProperty('data')) {
+      document.getElementById('value').innerText = currentProjectData['charts'][targetChart]['data'][currentProjectData['charts'][targetChart]['data'].length - 1].value;
+    } else {
+      document.getElementById('value').innerText = 'No Data Yet';
+    }
+  } else {
+    document.getElementById('value').innerText = currentProjectData['variables'][newValue];
+  }
+
+  document.getElementById('variable_title').innerText = newValue;
 }
 
 function unitSettings(i) {
@@ -287,27 +333,6 @@ function updatePlotWidget(id, type) {
 
 function removePlotWidget(id) {
   removeWidget(currentUid, currentProject, id);
-} //
-// Gauge Widget
-//
-
-
-function newGaugeWidget() {
-  addWidget(currentUid, currentProject, {
-    type: 'gauge',
-    hide: "".concat(document.getElementById('gauge_variable_hide').checked),
-    variable: "".concat(document.getElementById('variable_title_input').value),
-    units: "".concat(document.getElementById('units').innerText),
-    title: "".concat(document.getElementById('gauge_title').innerText),
-    color1: "".concat(document.getElementById('color1').value),
-    color2: "".concat(document.getElementById('color2').value),
-    color3: "".concat(document.getElementById('color3').value),
-    color4: "".concat(document.getElementById('color4').value),
-    color5: "".concat(document.getElementById('color5').value),
-    color6: "".concat(document.getElementById('color6').value),
-    min: parseInt(document.getElementById('gauge_min_value').innerText),
-    max: parseInt(document.getElementById('gauge_max_value').innerText)
-  });
 }
 
 function updateGaugeWidget(id) {

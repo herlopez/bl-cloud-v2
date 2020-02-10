@@ -1,3 +1,4 @@
+
 function paintProject(data) {
     switch (projectTab) {
         case 'dashboard':
@@ -67,12 +68,10 @@ function paintDashboardTab(data) {
                         rightPar = ")";
                     }
                     div.innerHTML = `
-
                         <i onclick="windowSwitcher('edit_line_graph','${div.id}')" style="position: absolute; transform: translate(262px, -10px)" class="hc p3 hac fa fa-ellipsis-v"></i>
                         <h2 style="${mb}" id="${div.id}_title">${widgets[widget].title}</h2>
                         <p style="transform: translate(-40px,94px) rotate(-90deg); position: absolute; transform-origin-x: 95px; text-align: center; transform-origin-y: 59px; width: 280px;" class="mt0">${widgets[widget].yAxisTitle} <i>${leftPar}${widgets[widget].yAxisUnits}${rightPar}</i></p>
                         <div class="ct-${div.id}-plot"></div>
-<!--                        <p class="mt0 mb1">${widgets[widget].xAxisTitle} <i>${leftPar}${widgets[widget].xAxisUnits}${rightPar}</i></p>-->
                         <style id="${div.id}_plot_styles"></style>
                         <i style="position: absolute; transform: translate(250px,-230px);" onclick="resetFnc && resetFnc();" class="hp hc fas fa-search-minus" id="reset-zoom-btn"></i>
                         <div class ="r jc ac m2" id="${div.id}_plot_legend"></div>
@@ -116,9 +115,26 @@ function paintDashboardTab(data) {
 
                     let range = Math.abs(widgets[widget].min - widgets[widget].max);
                     let tic = 270 / range;
-                    let angle = Math.floor(270 / (range - data['variables'][widgets[widget].variable]));
-                    angle = ((data['variables'][widgets[widget].variable] - widgets[widget].min) * tic) - 135;
-
+                    let angle  = 0;
+                    let value = 0;
+                    if(widgets[widget].variable_type === "variable"){
+                        value = data['variables'][widgets[widget].variable];
+                        angle = Math.floor(270 / (range - value));
+                        angle = ((value - widgets[widget].min) * tic) - 135;
+                    }else{
+                        let targetChart = data['charts'].findIndex(w => w.name === widgets[widget].variable);
+                        try {
+                            if (data['charts'][targetChart].hasOwnProperty('data')) {
+                                value = data['charts'][targetChart]['data'][data['charts'][targetChart]['data'].length - 1].value;
+                                angle = Math.floor(270 / (range - value));
+                                angle = ((value - widgets[widget].min) * tic) - 135;
+                            } else {
+                                value = "No Data";
+                            }
+                        }catch (e) {
+                            
+                        }
+                    }
                     if (angle > 135) angle = 135;
                     if (angle < -135) angle = -135;
 
@@ -140,7 +156,7 @@ function paintDashboardTab(data) {
                         `<h2 id="${div.id}_max_title" style="width: 140px; font-size: 16px;" class="m0 ml5 r ac jc" >${widgets[widget].max}</h2>` +
                         '</div>' +
                         '<div style="transform: translateY(-40px);" class="r ac jc">' +
-                        `<h1 id="${div.id}_units_title">${data['variables'][widgets[widget].variable]}${widgets[widget].units}</h1>` +
+                        `<h1 id="${div.id}_units_title">${value}${widgets[widget].units}</h1>` +
                         '</div>';
                     dashboard.appendChild(div);
 
@@ -173,7 +189,6 @@ function paintDashboardTab(data) {
 
 // Variables Tab.
 function paintVariableTab(data) {
-
     let project = document.getElementById('project_section_variables');
     project.classList = 'w100 c ac jc';
     project.style = {
@@ -538,7 +553,6 @@ function drawLineGraph(classID, targetID){
     // data.labels = [targetLabels[0], targetLabels[Math.ceil(targetLabels.length/3)], targetLabels[Math.ceil((targetLabels.length/3)*2)], targetLabels[Math.ceil(targetLabels.length)]];
     var options = {
         width: '90%',
-
         height: '220px',
         showArea: true,
         showPoint: true,
@@ -555,7 +569,7 @@ function drawLineGraph(classID, targetID){
             showGrid: true,
             type: Chartist.AutoScaleAxis,
             onlyInteger: true,
-            //
+
             // type: Chartist.FixedScaleAxis,
             // divisor: 5,
         },
