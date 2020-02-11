@@ -33,6 +33,10 @@ function addSeries(id) {
         if (charts[chart].type === "SCATTER") {
           validScatterChart += "<option value=\"".concat(charts[chart].name, "\">").concat(charts[chart].name, "</option>");
         }
+
+        if (charts[chart].type === "SCATTER") {
+          validScatterChart += "<option value=\"".concat(charts[chart].name, "\">").concat(charts[chart].name, "</option>");
+        }
       }
     }
   }

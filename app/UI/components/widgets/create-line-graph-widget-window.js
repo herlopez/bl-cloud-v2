@@ -58,7 +58,7 @@ function CreateLineGraphWidgetWindow(){
                    </div>
 
                 </div>
-               <div id="series_add_button" onclick="addSeries('series_list')" class="r ac jc hp hc fa fa-plus mb3 fs125">&nbsp;&nbsp;<b class="">Add Series</b></div>
+               <div id="series_add_button" onclick="addSeriesLine('series_list')" class="r ac jc hp hc fa fa-plus mb3 fs125">&nbsp;&nbsp;<b class="">Add Series</b></div>
 
             </div>
             <div class="r">
@@ -68,7 +68,48 @@ function CreateLineGraphWidgetWindow(){
         </div>
     `;
 }
+function addSeriesLine(id){
 
+    let defaultColor = [
+        '#ff0000',
+        '#0000ff',
+        '#00ff00',
+        '#fff000',
+        '#ff7902'
+    ];
+
+    let series = document.getElementById(id);
+
+    let validScatterChart = "";
+
+    if (currentProjectData.hasOwnProperty('charts')) {
+        let charts = currentProjectData['charts'];
+        console.log("CHARTS: ", charts)
+        for (let chart in charts) {
+            if(charts.hasOwnProperty(chart)){
+                if (charts[chart].type === "LINE") {
+                    validScatterChart += `<option value="${charts[chart].name}">${charts[chart].name}</option>`;
+                }
+            }
+        }
+    }
+    series.innerHTML =  series.innerHTML + `
+    <div class="r ac mt1 mb3">Series ${series.children.length+1}:&nbsp;
+        <select id="series_${series.children.length}">
+            <optgroup value="Variables">
+                <option value="">Select a data set</option>
+                ${validScatterChart}
+                <input id = 'series_${series.children.length}_color' value = "${defaultColor[series.children.length]}"  type="color">
+            </optgroup>
+        </select>
+    </div>`;
+    if(series.children.length >= 5){
+        document.getElementById('series_add_button').classList.add('dn');
+    }
+    else{
+        document.getElementById('series_add_button').classList.remove('dn');
+    }
+}
 
 function drawLineGraphWindow(){
     var times = function (n) {

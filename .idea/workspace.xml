@@ -3,21 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="f8dc789a-0ee8-4036-b494-978e5ba3fd15" name="Default Changelist" comment="styling">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/UI/components/widgets/create-gauge-widget-window.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/components/widgets/create-gauge-widget-window.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/UI/components/widgets/edit-gauge-widget-window.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/components/widgets/edit-gauge-widget-window.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/UI/functions/project.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/functions/project.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/UI/profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/profile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/UI/window-switcher.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/window-switcher.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/server/database.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/server/database.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/BL_Flask_White.png" beforeDir="false" afterPath="$PROJECT_DIR$/public/images/BL_Flask_White.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/UI/components/widgets/create-line-graph-widget-window.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/components/widgets/create-line-graph-widget-window.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/UI/components/widgets/create-scatter-plot-widget-window.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/components/widgets/create-scatter-plot-widget-window.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/create-gauge-widget-window.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/create-gauge-widget-window.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/edit-gauge-widget-window.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/edit-gauge-widget-window.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/profile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/project.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/project.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/window-switcher.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/window-switcher.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/create-line-graph-widget-window.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/create-line-graph-widget-window.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/create-scatter-plot-widget-window.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/create-scatter-plot-widget-window.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -234,7 +224,7 @@
       <workItem from="1579477551900" duration="15212000" />
       <workItem from="1580831818503" duration="4140000" />
       <workItem from="1580941175680" duration="1013000" />
-      <workItem from="1581022624001" duration="18367000" />
+      <workItem from="1581022624001" duration="22105000" />
     </task>
     <task id="LOCAL-00001" summary="=MQTT Implementation">
       <created>1568726588352</created>
@@ -329,12 +319,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/app/UI/components/widgets/create-scatter-plot-widget-window.js</url>
-          <line>116</line>
+          <line>119</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/app/UI/components/widgets/create-scatter-plot-widget-window.js</url>
-          <line>117</line>
+          <line>120</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
