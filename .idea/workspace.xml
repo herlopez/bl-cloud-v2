@@ -3,11 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="f8dc789a-0ee8-4036-b494-978e5ba3fd15" name="Default Changelist" comment="styling">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/UI/components/widgets/create-line-graph-widget-window.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/components/widgets/create-line-graph-widget-window.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/UI/components/widgets/create-scatter-plot-widget-window.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/UI/components/widgets/create-scatter-plot-widget-window.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/create-line-graph-widget-window.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/create-line-graph-widget-window.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/create-scatter-plot-widget-window.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/create-scatter-plot-widget-window.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/server/command_processors/http-commands.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/server/command_processors/http-commands.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/server/database.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/server/database.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -224,7 +222,9 @@
       <workItem from="1579477551900" duration="15212000" />
       <workItem from="1580831818503" duration="4140000" />
       <workItem from="1580941175680" duration="1013000" />
-      <workItem from="1581022624001" duration="22105000" />
+      <workItem from="1581022624001" duration="22963000" />
+      <workItem from="1581389993551" duration="3000" />
+      <workItem from="1581512752212" duration="17449000" />
     </task>
     <task id="LOCAL-00001" summary="=MQTT Implementation">
       <created>1568726588352</created>
@@ -266,10 +266,15 @@
     <option name="LAST_COMMIT_MESSAGE" value="styling" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="304" y="205" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1579182908806">
-      <screen x="0" y="23" width="1680" height="1027" />
+    <state x="496" y="225" key="#Markdown" timestamp="1581559615064">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state x="496" y="225" key="#Markdown/0.0.1792.1120@0.0.1792.1120" timestamp="1581559615064" />
+    <state x="324" y="198" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1581567296645">
+      <screen x="0" y="0" width="1792" height="1120" />
     </state>
     <state x="304" y="186" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1578964305368" />
+    <state x="324" y="198" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1792.1120@0.0.1792.1120" timestamp="1581567296645" />
     <state x="304" y="205" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1680.1027@0.23.1680.1027" timestamp="1579182908806" />
     <state x="546" y="330" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1578927905329">
       <screen x="0" y="0" width="1680" height="1050" />

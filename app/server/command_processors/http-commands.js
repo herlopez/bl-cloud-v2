@@ -57,6 +57,8 @@ function commandProcessor(message, callback, server) {
             callback.send(createChartData);
             break;
 
+        case 'READ_CHART':
+        case 'GET_CHART':
         case 'GET_CHART_DATA':
         case 'READ_CHART_DATA':
             callback.send(databaseFunctions.getChartData(message));
@@ -73,23 +75,22 @@ function commandProcessor(message, callback, server) {
 
         case 'ADD_CHART_POINT':
         case 'ADD_DATA_POINT':
+        case 'ADD_DATA':
             let addChartDataPointData = databaseFunctions.addDataPoint(message);
             if(!addChartDataPointData.hasOwnProperty('error')) databaseFunctions.notifyClients(server, message.key, 'ADD_DATA_POINT_CB', addChartDataPointData);
             callback.send(addChartDataPointData);
             break;
 
+        case 'GET_CHART_POINT':
         case 'GET_DATA_POINT':
+        case 'GET_DATA':
             callback.send(databaseFunctions.getDataPoint(message));
             break;
 
         case 'GET_ALL_CHARTS':
         case 'READ_ALL_CHARTS':
+        case 'GET_CHART_LIST':
             callback.send(databaseFunctions.getAllCharts(message));
-            break;
-
-        case 'READ_CHART':
-        case 'GET_CHART':
-            callback.send(databaseFunctions.getChartData(message));
             break;
 
         default:

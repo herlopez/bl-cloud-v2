@@ -42,9 +42,10 @@ Step 6: In your browser: http://localhost:3000/
     *  [Create Chart](#head_create_chart)
     *  [Delete Chart](#head_erase_chart)
     *  [Delete Chart Data](#head_erase_chart_data)
-    *  [Add Chart Point](#head_add_chart_point)
+    *  [Add Data Point](#head_add_data_point)
+    *  [Get Data Point](#head_get_data_point)
     *  [Get Chart Data](#head_get_chart_data)
-    *  [Get All Charts](#head_get_all_charts)
+    *  [Get Chart List](#head_get_all_charts)
 
  
 
@@ -128,12 +129,16 @@ system.
 
 #### <a name="head_create_variable">Create Variable
 
-Command that creates a variable that can be set and read.
+##### Command that creates a variable that can be set and read.
 
-|Command            |Parameters|Type     |Description                           |
-|-------------------|----------|---------|--------------------------------------|
-|**CREATE_VARIABLE**|name      |String   |Name of the variable to create.       |
-|                   |value*     |Any      |Value to initialize the variable with.|
+Command: **CREATE_VARIABLE** 
+
+|Parameters  |Type       |Description               |
+|------------|-----------|--------------------------|
+|key         |string     |Project API Key           |
+|cmd         |string     |Command            |
+|value*     |Any      |Value to initialize the variable with.|
+
 
 *\*Paramate 'value' is not required, will be initialized as **null** if not specified.*
 
@@ -141,150 +146,164 @@ Command that creates a variable that can be set and read.
 *Request:*
 ```json
 {
-  "key": "XXXXXXXXXXXXXX",
-  "cmd": "CREATE_VARIABLE",
-  "name": "Test"
+    "key": "XXXXXXXXXXXXXX",
+    "cmd": "CREATE_VARIABLE",
+    "name": "Test"
 }
 ```
 *Response:*
 ```json
 {
-  "meta":{
-    "revision": 0,
-    "created": 1563162485390,
-    "version": 0
-  },
-  "result": {
-    "Test": null
-  }
+    "meta":{
+        "revision": 0,
+        "created": 1563162485390,
+        "version": 0
+    },
+    "result": {
+        "Test": null
+    }
 }
 ```
 ##### Example 2 (Value Provided)
 *Request:*
 ```json
 {
-  "key": "XXXXXXXXXXXXXX",
-  "cmd": "CREATE_VARIABLE",
-  "name": "Test",
-  "value": 12345678
+    "key": "XXXXXXXXXXXXXX",
+    "cmd": "CREATE_VARIABLE",
+    "name": "Test",
+    "value": 12345678
 }
 ```
 *Response:*
 ```json
 {
-  "meta":{
-    "revision": 0,
-    "created": 1563162485390,
-    "version": 0
-  },
-  "result": {
-    "Test": 12345678
-  }
+    "meta":{
+        "revision": 0,
+        "created": 1563162485390,
+        "version": 0
+    },
+    "result": {
+        "Test": 12345678
+    }
 }
 ```
 
 
 #### <a name="head_erase_variable"> Delete Variable
 
-Command that erases a stored variable. 
+##### Command that erases a stored variable. 
 
-|Command            |Parameters|Type     |Description                           |
-|-------------------|----------|---------|--------------------------------------|
-|**DELETE_VARIABLE** |name      |String   |Name of the variable to erase.        |
+Command: **DELETE_VARIABLE** 
+
+|Parameters  |Type       |Description               |
+|------------|-----------|--------------------------|
+|key         |string     |Project API Key           |
+|cmd         |string     |Command            |
+|name      |String   |Name of the variable to erase.        |
 
 ##### Example
 
 *Request:*
 ```json
 {
-  "key": "XXXXXXXXXXXXXX",
-  "cmd": "DELETE_VARIABLE",
-  "name": "Test"
+    "key": "XXXXXXXXXXXXXX",
+    "cmd": "DELETE_VARIABLE",
+    "name": "Test"
 }
 ```
 
 *Response:*
 ```json
 {
-  "result": true,
-   "meta": {
-    "revision": 0,
-    "created": 1563162485390,
-    "version": 0
-  }
+    "result": true,
+    "meta": {
+        "revision": 0,
+        "created": 1563162485390,
+        "version": 0
+    }
 }
 ```
 
 #### <a name="head_set_variable"> Set Variable
 
-Command that sets the value of a variable.
+##### Command that sets the value of a variable.
 
-|Command            |Parameters|Type    |Description                            |
-|-------------------|----------|--------|---------------------------------------|
-|**SET_VARIABLE**   |name      |String  |Name of the variable to set.           |
-|                   |value     |Any     |Value to set the variable to.          |
+Command: **SET_VARIABLE** 
+
+|Parameters  |Type       |Description               |
+|------------|-----------|--------------------------|
+|key         |string     |Project API Key           |
+|cmd         |string     |Command            |
+|value     |Any     |Value to set the variable to.          |
 
 ##### Example
 *Request:*
 ```json
 {
-  "key": "XXXXXXXXXXXXXX",
-  "cmd": "SET_VARIABLE",
-  "name": "Test",
-  "value": 87654321
+    "key": "XXXXXXXXXXXXXX",
+    "cmd": "SET_VARIABLE",
+    "name": "Test",
+    "value": 87654321
 }
 ```
 *Response:*
 ```json
 {
-  "meta": {
-    "revision": 0,
-    "created": 1563162485390,
-    "version": 0
-  },
-  "result": {
-    "Test": 87654321
-  }
+    "meta": {
+        "revision": 0,
+        "created": 1563162485390,
+        "version": 0
+    },
+    "result": {
+        "Test": 87654321
+    }
 }
 ```
 
 #### <a name="head_get_variable"> Get Variable
 
-Command that gets the value of a variable.
+##### Command that gets the value of a variable.
 
-|Command            |Parameters|Type     |Description                           |
-|-------------------|----------|---------|--------------------------------------|
-|**GET_VARIABLE**   |name      |String   |Name of the variable to read.          |
+Command: **GET_VARIABLE** 
+
+|Parameters  |Type       |Description               |
+|------------|-----------|--------------------------|
+|key         |string     |Project API Key           |
+|cmd         |string     |Command            |
+|value     |any     |Name of the variable to read.          |
 
 ##### Example
 *Request*
 ```json
 {
-  "key": "XXXXXXXXXXXXXX",
-  "cmd": "GET_VARIABLE", 
-  "name": "Test"
+    "key": "XXXXXXXXXXXXXX",
+    "cmd": "GET_VARIABLE", 
+    "name": "Test"
 }
 ```
 *Response*
 ```json
 {
-  "meta": {
-    "revision": 0,
-    "created": 1563162485390,
-    "version": 0
-  },
-  "result": {
-    "Test": 87654321
-  }
+    "meta": {
+        "revision": 0,
+        "created": 1563162485390,
+        "version": 0
+    },
+    "result": {
+        "Test": 87654321
+    }
 }
 ```
 #### <a name="head_get_all_variables"> Get All Variable
 
 Command that retrieves all variables.
 
-|Command            |Parameters|Type     |Description                           |
-|-------------------|----------|---------|--------------------------------------|
-|**GET_ALL_VARIABLES**   |      |   |         |
+Command: **GET_ALL_VARIABLES** 
+
+|Parameters  |Type       |Description               |
+|------------|-----------|--------------------------|
+|key         |string     |Project API Key           |
+|cmd         |string     |Command            |
 
 ##### Example
 *Request*
@@ -314,7 +333,6 @@ Command that retrieves all variables.
 
 ## <a name="head_charts">Charts
 #### <a name="head_charts_overview"> Overview
-
 Charts are intended to be used to hold big data sets with the goal of being able to visualize the data as a chart on the Brilliant Labs Cloud web client. Chart commands can also be used to simply hold big data sets, without necessarily wanting to visualise the data on a chart. Charts can be created, delete, set and read. Please read carefully throughout this section to catch all the details needed while implementing this API in your application or embedded system. 
 
 Five different chart types can be create:
@@ -323,1368 +341,935 @@ Five different chart types can be create:
 3. **Pie**
 4. **Scatter** 
 5. **Histogram**
-
 #### <a name="head_create_chart"> Create Chart
 ##### This command creates a **Bar**, **Pie**, **Scatter**, **Line** or **Histrogram** Chart.
-|Command                   |Parameters|Type     |Description                              |
-|--------------------------|----------|---------|-----------------------------------------|
-|**CREATE_CHART**          |name      |String   |Name of the chart to create.             |
-|                          |type      |String   |Type of chart to create. ['BAR', 'PIE', 'SCATTER', 'LINE', 'HISTOGRAM']        |
-|                          |start     |Number   |Start range of the histogram chart.  (Histogram)   |
-|                          |end       |Number    |End range of the histogram chart.   (Histogram)   |
+
+Command: **CREATE_CHART** || **NEW_CHART** 
+
+|Parameters  |Type       |Description               |
+|------------|-----------|--------------------------|
+|key         |string     |Project API Key           |
+|cmd         |string     |Command            |
+|name        |string     |Name of the chart to add data to.  |
+|type        |string   |Type of chart to create. ['BAR', 'PIE', 'SCATTER', 'LINE', 'HISTOGRAM']        |
+|start       |number   |Start range of the histogram chart.  (Histogram)   |
+|end         |number   |Stop range of the histogram chart.   (Histogram)   |
 
 
 ##### Example 1 (Line Chart, Bar, Pie, Scatter)
 *Request*
 ```json
 { 
-  "key": "XXXXXXXXXXXXXXXX",
-  "cmd": "CREATE_CHART",
-  "name": "Temperature Chart",
-  "type": "LINE"
+    "key": "XXXXXXXXXXXXXXXX",
+    "cmd": "CREATE_CHART",
+    "name": "Temperature Chart",
+    "type": "LINE"
 }
 ```
 *Response*
 ```json
 {
-  "result":{
-    "created": 1563162485390,
-    "entries": 0,
-    "id": "cu2495n20cn20c",
-    "name": "Temperature Chart",
-    "type": "LINE"
-  },
-  "meta":{
-    "revision": 0,
-    "created": 1563162485390,
-    "version": 0
-  }
+    "result":{
+        "created": 1563162485390,
+        "entries": 0,
+        "id": "cu2495n20cn20c",
+        "name": "Temperature Chart",
+        "type": "LINE"
+    }
 }
 ```
 ##### Example 2 (Histogram)
 *Request*
 ```json
 { 
-  "key": "XXXXXXXXXXXXXXXX",
-  "cmd": "CREATE_CHART",
-  "id": "cu2495n20cn20c",
-  "name": "Age Distribution",
-  "type": "HISTOGRAM",
-  "start": 0,
-  "end": 120
-}
-```
-*Response*
-```json
-{
-  "result": {
-    "id": "0cwejc09wej0rv",
-    "created": 1563162485390,
-    "entries": 0,
+    "key": "XXXXXXXXXXXXXXXX",
+    "cmd": "CREATE_CHART",
     "name": "Age Distribution",
     "type": "HISTOGRAM",
     "start": 0,
     "end": 120
-  },
-  "meta": {
-    "revision": 0,
-    "created": 1563162485390,
-    "version": 0
-  }
+}
+```
+
+*Response*
+```json
+{
+    "result": {
+        "id": "0cwejc09wej0rv",
+        "created": 1563162485390,
+        "entries": 0,
+        "name": "Age Distribution",
+        "type": "HISTOGRAM",
+        "start": 0,
+        "end": 120
+    }
 }
 ```
 
 
 #### <a name="head_erase_chart"> Delete Chart
 ##### This function erases a chart. 
-|Command                    |Parameters|Type     |Description                   |
-|-------------------------- |----------|---------|------------------------------|
-|**DELETE_CHART**            |name      |String   |Name or ID of the chart to erase.   |
 
-##### Example 1 (Name) 
+Command: **DELETE_CHART** || **ERASE_CHART** || **REMOVE_CHART** 
+
+|Parameters  |Type       |Description               |
+|------------|-----------|--------------------------|
+|key         |string     |Project API Key           |
+|cmd         |string     |Command            |
+|name        |string     |Name of the chart to add data to.  |
+
+
+##### Example 
 *Request*
 ```json
 {
-  "key": "XXXXXXXXXXXXXXXX",
-  "cmd": "DELETE_CHART",
-  "name": "Temperature Chart"
+    "key": "XXXXXXXXXXXXXXXX",
+    "cmd": "DELETE_CHART",
+    "name": "Temperature Chart"
 }
 ```
 *Response*
 ```json
 {
-  "result": true,
-   "meta": {
-    "revision": 0,
-    "created": 1563162485390,
-    "version": 0
-  }
-}
-```
-##### Example 1 (ID) 
-*Request*
-```json
-{
-  "key": "XXXXXXXXXXXXXXXX",
-  "cmd": "DELETE_CHART",
-  "name": "cu2495n20cn20c",
-}
-```
-*Response*
-```json
-{
-  "result": true,
-  "meta": {
-    "revision": 0,
-    "created": 1563162485390,
-    "version": 0
-  }
-}
-```
-
-
-
-
-#### <a name="head_erase_chart_data"> Delete Chart Data
-##### This command erases the data associated with a chart. 
-|Command                    |Parameters|Type     |Description                   |
-|-------------------------- |----------|---------|------------------------------|
-|**DELETE_CHART_DATA**       |name      |String   |Name or ID of the chart to erase data from.|
-|                           |range     |Any      |Entry range to erase.  "ALL", "{0,100}", 5 |
-
-
-##### Example 1 (Line Chart Delete 1 Entry 5 Entries)
-Example Data: 
-```json
-{
-  0: {
-    "y": 34
-  },
-  1: {
-    "y": 32
-  },  
-  2: {
-    "y": 30
-  },  
-  3: {
-    "y": 39
-  },  
-  4: {
-    "y": 28
-  }
-}
-```
-*Request*
-```json
-{
-  "key": "XXXXXXXXXXXXXXXX",
-  "cmd": "DELETE_CHART_DATA",
-  "name": "Temperature Chart"
-  "range": 3
-}
-```
-*Response*
-```json
-{
-"result": {
-    "id": "0cwejc09wej0rv",
-    "created": 1563162485390,
-    "entries": 4,
-    "name": "Temperature Chart",
-    "type": "Line"
-  },
-  "meta": {
-    "revision": 0,
-    "created": 1563162485390,
-    "version": 0
-  }
-}
-```
-Result Data: 
-```json
-{
-  0: {
-    "y": 34
-  },
-  1: {
-    "y": 32
-  },  
-  2: {
-    "y": 30
-  },  
-  3: {
-    "y": 28
-  }
-}
-```
-##### Example 2 (Line Chart Delete All 5 Entries)
-Example Data: 
-```json
-{
-  0: {
-    "y": 34
-  },
-  1: {
-    "y": 32
-  },  
-  2: {
-    "y": 30
-  },  
-  3: {
-    "y": 39
-  },  
-  4: {
-    "y": 28
-  }
-}
-```
-*Request*
-```json
-{
-  "key":"XXXXXXXXXXXXXXXX",
-  "cmd":"DELETE_CHART_DATA",
-  "name": "Temperature Chart"
-  "range": "all"
-}
-```
-*Response*
-```json
-{
-  "result": {
-    "id": "0cwejc09wej0rv",
-    "created": 1563162485390,
-    "entries": 0,
-    "name": "Tmperature Chart",
-    "type": "Line"
-  },
-  "meta": {
-    "revision": 0,
-    "created": 1563162485390,
-    "version": 0
-  }
-}
-```
-RESULT DATA: 
-```json
-{
-  
-}
-```
-##### Example 3 Line Chart Delete Range (5 Entries)
-DATA: 
-```json
-{
-  0:{
-    "y": 34
-  },
-  1:{
-    "y": 32
-  },  
-  2:{
-    "y": 30
-  },  
-  3:{
-    "y": 39
-  },  
-  4:{
-    "y": 28
-  }
-}
-```
-*Request*
-```json
-{
-  "key": "XXXXXXXXXXXXXXXX",
-  "cmd": "DELETE_CHART_DATA",
-  "name": "Temperature Chart"
-  "range": {
-    "start": 1,
-    "end": 3
-  }
-}
-```
-*Response*
-```json
-{
-"result":{
-    "id": "0cwejc09wej0rv",
-    "created": 1563162485390,
-    "entries": 2,
-    "name": "Tmperature Chart",
-    "type": "Line"
-  },
-  "meta":{
-    "revision":0,
-    "created":1563162485390,
-    "version":0
-  }
-}
-```
-RESULT DATA: 
-```json
-{
-  0:{
-    "y": 34
-  },
-  1:{
-    "y": 28
-  }
-}
-```
-
-
-
-
-#### <a name="head_add_chart_point"> Add Chart Point
-##### This commands adds a data point to a chart. 
-|Command                     |Parameters|Type       |Description                                      |
-|----------------------------|----------|-----------|-------------------------------------------------|
-|**ADD_CHART_POINT**.        |name      |String     |Name or ID of the chart to add the data point to.|
-|                            |point     |String     |Name of the data point.  (Pie, Bar)        |
-|                            |value     |Number     |Value of the data point. (Pie, Line, Bar)        |
-|                            |x         |Number     |Value of the X coordinate.  (Scatter, Histogram) |
-|                            |y         |Number     |Value of the Y coordinate.  (Scatter, Histogram) |
-
-
-##### Example 1 (Pie, Bar)
-DATA: 
-```json
-{
-  0:{
-    "point": "Mortgage"
-    "value": 540.23
-  },
-  1:{
-    "point": "Travel"
-    "value": 250
-  },  
-  2:{
-    "point": "Utilities"
-    "value": 320.99
-  }  
-}
-```
-*Request*
-```json
-{
-  "key":"XXXXXXXXXXXXXXXX",
-  "cmd":"ADD_CHART_POINT",
-  "name": "Monthly Budget Pie Chart",
-  "point": "Food",
-  "value": 234.23
-}
-```
-*Response*
-```json
-{
-"result":{
-    "id": "0cwejc09wej0rv",
-    "created": 1563162485390,
-    "entries": 4,
-    "name": "Monthly Budget Pie Chart",
-    "type": "PIE"
-  },
-  "meta":{
-    "revision":0,
-    "created":1563162485390,
-    "version":0
-  }
-}
-```
-RESULT DATA: 
-```json
-{
-  0:{
-    "point": "Mortgage"
-    "value": 540.23
-  },
-  1:{
-    "point": "Travel"
-    "value": 250
-  },  
-  2:{
-    "point": "Utilities"
-    "value": 320.99
-  },
-  3:{
-    "point": "Food",
-    "value": 234.23
-  }
-}
-```
-
-##### Example 2 (Line)
-DATA: 
-```json
-{
-  0:{
-    "value": 540.23
-  },
-  1:{
-    "value": 250
-  },  
-  2:{
-    "value": 320.99
-  }  
-}
-```
-*Request*
-```json
-{
-  "key":"XXXXXXXXXXXXXXXX",
-  "cmd":"ADD_CHART_POINT",
-  "name": "Monthly Budget Pie Chart",
-  "value": 234.23
-}
-```
-*Response*
-```json
-{
-"result":{
-    "id": "0cwejc09wej0rv",
-    "created": 1563162485390,
-    "entries": 4,
-    "name": "Stock Price",
-    "type": "LINE"
-  },
-  "meta":{
-    "revision":0,
-    "created":1563162485390,
-    "version":0
-  }
-}
-```
-RESULT DATA: 
-```json
-{
-  0:{
-    "value": 540.23
-  },
-  1:{
-    "value": 250
-  },  
-  2:{
-    "value": 320.99
-  },
-  3:{
-    "value": 234.23
-  }    
-}
-```
-
-##### Example 1 (Pie, Bar)
-DATA: 
-```json
-{
-  0:{
-    "point": "Mortgage"
-    "value": 540.23
-  },
-  1:{
-    "point": "Travel"
-    "value": 250
-  },  
-  2:{
-    "point": "Utilities"
-    "value": 320.99
-  }  
-}
-```
-*Request*
-```json
-{
-  "key":"XXXXXXXXXXXXXXXX",
-  "cmd":"ADD_CHART_POINT",
-  "name": "Monthly Budget Pie Chart",
-  "point": "Food",
-  "value": 234.23
-}
-```
-*Response*
-```json
-{
-"result":{
-    "id": "0cwejc09wej0rv",
-    "created": 1563162485390,
-    "entries": 4,
-    "name": "Monthly Budget Pie Chart",
-    "type": "PIE"
-  },
-  "meta":{
-    "revision":0,
-    "created":1563162485390,
-    "version":0
-  }
-}
-```
-RESULT DATA: 
-```json
-{
-  0:{
-    "point": "Mortgage"
-    "value": 540.23
-  },
-  1:{
-    "point": "Travel"
-    "value": 250
-  },  
-  2:{
-    "point": "Utilities"
-    "value": 320.99
-  },
-  3:{
-    "point": "Food",
-    "value": 234.23
-  }
-}
-```
-
-##### Example 3 (Scatte)
-DATA: 
-```json
-{
-  0:{
-    "x": 43,
-    "y": -23
-  },
-  1:{
-    "x": 32,
-    "y": -22
-  },  
-  2:{
-    "x": 43,
-    "y": -33
-  }  
-}
-```
-*Request*
-```json
-{
-  "key":"XXXXXXXXXXXXXXXX",
-  "cmd":"ADD_CHART_POINT",
-  "name": "Humidity in function of temperature chart",
-  "x": 34.23,
-}
-```
-*Response*
-```json
-{
-"result":{
-    "id": "0cwejc09wej0rv",
-    "created": 1563162485390,
-    "entries": 4,
-    "name": "Stock Price",
-    "type": "LINE"
-  },
-  "meta":{
-    "revision":0,
-    "created":1563162485390,
-    "version":0
-  }
-}
-```
-RESULT DATA: 
-```json
-{
-  0:{
-    "value": 540.23
-  },
-  1:{
-    "value": 250
-  },  
-  2:{
-    "value": 320.99
-  },
-  3:{
-    "value": 234.23
-  }    
-}
-```
-
-
-
-
-
-
-
-
-
-
-
-
-Command that erases a stored variable. 
-
-|Command            |Parameters|Type     |Description                           |
-|-------------------|----------|---------|--------------------------------------|
-|**DELETE_VARIABLE** |name      |String   |Name of the variable to erase.        |
-
-##### Example
-
-*Request:*
-```json
-{
-  "key": "XXXXXXXXXXXXXX",
-  "cmd": "DELETE_VARIABLE",
-  "name": "Test"
-}
-```
-
-*Response:*
-```json
-{
-  "result": true,
-   "meta": {
-    "revision": 0,
-    "created": 1563162485390,
-    "version": 0
-  }
-}
-```
-
-#### <a name="head_set_variable"> Set Variable
-
-Command that sets the value of a variable.
-
-|Command            |Parameters|Type    |Description                            |
-|-------------------|----------|--------|---------------------------------------|
-|**SET_VARIABLE**   |name      |String  |Name of the variable to set.           |
-|                   |value     |Any     |Value to set the variable to.          |
-
-##### Example
-*Request:*
-```json
-{
-  "key": "XXXXXXXXXXXXXX",
-  "cmd": "SET_VARIABLE",
-  "name": "Test",
-  "value": 87654321
-}
-```
-*Response:*
-```json
-{
-  "meta": {
-    "revision": 0,
-    "created": 1563162485390,
-    "version": 0
-  },
-  "result": {
-    "Test": 87654321
-  }
-}
-```
-
-#### <a name="head_get_variable"> Get Variable
-
-Command that gets the value of a variable.
-
-|Command            |Parameters|Type     |Description                           |
-|-------------------|----------|---------|--------------------------------------|
-|**GET_VARIABLE**   |name      |String   |Name of the variable to read.          |
-
-##### Example
-*Request*
-```json
-{
-  "key": "XXXXXXXXXXXXXX",
-  "cmd": "GET_VARIABLE", 
-  "name": "Test"
-}
-```
-*Response*
-```json
-{
-  "meta": {
-    "revision": 0,
-    "created": 1563162485390,
-    "version": 0
-  },
-  "result": {
-    "Test": 87654321
-  }
-}
-```
-
-
-## <a name="head_charts">Charts
-#### <a name="head_charts_overview"> Overview
-#### <a name="head_create_chart"> Create Chart
-##### This command creates a **Bar**, **Pie**, **Scatter**, **Line** or **Histrogram** Chart.
-|Command                   |Parameters|Type     |Description                              |
-|--------------------------|----------|---------|-----------------------------------------|
-|**CREATE_CHART**          |name      |String   |Name of the chart to create.             |
-|                          |type      |String   |Type of chart to create. ['BAR', 'PIE', 'SCATTER', 'LINE', 'HISTOGRAM']        |
-|                          |start     |Number   |Start range of the histogram chart.  (Histogram)   |
-|                          |end      |Number   |Stop range of the histogram chart.   (Histogram)   |
-
-
-##### Example 1 (Line Chart, Bar, Pie, Scatter)
-*Request*
-```json
-{ 
-  "key": "XXXXXXXXXXXXXXXX",
-  "cmd": "CREATE_CHART",
-  "name": "Temperature Chart",
-  "type": "LINE"
-}
-```
-*Response*
-```json
-{
-  "result":{
-    "created": 1563162485390,
-    "entries": 0,
-    "id": "cu2495n20cn20c",
-    "name": "Temperature Chart",
-    "type": "LINE"
-  },
-  "meta":{
-    "revision": 0,
-    "created": 1563162485390,
-    "version": 0
-  }
-}
-```
-##### Example 2 (Histogram)
-*Request*
-```json
-{ 
-  "key": "XXXXXXXXXXXXXXXX",
-  "cmd": "CREATE_CHART",
-  "name": "Age Distribution",
-  "type": "HISTOGRAM",
-  "start": 0,
-  "end": 120
-}
-```
-*Response*
-```json
-{
-  "result": {
-    "id": "0cwejc09wej0rv",
-    "created": 1563162485390,
-    "entries": 0,
-    "name": "Age Distribution",
-    "type": "HISTOGRAM",
-    "start": 0,
-    "end": 120
-  },
-  "meta": {
-    "revision": 0,
-    "created": 1563162485390,
-    "version": 0
-  }
-}
-```
-
-
-#### <a name="head_erase_chart"> Delete Chart
-##### This function erases a chart. 
-|Command                    |Parameters|Type     |Description                   |
-|-------------------------- |----------|---------|------------------------------|
-|**DELETE_CHART**            |name      |String   |Name or ID of the chart to erase.   |
-
-##### Example 1 (Name) 
-*Request*
-```json
-{
-  "key": "XXXXXXXXXXXXXXXX",
-  "cmd": "DELETE_CHART",
-  "name": "Temperature Chart"
-}
-```
-*Response*
-```json
-{
-  "result": true,
-   "meta": {
-    "revision": 0,
-    "created": 1563162485390,
-    "version": 0
-  }
-}
-```
-##### Example 1 (ID) 
-*Request*
-```json
-{
-  "key": "XXXXXXXXXXXXXXXX",
-  "cmd": "DELETE_CHART",
-  "name": "cu2495n20cn20c",
-}
-```
-*Response*
-```json
-{
-  "result": true,
-  "meta": {
-    "revision": 0,
-    "created": 1563162485390,
-    "version": 0
-  }
-}
-```
-
-
-
-
-#### <a name="head_erase_chart_data"> Delete Chart Data
-##### This command erases the data associated with a chart. 
-|Command                    |Parameters|Type     |Description                   |
-|-------------------------- |----------|---------|------------------------------|
-|**DELETE_CHART_DATA**       |name      |String   |Name or ID of the chart to erase data from.|
-|                           |range     |Any      |Entry range to erase.  "ALL", "{0,100}", 5 |
-
-
-##### Example 1 (Line Chart Delete 1 Entry 5 Entries)
-Example Data: 
-```json
-{
-  0: {
-    "y": 34
-  },
-  1: {
-    "y": 32
-  },  
-  2: {
-    "y": 30
-  },  
-  3: {
-    "y": 39
-  },  
-  4: {
-    "y": 28
-  }
-}
-```
-*Request*
-```json
-{
-  "key": "XXXXXXXXXXXXXXXX",
-  "cmd": "DELETE_CHART_DATA",
-  "name": "Temperature Chart"
-  "range": 3
-}
-```
-*Response*
-```json
-{
-"result": {
-    "id": "0cwejc09wej0rv",
-    "created": 1563162485390,
-    "entries": 4,
-    "name": "Temperature Chart",
-    "type": "Line"
-  },
-  "meta": {
-    "revision": 0,
-    "created": 1563162485390,
-    "version": 0
-  }
-}
-```
-Result Data: 
-```json
-{
-  0: {
-    "y": 34
-  },
-  1: {
-    "y": 32
-  },  
-  2: {
-    "y": 30
-  },  
-  3: {
-    "y": 28
-  }
-}
-```
-##### Example 2 (Line Chart Delete All 5 Entries)
-Example Data: 
-```json
-{
-  0: {
-    "y": 34
-  },
-  1: {
-    "y": 32
-  },  
-  2: {
-    "y": 30
-  },  
-  3: {
-    "y": 39
-  },  
-  4: {
-    "y": 28
-  }
-}
-```
-*Request*
-```json
-{
-  "key":"XXXXXXXXXXXXXXXX",
-  "cmd":"DELETE_CHART_DATA",
-  "name": "Temperature Chart"
-  "range": "all"
-}
-```
-*Response*
-```json
-{
-  "result": {
-    "id": "0cwejc09wej0rv",
-    "created": 1563162485390,
-    "entries": 0,
-    "name": "Tmperature Chart",
-    "type": "Line"
-  },
-  "meta": {
-    "revision": 0,
-    "created": 1563162485390,
-    "version": 0
-  }
-}
-```
-RESULT DATA: 
-```json
-{
-  
-}
-```
-##### Example 3 Line Chart Delete Range (5 Entries)
-DATA: 
-```json
-{
-  0:{
-    "y": 34
-  },
-  1:{
-    "y": 32
-  },  
-  2:{
-    "y": 30
-  },  
-  3:{
-    "y": 39
-  },  
-  4:{
-    "y": 28
-  }
-}
-```
-*Request*
-```json
-{
-  "key": "XXXXXXXXXXXXXXXX",
-  "cmd": "DELETE_CHART_DATA",
-  "name": "Temperature Chart"
-  "range": {
-    "start": 1,
-    "end": 3
-  }
-}
-```
-*Response*
-```json
-{
-"result":{
-    "id": "0cwejc09wej0rv",
-    "created": 1563162485390,
-    "entries": 2,
-    "name": "Tmperature Chart",
-    "type": "Line"
-  },
-  "meta":{
-    "revision":0,
-    "created":1563162485390,
-    "version":0
-  }
-}
-```
-RESULT DATA: 
-```json
-{
-  0:{
-    "y": 34
-  },
-  1:{
-    "y": 28
-  }
-}
-```
-
-
-
-
-#### <a name="head_add_chart_point"> Add Chart Point
-##### This commands adds a data point to a chart. 
-|Command                     |Parameters|Type       |Description                                      |
-|----------------------------|----------|-----------|-------------------------------------------------|
-|**ADD_CHART_POINT**.        |name      |String     |Name or ID of the chart to add the data point to.|
-|                            |point     |String     |Name of the data point.  (Pie, Bar)        |
-|                            |value     |Number     |Value of the data point. (Pie, Line, Bar)        |
-|                            |x         |Number     |Value of the X coordinate.  (Scatter, Histogram) |
-|                            |y         |Number     |Value of the Y coordinate.  (Scatter, Histogram) |
-
-
-##### Example 1 (Pie, Bar)
-DATA: 
-```json
-{
-  0:{
-    "point": "Mortgage"
-    "value": 540.23
-  },
-  1:{
-    "point": "Travel"
-    "value": 250
-  },  
-  2:{
-    "point": "Utilities"
-    "value": 320.99
-  }  
-}
-```
-*Request*
-```json
-{
-  "key":"XXXXXXXXXXXXXXXX",
-  "cmd":"ADD_CHART_POINT",
-  "name": "Monthly Budget Pie Chart",
-  "point": "Food",
-  "value": 234.23
-}
-```
-*Response*
-```json
-{
-"result":{
-    "id": "0cwejc09wej0rv",
-    "created": 1563162485390,
-    "entries": 4,
-    "name": "Monthly Budget Pie Chart",
-    "type": "PIE"
-  },
-  "meta":{
-    "revision":0,
-    "created":1563162485390,
-    "version":0
-  }
-}
-```
-RESULT DATA: 
-```json
-{
-  0:{
-    "point": "Mortgage"
-    "value": 540.23
-  },
-  1:{
-    "point": "Travel"
-    "value": 250
-  },  
-  2:{
-    "point": "Utilities"
-    "value": 320.99
-  },
-  3:{
-    "point": "Food",
-    "value": 234.23
-  }
-}
-```
-
-##### Example 2 (Line)
-DATA: 
-```json
-{
-  0:{
-    "value": 540.23
-  },
-  1:{
-    "value": 250
-  },  
-  2:{
-    "value": 320.99
-  }  
-}
-```
-*Request*
-```json
-{
-  "key":"XXXXXXXXXXXXXXXX",
-  "cmd":"ADD_CHART_POINT",
-  "name": "Monthly Budget Pie Chart",
-  "value": 234.23
-}
-```
-*Response*
-```json
-{
-"result":{
-    "id": "0cwejc09wej0rv",
-    "created": 1563162485390,
-    "entries": 4,
-    "name": "Stock Price",
-    "type": "LINE"
-  },
-  "meta":{
-    "revision":0,
-    "created":1563162485390,
-    "version":0
-  }
-}
-```
-RESULT DATA: 
-```json
-{
-  0:{
-    "value": 540.23
-  },
-  1:{
-    "value": 250
-  },  
-  2:{
-    "value": 320.99
-  },
-  3:{
-    "value": 234.23
-  }    
-}
-```
-
-##### Example 1 (Pie, Bar)
-DATA: 
-```json
-{
-  0:{
-    "point": "Mortgage"
-    "value": 540.23
-  },
-  1:{
-    "point": "Travel"
-    "value": 250
-  },  
-  2:{
-    "point": "Utilities"
-    "value": 320.99
-  }  
-}
-```
-*Request*
-```json
-{
-  "key":"XXXXXXXXXXXXXXXX",
-  "cmd":"ADD_CHART_POINT",
-  "name": "Monthly Budget Pie Chart",
-  "point": "Food",
-  "value": 234.23
-}
-```
-*Response*
-```json
-{
-"result":{
-    "id": "0cwejc09wej0rv",
-    "created": 1563162485390,
-    "entries": 4,
-    "name": "Monthly Budget Pie Chart",
-    "type": "PIE"
-  },
-  "meta":{
-    "revision":0,
-    "created":1563162485390,
-    "version":0
-  }
-}
-```
-RESULT DATA: 
-```json
-{
-  0:{
-    "point": "Mortgage"
-    "value": 540.23
-  },
-  1:{
-    "point": "Travel"
-    "value": 250
-  },  
-  2:{
-    "point": "Utilities"
-    "value": 320.99
-  },
-  3:{
-    "point": "Food",
-    "value": 234.23
-  }
-}
-```
-
-##### Example 3 (Scatte)
-DATA: 
-```json
-{
-  0:{
-    "x": 43,
-    "y": -23
-  },
-  1:{
-    "x": 32,
-    "y": -22
-  },  
-  2:{
-    "x": 43,
-    "y": -33
-  }  
-}
-```
-*Request*
-```json
-{
-  "key":"XXXXXXXXXXXXXXXX",
-  "cmd":"ADD_CHART_POINT",
-  "name": "Humidity in function of temperature chart",
-  "x": 34.23,
-}
-```
-*Response*
-```json
-{
-"result":{
-    "id": "0cwejc09wej0rv",
-    "created": 1563162485390,
-    "entries": 4,
-    "name": "Stock Price",
-    "type": "LINE"
-  },
-  "meta":{
-    "revision":0,
-    "created":1563162485390,
-    "version":0
-  }
-}
-```
-RESULT DATA: 
-```json
-{
-  0:{
-    "value": 540.23
-  },
-  1:{
-    "value": 250
-  },  
-  2:{
-    "value": 320.99
-  },
-  3:{
-    "value": 234.23
-  }    
-}
-```
-
-#### <a name="head_get_chart_data"> Get Chart Data
-
-Get the data from a specific chart.
-
-|Command            |Parameters|Type     |Description                           |
-|-------------------|----------|---------|--------------------------------------|
-|**GET_CHART_DATA**   |   name   |  string |      Name of the chart to get data from   |
-
-##### Example
-
-```json
-{
-  "key": "XXXXXXXXXXXXXX",
-  "cmd": "GET_ALL_CHARTS"
-  "name: : "Temperature Logging"
-}
-```
-*Response*
-```
-{
+    "result": true,
     "meta": {
-        "version": 0,
         "revision": 0,
-        "created": 1578943691053
+        "created": 1563162485390,
+        "version": 0
+    }
+}
+```
+
+
+#### <a name="head_erase_chart_data"> Delete Chart Data
+##### This command erases the data associated with a chart. 
+
+Command: **DELETE_CHART_POINT** || **DELETE_DATA_POINT** || **DELETE_DATA** 
+
+|Parameters  |Type      |Description               |
+|------------|----------|--------------------------|
+|key         |string    |Project API Key           |
+|cmd         |string    |Command            |
+|name        |string    |Name of the chart to get data from.  |
+|index       |number    |Index of the Data Point to delete. **Do not include this parameter if you want to retrieve the latest data point**|
+|range       |object    |Range [start, end], inclusive to delete.|
+|last        |number    |Delete the last X amount of values| 
+|first       |number    |Delete the first X amount of values| 
+|all         |bool    |true ->  delete all data| 
+
+
+##### Example 1 (Line Chart Delete 1 Entry 5 Entries)
+INITIAL DATA: 
+```json
+[
+    {
+        "y": 34
     },
+    {
+        "y": 32
+    },  
+    {
+        "y": 30
+    },  
+    {
+        "y": 39
+    },  
+    {
+        "y": 28
+    }
+]
+```
+*Request*
+```json
+{
+  "key": "XXXXXXXXXXXXXXXX",
+  "cmd": "DELETE_DATA_POINT",
+  "name": "Temperature Chart",
+  "index": 3
+}
+```
+*Response*
+```json
+{
+    "result": true
+}
+```
+RESULTING DATA: 
+```json
+[
+    {
+        "y": 34
+    },
+    {
+        "y": 32
+    },  
+    {
+        "y": 39
+    },  
+    {
+        "y": 28
+    }
+]
+```
+
+
+##### Example 2 (Line Chart Delete All 5 Entries)
+INITIAL DATA: 
+```json
+[
+    {
+        "y": 34
+    },
+    {
+        "y": 32
+    },  
+    {
+        "y": 30
+    },  
+    {
+        "y": 39
+    },  
+    {
+        "y": 28
+    }
+]
+```
+*Request*
+```json
+{
+    "key":"XXXXXXXXXXXXXXXX",
+    "cmd":"DELETE_DATA_POINT",
+    "name": "Temperature Chart",
+    "all": true
+}
+```
+*Response*
+```json
+{
+    "result": true
+}
+```
+RESULTING DATA: 
+```json
+[
+  
+]
+```
+
+
+
+##### Example 3 Line Chart Delete Range (5 Entries)
+INITIAL DATA: 
+```json
+[
+    {
+        "y": 34
+    },
+    {
+        "y": 32
+    },  
+    {
+        "y": 30
+    },  
+    {
+        "y": 39
+    },  
+    {
+        "y": 28
+    }
+]
+```
+*Request*
+```json
+{
+    "key": "XXXXXXXXXXXXXXXX",
+    "cmd": "DELETE_CHART_DATA",
+    "name": "Temperature Chart",
+    "range": [1,3]
+}
+```
+*Response*
+```json
+{
+    "result": true
+}
+```
+RESULTING DATA: 
+```json
+[
+    {
+        "y": 39
+    },
+    {
+        "y": 28
+    }
+]
+```
+
+##### Example 4 Line Chart Delete Last 3 (5 Entries)
+INITIAL DATA: 
+```json
+[
+    {
+        "y": 34
+    },
+    {
+        "y": 32
+    },  
+    {
+        "y": 30
+    },  
+    {
+        "y": 39
+    },  
+    {
+        "y": 28
+    }
+]
+```
+*Request*
+```json
+{
+    "key": "XXXXXXXXXXXXXXXX",
+    "cmd": "DELETE_CHART_DATA",
+    "name": "Temperature Chart",
+    "last": 3
+}
+```
+*Response*
+```json
+{
+    "result": true
+}
+```
+RESULTING DATA: 
+```json
+[
+    {
+        "y": 34
+    },
+    {
+        "y": 32
+    }
+]
+```
+
+##### Example 5 Line Chart Delete Firs 3 (5 Entries)
+INITIAL DATA: 
+```json
+[
+    {
+        "y": 34
+    },
+    {
+        "y": 32
+    },  
+    {
+        "y": 30
+    },  
+    {
+        "y": 39
+    },  
+    {
+        "y": 28
+    }
+]
+```
+*Request*
+```json
+{
+    "key": "XXXXXXXXXXXXXXXX",
+    "cmd": "DELETE_CHART_DATA",
+    "name": "Temperature Chart",
+    "last": 3
+}
+```
+*Response*
+```json
+{
+    "result": true
+}
+```
+RESULTING DATA: 
+```json
+[
+    {
+        "y": 39
+    },
+    {
+        "y": 28
+    }
+]
+```
+
+
+#### <a name="head_add_chart_point"> Add Chart Point
+##### This commands adds a data point to a chart. 
+
+Command: **ADD_DATA** || **ADD_DATA_POINT** || **ADD_CHART_POINT** 
+
+|Parameters  |Type       |Description               |
+|------------|-----------|--------------------------|
+|key         |string     |Project API Key           |
+|cmd         |string     |Command            |
+|name        |string     |Name of the chart to add data to.  |
+|point       |string     |Name of the data point.  (Pie, Bar)        |
+|value       |number     |Value of the data point. (Pie, Line, Bar)        |
+|x           |number     |Value of the X coordinate.  (Scatter, Histogram) |
+|y           |number     |Value of the Y coordinate.  (Scatter, Histogram) |
+
+
+##### Example 1 (Pie, Bar)
+INITIAL STORED DATA: 
+```json
+[
+    {
+        "point": "Mortgage",
+        "value": 540.23
+    },
+    {
+        "point": "Travel",
+        "value": 250
+    },  
+    {
+        "point": "Utilities",
+        "value": 320.99
+    }
+]  
+```
+
+*Request*
+```json
+{
+    "key":"XXXXXXXXXXXXXXXX",
+    "cmd":"ADD_CHART_POINT",
+    "name": "Monthly Budget Pie Chart",
+    "point": "Food",
+    "value": 234.23
+}
+```
+
+*Response*
+```json
+{
+    "result":{
+        "id": "0cwejc09wej0rv",
+        "created": 1563162485390,
+        "entries": 4,
+        "name": "Monthly Budget Pie Chart",
+        "type": "PIE"
+    },
+    "meta":{
+        "revision":0,
+        "created":1563162485390,
+        "version":0
+    }
+}
+```
+RESULTING DATA: 
+```json
+[
+    {
+        "point": "Mortgage",
+        "value": 540.23
+    },
+    {
+        "point": "Travel",
+        "value": 250
+    },  
+    {
+        "point": "Utilities",
+        "value": 320.99
+    },
+    {
+        "point": "Food",
+        "value": 234.23
+    }
+]  
+```
+
+##### Example 2 (Line)
+INITIAL DATA: 
+```json
+[
+    {
+        "value": 540.23
+    },
+    {
+        "value": 250
+    },  
+    {
+        "value": 320.99
+    }  
+]
+```
+*Request*
+```json
+{
+    "key":"XXXXXXXXXXXXXXXX",
+    "cmd":"ADD_CHART_POINT",
+    "name": "Monthly Budget Pie Chart",
+    "value": 234.23
+}
+```
+*Response*
+```json
+{
+"result":{
+    "id": "0cwejc09wej0rv",
+    "created": 1563162485390,
+    "entries": 4,
+    "name": "Stock Price",
+    "type": "LINE"
+  },
+  "meta":{
+    "revision":0,
+    "created":1563162485390,
+    "version":0
+  }
+}
+```
+RESULTING DATA: 
+```json
+[
+    {
+        "value": 540.23
+    },
+    {
+        "value": 250
+    },  
+    {
+        "value": 320.99
+    },
+    {
+        "value": 234.23
+    } 
+]
+
+```
+
+##### Example 1 (Pie, Bar)
+DATA: 
+```json
+[
+    {
+        "point": "Mortgage",
+        "value": 540.23
+    },
+    {
+        "point": "Travel",
+        "value": 250
+    },  
+    {
+        "point": "Utilities",
+        "value": 320.99
+    }  
+]
+```
+
+*Request*
+```json
+{
+    "key":"XXXXXXXXXXXXXXXX",
+    "cmd":"ADD_CHART_POINT",
+    "name": "Monthly Budget Pie Chart",
+    "point": "Food",
+    "value": 234.23
+}
+```
+*Response*
+```json
+{
+    "result":{
+        "id": "0cwejc09wej0rv",
+        "created": 1563162485390,
+        "entries": 4,
+        "name": "Monthly Budget Pie Chart",
+        "type": "PIE"
+    },
+    "meta":{
+        "revision":0,
+        "created":1563162485390,
+        "version":0
+    }
+}
+```
+RESULTING DATA: 
+```json
+[
+    {
+        "point": "Mortgage",
+        "value": 540.23
+    },
+    {
+        "point": "Travel",
+        "value": 250
+    },  
+    {
+        "point": "Utilities",
+        "value": 320.99
+    },
+    {
+        "point": "Food",
+        "value": 234.23
+    } 
+]
+```
+
+##### Example 3 (Scatter)
+INTIAL DATA: 
+```json
+[
+    {
+        "x": 43,
+        "y": -23
+    },
+    {
+        "x": 32,
+        "y": -22
+    },  
+    {
+        "x": 43,
+        "y": -33
+    }  
+]
+```
+*Request*
+```json
+{
+    "key":"XXXXXXXXXXXXXXXX",
+    "cmd":"ADD_CHART_POINT",
+    "name": "Humidity in function of temperature chart",
+    "x": 78,
+    "y": 23
+}
+```
+*Response*
+```json
+{
+"result":{
+        "id": "0cwejc09wej0rv",
+        "created": 1563162485390,
+        "entries": 4,
+        "name": "Stock Price",
+        "type": "LINE"
+    },
+    "meta":{
+        "revision":0,
+        "created":1563162485390,
+        "version":0
+    }
+}
+```
+RESULT DATA: 
+```json
+[
+    {
+        "x": 43,
+        "y": -23
+    },
+    {
+        "x": 32,
+        "y": -22
+    },  
+    {
+        "x": 43,
+        "y": -33
+    },
+    {
+        "x": 78,
+        "y": 23
+    }    
+]
+```
+
+#### <a name="head_get_chart_point"> Get Data Point
+##### This commands gets the value of a data point from a chart. 
+
+Command: **GET_DATA** || **GET_DATA_POINT** || **GET_CHART_POINT** 
+
+|Parameters  |Type      |Description               |
+|------------|----------|--------------------------|
+|key         |string    |Project API Key           |
+|cmd         |string    |Command            |
+|name        |string    |Name of the chart to get data from.  |
+|index       |number    |Index of the Data Point to retrieve. **Do not include this parameter if you want to retrieve the latest data point**|
+|range       |object    |Range [start, end], inclusive.|
+|last        |number    |Get the last X amount of values| 
+|first       |number    |Get the first X amount of values| 
+
+##### Example 1 (Latest Value)
+
+*Request*
+```json
+{
+    "key": "XXXXXXXXXXXXXX",
+    "cmd": "GET_DATA_POINT",
+    "name": "Temperature"
+}
+```
+
+*Response* 
+```json
+{
+    "results": {
+        "entry": 5,
+        "timestamp": 1581368571501,
+        "id": "1581368571501jjhlg18nzk6gy0mzx",
+        "value": 23
+    }
+}
+```
+##### Example 2 (Specific Index)
+
+*Request*
+```json
+{
+    "key": "XXXXXXXXXXXXXX",
+    "cmd": "GET_DATA_POINT",
+    "name": "Temperature",
+    "index": 33
+}
+```
+
+*Response* (Latest Value)
+```json
+{
+    "results": {
+        "entry": 33,
+        "timestamp": 1581368571501,
+        "id": "1581368571501jjhlg18nzk6gy0mzx",
+        "value": 27
+    }
+}
+```
+
+##### Example 3 (Specific Range)
+*Request*
+```json
+{
+    "key": "XXXXXXXXXXXXXX",
+    "cmd": "GET_DATA_POINT",
+    "name": "Temperature",
+    "range": [2,4]
+}
+```
+*Response* 
+```json
+{
     "results": [
         {
-            "entry": 1,
-            "timestamp": 1578798134337,
-            "id": "15787981343379qvfchck5afn8zl",
-            "value": 24
-        },
-        {
             "entry": 2,
-            "timestamp": 1578798135634,
-            "id": "15787981356349qvfchck5afn9zm",
-            "value": 24
+            "timestamp": 1581368569082,
+            "id": "1581368569082jjhlg18nzk6gy0l4q",
+            "value": 23
         },
         {
             "entry": 3,
-            "timestamp": 1578798141169,
-            "id": "15787981411699qvfchck5afne9d",
-            "value": 26
+            "timestamp": 1581368569837,
+            "id": "1581368569837jjhlg18nzk6gy0lpp",
+            "value": 23
         },
         {
             "entry": 4,
-            "timestamp": 1578798144404,
-            "id": "15787981444049qvfchck5afngr8",
-            "value": 28
+            "timestamp": 1581368570894,
+            "id": "1581368570894jjhlg18nzk6gy0mj2",
+            "value": 23
         }
     ]
 }
 ```
 
+##### Example 4 (Last X values)
+*Request*
+```json
+{
+    "key": "XXXXXXXXXXXXXX",
+    "cmd": "GET_DATA_POINT",
+    "name": "Temperature",
+    "last": 3
+}
+```
+*Response* 
+```json
+{
+    "results": [
+        {
+            "entry": 3,
+            "timestamp": 1581368569837,
+            "id": "1581368569837jjhlg18nzk6gy0lpp",
+            "value": 23
+        },
+        {
+            "entry": 4,
+            "timestamp": 1581368570894,
+            "id": "1581368570894jjhlg18nzk6gy0mj2",
+            "value": 23
+        },
+        {
+            "entry": 5,
+            "timestamp": 15813685690342,
+            "id": "15813685690342jhlg18nzk6gy0l4q",
+            "value": 24
+        }
 
-#### <a name="head_get_all_charts"> Get All Charts
+    ]
+}
+```
 
-Command that retrieves all charts.
+##### Example 4 (First X values)
+*Request*
+```json
+{
+    "key": "XXXXXXXXXXXXXX",
+    "cmd": "GET_DATA_POINT",
+    "name": "Temperature",
+    "first": 3
+}
+```
+*Response* 
+```json
+{
+    "results": [
+        {
+            "entry": 1,
+            "timestamp": 1581368569837,
+            "id": "1581368569837jjhlg18nzk6gy0lpp",
+            "value": 23
+        },
+        {
+            "entry": 2,
+            "timestamp": 1581368570894,
+            "id": "1581368570894jjhlg18nzk6gy0mj2",
+            "value": 23
+        },
+        {
+            "entry": 3,
+            "timestamp": 15813685690342,
+            "id": "15813685690342jhlg18nzk6gy0l4q",
+            "value": 24
+        }
 
-|Command            |Parameters|Type     |Description                           |
-|-------------------|----------|---------|--------------------------------------|
-|**GET_ALL_CHARTS**   |      |   |         |
+    ]
+}
+```
+
+#### <a name="head_get_chart_data"> Get Chart Data
+##### Get all the data from a specific chart.
+
+Command: **GET_CHART_DATA**
+
+|Parameters  |Type      |Description               |
+|------------|----------|--------------------------|
+|key         |string    |Project API Key           |
+|cmd         |string    |Command            |
+|name        |string    |Name of the chart to get data from.  |
+
+##### Example
+*Request*
+```json
+{
+    "key": "XXXXXXXXXXXXXX",
+    "cmd": "GET_CHART_DATA",
+    "name": "Temperature"
+}
+```
+
+*Response*
+```json
+{
+    "meta": {
+        "entries": 5,
+        "name": "Temperature",
+        "created": 1581368521020,
+        "id": "1581368521020jjhlg18nzk6gxzk1o",
+        "type": "LINE"
+    },
+    "results": [
+        {
+            "entry": 1,
+            "timestamp": 1581368568262,
+            "id": "1581368568262jjhlg18nzk6gy0khy",
+            "value": 23
+        },
+        {
+            "entry": 2,
+            "timestamp": 1581368569082,
+            "id": "1581368569082jjhlg18nzk6gy0l4q",
+            "value": 23
+        },
+        {
+            "entry": 3,
+            "timestamp": 1581368569837,
+            "id": "1581368569837jjhlg18nzk6gy0lpp",
+            "value": 23
+        },
+        {
+            "entry": 4,
+            "timestamp": 1581368570894,
+            "id": "1581368570894jjhlg18nzk6gy0mj2",
+            "value": 23
+        },
+        {
+            "entry": 5,
+            "timestamp": 1581368571501,
+            "id": "1581368571501jjhlg18nzk6gy0mzx",
+            "value": 23
+        }
+    ]
+}
+```
+
+#### <a name="head_get_all_charts"> Get Chart List
+##### Retrieve a list of all the charts for a given project.
+
+Command: **GET_CHART_LIST**
+
+|Parameters  |Type      |Description               |
+|------------|----------|--------------------------|
+|key         |string    |Project API Key           |
+|cmd         |string    |Command            |
 
 ##### Example
 *Request*
 ```json
 {
   "key": "XXXXXXXXXXXXXX",
-  "cmd": "GET_ALL_CHARTS"
+  "cmd": "GET_CHART_LIST"
 }
 ```
 *Response*
 ```json
 {
-    "meta": {
-        "revision": 0,
-        "created": 1567996872756,
-        "version": 0,
-        "updated": 1569251454138
-    },
-     "results": [
-            {
-                "name": "Temperature Logging",
-                "type": "LINE",
-                "entries": 23
-            },
-            {
-                "name": "Budget",
-                "type": "PIE",
-                "entries": 12
-            },
-            {
-                "name": "Age Spread",
-                "type": "HISTO",
-                "entries": 44
-            },
-            {
-                "name": "Test Results",
-                "type": "SCATTER",
-                "entries": 123
-            }
+    "results": [
+        {
+            "created": 1581368521020,
+            "id": "1581368521020jjhlg18nzk6gxzk1o",
+            "name": "Temperature Logging",
+            "type": "LINE",
+            "entries": 23
+        },
+        {
+            "created": 1581368537965,
+            "id": "1581368537965jjhlg18nzk6gxzx4d",
+            "name": "Budget",
+            "type": "PIE",
+            "entries": 12
+        },
+        {
+            "created": 1581386679806,
+            "id": "1581386679806jjhlg18nzk6h8srge",
+            "name": "Age Spread",
+            "type": "HISTO",
+            "entries": 44
+        },
+        {
+            "created": 1581386730575,
+            "id": "1581386730575jjhlg18nzk6h8tumn",
+            "name": "Test Results",
+            "type": "SCATTER",
+            "entries": 123
+        }
     ]
 }
 

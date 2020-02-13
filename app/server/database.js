@@ -657,11 +657,6 @@ function createChart(msg) {
     PROJECTS.update(project);
 
     return {
-        "meta": {
-            "version": 0,
-            "revision": 0,
-            "created": time
-        },
         "results": chartEntry
     };
 
@@ -867,20 +862,20 @@ function getChartData(msg) {
     let nameCheck = tools.verifyString(msg, 'name', 200, 1);
     if (tools.hasError(nameCheck)) return (nameCheck);
 
-    // Name can't be default.
-    if (msg.name === "default") return {error: "Chart name can't be default."};
-
     // Find the project matching the Project Key.
     let project = PROJECTS.findOne({key: msg.key});
     if (project === null) return {error: `Unknown Project Key`};
 
     if (project.charts.some(e => e.name === msg.name)) {
-        let data = project['charts'][project['charts'].findIndex(e => e.name === msg.name)].data;
+        let chart = project['charts'][project['charts'].findIndex(e => e.name === msg.name)];
+        let data = chart.data;
         return {
             "meta": {
-                "version": 0,
-                "revision": 0,
-                "created": new Date().getTime()
+                "entries": chart.entries,
+                "name": chart.name,
+                "created": chart.created,
+                "id": chart.id,
+                "type": chart.type
             },
             "results": data
         };
@@ -898,22 +893,18 @@ function getChartData(msg) {
  * @returns {object} Data point.
  */
 function getDataPoint(msg){
+
     // Make sure the chart name is in proper format.
     let nameCheck = tools.verifyString(msg, 'name', 200, 1);
     if (tools.hasError(nameCheck)) return (nameCheck);
-
-    // Name can't be default.
-    if (msg.name === "default") return {error: "Chart name can't be default."};
 
     // Find the project matching the Project Key.
     let project = PROJECTS.findOne({key: msg.key});
     if (project === null) return {error: `Unknown Project Key`};
 
+
     if (project.charts.some(e => e.name === msg.name)) {
         let data = project['charts'][project['charts'].findIndex(e => e.name === msg.name)];
-
-
-        console.log(project['charts'][project['charts'].findIndex(e => e.name === msg.name)])
         let index =  data.entries;
 
         if(msg.hasOwnProperty("index")){
@@ -922,13 +913,52 @@ function getDataPoint(msg){
             if(msg.index <= 0)  return {error: "Invalid index, must be superior to 0"};
             index = msg.index;
         }
+        else if(msg.hasOwnProperty("range")){
+            if (typeof msg.range !== 'object')  return {error: "Range must be an array with the first value being the start and the second value being the end. Ex: [2,34]"};
+            if (!Number.isInteger(msg.range[0])) return {error: "Start value must be and integer.  Ex: [2,34]"};
+            if (!Number.isInteger(msg.range[1])) return {error: "End value must be and integer.  Ex: [2,34]"};
+            if(msg.range[0] <= 0)  return {error: "Invalid start range, must be superior to 0"};
+            if(msg.range[1] <= 0)  return {error: "Invalid end range, must be superior to 0"};
+            if (msg.range[0] > msg.range[1]) return {error: "End value must greater than start value.  Ex: [2,34]"};
+            if(msg.range[0] > index) return {error: `Start range  is out of range.  There is only ${index} entries.`};
+            if(msg.range[1] > index) return {error: `End range is out of range.  There is only ${index} entries.`};
 
+            let dataArray = data.data.slice(msg.range[0]-1, msg.range[1]);
+            return {
+                "results": dataArray
+            };
+        }
+        else if(msg.hasOwnProperty("last")){
+            if (!Number.isInteger(msg.last))  return {error: "Last must be an interger."};
+            if(msg.last <= 0)  return {error: "Last , must be superior to 0"};
+
+            let dataArray;
+            if(msg.last > index){
+                dataArray = data.data.slice(0, index);
+            }
+            else{
+                dataArray = data.data.slice(index-msg.last, index);
+            }
+            return {
+                "results": dataArray
+            };
+        }
+        else if(msg.hasOwnProperty("first")){
+            if (!Number.isInteger(msg.first))  return {error: "Last must be an interger."};
+            if(msg.first <= 0)  return {error: "Last , must be superior to 0"};
+
+            let dataArray;
+            if(msg.first > index){
+                dataArray = data.data.slice(0, index);
+            }
+            else{
+                dataArray = data.data.slice(0, msg.first);
+            }
+            return {
+                "results": dataArray
+            };
+        }
         return {
-            "meta": {
-                "version": 0,
-                "revision": 0,
-                "created": new Date().getTime()
-            },
             "results": data.data[index -1]
         };
     }
@@ -936,7 +966,6 @@ function getDataPoint(msg){
         return {error: "Chart not found."};
     }
 }
-
 
 /**
  * Get all charts.
@@ -954,18 +983,26 @@ function getAllCharts(msg){
     let charts = project['charts'];
     for(let chart in charts){
         if(charts.hasOwnProperty(chart)){
-        data.push({
-            name: charts[chart].name,
-            type: charts[chart].type,
-            entries: charts[chart].entries,
-        });
+            data.push({
+                created: charts[chart].created,
+                id: charts[chart].id,
+                name: charts[chart].name,
+                type: charts[chart].type,
+                entries: charts[chart].entries,
+            });
         }
     }
     return {
-        "meta": project['meta'],
         "results": data
     };
 }
+
+
+
+
+
+
+
 
 function getChartType(key, chart_name) {
     let userKey = PROJECTS.findOne({key: key});
