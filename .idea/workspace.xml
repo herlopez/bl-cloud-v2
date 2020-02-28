@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="f8dc789a-0ee8-4036-b494-978e5ba3fd15" name="Default Changelist" comment="styling">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/server/command_processors/http-commands.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/server/command_processors/http-commands.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/server/database.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/server/database.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index.pug" beforeDir="false" afterPath="$PROJECT_DIR$/views/index.pug" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -224,7 +222,11 @@
       <workItem from="1580941175680" duration="1013000" />
       <workItem from="1581022624001" duration="22963000" />
       <workItem from="1581389993551" duration="3000" />
-      <workItem from="1581512752212" duration="17449000" />
+      <workItem from="1581512752212" duration="17666000" />
+      <workItem from="1581619305022" duration="9000" />
+      <workItem from="1582069768467" duration="20000" />
+      <workItem from="1582339370088" duration="6534000" />
+      <workItem from="1582901504063" duration="64000" />
     </task>
     <task id="LOCAL-00001" summary="=MQTT Implementation">
       <created>1568726588352</created>
@@ -245,6 +247,13 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+    <option name="exactExcludedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/../testing/app/app.js" />
+        <option value="$PROJECT_DIR$/../testing/app/buttons.js" />
+        <option value="$PROJECT_DIR$/../testing/app/types.js" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
