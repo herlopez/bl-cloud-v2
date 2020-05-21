@@ -3,7 +3,6 @@ let mosca = require('mosca');
 let processor = require('./message-processor.js');
 
 
-
 function startMQTTBroker(port, wss) {
     let settings = {
         port: port,
